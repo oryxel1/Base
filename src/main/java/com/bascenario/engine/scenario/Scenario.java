@@ -30,6 +30,7 @@ public class Scenario {
 
     private final List<Timestamp> timestamps = new ArrayList<>();
     private final List<Dialogue> dialogues = new ArrayList<>();
+    private final List<Sound> sounds = new ArrayList<>();
     private final List<Background> backgrounds = new ArrayList<>();
 
     /**
@@ -49,6 +50,12 @@ public class Scenario {
      */
     @Builder
     public record Background(String locationName, String path, long start, long end) {}
+
+    /**
+     *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play.
+     *  The user can also customize this to fade in or fade out, depending on the context, situation.
+     */
+    public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
 
     /**
      *  Dialogue, literally what it's, contain dialogue, timestamp (in ms since start of scenario), the text play speed,
