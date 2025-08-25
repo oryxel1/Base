@@ -6,6 +6,7 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;
 import com.bascenario.render.manager.TextureManager;
+import com.bascenario.render.util.MathUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 
@@ -32,7 +33,7 @@ public class ElementTestScreen extends Screen {
             @Override
             public void render(int width, int height, double mouseX, double mouseY) {
                 super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), testString);
+                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, testString);
             }
         });
 
@@ -41,7 +42,7 @@ public class ElementTestScreen extends Screen {
             @Override
             public void render(int width, int height, double mouseX, double mouseY) {
                 super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), "Click me plz~!");
+                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me plz~!");
             }
         });
 
@@ -54,7 +55,7 @@ public class ElementTestScreen extends Screen {
                     @Override
                     public void render(int width, int height, double mouseX, double mouseY) {
                         super.render(width, height, mouseX, mouseY);
-                        ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), "Click me to go back!");
+                        ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me to go back!");
                     }
                 });
             }
@@ -62,21 +63,26 @@ public class ElementTestScreen extends Screen {
             @Override
             public void render(int width, int height, double mouseX, double mouseY) {
                 super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), "Click me too!");
+                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me too!");
             }
         });
     }
 
     @Override
     public void render(double mouseX, double mouseY) {
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("cool.jpg"), new ImVec2(0, 0), new ImVec2(width, height));
+        // Technically not 1920-1080, but since the real game also scretch this so why not.
+        ImVec2 vec = MathUtil.findBestSize(new ImVec2(width, height), new ImVec2(1920, 1080));
+        int centerX = (int) Math.max(0, width / 2F - (vec.x / 2));
+        int centerY = (int) Math.max(0, height / 2F - (vec.y / 2));
+
+        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("cool.jpg"), new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY));
         super.render(mouseX, mouseY);
         if (appear) {
-            ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), Color.BLACK.getRGB(), "Hi there, im new here!");
+            ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), -1, "Hi there, im new here!");
         }
 
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(50, 400), 50, Color.BLACK.getRGB());
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(150, 400), 50, Color.BLACK.getRGB());
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(250, 400), 50, Color.BLACK.getRGB());
+        ImGui.getForegroundDrawList().addCircle(new ImVec2(50, 400), 50, -1);
+        ImGui.getForegroundDrawList().addCircle(new ImVec2(150, 400), 50, -1);
+        ImGui.getForegroundDrawList().addCircle(new ImVec2(250, 400), 50, -1);
     }
 }

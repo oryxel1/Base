@@ -2,6 +2,7 @@ package com.bascenario.render;
 
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.test.ElementTestScreen;
+import com.bascenario.render.util.WindowUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.app.Application;
@@ -9,6 +10,10 @@ import imgui.app.Configuration;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.GLFW;
+
+import java.awt.*;
+
+import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 
 public class MainRendererWindow extends Application {
     @Setter
@@ -25,13 +30,16 @@ public class MainRendererWindow extends Application {
 
     @Override
     protected void preRun() {
+        WindowUtil.setFullScreen(this.handle, false);
+
+        GLFW.glfwSetWindowSizeLimits(handle, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
         GLFW.glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
             if (window != this.handle) {
                 return;
             }
-
             this.width = width;
             this.height = height;
+
             if (this.currentScreen != null) {
                 this.currentScreen.init();
             }
@@ -67,7 +75,7 @@ public class MainRendererWindow extends Application {
 
     @Override
     public void process() {
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), -1);
+        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), Color.BLACK.getRGB());
 
         if (this.currentScreen != null) {
             if (!this.currentScreen.isInit()) {
