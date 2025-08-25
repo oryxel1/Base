@@ -24,13 +24,12 @@ public class RenderUtil {
                 new ImVec2(0, 0), new ImVec2(1, 1), color);
     }
 
-    public static void renderStartElement(int width, int height, String path) {
-        renderStartElement(width, height, path, ImColor.rgb(255, 255, 255));
+    public static void renderBackground(int width, int height, String path) {
+        renderBackground(width, height, path, ImColor.rgb(255, 255, 255));
     }
 
-    public static void renderStartElement(int width, int height, String path, int color) {
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture(path), new ImVec2(0, 0), new ImVec2(width, height),
-                new ImVec2(0, 0), new ImVec2(1, 1), color);
+    public static void renderBackground(int width, int height, String path, int color) {
+        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture(path), new ImVec2(0, 0), new ImVec2(width, height), new ImVec2(0, 0), new ImVec2(1, 1), color);
     }
 
     // https://github.com/FlorianMichael/fabric-imgui-example-mod/blob/1.21.8/src/main/java/de/florianmichael/imguiexample/imgui/ImGuiImpl.java

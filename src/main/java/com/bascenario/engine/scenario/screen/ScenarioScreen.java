@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
 import imgui.ImColor;
@@ -11,6 +12,7 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 
 import java.io.File;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ScenarioScreen extends Screen {
@@ -20,18 +22,48 @@ public class ScenarioScreen extends Screen {
     private Scenario.Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
 
+    private final List<Scenario.Timestamp> alreadyPlays = new ArrayList<>();
+    private final List<EventRenderer> events = new ArrayList<>();
+
     @Override
     public void render(double mouseX, double mouseY) {
+        this.pollEvents();
         this.pollBackground();
 
         if (this.background != null) {
             RenderUtil.renderBackground(width, height, new File(this.background.path()));
         }
+
+        this.events.forEach(event -> event.render(event.getTime(), width, height));
+
         if (this.backgroundFadeOut != null) {
             ImGui.getForegroundDrawList().addRectFilled(0, 0, width, height, ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeOut.getValue())));
         }
         if (this.backgroundFadeIn != null) {
             ImGui.getForegroundDrawList().addRectFilled(0, 0, width, height, ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeIn.getValue())));
+        }
+    }
+
+    private void pollEvents() {
+        this.events.removeIf(event -> {
+            if (event.isFinished()) {
+                event.onEnd();
+                return true;
+            }
+
+            return false;
+        });
+
+        for (Scenario.Timestamp timestamp : scenario.getTimestamps()) {
+            if (timestamp.time() > duration() || this.alreadyPlays.contains(timestamp)) {
+                continue;
+            }
+
+            this.alreadyPlays.add(timestamp);
+            timestamp.events().forEach(event -> {
+                this.events.add(new EventRenderer(event));
+                event.onStart();
+            });
         }
     }
 

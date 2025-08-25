@@ -11,7 +11,7 @@ public class FontUtil {
     private static final Map<String, List<ImFont>> NAME_TO_FONTS = new HashMap<>();
 
     public static ImFont getFont(String name, int size) {
-        return NAME_TO_FONTS.get(name).get(size - 1);
+        return NAME_TO_FONTS.get(name).get(Math.max(0, Math.min(size - 1, 150)));
     }
 
     public static void loadFonts() {
