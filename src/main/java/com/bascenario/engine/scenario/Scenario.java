@@ -31,11 +31,6 @@ public class Scenario {
      */
     private final Background previewBackground;
 
-    /**
-     *  The preview sound, play along with the title, if this is disabled, there will be no sound that get played during the preview.
-     */
-    private final Sound previewSound;
-
     private final List<Timestamp> timestamps = new ArrayList<>();
     private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
     private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
@@ -63,8 +58,10 @@ public class Scenario {
     public record Background(String locationName, String path, long start, long end) {}
 
     /**
-     *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play.
+     *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play and stop playing.
      *  The user can also customize this to fade in or fade out, depending on the context, situation.
+     *  If we want the sound to play during the preview, start is going to be a negative value.
+     *  If this sound should be looped, then "end" can be any negative value, if end is zero, then it play till the audio end.
      */
     @Builder
     public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
