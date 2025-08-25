@@ -50,12 +50,11 @@ public class Scenario {
     /**
      *  Consist of location name background file location, when to start showing background and when to end.
      *  If this background play from the start value to the end of the scenario, then the end value can be any negative value.
-     *  Also, if this a preview background then the location name value is ignored, if location name value is empty then nothing happened.
-     *  If this was set to a certain value however, this will pop up on the side showing the "location" corresponding to the background dependent on the user
-     *  can be anything. If another background in the list have start time larger than the end time of this one, then this one is overridden by that one.
+     *  If another background in the list have start time larger than the end time of this one, then this one is overridden by that one.
+     *  And there is also fade, which is pretty self-explanatory...
      */
     @Builder
-    public record Background(String locationName, String path, long start, long end) {}
+    public record Background(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
 
     /**
      *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play and stop playing.

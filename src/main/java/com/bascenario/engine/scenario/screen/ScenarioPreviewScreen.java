@@ -30,7 +30,7 @@ public class ScenarioPreviewScreen extends Screen {
     private DynamicAnimation titleTextPopupAnimation;
     private long finishAll = -1;
 
-    private final DynamicAnimation finalFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 0);
+    private final DynamicAnimation finalFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 255);
 
     @Override
     public void render(double mouseX, double mouseY) {
@@ -38,20 +38,26 @@ public class ScenarioPreviewScreen extends Screen {
             this.backgroundFadeIn.setTarget(0);
         }
 
-        ImVec2 vec = MathUtil.findBestSize(new ImVec2(width, height), new ImVec2(1920, 1080));
-        int centerX = (int) Math.max(0, width / 2F - (vec.x / 2));
-        int centerY = (int) Math.max(0, height / 2F - (vec.y / 2));
+        boolean doingTheFinalFade = this.finalFadeOut.getTarget() == 0;
 
         final Scenario.Background previewBackground = this.scenario.getPreviewBackground();
         if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
-            RenderUtil.renderBackground(width, height, new File(previewBackground.path()));
+            int color = ImColor.rgba(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
+            RenderUtil.renderBackground(width, height, new File(previewBackground.path()), color);
         } else {
-            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY), ImColor.rgb(22, 23, 26));
+            int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : 255;
+            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(22, 23, 26, alpha));
         }
 
-        RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png");
-        int backgroundFadeColor = ImColor.rgba(0, 0, 0, Math.max(0, Math.round(backgroundFadeIn.getValue())));
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY), backgroundFadeColor);
+        if (doingTheFinalFade) {
+            int color = ImColor.rgba(255, 255, 255, Math.round(this.finalFadeOut.getValue()));
+            RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png", color);
+        } else {
+            RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png");
+        }
+
+        int backgroundFadeColor = ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
+        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), backgroundFadeColor);
 
         if (this.backgroundFadeIn.getValue() < 80) {
             this.titleBoxPopupAnimation.setTarget(0);
@@ -59,13 +65,18 @@ public class ScenarioPreviewScreen extends Screen {
         }
 
         if (this.titleBoxPopupAnimation.getTarget() != 92) {
-            ImVec2 vec1 = MathUtil.findBestSize(new ImVec2(width, height), new ImVec2(1920, 1080 - titleBoxPopupAnimation.getValue()));
+            ImVec2 vec1 = new ImVec2(width, height - this.titleBoxPopupAnimation.getValue());
             int centerX1 = (int) Math.max(0, width / 2F - (vec1.x / 2));
             int centerY1 = (int) Math.max(0, height / 2F - (vec1.y / 2));
 
-            int titleBoxFade = ImColor.rgba(255, 255, 255, Math.max(0, Math.round(titleBoxFadeAnimation.getValue())));
+            int titleBoxFade = ImColor.rgba(255, 255, 255, Math.max(0, Math.round(this.titleBoxFadeAnimation.getValue())));
+            if (doingTheFinalFade) {
+                titleBoxFade = ImColor.rgba(255, 255, 255, Math.max(0, Math.round(this.finalFadeOut.getValue())));
+            }
+
             ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/assets/base/uis/title.png"),
-                    new ImVec2(centerX1, centerY1), new ImVec2(vec1.x + centerX1, vec1.y + centerY1), new ImVec2(0, 0), new ImVec2(1, 1), titleBoxFade);
+                    new ImVec2(centerX1, centerY1), new ImVec2(vec1.x + centerX1, vec1.y + centerY1), new ImVec2(0, 0),
+                    new ImVec2(1, 1), titleBoxFade);
         }
 
         if (this.titleBoxFadeAnimation.getValue() > 180 && this.titleTextPopupAnimation == null) {
@@ -85,20 +96,23 @@ public class ScenarioPreviewScreen extends Screen {
             int textCenterX = (int) Math.max(0, width / 2F - (size.x / 2));
             int textCenterY = (int) Math.max(0, height / 2F - (size.y / 2));
 
-            ImGui.getForegroundDrawList().addText(new ImVec2(textCenterX, textCenterY), ImColor.rgba(70, 98, 150, Math.round(this.titleTextFadeAnimation.getValue())), this.scenario.getName());
+            int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : Math.round(this.titleTextFadeAnimation.getValue());
+            ImGui.getForegroundDrawList().addText(new ImVec2(textCenterX, textCenterY), ImColor.rgba(70, 98, 150, alpha), this.scenario.getName());
             ImGui.popFont();
-            if (!this.titleBoxFadeAnimation.isRunning() && this.finishAll == -1 && this.finalFadeOut.getTarget() == 0) {
+            if (!this.titleBoxFadeAnimation.isRunning() && this.finishAll == -1 && this.finalFadeOut.getTarget() == 255) {
                 this.finishAll = System.currentTimeMillis();
             }
         }
 
-        if (this.finalFadeOut.getTarget() == 0 && this.finishAll != -1 && System.currentTimeMillis() - this.finishAll >= 1500L) {
-            this.finalFadeOut.setTarget(255);
+        if (this.finalFadeOut.getTarget() == 255 && this.finishAll != -1 && System.currentTimeMillis() - this.finishAll >= 1500L) {
+            this.finalFadeOut.setTarget(0);
             this.finishAll = - 1;
         }
 
-        if (this.finalFadeOut.getTarget() == 255) {
-            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(0, 0, 0, Math.round(this.finalFadeOut.getValue())));
+        if (this.finalFadeOut.getTarget() == 0) {
+            if (this.scenario.getPreviewBackground() == null) {
+//                ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
+            }
 
             if (!this.finalFadeOut.isRunning() && this.finishAll == -1) {
                 this.finishAll = System.currentTimeMillis();

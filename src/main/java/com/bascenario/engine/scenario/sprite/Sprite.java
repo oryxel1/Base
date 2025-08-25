@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.sprite;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
@@ -10,8 +11,8 @@ import net.lenni0451.commons.animation.easing.EasingMode;
  */
 public class Sprite {
     // Where do the character sprite image stored?
-    @Getter
-    private final String path;
+    @Getter @Setter
+    private String path;
 
     /**
      *  Start indicate the start time (in ms since start of scenario) where we should start rendering sprite,

@@ -7,10 +7,10 @@ import java.util.Map;
 public class ScenarioSerializerTest {
     public static void main(String[] args) {
         Scenario scenario = Scenario.builder().name("Test Scenario")
-                .previewBackground(new Scenario.Background("", "test", -1, -1))
+                .previewBackground(new Scenario.Background("test", -1, -1, false, false))
                 .build();
 
-        scenario.getBackgrounds().add(new Scenario.Background("hiniature house", "really nice background", 0, -1));
+        scenario.getBackgrounds().add(new Scenario.Background("really nice background", 0, -1, true, true));
 
         scenario.getDialogues().put(0, List.of(Scenario.Dialogue.builder()
                 .time(5).dialogue("Hello world").name("potato").role("the real potato").playSpeed(10)
