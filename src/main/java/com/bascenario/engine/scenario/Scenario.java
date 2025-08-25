@@ -1,15 +1,23 @@
 package com.bascenario.engine.scenario;
 
 import com.bascenario.engine.scenario.event.api.Event;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Getter
 @Builder
 public class Scenario {
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+
     /**
      *  The title that going to save and show at the start (preview) of the story.
      */
@@ -35,7 +43,7 @@ public class Scenario {
     /**
      *  Consist of location name background file location, when to start showing background and when to end.
      *  If this background play from the start value to the end of the scenario, then the end value can be any negative value.
-     *  Also, if this a preview background then the location name value is ignored, if location name value is empty/null then nothing happened.
+     *  Also, if this a preview background then the location name value is ignored, if location name value is empty then nothing happened.
      *  If this was set to a certain value however, this will pop up on the side showing the "location" corresponding to the background dependent on the user
      *  can be anything.
      */
@@ -45,7 +53,7 @@ public class Scenario {
     /**
      *  Dialogue, literally what it's, contain dialogue, timestamp (in ms since start of scenario), the text play speed,
      *  The name that is going to show up, and the role (blue text). The text value can be customized to change the text size or font type (bold/regular),
-     *  If we want to use the default text, then set text size to any negative value and fontType to null.
+     *  If we want to use the default text, then set text size to any negative value and fontType to REGULAR.
      *  If the cutscene value is set, both name and role value is ignored and the black gradient background won't show up,
      *  like how it's in the cutscene.
      */
@@ -53,5 +61,9 @@ public class Scenario {
     public record Dialogue(long time, String dialogue, String name, String role, long playSpeed, int textSize, FontType fontType, boolean cutscene) {}
     public enum FontType {
         REGULAR, BOLD
+    }
+
+    public JsonObject toJson() {
+        return JsonParser.parseString(GSON.toJson(this)).getAsJsonObject();
     }
 }
