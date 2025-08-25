@@ -6,7 +6,6 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
-import com.bascenario.util.render.MathUtil;
 import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -49,11 +48,12 @@ public class ScenarioPreviewScreen extends Screen {
             ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(22, 23, 26, alpha));
         }
 
+        final String border = previewBackground == null ? "border_non_background.png" : "border_with_background.png";
         if (doingTheFinalFade) {
             int color = ImColor.rgba(255, 255, 255, Math.round(this.finalFadeOut.getValue()));
-            RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png", color);
+            RenderUtil.renderStartElement(width, height, "/assets/base/uis/" + border, color);
         } else {
-            RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png");
+            RenderUtil.renderStartElement(width, height, "/assets/base/uis/" + border);
         }
 
         int backgroundFadeColor = ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
