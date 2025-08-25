@@ -17,8 +17,6 @@ public class ElementTestScreen extends Screen {
 
     public ElementTestScreen() {
         this.screen = this;
-
-        TextureManager.getInstance().loadTexture("cool.jpg", MainRendererWindow.class.getResourceAsStream("/cool.jpg"));
     }
 
     @Override
@@ -87,7 +85,7 @@ public class ElementTestScreen extends Screen {
 
         ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), -1, "Test font!");
 
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("cool.jpg"), new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY));
+        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/cool.jpg"), new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY));
         super.render(mouseX, mouseY);
         if (appear) {
             ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), -1, "Hi there, im new here!");

@@ -19,6 +19,7 @@ public class FontUtil {
 
         final ImFontConfig config = new ImFontConfig();
         loadFont(config, "NotoSansRegular", "/assets/base/fonts/NotoSans-Regular.ttf");
+        loadFont(config, "NotoSansSemiBold", "/assets/base/fonts/NotoSans-SemiBold.ttf");
 
         config.destroy();
         io.getFonts().build();
@@ -26,10 +27,11 @@ public class FontUtil {
 
     private static void loadFont(ImFontConfig config, String name, String font) {
         final List<ImFont> fonts = new ArrayList<>();
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= 150; i++) {
             config.setName(name + " " + i + "px");
             try {
-                fonts.add(ImGui.getIO().getFonts().addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(RenderUtil.class.getResourceAsStream(font))), i, config));
+                fonts.add(ImGui.getIO().getFonts().addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(
+                        RenderUtil.class.getResourceAsStream(font))), i, config));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

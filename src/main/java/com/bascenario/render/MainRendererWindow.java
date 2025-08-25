@@ -2,6 +2,7 @@ package com.bascenario.render;
 
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
+import com.bascenario.util.render.WindowUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.app.Application;
@@ -12,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
-import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class MainRendererWindow extends Application {
     @Setter
@@ -35,7 +36,7 @@ public class MainRendererWindow extends Application {
 
     @Override
     protected void preRun() {
-        // WindowUtil.setFullScreen(this.handle, false);
+//        WindowUtil.setFullScreen(this.handle, true);
 
         GLFW.glfwSetWindowSizeLimits(handle, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
         GLFW.glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
