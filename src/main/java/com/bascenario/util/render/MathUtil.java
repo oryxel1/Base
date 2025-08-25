@@ -1,4 +1,4 @@
-package com.bascenario.render.util;
+package com.bascenario.util.render;
 
 import imgui.ImVec2;
 

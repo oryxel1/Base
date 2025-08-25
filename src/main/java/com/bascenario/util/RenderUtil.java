@@ -1,4 +1,4 @@
-package com.bascenario.render.util;
+package com.bascenario.util;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

@@ -1,7 +1,7 @@
 package com.bascenario.render.manager;
 
 import com.bascenario.render.manager.api.TextureKey;
-import com.bascenario.render.util.RenderUtil;
+import com.bascenario.util.RenderUtil;
 import lombok.Getter;
 
 import javax.imageio.ImageIO;

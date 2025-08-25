@@ -1,5 +1,6 @@
-package com.bascenario.render.util;
+package com.bascenario.util.render;
 
+import com.bascenario.util.RenderUtil;
 import imgui.*;
 import org.apache.commons.io.IOUtils;
 

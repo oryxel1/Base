@@ -1,4 +1,4 @@
-package com.bascenario.render.util;
+package com.bascenario.util.render;
 
 import org.lwjgl.glfw.GLFW;
 

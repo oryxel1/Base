@@ -6,8 +6,8 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;
 import com.bascenario.render.manager.TextureManager;
-import com.bascenario.render.util.FontUtil;
-import com.bascenario.render.util.MathUtil;
+import com.bascenario.util.render.FontUtil;
+import com.bascenario.util.render.MathUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 

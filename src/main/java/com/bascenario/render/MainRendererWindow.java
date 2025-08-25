@@ -1,9 +1,7 @@
 package com.bascenario.render;
 
 import com.bascenario.render.api.Screen;
-import com.bascenario.render.test.ElementTestScreen;
-import com.bascenario.render.util.FontUtil;
-import com.bascenario.render.util.WindowUtil;
+import com.bascenario.util.render.FontUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.app.Application;
@@ -76,8 +74,7 @@ public class MainRendererWindow extends Application {
         this.width = Math.max(1, width[0]);
         this.height = Math.max(1, height[0]);
 
-        // Test screen.
-        this.currentScreen = new ElementTestScreen();
+        // this.currentScreen = new ElementTestScreen();
     }
 
     @Override
