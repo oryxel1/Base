@@ -1,4 +1,4 @@
-package com.bascenario.render.api.components.impl;
+package com.bascenario.render.api.components.impl.base;
 
 import com.bascenario.render.api.components.api.Component;
 import lombok.Getter;
