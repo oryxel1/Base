@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
@@ -29,7 +31,8 @@ public class Scenario {
     private final Background previewBackground;
 
     private final List<Timestamp> timestamps = new ArrayList<>();
-    private final List<Dialogue> dialogues = new ArrayList<>();
+    private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
+    private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
     private final List<Sound> sounds = new ArrayList<>();
     private final List<Background> backgrounds = new ArrayList<>();
 
@@ -55,7 +58,20 @@ public class Scenario {
      *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play.
      *  The user can also customize this to fade in or fade out, depending on the context, situation.
      */
+    @Builder
     public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
+
+    /**
+     *  Tricky one, I want dialogue option to actually affect the next dialogue that we want to play.
+     *  So the best way to do this first we play the option at the timestamp "time" value then we show the option.
+     *  Now for each option, it will correspond to an id and that id is tied to which dialogue to play.
+     *  Assuming that if only like 2 dialogue after is different, and everything is the same, we can make it so that
+     *  the 0 ID is the main dialogue flow and the user can add an "event" to turn dialogue from id 1 -> 0 for example.
+     * <p>
+     *  NOTE: This should pause EVERYTHING.
+     */
+    @Builder
+    public record DialogueOptions(long time, Map<String, Integer> options) {}
 
     /**
      *  Dialogue, literally what it's, contain dialogue, timestamp (in ms since start of scenario), the text play speed,

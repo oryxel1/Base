@@ -1,6 +1,8 @@
 import com.bascenario.engine.scenario.Scenario;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ScenarioSerializerTest {
     public static void main(String[] args) {
@@ -10,9 +12,13 @@ public class ScenarioSerializerTest {
 
         scenario.getBackgrounds().add(new Scenario.Background("hiniature house", "really nice background", 0, -1));
 
-        scenario.getDialogues().add(Scenario.Dialogue.builder()
+        scenario.getDialogues().put(0, List.of(Scenario.Dialogue.builder()
                 .time(5).dialogue("Hello world").name("potato").role("the real potato").playSpeed(10)
-                .build());
+                .build()));
+
+        scenario.getDialogueOptions().add(Scenario.DialogueOptions.builder().options(
+                Map.of("hiniature hair", 0, "potato", 0)
+        ).time(10L).build());
 
         scenario.getTimestamps().add(Scenario.Timestamp.builder()
                 .time(5).events(new ArrayList<>())
