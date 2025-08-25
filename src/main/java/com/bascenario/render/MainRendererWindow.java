@@ -2,6 +2,7 @@ package com.bascenario.render;
 
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.test.ElementTestScreen;
+import com.bascenario.render.util.FontUtil;
 import com.bascenario.render.util.WindowUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -29,8 +30,14 @@ public class MainRendererWindow extends Application {
     }
 
     @Override
+    protected void initImGui(Configuration config) {
+        super.initImGui(config);
+        FontUtil.loadFonts();
+    }
+
+    @Override
     protected void preRun() {
-        WindowUtil.setFullScreen(this.handle, false);
+        // WindowUtil.setFullScreen(this.handle, false);
 
         GLFW.glfwSetWindowSizeLimits(handle, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
         GLFW.glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
@@ -75,6 +82,7 @@ public class MainRendererWindow extends Application {
 
     @Override
     public void process() {
+        ImGui.pushFont(FontUtil.getFont("NotoSansRegular", 20));
         ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), Color.BLACK.getRGB());
 
         if (this.currentScreen != null) {
@@ -87,5 +95,6 @@ public class MainRendererWindow extends Application {
             this.currentScreen.height = height;
             this.currentScreen.render(this.mouseX, this.mouseY);
         }
+        ImGui.popFont();
     }
 }

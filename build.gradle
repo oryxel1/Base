@@ -11,8 +11,9 @@ repositories {
 
 dependencies {
     implementation "io.github.spair:imgui-java-app:1.89.0"
-    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation "com.google.code.gson:gson:2.13.1"
     implementation "org.projectlombok:lombok:1.18.38"
+    implementation "commons-io:commons-io:2.20.0"
     annotationProcessor "org.projectlombok:lombok:1.18.38"
 }
 
