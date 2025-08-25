@@ -1,8 +1,7 @@
 package com.bascenario.render;
 
 import com.bascenario.render.api.Screen;
-import com.bascenario.render.api.components.impl.base.ClickableComponent;
-import com.bascenario.render.api.components.impl.base.DraggableComponent;
+import com.bascenario.render.test.TestScreen;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.app.Application;
@@ -10,8 +9,6 @@ import imgui.app.Configuration;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.GLFW;
-
-import java.awt.*;
 
 public class MainRendererWindow extends Application {
     @Setter
@@ -65,42 +62,7 @@ public class MainRendererWindow extends Application {
         this.height = Math.max(1, height[0]);
 
         // Test screen.
-        this.currentScreen = new Screen() {
-            public boolean appear;
-
-            @Override
-            public void init() {
-                final String testString = "Hello world! If you see this and can drag me around, that means this works properly!";
-
-                this.components.clear();
-                ImVec2 size = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, testString);
-
-                this.components.add(new DraggableComponent(5, 5, (int) size.x * 100, (int) size.y * 100) {
-                    @Override
-                    public void render(int width, int height, double mouseX, double mouseY) {
-                        super.render(width, height, mouseX, mouseY);
-                        ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), testString);
-                    }
-                });
-
-                ImVec2 size1 = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, "Click me plz~!");
-                this.components.add(new ClickableComponent(5, 100, (int) size1.x * 100, (int) size1.y * 100, () -> appear = true) {
-                    @Override
-                    public void render(int width, int height, double mouseX, double mouseY) {
-                        super.render(width, height, mouseX, mouseY);
-                        ImGui.getForegroundDrawList().addText(new ImVec2(x, y), Color.BLACK.getRGB(), "Click me plz~!");
-                    }
-                });
-            }
-
-            @Override
-            public void render(double mouseX, double mouseY) {
-                super.render(mouseX, mouseY);
-                if (appear) {
-                    ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), Color.BLACK.getRGB(), "Hi there, im new here!");
-                }
-            }
-        };
+        this.currentScreen = new TestScreen();
     }
 
     @Override
