@@ -1,20 +1,32 @@
 package com.bascenario.render.test;
 
 import com.bascenario.launcher.Launcher;
+import com.bascenario.render.MainRendererWindow;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;
+import com.bascenario.render.util.RenderUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
-public class TestScreen extends Screen {
+public class ElementTestScreen extends Screen {
     private final Screen screen;
     public boolean appear;
 
-    public TestScreen() {
+    private int image;
+    public ElementTestScreen() {
         this.screen = this;
+
+        try {
+            image = RenderUtil.fromBufferedImage(ImageIO.read(Objects.requireNonNull(MainRendererWindow.class.getResourceAsStream("/cool.jpg"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -65,6 +77,7 @@ public class TestScreen extends Screen {
 
     @Override
     public void render(double mouseX, double mouseY) {
+        ImGui.getForegroundDrawList().addImage(image, new ImVec2(0, 0), new ImVec2(width, height));
         super.render(mouseX, mouseY);
         if (appear) {
             ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), Color.BLACK.getRGB(), "Hi there, im new here!");
