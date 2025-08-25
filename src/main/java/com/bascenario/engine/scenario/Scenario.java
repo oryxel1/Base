@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario;
 
 import com.bascenario.engine.scenario.event.api.Event;
+import com.bascenario.engine.scenario.sprite.Sprite;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -39,11 +40,13 @@ public class Scenario {
     private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
     private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
     private final List<Sound> sounds = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>();
     private final List<Background> backgrounds = new ArrayList<>();
 
     /**
      *  Timestamp, consist of time (in ms since start of scenario) and the events going to get play at time.
      *  The event can still play after this "time" value and each event can have it own duration, depending on the user.
+     *  Note: normally the event is related to the sprite, controlling it, ....
      */
     @Builder
     public record Timestamp(long time, List<Event> events) {
