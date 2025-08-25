@@ -30,6 +30,11 @@ public class Scenario {
      */
     private final Background previewBackground;
 
+    /**
+     *  The preview sound, play along with the title, if this is disabled, there will be no sound that get played during the preview.
+     */
+    private final Sound previewSound;
+
     private final List<Timestamp> timestamps = new ArrayList<>();
     private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
     private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
