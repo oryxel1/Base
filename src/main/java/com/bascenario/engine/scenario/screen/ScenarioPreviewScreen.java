@@ -4,6 +4,7 @@ import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.launcher.Launcher;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.manager.TextureManager;
+import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.MathUtil;
 import imgui.ImColor;
@@ -42,13 +43,13 @@ public class ScenarioPreviewScreen extends Screen {
         int centerY = (int) Math.max(0, height / 2F - (vec.y / 2));
 
         final Scenario.Background previewBackground = this.scenario.getPreviewBackground();
-        if (previewBackground != null && !previewBackground.locationName().isBlank()) {
-            ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture(new File(previewBackground.path())), new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY));
+        if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
+            RenderUtil.renderBackground(width, height, new File(previewBackground.path()));
         } else {
             ImGui.getForegroundDrawList().addRectFilled(new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY), ImColor.rgb(22, 23, 26));
         }
 
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/assets/base/uis/border.png"), new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY));
+        RenderUtil.renderStartElement(width, height, "/assets/base/uis/border.png");
         int backgroundFadeColor = ImColor.rgba(0, 0, 0, Math.max(0, Math.round(backgroundFadeIn.getValue())));
         ImGui.getForegroundDrawList().addRectFilled(new ImVec2(centerX, centerY), new ImVec2(vec.x + centerX, vec.y + centerY), backgroundFadeColor);
 

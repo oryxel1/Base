@@ -52,7 +52,7 @@ public class Scenario {
      *  If this background play from the start value to the end of the scenario, then the end value can be any negative value.
      *  Also, if this a preview background then the location name value is ignored, if location name value is empty then nothing happened.
      *  If this was set to a certain value however, this will pop up on the side showing the "location" corresponding to the background dependent on the user
-     *  can be anything.
+     *  can be anything. If another background in the list have start time larger than the end time of this one, then this one is overridden by that one.
      */
     @Builder
     public record Background(String locationName, String path, long start, long end) {}

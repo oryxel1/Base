@@ -78,7 +78,6 @@ public class ElementTestScreen extends Screen {
 
     @Override
     public void render(double mouseX, double mouseY) {
-        // Technically not 1920-1080, but since the real game also scretch this so why not.
         ImVec2 vec = MathUtil.findBestSize(new ImVec2(width, height), new ImVec2(1920, 1080));
         int centerX = (int) Math.max(0, width / 2F - (vec.x / 2));
         int centerY = (int) Math.max(0, height / 2F - (vec.y / 2));
