@@ -43,6 +43,9 @@ public class ScenarioPreviewScreen extends Screen {
         if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
             int color = ImColor.rgba(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
             RenderUtil.renderBackground(width, height, new File(previewBackground.path()), color);
+
+            int fadeeee = ImColor.rgba(0, 0, 0, Math.round(100 * this.finalFadeOut.getValue() / 255F));
+            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), fadeeee);
         } else {
             int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : 255;
             ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(22, 23, 26, alpha));
@@ -111,7 +114,7 @@ public class ScenarioPreviewScreen extends Screen {
 
         if (this.finalFadeOut.getTarget() == 0) {
             if (this.scenario.getPreviewBackground() == null) {
-//                ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
+                ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
             }
 
             if (!this.finalFadeOut.isRunning() && this.finishAll == -1) {
