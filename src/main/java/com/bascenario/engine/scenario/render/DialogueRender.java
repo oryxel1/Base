@@ -63,7 +63,7 @@ public class DialogueRender {
         // TODO: Actually support dialogue settings?
         int size42 = (int) Math.round(0.028 * ((width + height) / 2));
         final TextRun dialogue = TextRun.fromString(FontUtil.getFont("NotoSansRegular", size42), this.builder.toString());
-        ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + 10, separator + (0.02777777777F * height));
+        ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.02777777777F * height));
 
         int size58 = (int) Math.round(0.03866666666 * ((width + height) / 2));
         final TextRun name = new TextRun(FontUtil.getFont("NotoSansBold", size58), new TextSegment(this.dialogue.name(),

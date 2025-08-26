@@ -5,12 +5,9 @@ import com.bascenario.util.render.MathUtil;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.resource.image.texture.Texture2D;
-import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 
 import java.io.File;
 
