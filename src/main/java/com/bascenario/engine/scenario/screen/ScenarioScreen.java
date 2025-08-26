@@ -2,6 +2,7 @@ package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
+import com.bascenario.engine.scenario.render.DialogueRender;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,36 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ScenarioScreen extends Screen {
     private final Scenario scenario;
-    private final long startTime = System.currentTimeMillis();
+    private long sinceLast = System.currentTimeMillis();
+    private long duration = 0;
     // We want to keep track of the current background :P;
     private Scenario.Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
 
-    private final List<Scenario.Timestamp> alreadyPlays = new ArrayList<>();
+    // private Scenario.DialogueOptions dialogueOptions;
+    private int dialogueIndex = -2;
+    private long sinceLastDialogue;
+    private DialogueRender dialogue;
+
+    private final List<Object> alreadyPlays = new ArrayList<>();
     private final List<EventRenderer> events = new ArrayList<>();
 
+    private WindowInterface windowInterface;
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+        this.windowInterface = window;
+
+        if (this.dialogueIndex == -2) {
+            this.dialogueIndex = scenario.getDialogues().isEmpty() ? -1 : (int) scenario.getDialogues().keySet().toArray()[0];
+        }
+
+        long deltaTime = System.currentTimeMillis() - this.sinceLast; // this.dialogueOptions == null ? System.currentTimeMillis() - this.sinceLast : 0;
+        this.sinceLast = System.currentTimeMillis();
+        this.duration += deltaTime;
+        this.sinceLastDialogue += deltaTime;
+
         this.pollEvents();
+        this.pollDialogue();
         this.pollBackground();
 
         if (this.background != null) {
@@ -45,6 +65,44 @@ public class ScenarioScreen extends Screen {
         }
 
         this.events.forEach(event -> event.render(event.getTime(), positionMatrix, window));
+
+        if (this.dialogue != null) {
+            this.dialogue.render(positionMatrix, window);
+        }
+    }
+
+    @Override
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.windowInterface == null) {
+            return;
+        }
+
+        if (DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
+            this.dialogue = null;
+        }
+    }
+
+    private void pollDialogue() {
+        if (this.dialogue != null) {
+            if (this.dialogue.isFinished()) {
+                this.sinceLastDialogue = 0;
+            }
+            return;
+        }
+
+        if (this.dialogueIndex < 0) {
+            return;
+        }
+
+        for (Scenario.Dialogue dialogue : scenario.getDialogues().get(this.dialogueIndex)) {
+            if (dialogue.time() > this.sinceLastDialogue || this.alreadyPlays.contains(dialogue)) {
+                continue;
+            }
+
+            this.alreadyPlays.add(dialogue);
+            this.dialogue = new DialogueRender(dialogue);
+            break;
+        }
     }
 
     private void pollEvents() {
@@ -119,6 +177,6 @@ public class ScenarioScreen extends Screen {
     }
 
     private long duration() {
-        return System.currentTimeMillis() - this.startTime;
+        return this.duration;
     }
 }

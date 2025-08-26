@@ -13,7 +13,7 @@ public class ScenarioSerializerTest {
         scenario.getBackgrounds().add(new Scenario.Background("really nice background", 0, -1, true, true));
 
         scenario.getDialogues().put(0, List.of(Scenario.Dialogue.builder()
-                .time(5).dialogue("Hello world").name("potato").role("the real potato").playSpeed(10)
+                .time(5).dialogue("Hello world").name("potato").association("the real potato").playSpeed(10)
                 .build()));
 
         scenario.getDialogueOptions().add(Scenario.DialogueOptions.builder().options(

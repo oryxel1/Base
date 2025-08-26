@@ -20,9 +20,11 @@ public class MainRendererWindow extends GLFWApplicationRunner {
 
     private double mouseX, mouseY;
 
-    public MainRendererWindow(Screen screen) {
+    private final boolean initFullScreen;
+    public MainRendererWindow(Screen screen, boolean initFullScreen) {
         super(new Configuration().setWindowTitle("Blue Archive Scenario Engine").setExtendedDebugMode(true));
         this.currentScreen = screen;
+        this.initFullScreen = initFullScreen;
     }
 
     public void launch() {
@@ -33,7 +35,9 @@ public class MainRendererWindow extends GLFWApplicationRunner {
     protected void createWindow() {
         super.createWindow();
 
-//        WindowUtil.setFullScreen(this.window, true);
+        if (this.initFullScreen) {
+            WindowUtil.setFullScreen(this.window, true);
+        }
 
         GLFW.glfwSetWindowSizeLimits(this.window, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
         GLFW.glfwSetFramebufferSizeCallback(this.window, (window, width, height) -> {

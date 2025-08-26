@@ -78,14 +78,24 @@ public class Scenario {
     public record DialogueOptions(long time, Map<String, Integer> options) {}
 
     /**
-     *  Dialogue, literally what it's, contain dialogue, timestamp (in ms since start of scenario), the text play speed,
-     *  The name that is going to show up, and the role (blue text). The text value can be customized to change the text size or font type (bold/regular),
+     *  Dialogue, literally what it's, contain dialogue, the text play speed,
+     *  The name that is going to show up, and the association (blue text). The text value can be customized to change the text size or font type (bold/regular),
      *  If we want to use the default text, then set text size to any negative value and fontType to REGULAR.
-     *  If the cutscene value is set, both name and role value is ignored and the black gradient background won't show up,
+     *  If the cutscene value is set, both name and association value is ignored and the black gradient background won't show up,
      *  like how it's in the cutscene.
+     * <p>
+     *  For the timestamp, the first dialogue timestamp means in ms since the start, for the dialogue after, then it's time in ms since the last dialogue.
      */
     @Builder
-    public record Dialogue(long time, String dialogue, String name, String role, long playSpeed, int textSize, FontType fontType, boolean cutscene) {}
+    public record Dialogue(long time, String dialogue, String name, String association, double playSpeed, int textSize, FontType fontType, boolean cutscene) {
+        public static long MS_PER_WORD = 38L;
+
+        public long getMaxDuration() {
+            long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / playSpeed()));
+
+            return msPerWord * 10 + (msPerWord * (dialogue.length() - 1)) + (msPerWord * 10);
+        }
+    }
     public enum FontType {
         REGULAR, BOLD
     }

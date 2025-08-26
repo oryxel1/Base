@@ -7,7 +7,11 @@ public class Launcher {
     public static MainRendererWindow WINDOW;
 
     public static void launch(Screen screen) {
-        WINDOW = new MainRendererWindow(screen);
+        launch(screen, false);
+    }
+
+    public static void launch(Screen screen, boolean fullScreen) {
+        WINDOW = new MainRendererWindow(screen, fullScreen);
         WINDOW.launch();
     }
 }

@@ -16,6 +16,7 @@ public class FontUtil {
     public static void loadFonts() {
         loadFont("NotoSansRegular", "/assets/base/fonts/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/NotoSans-SemiBold.ttf");
+        loadFont("NotoSansBold", "/assets/base/fonts/NotoSans-Bold.ttf");
     }
 
     private static void loadFont(String name, String font) {
