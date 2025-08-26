@@ -42,6 +42,25 @@ public class ScenarioRenderTest {
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
+                .time(0L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("I still haven't slept, and I have bags under my eyes. Not to mention my hair is a mess since I didn't wash it...")
+                .time(0L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("It's your fault for asking me to meet you like this!")
+                .time(0L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
         scenario.getDialogues().put(0, dialogues);
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen");

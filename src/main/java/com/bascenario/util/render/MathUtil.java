@@ -13,4 +13,9 @@ public class MathUtil {
 
         return new Vector4f(centerX, centerY, newSizeX + centerX, newSizeY + centerY);
     }
+
+    public static int ceil(float value) {
+        int i = (int)value;
+        return value > i ? i + 1 : i;
+    }
 }
