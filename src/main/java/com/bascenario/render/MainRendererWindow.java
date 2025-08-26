@@ -3,63 +3,58 @@ package com.bascenario.render;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.WindowUtil;
-import imgui.ImGui;
-import imgui.ImVec2;
-import imgui.app.Application;
-import imgui.app.Configuration;
 import lombok.Getter;
 import lombok.Setter;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.application.GLFWApplicationRunner;
+import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 
-import static org.lwjgl.glfw.GLFW.*;
-
-public class MainRendererWindow extends Application {
+public class MainRendererWindow extends GLFWApplicationRunner {
     @Setter
     @Getter
     private Screen currentScreen;
 
-    private int width, height;
     private double mouseX, mouseY;
 
-    @Override
-    protected void configure(Configuration config) {
-        config.setTitle("Blue Archive Scenario Engine");
+    public MainRendererWindow(Screen screen) {
+        super(new Configuration().setWindowTitle("Blue Archive Scenario Engine").setExtendedDebugMode(true));
+        this.currentScreen = screen;
+    }
+
+    public void launch() {
+        super.launch();
     }
 
     @Override
-    protected void initImGui(Configuration config) {
-        super.initImGui(config);
-        FontUtil.loadFonts();
-    }
+    protected void createWindow() {
+        super.createWindow();
 
-    @Override
-    protected void preRun() {
-//        WindowUtil.setFullScreen(this.handle, true);
+//        WindowUtil.setFullScreen(this.window, true);
 
-        GLFW.glfwSetWindowSizeLimits(handle, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
-        GLFW.glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
-            if (window != this.handle) {
+        GLFW.glfwSetWindowSizeLimits(this.window, 1280, 899, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        GLFW.glfwSetFramebufferSizeCallback(this.window, (window, width, height) -> {
+            if (window != this.window) {
                 return;
             }
-            this.width = width;
-            this.height = height;
 
             if (this.currentScreen != null) {
                 this.currentScreen.init();
             }
         });
-        GLFW.glfwSetCursorPosCallback(this.handle, (window, x, y) -> {
-            if (window != this.handle) {
+        GLFW.glfwSetCursorPosCallback(this.window, (window, x, y) -> {
+            if (window != this.window) {
                 return;
             }
 
             this.mouseX = x;
             this.mouseY = y;
         });
-        GLFW.glfwSetMouseButtonCallback(this.handle, (window, button, action, mode) -> {
-            if (window != this.handle  || this.currentScreen == null) {
+        GLFW.glfwSetMouseButtonCallback(this.window, (window, button, action, mode) -> {
+            if (window != this.window  || this.currentScreen == null) {
                 return;
             }
 
@@ -69,19 +64,17 @@ public class MainRendererWindow extends Application {
                 this.currentScreen.mouseRelease();
             }
         });
-
-        int[] width = new int[1], height = new int[1];
-        GLFW.glfwGetFramebufferSize(this.handle, width, height);
-        this.width = Math.max(1, width[0]);
-        this.height = Math.max(1, height[0]);
-
-        // this.currentScreen = new ElementTestScreen();
     }
 
     @Override
-    public void process() {
-        ImGui.pushFont(FontUtil.getFont("NotoSansRegular", 20));
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), Color.BLACK.getRGB());
+    protected void init() {
+        super.init();
+        FontUtil.loadFonts();
+    }
+
+    @Override
+    protected void render(Matrix4fStack positionMatrix) {
+        ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, this.windowInterface.getFramebufferWidth(), this.windowInterface.getFramebufferHeight(), Color.BLACK);
 
         if (this.currentScreen != null) {
             if (!this.currentScreen.isInit()) {
@@ -89,10 +82,7 @@ public class MainRendererWindow extends Application {
                 this.currentScreen.setInit(true);
             }
 
-            this.currentScreen.width = width;
-            this.currentScreen.height = height;
-            this.currentScreen.render(this.mouseX, this.mouseY);
+            this.currentScreen.render(positionMatrix, this.windowInterface, this.mouseX, this.mouseY);
         }
-        ImGui.popFont();
     }
 }

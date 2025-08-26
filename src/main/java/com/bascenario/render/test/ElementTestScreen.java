@@ -1,16 +1,17 @@
 package com.bascenario.render.test;
 
 import com.bascenario.launcher.Launcher;
-import com.bascenario.render.MainRendererWindow;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;
-import com.bascenario.render.manager.TextureManager;
+import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.MathUtil;
-import imgui.ImGui;
-import imgui.ImVec2;
-import imgui.ImVec4;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import net.raphimc.thingl.text.TextRun;
+import org.joml.Matrix4fStack;
 
 public class ElementTestScreen extends Screen {
     private final Screen screen;
@@ -25,72 +26,76 @@ public class ElementTestScreen extends Screen {
         final String testString = "Hello world! If you see this and can drag me around, that means this works properly!";
 
         this.components.clear();
-        ImVec2 size = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, testString);
+        TextRun helloWorldText = TextRun.fromString(FontUtil.getFont("NotoSansRegular", 13), testString);
 
-        this.components.add(new DraggableComponent(5, 5, (int) size.x, (int) size.y) {
+        float helloWorldWidth = ThinGL.rendererText().getExactWidth(helloWorldText.shape());
+        float helloWorldHeight = ThinGL.rendererText().getExactHeight(helloWorldText.shape());
+
+        this.components.add(new DraggableComponent(5, 5, helloWorldWidth, helloWorldHeight) {
             @Override
-            public void render(int width, int height, double mouseX, double mouseY) {
-                super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, testString);
+            public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+                super.render(positionMatrix, window, mouseX, mouseY);
+
+                ThinGL.rendererText().textRun(positionMatrix, helloWorldText, x, y);
             }
         });
 
-        ImVec2 size1A = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, "This is a really cool dialogue!");
-        this.components.add(new DraggableComponent(5, 5, (int) size1A.x, (int) size1A.y) {
+        TextRun clickMePlz = TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Click me plz~!");
+        this.components.add(new ClickableComponent(5, 100,
+                ThinGL.rendererText().getExactWidth(clickMePlz.shape()),
+                ThinGL.rendererText().getExactHeight(clickMePlz.shape()),
+                () -> appear = !appear) {
             @Override
-            public void render(int width, int height, double mouseX, double mouseY) {
-                super.render(width, height, mouseX, mouseY);
-                ImGui.pushFont(FontUtil.getFont("NotoSansRegular", 30));
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "This is a really cool dialogue!");
-                ImGui.popFont();
+            public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+                super.render(positionMatrix, window, mouseX, mouseY);
+                ThinGL.rendererText().textRun(positionMatrix, clickMePlz, x, y);
             }
         });
 
-        ImVec2 size1 = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, "Click me plz~!");
-        this.components.add(new ClickableComponent(5, 100, (int) size1.x, (int) size1.y, () -> appear = true) {
-            @Override
-            public void render(int width, int height, double mouseX, double mouseY) {
-                super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me plz~!");
-            }
-        });
-
-        ImVec2 size2 = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, "Click me too!");
-        this.components.add(new ClickableComponent(5, 300, (int) size2.x, (int) size2.y, () -> Launcher.WINDOW.setCurrentScreen(new Screen() {
+        TextRun clickMeToo = TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Click me too!");
+        this.components.add(new ClickableComponent(5, 300,
+                ThinGL.rendererText().getExactWidth(clickMeToo.shape()),
+                ThinGL.rendererText().getExactHeight(clickMeToo.shape()),
+                () -> Launcher.WINDOW.setCurrentScreen(new Screen() {
             @Override
             public void init() {
-                ImVec2 size1 = ImGui.getFont().calcTextSizeA(13, Float.MAX_VALUE, 0, "Click me to go back!");
-                this.components.add(new ClickableComponent(5, 100, (int) size1.x, (int) size1.y, () -> Launcher.WINDOW.setCurrentScreen(screen)) {
+                TextRun clickMe = TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Click me to go back!");
+                this.components.add(new ClickableComponent(5, 100,
+                        ThinGL.rendererText().getExactWidth(clickMe.shape()),
+                        ThinGL.rendererText().getExactHeight(clickMe.shape()),
+                        () -> Launcher.WINDOW.setCurrentScreen(screen)) {
                     @Override
-                    public void render(int width, int height, double mouseX, double mouseY) {
-                        super.render(width, height, mouseX, mouseY);
-                        ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me to go back!");
+                    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+                        super.render(positionMatrix, window, mouseX, mouseY);
+                        ThinGL.rendererText().textRun(positionMatrix, clickMe, x, y);
                     }
                 });
             }
         })) {
             @Override
-            public void render(int width, int height, double mouseX, double mouseY) {
-                super.render(width, height, mouseX, mouseY);
-                ImGui.getForegroundDrawList().addText(new ImVec2(x, y), -1, "Click me too!");
+            public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+                super.render(positionMatrix, window, mouseX, mouseY);
+                ThinGL.rendererText().textRun(positionMatrix, clickMeToo, x, y);
             }
         });
     }
 
     @Override
-    public void render(double mouseX, double mouseY) {
-        ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), -1, "Test font!");
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+        RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), "/cool.jpg");
 
-        ImVec4 vec = MathUtil.findBackgroundRender(new ImVec2(width, height), new ImVec2(1280, 900));
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/cool.jpg"),
-                new ImVec2(vec.x, vec.y), new ImVec2(vec.z, vec.w));
-        super.render(mouseX, mouseY);
-        if (appear) {
-            ImGui.getForegroundDrawList().addText(new ImVec2(50, 50), -1, "Hi there, im new here!");
+        if (!this.appear) {
+            RenderUtil.blurRectangle(positionMatrix, 0, 0, window.getFramebufferWidth(), window.getFramebufferHeight(), 3);
         }
 
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(50, 400), 50, -1);
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(150, 400), 50, -1);
-        ImGui.getForegroundDrawList().addCircle(new ImVec2(250, 400), 50, -1);
+        super.render(positionMatrix, window, mouseX, mouseY);
+
+        if (this.appear) {
+            ThinGL.rendererText().textRun(positionMatrix, TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Yay! No more blur!"), 50, 50);
+        }
+        
+        ThinGL.renderer2D().outlinedCircle(positionMatrix, 50, 400, 50, Color.WHITE, 3);
+        ThinGL.renderer2D().outlinedCircle(positionMatrix, 150, 400, 50, Color.WHITE, 3);
+        ThinGL.renderer2D().outlinedCircle(positionMatrix, 250, 400, 50, Color.WHITE, 3);
     }
 }

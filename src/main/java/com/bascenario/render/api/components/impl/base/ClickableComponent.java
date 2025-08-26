@@ -3,10 +3,10 @@ package com.bascenario.render.api.components.impl.base;
 import com.bascenario.render.api.components.api.Component;
 
 public class ClickableComponent extends Component {
-    private final int width, height;
+    private final float width, height;
     private final Runnable action;
 
-    public ClickableComponent(int x, int y, int width, int height, Runnable action) {
+    public ClickableComponent(float x, float y, float width, float height, Runnable action) {
         super(x, y);
         this.width = width;
         this.height = height;

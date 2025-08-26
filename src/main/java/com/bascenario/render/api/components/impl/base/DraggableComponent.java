@@ -2,21 +2,23 @@ package com.bascenario.render.api.components.impl.base;
 
 import com.bascenario.render.api.components.api.Component;
 import lombok.Getter;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import org.joml.Matrix4fStack;
 
 public class DraggableComponent extends Component {
-    private final int width, height;
+    private final float width, height;
     @Getter
     private boolean dragging;
     private int mouseToX, mouseToY;
 
-    public DraggableComponent(int x, int y, int width, int height) {
+    public DraggableComponent(float x, float y, float width, float height) {
         super(x, y);
         this.width = width;
         this.height = height;
     }
 
     @Override
-    public void render(int width, int height, double mouseX, double mouseY) {
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.dragging = this.dragging && this.isHoveringOver(mouseX, mouseY, width, height);
 
         if (this.dragging) {

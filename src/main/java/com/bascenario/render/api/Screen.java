@@ -3,6 +3,8 @@ package com.bascenario.render.api;
 import com.bascenario.render.api.components.api.Component;
 import lombok.Getter;
 import lombok.Setter;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import org.joml.Matrix4fStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +12,14 @@ import java.util.List;
 public class Screen {
     @Getter @Setter
     private boolean init;
-    public int width, height;
     protected final List<Component> components = new ArrayList<>();
 
     public void init() {
 
     }
 
-    public void render(double mouseX, double mouseY) {
-        components.forEach(c -> c.render(this.width, this.height, mouseX, mouseY));
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+        components.forEach(c -> c.render(positionMatrix, window, mouseX, mouseY));
     }
 
     public void mouseClicked(double mouseX, double mouseY, int button) {

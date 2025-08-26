@@ -4,12 +4,13 @@ import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
-import imgui.ImColor;
-import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import org.joml.Matrix4fStack;
 
 import java.io.File;
 import java.util.*;
@@ -26,22 +27,24 @@ public class ScenarioScreen extends Screen {
     private final List<EventRenderer> events = new ArrayList<>();
 
     @Override
-    public void render(double mouseX, double mouseY) {
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.pollEvents();
         this.pollBackground();
 
         if (this.background != null) {
-            RenderUtil.renderBackground(width, height, new File(this.background.path()));
+            Color color;
+            if (this.backgroundFadeOut != null) {
+                color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
+            } else if (this.backgroundFadeIn != null) {
+                color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeIn.getValue()));
+            } else {
+                color = Color.WHITE;
+            }
+
+            RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
         }
 
-        this.events.forEach(event -> event.render(event.getTime(), width, height));
-
-        if (this.backgroundFadeOut != null) {
-            ImGui.getForegroundDrawList().addRectFilled(0, 0, width, height, ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeOut.getValue())));
-        }
-        if (this.backgroundFadeIn != null) {
-            ImGui.getForegroundDrawList().addRectFilled(0, 0, width, height, ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeIn.getValue())));
-        }
+        this.events.forEach(event -> event.render(event.getTime(), positionMatrix, window));
     }
 
     private void pollEvents() {
@@ -97,8 +100,8 @@ public class ScenarioScreen extends Screen {
 
         if (this.background != null && this.background.fadeOut()) {
             this.queueBackground = selected;
-            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 0);
-            this.backgroundFadeOut.setTarget(255);
+            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
+            this.backgroundFadeOut.setTarget(0);
             return;
         }
 
@@ -111,8 +114,8 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 255);
-        this.backgroundFadeIn.setTarget(0);
+        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
+        this.backgroundFadeIn.setTarget(255);
     }
 
     private long duration() {

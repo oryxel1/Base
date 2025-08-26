@@ -2,13 +2,17 @@ package com.bascenario.engine.scenario.event.impl;
 
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.manager.TextureManager;
+import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
-import imgui.ImColor;
-import imgui.ImGui;
-import imgui.ImVec2;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import net.raphimc.thingl.text.TextRun;
+import net.raphimc.thingl.text.font.Font;
+import org.joml.Matrix4fStack;
 
 public class LocationInfoEvent extends Event {
     private final String location;
@@ -22,7 +26,7 @@ public class LocationInfoEvent extends Event {
     }
 
     @Override
-    public void render(long time, int width, int height) {
+    public void render(long time, Matrix4fStack positionMatrix, WindowInterface window) {
         if (this.popupFade.getTarget() == 0 && time < 1000L) {
             this.popupFade.setTarget(200);
             this.textFade.setTarget(255);
@@ -31,22 +35,30 @@ public class LocationInfoEvent extends Event {
             this.textFade.setTarget(0);
         }
 
-        ImGui.pushFont(FontUtil.getFont("NotoSansSemiBold", Math.round(0.04F * ((width + height) / 2F))));
+        float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
+        Font font = FontUtil.getFont("NotoSansSemiBold", Math.round(0.03F * ((width + height) / 2F)));
+
+        final TextRun text = TextRun.fromString(font, this.location, Color.fromRGBA(255, 255, 255, Math.round(this.textFade.getValue())));
 
         float locationY = 0.14457831325F * height;
         float sizeY = 0.06F * height;
-        float sizeWidth = ImGui.calcTextSizeX(this.location) + 80;
+        float sizeWidth = ThinGL.rendererText().getExactWidth(text.shape()) + 100;
 
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, locationY), new ImVec2(sizeWidth, locationY + sizeY), ImColor.rgba(85, 91, 124, Math.round(this.popupFade.getValue())));
+        Color color = Color.fromRGBA(255, 255, 255, Math.round(this.popupFade.getValue()));
+        ThinGL.renderer2D().filledRectangle(
+                positionMatrix, 0, locationY, sizeWidth, locationY + sizeY,
+                Color.fromRGBA(85, 91, 124, Math.round(this.popupFade.getValue()))
+        );
         float separatorY = locationY + (sizeY / 2) - ((sizeY / 1.5F) / 2);
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(20, separatorY), new ImVec2(25, separatorY + (sizeY / 1.5F)), ImColor.rgba(119, 123, 144, Math.round(this.popupFade.getValue())));
+        ThinGL.renderer2D().filledRectangle(
+                positionMatrix, 20, separatorY, 25, separatorY + (sizeY / 1.5F),
+                Color.fromRGBA(182, 182, 182, Math.round(this.popupFade.getValue()))
+        );
+        ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/location_popup.png"),
+                sizeWidth, locationY,  30,  sizeY, color);
 
-        int color = ImColor.rgba(255, 255, 255, Math.round(this.popupFade.getValue()));
-        ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/assets/base/uis/location_popup.png"),
-                new ImVec2(sizeWidth, locationY), new ImVec2(sizeWidth + 30, locationY + sizeY), new ImVec2(0, 0), new ImVec2(1, 1), color);
+        ThinGL.rendererText().textRun(positionMatrix, text, 40, locationY + (sizeY / 2) - (ThinGL.rendererText().getExactHeight(text.shape()) / 2));
 
-        ImGui.getForegroundDrawList().addText(new ImVec2(40, locationY + (sizeY / 2) - (ImGui.calcTextSizeY(this.location) / 2)), ImColor.rgba(255, 255, 255, Math.round(this.textFade.getValue())), this.location);
 
-        ImGui.popFont();
     }
 }

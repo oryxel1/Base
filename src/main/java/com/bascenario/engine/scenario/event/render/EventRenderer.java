@@ -2,6 +2,8 @@ package com.bascenario.engine.scenario.event.render;
 
 import com.bascenario.engine.scenario.event.api.Event;
 import lombok.RequiredArgsConstructor;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import org.joml.Matrix4fStack;
 
 @RequiredArgsConstructor
 public class EventRenderer {
@@ -20,8 +22,8 @@ public class EventRenderer {
         this.event.onEnd();
     }
 
-    public void render(long time, int width, int height) {
-        this.event.render(time, width, height);
+    public void render(long time, Matrix4fStack positionMatrix, WindowInterface window) {
+        this.event.render(time, positionMatrix, window);
     }
 
     public boolean isFinished() {

@@ -3,6 +3,7 @@ import com.bascenario.engine.scenario.event.impl.LocationInfoEvent;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
+import com.bascenario.render.MainRendererWindow;
 
 import java.util.List;
 
@@ -21,8 +22,10 @@ public class ScenarioRenderTest {
                 200L, List.of(new LocationInfoEvent("A Riverside Road on the Outskirts of Gehenna"))
         ));
 
-//        Launcher.WINDOW.setCurrentScreen(new ScenarioPreviewScreen(scenario));
-        Launcher.WINDOW.setCurrentScreen(new ScenarioScreen(scenario));
-        Launcher.main(args);
+        if (args.length > 0 && args[0].equals("skip-preview")) {
+            Launcher.launch(new ScenarioScreen(scenario));
+        } else {
+            Launcher.launch(new ScenarioPreviewScreen(scenario));
+        }
     }
 }

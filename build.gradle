@@ -7,15 +7,53 @@ version = '1.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://maven.lenni0451.net/snapshots")
+    }
+    maven {
+        name = "Sonatype Snapshots"
+        url = "https://central.sonatype.com/repository/maven-snapshots"
+
+        content {
+            includeModule "org.lwjgl", "lwjgl-sdl"
+        }
+    }
 }
 
 dependencies {
-    implementation "io.github.spair:imgui-java-app:1.89.0"
+    annotationProcessor "org.projectlombok:lombok:1.18.38"
+
     implementation "com.google.code.gson:gson:2.13.1"
     implementation "org.projectlombok:lombok:1.18.38"
     implementation "commons-io:commons-io:2.20.0"
     implementation "net.lenni0451.commons:animation:1.7.1"
-    annotationProcessor "org.projectlombok:lombok:1.18.38"
+    implementation "net.raphimc:thingl:0.0.10-SNAPSHOT"
+
+    implementation "org.lwjgl:lwjgl:3.3.6"
+    implementation "org.lwjgl:lwjgl-opengl:3.3.6"
+    implementation "org.lwjgl:lwjgl-stb:3.3.6"
+
+    implementation "org.lwjgl:lwjgl-glfw:3.3.6"
+    implementation("org.lwjgl:lwjgl-sdl:3.4.0-SNAPSHOT") {
+        transitive = false
+    }
+    implementation "org.lwjgl:lwjgl-freetype:3.3.6"
+    implementation "org.lwjgl:lwjgl-harfbuzz:3.3.6"
+    implementation "org.lwjgl:lwjgl-meshoptimizer:3.3.6"
+    implementation "org.lwjgl:lwjgl-par:3.3.6"
+
+    ["natives-windows", "natives-windows-arm64", "natives-linux", "natives-linux-arm64"].each {
+        implementation "org.lwjgl:lwjgl:3.3.6:$it"
+        implementation "org.lwjgl:lwjgl-glfw:3.3.6:$it"
+        implementation("org.lwjgl:lwjgl-sdl:3.4.0-SNAPSHOT:$it") {
+            transitive = false
+        }
+        implementation "org.lwjgl:lwjgl-opengl:3.3.6:$it"
+        implementation "org.lwjgl:lwjgl-stb:3.3.6:$it"
+        implementation "org.lwjgl:lwjgl-freetype:3.3.6:$it"
+        implementation "org.lwjgl:lwjgl-meshoptimizer:3.3.6:$it"
+        implementation "org.lwjgl:lwjgl-par:3.3.6:$it"
+    }
 }
 
 test {

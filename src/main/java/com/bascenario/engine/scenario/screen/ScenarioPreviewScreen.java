@@ -6,15 +6,23 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
-import imgui.ImColor;
-import imgui.ImGui;
-import imgui.ImVec2;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import net.raphimc.thingl.text.TextRun;
+import net.raphimc.thingl.text.renderer.TextRenderer;
+import org.joml.Matrix4fStack;
+import org.joml.Vector2f;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import java.io.File;
+
+import static org.lwjgl.opengl.GL11.*;
 
 @RequiredArgsConstructor
 public class ScenarioPreviewScreen extends Screen {
@@ -32,35 +40,40 @@ public class ScenarioPreviewScreen extends Screen {
     private final DynamicAnimation finalFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 255);
 
     @Override
-    public void render(double mouseX, double mouseY) {
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         if (this.backgroundFadeIn.getValue() == 255) {
             this.backgroundFadeIn.setTarget(0);
         }
+
+        float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
 
         boolean doingTheFinalFade = this.finalFadeOut.getTarget() == 0;
 
         final Scenario.Background previewBackground = this.scenario.getPreviewBackground();
         if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
-            int color = ImColor.rgba(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
-            RenderUtil.renderBackground(width, height, new File(previewBackground.path()), color);
+            Color color = Color.fromRGBA(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
+            RenderUtil.renderBackground(positionMatrix, width, height, new File(previewBackground.path()), color);
 
-            int fadeeee = ImColor.rgba(0, 0, 0, Math.round(100 * this.finalFadeOut.getValue() / 255F));
-            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), fadeeee);
+            int strength = (int) (20 * (this.finalFadeOut.getValue() / 255F));
+            RenderUtil.blurRectangle(positionMatrix, 0, 0, width, height, strength);
+
+            Color fadeeee = Color.fromRGBA(0, 0, 0, Math.round(40 * this.finalFadeOut.getValue() / 255F));
+            ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, fadeeee);
         } else {
             int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : 255;
-            ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(22, 23, 26, alpha));
+            ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, Color.fromRGBA(22, 23, 26, alpha));
         }
 
         final String border = previewBackground == null ? "border_non_background.png" : "border_with_background.png";
         if (doingTheFinalFade) {
-            int color = ImColor.rgba(255, 255, 255, Math.round(this.finalFadeOut.getValue()));
-            RenderUtil.renderBackground(width, height, "/assets/base/uis/" + border, color);
+            Color color = Color.fromRGBA(255, 255, 255, Math.round(this.finalFadeOut.getValue()));
+            RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/" + border, color);
         } else {
-            RenderUtil.renderBackground(width, height, "/assets/base/uis/" + border);
-        }
+            RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/" + border, Color.WHITE);
+       }
 
-        int backgroundFadeColor = ImColor.rgba(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
-        ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), backgroundFadeColor);
+        Color backgroundFadeColor = Color.fromRGBA(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
+        ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, backgroundFadeColor);
 
         if (this.backgroundFadeIn.getValue() < 80) {
             this.titleBoxPopupAnimation.setTarget(0);
@@ -68,40 +81,43 @@ public class ScenarioPreviewScreen extends Screen {
         }
 
         if (this.titleBoxPopupAnimation.getTarget() != 92) {
-            ImVec2 vec1 = new ImVec2(width, height - this.titleBoxPopupAnimation.getValue());
-            int centerX1 = (int) Math.max(0, width / 2F - (vec1.x / 2));
-            int centerY1 = (int) Math.max(0, height / 2F - (vec1.y / 2));
+            float sizeY = height - this.titleBoxPopupAnimation.getValue();
 
-            int titleBoxFade = ImColor.rgba(255, 255, 255, Math.max(0, Math.round(this.titleBoxFadeAnimation.getValue())));
+            GL20.glEnable(GL_BLEND);
+            GL20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            Color titleBoxFade = Color.fromRGBA(255, 255, 255, Math.max(0, Math.round(this.titleBoxFadeAnimation.getValue())));
             if (doingTheFinalFade) {
-                titleBoxFade = ImColor.rgba(255, 255, 255, Math.max(0, Math.round(this.finalFadeOut.getValue())));
+                titleBoxFade = Color.fromRGBA(255, 255, 255, Math.max(0, Math.round(this.finalFadeOut.getValue())));
             }
 
-            ImGui.getForegroundDrawList().addImage(TextureManager.getInstance().getTexture("/assets/base/uis/title.png"),
-                    new ImVec2(centerX1, centerY1), new ImVec2(vec1.x + centerX1, vec1.y + centerY1), new ImVec2(0, 0),
-                    new ImVec2(1, 1), titleBoxFade);
+            ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/title.png"),
+                    0, Math.max(0, height / 2F - (sizeY / 2)), width, sizeY, titleBoxFade);
         }
 
         if (this.titleBoxFadeAnimation.getValue() > 180 && this.titleTextPopupAnimation == null) {
-            float maxSize = Math.max(0.07F * ((width + height) / 2F), 40);
-
-            this.titleTextPopupAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, Math.round(maxSize * 0.95F));
-            this.titleTextPopupAnimation.setTarget(Math.round(maxSize));
-            // Fuck this, I can't make it look smooth
-            this.titleTextPopupAnimation.finish();
+            this.titleTextPopupAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 400L, 0.85F);
+            this.titleTextPopupAnimation.setTarget(1);
             this.titleTextFadeAnimation.setTarget(255);
         }
 
         if (this.titleTextFadeAnimation.getTarget() != 0) {
-            ImGui.pushFont(FontUtil.getFont("NotoSansSemiBold", Math.round(this.titleTextPopupAnimation.getTarget())));
-
-            ImVec2 size = ImGui.calcTextSize(this.scenario.getName());
-            int textCenterX = (int) Math.max(0, width / 2F - (size.x / 2));
-            int textCenterY = (int) Math.max(0, height / 2F - (size.y / 2));
-
             int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : Math.round(this.titleTextFadeAnimation.getValue());
-            ImGui.getForegroundDrawList().addText(new ImVec2(textCenterX, textCenterY), ImColor.rgba(70, 98, 150, alpha), this.scenario.getName());
-            ImGui.popFont();
+            final TextRun textRun = TextRun.fromString(
+                    FontUtil.getFont("NotoSansSemiBold", Math.round(Math.max(0.05F * ((width + height) / 2F), 40))),
+                    this.scenario.getName(),
+                    Color.fromRGBA(70, 98, 150, alpha)
+            );
+
+            float scale = this.titleTextPopupAnimation.getValue();
+            float textCenterX = Math.max(0, width / 2F - (ThinGL.rendererText().getExactWidth(textRun.shape()) * scale / 2));
+            float textCenterY = Math.max(0, height / 2F - (ThinGL.rendererText().getExactHeight(textRun.shape()) * scale / 2)) + 5;
+
+            positionMatrix.pushMatrix();
+            positionMatrix.translate(textCenterX, textCenterY, 0);
+            positionMatrix.scale(this.titleTextPopupAnimation.getValue());
+            ThinGL.rendererText().textRun(positionMatrix, textRun, 0, 0);
+            positionMatrix.popMatrix();
+
             if (!this.titleBoxFadeAnimation.isRunning() && this.finishAll == -1 && this.finalFadeOut.getTarget() == 255) {
                 this.finishAll = System.currentTimeMillis();
             }
@@ -114,7 +130,7 @@ public class ScenarioPreviewScreen extends Screen {
 
         if (this.finalFadeOut.getTarget() == 0) {
             if (this.scenario.getPreviewBackground() == null) {
-                ImGui.getForegroundDrawList().addRectFilled(new ImVec2(0, 0), new ImVec2(width, height), ImColor.rgba(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
+                ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, Color.fromRGBA(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
             }
 
             if (!this.finalFadeOut.isRunning() && this.finishAll == -1) {

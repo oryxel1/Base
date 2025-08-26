@@ -1,4 +1,6 @@
 package com.bascenario.render.manager.api;
 
-public record TextureKey(String path, int key) {
+import net.raphimc.thingl.resource.image.texture.Texture2D;
+
+public record TextureKey(String path, Texture2D key) {
 }
