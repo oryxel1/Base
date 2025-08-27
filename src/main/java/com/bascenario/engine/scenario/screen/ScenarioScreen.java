@@ -28,6 +28,7 @@ public class ScenarioScreen extends Screen {
     // private Scenario.DialogueOptions dialogueOptions;
     private int dialogueIndex = -2;
     private long sinceLastDialogue;
+    private boolean hasPlayTheFirstDialogue;
     private DialogueRender dialogue;
 
     private final List<Object> alreadyPlays = new ArrayList<>();
@@ -94,11 +95,20 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        for (Scenario.Dialogue dialogue : scenario.getDialogues().get(this.dialogueIndex)) {
+        final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
+        for (int i = 0; i < dialogues.size(); i++) {
+            final Scenario.Dialogue dialogue = dialogues.get(i);
+            if (!this.hasPlayTheFirstDialogue && i > 0) {
+                break;
+            }
+
             if (dialogue.time() > this.sinceLastDialogue || this.alreadyPlays.contains(dialogue)) {
                 continue;
             }
 
+            if (i == 0) {
+                this.hasPlayTheFirstDialogue = true;
+            }
             this.alreadyPlays.add(dialogue);
             this.dialogue = new DialogueRender(dialogue);
             break;

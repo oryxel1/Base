@@ -69,7 +69,7 @@ public class ScenarioRenderTest {
 
         scenario.getDialogues().put(0, dialogues);
 
-        boolean fullScreen = args.length > 1 && args[1].equals("fullscreen");
+        boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
             Launcher.launch(new ScenarioScreen(scenario), fullScreen);
         } else {
