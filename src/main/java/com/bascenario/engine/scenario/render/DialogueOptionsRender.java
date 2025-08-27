@@ -122,7 +122,7 @@ public class DialogueOptionsRender {
         for (String text : options) {
             if (mouseX >= centerX && mouseX <= centerX + buttonWidth && mouseY >= posY && mouseY <= posY + buttonHeight) {
                 this.clicked = text;
-                this.scaleAnimation.setTarget(0.85F);
+                this.scaleAnimation.setTarget(0.9F);
                 break;
             }
 
