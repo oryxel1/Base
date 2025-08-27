@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.event.render;
 
 import com.bascenario.engine.scenario.event.api.Event;
+import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
@@ -14,16 +15,16 @@ public class EventRenderer {
         return System.currentTimeMillis() - this.startTime;
     }
 
-    public void onStart() {
-        this.event.onStart();
+    public void onStart(ScenarioScreen screen) {
+        this.event.onStart(screen);
     }
 
-    public void onEnd() {
-        this.event.onEnd();
+    public void onEnd(ScenarioScreen screen) {
+        this.event.onEnd(screen);
     }
 
-    public void render(long time, Matrix4fStack positionMatrix, WindowInterface window) {
-        this.event.render(time, positionMatrix, window);
+    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
+        this.event.render(screen, time, positionMatrix, window);
     }
 
     public boolean isFinished() {

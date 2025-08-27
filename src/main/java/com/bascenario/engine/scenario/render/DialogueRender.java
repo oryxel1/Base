@@ -17,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class DialogueRender {
+    @Getter
     private final Scenario.Dialogue dialogue;
     @Getter
     private boolean finished;

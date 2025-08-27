@@ -1,5 +1,6 @@
 package com.bascenario.engine.scenario.event.api;
 
+import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
@@ -10,7 +11,7 @@ public class Event {
     @Getter
     private final long duration;
 
-    public void onStart() {}
-    public void onEnd() {}
-    public void render(long time, Matrix4fStack positionMatrix, WindowInterface window) {}
+    public void onStart(ScenarioScreen screen) {}
+    public void onEnd(ScenarioScreen screen) {}
+    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {}
 }

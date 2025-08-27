@@ -1,8 +1,10 @@
 package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.render.FontUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -19,6 +21,8 @@ import java.util.Collection;
 
 @RequiredArgsConstructor
 public class DialogueOptionsRender {
+    private final ScenarioScreen screen;
+    @Getter
     private final Scenario.DialogueOptions dialogueOptions;
 
     private String clicked;
@@ -59,7 +63,7 @@ public class DialogueOptionsRender {
         float extraY = 0;
         for (String text : options) {
             float clonedX = centerX, clonedY = posY + extraY, clonedWidth = buttonWidth, clonedHeight = buttonHeight;
-            int fontSize = Math.round(43 * scale);
+            int fontSize = Math.round((0.02866666666F * ((width + height) / 2)) * scale);
             Color color = Color.WHITE, textColor = Color.fromRGB(44, 67, 90);
             if (text.equals(this.clicked)) {
                 float scale1 = this.scaleAnimation.getValue();
@@ -126,6 +130,7 @@ public class DialogueOptionsRender {
             if (mouseX >= centerX && mouseX <= centerX + buttonWidth && mouseY >= posY && mouseY <= posY + buttonHeight) {
                 this.clicked = text;
                 this.scaleAnimation.setTarget(0.9F);
+                this.screen.setDialogueIndex(this.dialogueOptions.options().get(text));
                 break;
             }
 

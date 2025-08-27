@@ -31,7 +31,6 @@ public class Scenario {
      */
     private final Background previewBackground;
 
-    private final List<Object> everythingInOnes = new ArrayList<>();
     private final List<Timestamp> timestamps = new ArrayList<>();
     private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
     private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();

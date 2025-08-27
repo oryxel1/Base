@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.event.impl;
 
 import com.bascenario.engine.scenario.event.api.Event;
+import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
@@ -26,7 +27,7 @@ public class LocationInfoEvent extends Event {
     }
 
     @Override
-    public void render(long time, Matrix4fStack positionMatrix, WindowInterface window) {
+    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
         if (this.popupFade.getTarget() == 0 && time < 1000L) {
             this.popupFade.setTarget(200);
             this.textFade.setTarget(255);
