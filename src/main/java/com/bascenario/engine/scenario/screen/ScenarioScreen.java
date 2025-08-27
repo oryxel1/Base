@@ -2,6 +2,7 @@ package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
+import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
@@ -23,17 +24,15 @@ public class ScenarioScreen extends Screen {
     private final Scenario scenario;
     private long sinceLast = System.currentTimeMillis();
     @Getter
-    private long duration = 0;
+    private long duration = 0, realDuration;
     // We want to keep track of the current background :P;
     private Scenario.Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
 
     // private Scenario.DialogueOptions dialogueOptions;
     private int dialogueIndex = -2;
-    @Getter
-    private long sinceLastDialogue;
-    private boolean hasPlayTheFirstDialogue;
-    private DialogueRender dialogue;
+    private DialogueRender dialogue, lastDialogue;
+    private DialogueOptionsRender dialogueOptions, lastDialogueOptions;
 
     private final List<Object> alreadyPlays = new ArrayList<>();
     private final List<EventRenderer> events = new ArrayList<>();
@@ -47,14 +46,23 @@ public class ScenarioScreen extends Screen {
             this.dialogueIndex = scenario.getDialogues().isEmpty() ? -1 : (int) scenario.getDialogues().keySet().toArray()[0];
         }
 
-        long deltaTime = System.currentTimeMillis() - this.sinceLast; // this.dialogueOptions == null ? System.currentTimeMillis() - this.sinceLast : 0;
-        this.sinceLast = System.currentTimeMillis();
+        long deltaTime = (this.dialogue != null || this.dialogueOptions != null) ? 0 : System.currentTimeMillis() - this.sinceLast;
+        if (this.dialogue != null && this.lastDialogue != this.dialogue) {
+            this.lastDialogue = this.dialogue;
+            deltaTime += 1; // Y E P.
+        }
+        if (this.dialogueOptions != null && this.lastDialogueOptions != this.dialogueOptions) {
+            this.lastDialogueOptions = this.dialogueOptions;
+            deltaTime += 1; // Y E P.
+        }
+
         this.duration += deltaTime;
-        this.sinceLastDialogue += deltaTime;
+        this.realDuration += (System.currentTimeMillis() - this.sinceLast);
+        this.sinceLast = System.currentTimeMillis();
 
         this.pollEvents();
         this.pollBackground();
-        this.pollDialogue();
+        this.pollDialogueAndDialogueOptions();
 
         if (this.background != null) {
             Color color;
@@ -74,6 +82,10 @@ public class ScenarioScreen extends Screen {
         if (this.dialogue != null) {
             this.dialogue.render(positionMatrix, window);
         }
+
+        if (this.dialogueOptions != null) {
+            this.dialogueOptions.render(positionMatrix, window);
+        }
     }
 
     @Override
@@ -82,41 +94,65 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        if (DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
+        if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
             this.dialogue = null;
-            this.sinceLastDialogue = 0;
         }
     }
 
-    private void pollDialogue() {
-        if (this.dialogue != null) {
-            if (this.dialogue.isFinished()) {
-                this.sinceLastDialogue = 0;
-            }
+    private void pollDialogueAndDialogueOptions() {
+        Scenario.DialogueOptions newDialogueOptions = null;
+        Scenario.Dialogue newDialogue = null;
+
+        boolean free = (this.dialogue == null || this.dialogueOptions == null) && this.dialogueIndex >= 0;
+        if (!free) {
             return;
         }
 
-        if (this.dialogueIndex < 0) {
-            return;
-        }
+        if (this.dialogueOptions != null) {
+            final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
+            for (final Scenario.Dialogue dialogue : dialogues) {
+                if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
+                    continue;
+                }
 
-        final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
-        for (int i = 0; i < dialogues.size(); i++) {
-            final Scenario.Dialogue dialogue = dialogues.get(i);
-            if (!this.hasPlayTheFirstDialogue && i > 0) {
+                newDialogue = dialogue;
                 break;
             }
+        }
 
-            if (dialogue.time() > this.sinceLastDialogue || this.alreadyPlays.contains(dialogue)) {
-                continue;
+        if (this.dialogue == null || this.dialogue.isFinished()) {
+            for (final Scenario.DialogueOptions dialogue : scenario.getDialogueOptions()) {
+                if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
+                    continue;
+                }
+
+                newDialogueOptions = dialogue;
+                break;
+            }
+        }
+
+        if (newDialogue != null) {
+            boolean update = true;
+            if (newDialogueOptions != null) {
+                update = newDialogueOptions.time() > newDialogue.time();
             }
 
-            if (i == 0) {
-                this.hasPlayTheFirstDialogue = true;
+            if (update) {
+                this.dialogue = new DialogueRender(newDialogue);
+                this.alreadyPlays.add(newDialogue);
             }
-            this.alreadyPlays.add(dialogue);
-            this.dialogue = new DialogueRender(dialogue);
-            break;
+        }
+
+        if (newDialogueOptions != null) {
+            boolean update = true;
+            if (newDialogue != null) {
+                update = newDialogue.time() > newDialogueOptions.time();
+            }
+
+            if (update) {
+                this.dialogueOptions = new DialogueOptionsRender(newDialogueOptions);
+                this.alreadyPlays.add(newDialogueOptions);
+            }
         }
     }
 
@@ -131,7 +167,7 @@ public class ScenarioScreen extends Screen {
         });
 
         for (Scenario.Timestamp timestamp : scenario.getTimestamps()) {
-            if (timestamp.time() > this.sinceLastDialogue || this.alreadyPlays.contains(timestamp)) {
+            if (timestamp.time() > this.duration || this.alreadyPlays.contains(timestamp)) {
                 continue;
             }
 
@@ -156,14 +192,14 @@ public class ScenarioScreen extends Screen {
 
         Scenario.Background selected = this.background;
         for (Scenario.Background background : scenario.getBackgrounds()) {
-            if (background.start() > this.sinceLastDialogue || background == this.background) {
+            if (background.start() > this.duration || background == this.background) {
                 continue;
             }
 
             selected = background;
         }
 
-        if (this.background != null && this.background.end() > 0 && this.sinceLastDialogue > this.background.end()) {
+        if (this.background != null && this.background.end() > 0 && this.duration > this.background.end()) {
             selected = null;
         }
 

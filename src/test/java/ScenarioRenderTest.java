@@ -7,6 +7,7 @@ import com.bascenario.render.MainRendererWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ScenarioRenderTest {
     public static void main(String[] args) {
@@ -24,45 +25,43 @@ public class ScenarioRenderTest {
         ));
 
         final List<Scenario.Dialogue> dialogues = new ArrayList<>();
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("Thank you.")
-//                .time(200L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hi, Sensei.")
                 .time(200L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
+        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(
+                201L, Map.of("What's with the scowl, Hina?", 0, "Why so serious?", 0)
+        ));
+
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm?")
-                .time(0L).name("Hina").association("Prefect Team")
+                .time(201L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
         scenario.getDialogues().put(0, dialogues);
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-                .time(0L).name("Hina").association("Prefect Team")
+                .time(202L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
-                .time(0L).name("Hina").association("Prefect Team")
+                .time(203L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("I still haven't slept, and I have bags under my eyes. Not to mention my hair is a mess since I didn't wash it...")
-                .time(0L).name("Hina").association("Prefect Team")
+                .time(204L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("It's your fault for asking me to meet you like this!")
-                .time(0L).name("Hina").association("Prefect Team")
+                .time(205L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
@@ -70,7 +69,7 @@ public class ScenarioRenderTest {
         scenario.getDialogues().put(0, dialogues);
 
         scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg",
-                -1, 700L, false, false));
+                -1, 700L, false, true));
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {

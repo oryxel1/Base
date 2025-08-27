@@ -31,6 +31,7 @@ public class Scenario {
      */
     private final Background previewBackground;
 
+    private final List<Object> everythingInOnes = new ArrayList<>();
     private final List<Timestamp> timestamps = new ArrayList<>();
     private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
     private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
@@ -39,7 +40,7 @@ public class Scenario {
     private final List<Background> backgrounds = new ArrayList<>();
 
     /**
-     *  Timestamp, consist of time (relative to the last dialogue time) and the events going to get play at time.
+     *  Timestamp, consist of time (in ms since the start of the scenario) and the events going to get play at time.
      *  The event can still play after this "time" value and each event can have it own duration, depending on the user.
      *  Note: normally the event is related to the sprite, controlling it, ....
      */
@@ -52,8 +53,6 @@ public class Scenario {
      *  If this background play from the start value to the end of the scenario, then the end value can be any negative value.
      *  If another background in the list have start time larger than the end time of this one, then this one is overridden by that one.
      *  And there is also fade, which is pretty self-explanatory...
-     * <p>
-     *  NOTE: the "start" and "end" time value should be relative to the last dialogue time.
      */
     @Builder
     public record Background(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
@@ -63,8 +62,6 @@ public class Scenario {
      *  The user can also customize this to fade in or fade out, depending on the context, situation.
      *  If we want the sound to play during the preview, start is going to be a negative value.
      *  If this sound should be looped, then "end" can be any negative value, if end is zero, then it play till the audio end.
-     * <p>
-     *  NOTE: the "start" and "end" time value should be relative to the last dialogue time.
      */
     @Builder
     public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
@@ -87,8 +84,6 @@ public class Scenario {
      *  If we want to use the default text, then set text size to any negative value and fontType to REGULAR.
      *  If the cutscene value is set, both name and association value is ignored and the black gradient background won't show up,
      *  like how it's in the cutscene.
-     * <p>
-     *  For the timestamp, the first dialogue timestamp means in ms since the start, for the dialogue after, then it's time in ms since the last dialogue.
      */
     @Builder
     public record Dialogue(long time, String dialogue, String name, String association, double playSpeed, int textSize, FontType fontType, boolean cutscene) {

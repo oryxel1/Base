@@ -90,7 +90,6 @@ public class MainRendererWindow extends GLFWApplicationRunner {
     protected void render(Matrix4fStack positionMatrix) {
         ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, this.windowInterface.getFramebufferWidth(), this.windowInterface.getFramebufferHeight(), Color.BLACK);
 
-        this.pollSound();
         if (this.currentScreen != null) {
             if (!this.currentScreen.isInit()) {
                 this.currentScreen.init();
@@ -99,6 +98,7 @@ public class MainRendererWindow extends GLFWApplicationRunner {
 
             this.currentScreen.render(positionMatrix, this.windowInterface, this.mouseX, this.mouseY);
         }
+        this.pollSound();
     }
 
     public void setCurrentScreen(Screen currentScreen) {
@@ -120,18 +120,17 @@ public class MainRendererWindow extends GLFWApplicationRunner {
             return;
         }
 
-        long time = currentScreen instanceof ScenarioScreen screen ? screen.getDuration() : -1;
+        long time = this.currentScreen instanceof ScenarioScreen screen ? screen.getRealDuration() : -1;
         if (time != -1 && this.sound != null && this.sound.end() <= time && this.sound.end() > 0) {
             AudioManager.getInstance().stop();
             this.sound = null;
-            System.out.println("Stop");
         }
 
         for (Scenario.Sound sound : this.scenario.getSounds()) {
             if (time == -1 && sound.start() != -1) { // Still in preview, only accept start time -1
                 continue;
             } else if (time != -1) {
-                if (((ScenarioScreen) currentScreen).getSinceLastDialogue() < sound.start()) {
+                if (((ScenarioScreen) this.currentScreen).getDuration() < sound.start()) {
                     continue;
                 }
             }
