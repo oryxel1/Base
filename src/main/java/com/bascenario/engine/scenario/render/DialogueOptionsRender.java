@@ -56,9 +56,9 @@ public class DialogueOptionsRender {
         float totalSizeY = buttonHeight * options.size() + distanceBetween * (options.size() - 1);
         float posY = (height / 2) - (totalSizeY / 2F) - buttonHeight + (0.01387F * height);
 
-//        System.out.println(posY);
+        float extraY = 0;
         for (String text : options) {
-            float clonedX = centerX, clonedY = posY, clonedWidth = buttonWidth, clonedHeight = buttonHeight;
+            float clonedX = centerX, clonedY = posY + extraY, clonedWidth = buttonWidth, clonedHeight = buttonHeight;
             int fontSize = Math.round(43 * scale);
             Color color = Color.WHITE, textColor = Color.fromRGB(44, 67, 90);
             if (text.equals(this.clicked)) {
@@ -69,7 +69,7 @@ public class DialogueOptionsRender {
                 clonedX = width / 2 - (clonedWidth / 2);
 
                 float totalSizeY1 = buttonHeight + buttonHeight * (options.size() - 1) + distanceBetween * (options.size() - 1);
-                clonedY = (height / 2) - (totalSizeY1 / 2F) - buttonHeight + (0.01387F * height);
+                clonedY = (height / 2) - (totalSizeY1 / 2F) - buttonHeight + (0.01387F * height) + extraY;
 
                 fontSize = Math.round(43 * scale1);
 
@@ -89,7 +89,7 @@ public class DialogueOptionsRender {
             float textY = clonedY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + clonedHeight + 0.01388888888F * height) / 2;
             ThinGL.rendererText().textRun(positionMatrix, textRun, textX, textY, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
 
-            posY += buttonHeight + distanceBetween * scale;
+            extraY += buttonHeight + distanceBetween * scale;
         }
     }
 
