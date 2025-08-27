@@ -24,6 +24,12 @@ public class ScenarioRenderTest {
         ));
 
         final List<Scenario.Dialogue> dialogues = new ArrayList<>();
+//        dialogues.add(Scenario.Dialogue.builder().dialogue("Thank you.")
+//                .time(200L).name("Hina").association("Prefect Team")
+//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+//                .cutscene(false)
+//                .build());
+
         dialogues.add(Scenario.Dialogue.builder().dialogue("...Hi, Sensei.")
                 .time(200L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)

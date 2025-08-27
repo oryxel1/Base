@@ -2,12 +2,12 @@ package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.util.render.FontUtil;
-import com.bascenario.util.render.MathUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
+import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import org.joml.Matrix4fStack;
@@ -86,8 +86,10 @@ public class DialogueRender {
 
         float y = 0;
         for (final StringBuilder builder : this.builders) {
-            final TextRun dialogue = TextRun.fromString(FontUtil.getFont("NotoSansRegular", size42), builder.toString());
-            ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.02777777777F * height) + y);
+            final TextRun dialogue = new TextRun(FontUtil.getFont("NotoSansRegular", size42), new TextSegment(builder.toString(),
+                    Color.WHITE, 0, Color.fromRGB(50, 70, 90)));
+
+            ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.07037037037F * height) + y, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
             y += ThinGL.rendererText().getExactHeight(dialogue.shape()) + 15;
         }
 
