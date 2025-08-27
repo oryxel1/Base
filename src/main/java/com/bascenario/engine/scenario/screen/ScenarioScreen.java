@@ -126,7 +126,7 @@ public class ScenarioScreen extends Screen {
     private void pollDialogueAndDialogueOptions() {
         if (this.dialogueOptions != null && this.dialogueOptions.isFinished()) {
             this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
-            this.dialogueOptions = null;
+            setDialogueOptions(null);
             this.canProceedWithDialogue = true;
         }
 
@@ -191,7 +191,7 @@ public class ScenarioScreen extends Screen {
                 if (this.dialogueOptions != null) {
                     this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
                 }
-                this.dialogueOptions = new DialogueOptionsRender(this, newDialogueOptions);
+                setDialogueOptions(new DialogueOptionsRender(this, newDialogueOptions));
                 this.alreadyPlays.add(newDialogueOptions);
                 this.canProceedWithDialogue = false;
             }
