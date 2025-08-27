@@ -32,7 +32,7 @@ public class DialogueOptionsRender {
 
     public void render(Matrix4fStack positionMatrix, WindowInterface window) {
         if (this.scaleAnimation == null) {
-            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 130L, 0.85F);
+            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 200L, 0.85F);
             this.scaleAnimation.setTarget(1F);
         }
 
