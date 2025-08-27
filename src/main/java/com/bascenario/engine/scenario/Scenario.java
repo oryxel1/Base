@@ -39,7 +39,7 @@ public class Scenario {
     private final List<Background> backgrounds = new ArrayList<>();
 
     /**
-     *  Timestamp, consist of time (in ms since start of scenario) and the events going to get play at time.
+     *  Timestamp, consist of time (relative to the last dialogue time) and the events going to get play at time.
      *  The event can still play after this "time" value and each event can have it own duration, depending on the user.
      *  Note: normally the event is related to the sprite, controlling it, ....
      */
@@ -52,6 +52,8 @@ public class Scenario {
      *  If this background play from the start value to the end of the scenario, then the end value can be any negative value.
      *  If another background in the list have start time larger than the end time of this one, then this one is overridden by that one.
      *  And there is also fade, which is pretty self-explanatory...
+     * <p>
+     *  NOTE: the "start" and "end" time value should be relative to the last dialogue time.
      */
     @Builder
     public record Background(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
@@ -61,6 +63,8 @@ public class Scenario {
      *  The user can also customize this to fade in or fade out, depending on the context, situation.
      *  If we want the sound to play during the preview, start is going to be a negative value.
      *  If this sound should be looped, then "end" can be any negative value, if end is zero, then it play till the audio end.
+     * <p>
+     *  NOTE: the "start" and "end" time value should be relative to the last dialogue time.
      */
     @Builder
     public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
@@ -92,7 +96,6 @@ public class Scenario {
 
         public long getMaxDuration() {
             long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / playSpeed()));
-
             return msPerWord * 10 + (msPerWord * (dialogue.length() - 1)) + (msPerWord * 10);
         }
     }

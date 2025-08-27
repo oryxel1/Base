@@ -127,7 +127,7 @@ public class ScenarioScreen extends Screen {
         });
 
         for (Scenario.Timestamp timestamp : scenario.getTimestamps()) {
-            if (timestamp.time() > duration() || this.alreadyPlays.contains(timestamp)) {
+            if (timestamp.time() > this.sinceLastDialogue || this.alreadyPlays.contains(timestamp)) {
                 continue;
             }
 
@@ -152,14 +152,14 @@ public class ScenarioScreen extends Screen {
 
         Scenario.Background selected = this.background;
         for (Scenario.Background background : scenario.getBackgrounds()) {
-            if (background.start() > duration() || background == this.background) {
+            if (background.start() > this.sinceLastDialogue || background == this.background) {
                 continue;
             }
 
             selected = background;
         }
 
-        if (this.background != null && this.background.end() > 0 && duration() > this.background.end()) {
+        if (this.background != null && this.background.end() > 0 && this.sinceLastDialogue > this.background.end()) {
             selected = null;
         }
 
@@ -185,9 +185,5 @@ public class ScenarioScreen extends Screen {
 
         this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
         this.backgroundFadeIn.setTarget(255);
-    }
-
-    private long duration() {
-        return this.duration;
     }
 }

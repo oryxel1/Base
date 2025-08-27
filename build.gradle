@@ -23,6 +23,8 @@ repositories {
 dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.38"
 
+    implementation "org.jcraft:jorbis:0.0.17"
+
     implementation "com.google.code.gson:gson:2.13.1"
     implementation "org.projectlombok:lombok:1.18.38"
     implementation "commons-io:commons-io:2.20.0"
