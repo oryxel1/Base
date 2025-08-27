@@ -96,6 +96,10 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
+        if (this.dialogueOptions != null) {
+            this.dialogueOptions.mouseClicked(this.windowInterface, mouseX, mouseY, button);
+        }
+
         if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
             this.canProceedWithDialogue = true;
             // TODO: FIX!
@@ -103,7 +107,19 @@ public class ScenarioScreen extends Screen {
         }
     }
 
+    @Override
+    public void mouseRelease() {
+        if (this.dialogueOptions != null) {
+            this.dialogueOptions.mouseRelease();
+        }
+    }
+
     private void pollDialogueAndDialogueOptions() {
+        if (this.dialogueOptions != null && this.dialogueOptions.isFinished()) {
+            this.dialogueOptions = null;
+            this.canProceedWithDialogue = true;
+        }
+
         Scenario.DialogueOptions newDialogueOptions = null;
         Scenario.Dialogue newDialogue = null;
 
@@ -112,7 +128,6 @@ public class ScenarioScreen extends Screen {
             if (this.canProceedWithDialogue) {
                 this.dialogue = null;
                 this.canProceedWithDialogue = false;
-                System.out.println("Not free...");
             }
             return;
         }
@@ -163,6 +178,11 @@ public class ScenarioScreen extends Screen {
                 this.alreadyPlays.add(newDialogueOptions);
                 this.canProceedWithDialogue = false;
             }
+        }
+
+        if (this.dialogueOptions == null && this.canProceedWithDialogue) {
+            this.dialogue = null;
+            this.canProceedWithDialogue = false;
         }
     }
 

@@ -14,24 +14,92 @@ import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class DialogueOptionsRender {
     private final Scenario.DialogueOptions dialogueOptions;
 
+    private String clicked;
     private DynamicAnimation scaleAnimation;
+    private final DynamicAnimation fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 130L, 255);
+
+    private long sinceFinished = -1;
+    public boolean isFinished() {
+        return this.sinceFinished > 0 && System.currentTimeMillis() - this.sinceFinished >= 200L;
+    }
 
     public void render(Matrix4fStack positionMatrix, WindowInterface window) {
         if (this.scaleAnimation == null) {
             this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 130L, 0.85F);
             this.scaleAnimation.setTarget(1F);
         }
+
+        if (!this.fadeAnimation.isRunning() && this.fadeAnimation.getTarget() == 0 && this.sinceFinished == -1) {
+            this.sinceFinished = System.currentTimeMillis();
+        }
+
+        final Collection<String> options = this.dialogueOptions.options().keySet();
         // 1337 97
         // dis between 35, 1080
+
+        float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
+
+        float scale = this.scaleAnimation.getTarget() == 1 ? this.scaleAnimation.getValue() : 1;
+
+        float buttonWidth = 0.69635416666f * width * scale, buttonHeight = 0.08981481481f * height * scale;
+        float centerX = width / 2 - (buttonWidth / 2);
+
+        float distanceBetween = 0.0324074074f * height;
+
+        float totalSizeY = buttonHeight * options.size() + distanceBetween * (options.size() - 1);
+        float posY = (height / 2) - (totalSizeY / 2F) - buttonHeight + (0.01387F * height);
+
+//        System.out.println(posY);
+        for (String text : options) {
+            float clonedX = centerX, clonedY = posY, clonedWidth = buttonWidth, clonedHeight = buttonHeight;
+            int fontSize = Math.round(43 * scale);
+            Color color = Color.WHITE, textColor = Color.fromRGB(44, 67, 90);
+            if (text.equals(this.clicked)) {
+                float scale1 = this.scaleAnimation.getValue();
+                clonedWidth *= scale1;
+                clonedHeight *= scale1;
+
+                clonedX = width / 2 - (clonedWidth / 2);
+
+                float totalSizeY1 = buttonHeight + buttonHeight * (options.size() - 1) + distanceBetween * (options.size() - 1);
+                clonedY = (height / 2) - (totalSizeY1 / 2F) - buttonHeight + (0.01387F * height);
+
+                fontSize = Math.round(43 * scale1);
+
+                color = Color.fromRGBA(255, 255, 255, Math.round(this.fadeAnimation.getValue()));
+                textColor = Color.fromRGBA(44, 67, 90, Math.round(this.fadeAnimation.getValue()));
+            }
+
+            ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
+                    clonedX, clonedY, clonedWidth, clonedHeight, color);
+
+            final TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
+            float textX = (width / 2) - (ThinGL.rendererText().getExactWidth(textRun.shape()) / 2);
+
+            float textY = clonedY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + clonedHeight + 0.01388888888F * height) / 2;
+            ThinGL.rendererText().textRun(positionMatrix, textRun, textX, textY, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
+
+            posY += buttonHeight + distanceBetween * scale;
+        }
+    }
+
+    public void mouseRelease() {
+        if (this.clicked != null) {
+            this.scaleAnimation.setTarget(1.1F);
+            this.fadeAnimation.setTarget(0);
+        }
+    }
+
+    public void mouseClicked(WindowInterface window, double mouseX, double mouseY, int button) {
+        if (this.scaleAnimation.getValue() != 1) {
+            return;
+        }
 
         float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
 
@@ -47,15 +115,12 @@ public class DialogueOptionsRender {
         float totalSizeY = buttonHeight * options.size() + distanceBetween * (options.size() - 1);
         float posY = (height / 2) - (totalSizeY / 2F) - buttonHeight + (0.01387F * height);
 
-//        System.out.println(posY);
         for (String text : options) {
-            ThinGL.renderer2D().texture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
-                    centerX, posY, buttonWidth, buttonHeight);
-            final TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", Math.round(43 * scale)), text, Color.fromRGB(44, 67, 90));
-            float textX = (width / 2) - (ThinGL.rendererText().getExactWidth(textRun.shape()) / 2);
-
-            float textY = posY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + buttonHeight + 0.01388888888F * height) / 2;
-            ThinGL.rendererText().textRun(positionMatrix, textRun, textX, textY, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
+            if (mouseX >= centerX && mouseX <= centerX + buttonWidth && mouseY >= posY && mouseY <= posY + buttonHeight) {
+                this.clicked = text;
+                this.scaleAnimation.setTarget(0.85F);
+                break;
+            }
 
             posY += buttonHeight + distanceBetween * scale;
         }
