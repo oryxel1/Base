@@ -75,7 +75,7 @@ public class DialogueOptionsRender {
                 float totalSizeY1 = buttonHeight + buttonHeight * (options.size() - 1) + distanceBetween * (options.size() - 1);
                 clonedY = (height / 2) - (totalSizeY1 / 2F) - buttonHeight + (0.01387F * height) + extraY;
 
-                fontSize = Math.round(43 * scale1);
+                fontSize = Math.round((0.02866666666F * ((width + height) / 2)) * scale1);
 
                 color = Color.fromRGBA(255, 255, 255, Math.round(this.fadeAnimation.getValue()));
                 textColor = Color.fromRGBA(44, 67, 90, Math.round(this.fadeAnimation.getValue()));
@@ -87,7 +87,12 @@ public class DialogueOptionsRender {
             ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
                     clonedX, clonedY, clonedWidth, clonedHeight, color);
 
-            final TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
+            TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
+            if (ThinGL.rendererText().getExactWidth(textRun.shape()) > buttonWidth - 100) {
+                fontSize = Math.round(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));
+            }
+            textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
+
             float textX = (width / 2) - (ThinGL.rendererText().getExactWidth(textRun.shape()) / 2);
 
             float textY = clonedY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + clonedHeight + 0.01388888888F * height) / 2;
