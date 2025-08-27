@@ -22,6 +22,7 @@ public class TextureManager {
         }
     }
 
+    @Getter
     private final Map<String, TextureKey> textures = new HashMap<>();
 
     public void loadTexture(String path, final InputStream stream) {
