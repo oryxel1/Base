@@ -69,6 +69,9 @@ public class ScenarioRenderTest {
 
         scenario.getDialogues().put(0, dialogues);
 
+        scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg",
+                -1, 700L, false, false));
+
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
             Launcher.launch(new ScenarioScreen(scenario), fullScreen);

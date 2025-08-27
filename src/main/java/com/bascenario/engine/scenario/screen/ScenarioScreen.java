@@ -5,6 +5,7 @@ import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueRender;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -18,8 +19,10 @@ import java.util.*;
 
 @RequiredArgsConstructor
 public class ScenarioScreen extends Screen {
+    @Getter
     private final Scenario scenario;
     private long sinceLast = System.currentTimeMillis();
+    @Getter
     private long duration = 0;
     // We want to keep track of the current background :P;
     private Scenario.Background background, queueBackground;
@@ -27,6 +30,7 @@ public class ScenarioScreen extends Screen {
 
     // private Scenario.DialogueOptions dialogueOptions;
     private int dialogueIndex = -2;
+    @Getter
     private long sinceLastDialogue;
     private boolean hasPlayTheFirstDialogue;
     private DialogueRender dialogue;
@@ -49,8 +53,8 @@ public class ScenarioScreen extends Screen {
         this.sinceLastDialogue += deltaTime;
 
         this.pollEvents();
-        this.pollDialogue();
         this.pollBackground();
+        this.pollDialogue();
 
         if (this.background != null) {
             Color color;

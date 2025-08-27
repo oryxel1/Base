@@ -6,6 +6,7 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -14,10 +15,7 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import net.raphimc.thingl.text.TextRun;
-import net.raphimc.thingl.text.renderer.TextRenderer;
 import org.joml.Matrix4fStack;
-import org.joml.Vector2f;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import java.io.File;
@@ -26,6 +24,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 @RequiredArgsConstructor
 public class ScenarioPreviewScreen extends Screen {
+    @Getter
     private final Scenario scenario;
 
     private final DynamicAnimation backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 200L, 255);
