@@ -132,7 +132,7 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        if (this.dialogueOptions == null && this.dialogue == null) {
+        if (this.dialogueOptions == null && (this.dialogue == null || this.canProceedWithDialogue)) {
             final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
             for (final Scenario.Dialogue dialogue : dialogues) {
                 if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
@@ -164,6 +164,7 @@ public class ScenarioScreen extends Screen {
             if (update) {
                 this.dialogue = new DialogueRender(newDialogue);
                 this.alreadyPlays.add(newDialogue);
+                this.canProceedWithDialogue = false;
             }
         }
 
