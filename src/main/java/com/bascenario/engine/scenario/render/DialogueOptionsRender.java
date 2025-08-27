@@ -27,7 +27,7 @@ public class DialogueOptionsRender {
 
     public void render(Matrix4fStack positionMatrix, WindowInterface window) {
         if (this.scaleAnimation == null) {
-            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, 0F);
+            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 130L, 0.85F);
             this.scaleAnimation.setTarget(1F);
         }
         // 1337 97
@@ -51,7 +51,7 @@ public class DialogueOptionsRender {
         for (String text : options) {
             ThinGL.renderer2D().texture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
                     centerX, posY, buttonWidth, buttonHeight);
-            final TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", 43), text, Color.fromRGB(44, 67, 90));
+            final TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", Math.round(43 * scale)), text, Color.fromRGB(44, 67, 90));
             float textX = (width / 2) - (ThinGL.rendererText().getExactWidth(textRun.shape()) / 2);
 
             float textY = posY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + buttonHeight + 0.01388888888F * height) / 2;
