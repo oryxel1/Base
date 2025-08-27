@@ -80,6 +80,7 @@ public class ScenarioScreen extends Screen {
 
         if (DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
             this.dialogue = null;
+            this.sinceLastDialogue = 0;
         }
     }
 
