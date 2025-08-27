@@ -37,6 +37,8 @@ public class ScenarioScreen extends Screen {
     private final List<Object> alreadyPlays = new ArrayList<>();
     private final List<EventRenderer> events = new ArrayList<>();
 
+    private boolean canProceedWithDialogue;
+
     private WindowInterface windowInterface;
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
@@ -95,7 +97,9 @@ public class ScenarioScreen extends Screen {
         }
 
         if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
-            this.dialogue = null;
+            this.canProceedWithDialogue = true;
+            // TODO: FIX!
+            // this.dialogue = null;
         }
     }
 
@@ -105,6 +109,11 @@ public class ScenarioScreen extends Screen {
 
         boolean free = (this.dialogue == null || this.dialogueOptions == null) && this.dialogueIndex >= 0;
         if (!free) {
+            if (this.canProceedWithDialogue) {
+                this.dialogue = null;
+                this.canProceedWithDialogue = false;
+                System.out.println("Not free...");
+            }
             return;
         }
 
@@ -120,7 +129,7 @@ public class ScenarioScreen extends Screen {
             }
         }
 
-        if (this.dialogue == null || this.dialogue.isFinished()) {
+        if (this.dialogue == null || this.canProceedWithDialogue) {
             for (final Scenario.DialogueOptions dialogue : scenario.getDialogueOptions()) {
                 if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
                     continue;
@@ -134,7 +143,7 @@ public class ScenarioScreen extends Screen {
         if (newDialogue != null) {
             boolean update = true;
             if (newDialogueOptions != null) {
-                update = newDialogueOptions.time() > newDialogue.time();
+                update = newDialogueOptions.time() >= newDialogue.time();
             }
 
             if (update) {
@@ -143,15 +152,16 @@ public class ScenarioScreen extends Screen {
             }
         }
 
-        if (newDialogueOptions != null && (this.dialogue == null || this.dialogue.isFinished())) {
+        if (newDialogueOptions != null && (this.dialogue == null || this.canProceedWithDialogue)) {
             boolean update = true;
             if (newDialogue != null) {
-                update = newDialogue.time() > newDialogueOptions.time();
+                update = newDialogue.time() >= newDialogueOptions.time();
             }
 
             if (update) {
                 this.dialogueOptions = new DialogueOptionsRender(newDialogueOptions);
                 this.alreadyPlays.add(newDialogueOptions);
+                this.canProceedWithDialogue = false;
             }
         }
     }

@@ -32,11 +32,11 @@ public class ScenarioRenderTest {
                 .build());
 
         scenario.getDialogueOptions().add(new Scenario.DialogueOptions(
-                201L, Map.of("What's with the scowl, Hina?", 0, "Why so serious?", 0)
+                201L, Map.of("\"What's with the scowl, Hina?\"", 0, "\"Why so serious?\"", 0)
         ));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm?")
-                .time(201L).name("Hina").association("Prefect Team")
+                .time(202L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
