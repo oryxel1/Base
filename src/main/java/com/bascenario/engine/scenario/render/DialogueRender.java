@@ -81,7 +81,6 @@ public class DialogueRender {
                     width, height - noGradientPart - i + 1, Color.fromRGBA(r, g, b, alpha));
         }
 
-
         ThinGL.renderer2D().filledRectangle(positionMatrix, separatorX, separator, separatorX + separatorWidth, separator + 3, Color.fromRGB(116, 116, 126));
 
         float y = 0;
@@ -96,13 +95,15 @@ public class DialogueRender {
         int size58 = (int) Math.round(0.03866666666 * ((width + height) / 2));
         final TextRun name = new TextRun(FontUtil.getFont("NotoSansBold", size58), new TextSegment(this.dialogue.name(),
                 Color.WHITE, 0, Color.fromRGB(50, 70, 90)));
-        ThinGL.rendererText().textRun(positionMatrix, name, separatorX + (0.00494791666F * width), separator - (0.06296296296F * height));
+        ThinGL.rendererText().textRun(positionMatrix, name, separatorX + (0.00260416666F * width), separator - (0.00555555555F * height),
+                RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
 
         int size40 = (int) Math.round(0.02666666666 * ((width + height) / 2));
         float nameTextSizeX = ThinGL.rendererText().getExactWidth(name.shape());
         final TextRun association = new TextRun(FontUtil.getFont("NotoSansBold", size40), new TextSegment(this.dialogue.association(),
                 Color.fromRGB(132, 212, 249), 0, Color.fromRGB(50, 70, 90)));
-        ThinGL.rendererText().textRun(positionMatrix, association, separatorX + nameTextSizeX + (0.01614583333F * width), separator - (0.05F * height));
+        ThinGL.rendererText().textRun(positionMatrix, association, separatorX + nameTextSizeX + (0.015625F * width),
+                separator - (0.01018518518F * height), RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
 
         // 1280 889
 //        ImmediateMultiDrawBatchDataHolder drawBatch = new ImmediateMultiDrawBatchDataHolder();
