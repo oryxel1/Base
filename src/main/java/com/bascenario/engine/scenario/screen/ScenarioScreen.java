@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.event.impl.RedirectDialogueEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
@@ -71,6 +72,11 @@ public class ScenarioScreen extends Screen {
         this.pollBackground();
         this.pollDialogueAndDialogueOptions();
         this.pollEvents();
+        if (this.pollDialogueAgain) {
+            this.pollDialogueAndDialogueOptions();
+        }
+
+        this.pollDialogueAgain = false;
 
         if (this.background != null) {
             Color color;
@@ -135,7 +141,7 @@ public class ScenarioScreen extends Screen {
 
         boolean free = (this.dialogue == null || this.dialogueOptions == null) && this.dialogueIndex >= 0;
         if (!free) {
-            if (this.canProceedWithDialogue) {
+            if (this.canProceedWithDialogue && this.dialogue != null && this.donePlayings.contains(this.dialogue.getDialogue())) {
                 setDialogue(null);
                 this.canProceedWithDialogue = false;
             }
@@ -172,11 +178,12 @@ public class ScenarioScreen extends Screen {
                 update = newDialogueOptions.time() >= newDialogue.time();
             }
 
-            System.out.println(newDialogue);
             if (update) {
+                this.canProceedWithDialogue = false;
+                System.out.println("Yep: " + newDialogue);
                 setDialogue(new DialogueRender(newDialogue));
                 this.alreadyPlays.add(newDialogue);
-                this.canProceedWithDialogue = false;
+                System.out.println("Proceed: " + this.canProceedWithDialogue);
             }
         }
 
@@ -186,14 +193,11 @@ public class ScenarioScreen extends Screen {
                 update = newDialogue.time() >= newDialogueOptions.time();
             }
 
-            System.out.println(newDialogueOptions);
             if (update) {
-                if (this.dialogueOptions != null) {
-                    this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
-                }
+                this.canProceedWithDialogue = false;
+                System.out.println(newDialogueOptions);
                 setDialogueOptions(new DialogueOptionsRender(this, newDialogueOptions));
                 this.alreadyPlays.add(newDialogueOptions);
-                this.canProceedWithDialogue = false;
             }
         }
 
@@ -204,6 +208,7 @@ public class ScenarioScreen extends Screen {
         }
     }
 
+    private boolean pollDialogueAgain;
     private void pollEvents() {
         this.events.removeIf(event -> {
             if (event.isFinished()) {
@@ -226,6 +231,10 @@ public class ScenarioScreen extends Screen {
 
             this.alreadyPlays.add(timestamp);
             timestamp.events().forEach(event -> {
+                if (event instanceof RedirectDialogueEvent) {
+                    this.pollDialogueAgain = true;
+                }
+
                 this.events.add(new EventRenderer(event));
                 event.onStart(this);
             });
@@ -285,8 +294,8 @@ public class ScenarioScreen extends Screen {
             this.donePlayings.add(this.dialogue.getDialogue());
             System.out.println("Add: " + this.dialogue.getDialogue());
         }
-        System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
         this.dialogue = dialogue;
+        System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
     }
 
     private void setDialogueOptions(DialogueOptionsRender dialogueOptions) {
