@@ -11,6 +11,7 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import net.raphimc.thingl.renderer.impl.RendererText;
+import net.raphimc.thingl.resource.image.texture.Texture2D;
 import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 
@@ -76,6 +77,9 @@ public class DialogueOptionsRender {
                 textColor = Color.fromRGBA(44, 67, 90, Math.round(this.fadeAnimation.getValue()));
             }
 
+            final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/button.png");
+            ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, clonedX + 2, clonedY + 5, clonedWidth, clonedHeight,
+                    Color.fromRGBA(0, 0, 0, 30));
             ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
                     clonedX, clonedY, clonedWidth, clonedHeight, color);
 

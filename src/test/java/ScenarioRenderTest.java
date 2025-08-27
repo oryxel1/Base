@@ -6,6 +6,7 @@ import com.bascenario.launcher.Launcher;
 import com.bascenario.render.MainRendererWindow;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,9 +32,10 @@ public class ScenarioRenderTest {
                 .cutscene(false)
                 .build());
 
-        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(
-                201L, Map.of("\"What's with the scowl, Hina?\"", 0, "\"Why so serious?\"", 0)
-        ));
+        final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        map.put("\"What's with the scowl, Hina?\"", 0);
+        map.put("\"Why so serious?\"", 0);
+        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(201L, map));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm?")
                 .time(202L).name("Hina").association("Prefect Team")

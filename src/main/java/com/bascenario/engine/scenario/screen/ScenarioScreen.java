@@ -8,6 +8,7 @@ import com.bascenario.render.api.Screen;
 import com.bascenario.util.RenderUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
@@ -38,6 +39,8 @@ public class ScenarioScreen extends Screen {
     private final List<EventRenderer> events = new ArrayList<>();
 
     private boolean canProceedWithDialogue;
+    @Setter
+    private boolean lockClick;
 
     private WindowInterface windowInterface;
     @Override
@@ -96,14 +99,17 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
+        // Event use this.
+        if (this.lockClick) {
+            return;
+        }
+
         if (this.dialogueOptions != null) {
             this.dialogueOptions.mouseClicked(this.windowInterface, mouseX, mouseY, button);
         }
 
         if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
             this.canProceedWithDialogue = true;
-            // TODO: FIX!
-            // this.dialogue = null;
         }
     }
 
