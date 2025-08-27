@@ -23,7 +23,7 @@ public class DialogueOptionsRender {
 
     private String clicked;
     private DynamicAnimation scaleAnimation;
-    private final DynamicAnimation fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 130L, 255);
+    private DynamicAnimation fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 200L, 255);
 
     private long sinceFinished = -1;
     public boolean isFinished() {
@@ -95,6 +95,9 @@ public class DialogueOptionsRender {
 
     public void mouseRelease() {
         if (this.clicked != null) {
+            this.fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 350L, 255);
+            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 250L, this.scaleAnimation.getValue());
+
             this.scaleAnimation.setTarget(1.1F);
             this.fadeAnimation.setTarget(0);
         }
