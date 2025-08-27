@@ -20,7 +20,7 @@ public class DialogueRender {
     @Getter
     private final Scenario.Dialogue dialogue;
     @Getter
-    private boolean finished;
+    private boolean finished, canSkip;
 
     private final List<StringBuilder> builders = new ArrayList<>();
     private int wordIndex, builderIndex;
@@ -71,6 +71,7 @@ public class DialogueRender {
         }
 
         this.finished = this.wordIndex - dialogue.dialogue().length() >= 10;
+        this.canSkip = this.wordIndex - dialogue.dialogue().length() >= -5;
 
         int r = 36, g = 43, b = 57;
         ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart, width, height, Color.fromRGBA(r, g, b, 220));

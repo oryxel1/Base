@@ -68,7 +68,7 @@ public class ScenarioScreen extends Screen {
         this.realDuration += (System.currentTimeMillis() - this.sinceLast);
         this.sinceLast = System.currentTimeMillis();
 
-        System.out.println("Render!-----------------------");
+        // System.out.println("Render!-----------------------");
         this.pollBackground();
         this.pollDialogueAndDialogueOptions();
         this.pollEvents();
@@ -118,7 +118,7 @@ public class ScenarioScreen extends Screen {
         }
 
         if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
-            this.canProceedWithDialogue = true;
+            this.canProceedWithDialogue = this.dialogue == null || this.dialogue.isCanSkip();
         }
     }
 
@@ -174,16 +174,16 @@ public class ScenarioScreen extends Screen {
         if (newDialogue != null) {
             boolean update = true;
             if (newDialogueOptions != null) {
-                System.out.println(newDialogueOptions + "," + newDialogue);
+                // System.out.println(newDialogueOptions + "," + newDialogue);
                 update = newDialogueOptions.time() >= newDialogue.time();
             }
 
             if (update) {
                 this.canProceedWithDialogue = false;
-                System.out.println("Yep: " + newDialogue);
+                // System.out.println("Yep: " + newDialogue);
                 setDialogue(new DialogueRender(newDialogue));
                 this.alreadyPlays.add(newDialogue);
-                System.out.println("Proceed: " + this.canProceedWithDialogue);
+                // System.out.println("Proceed: " + this.canProceedWithDialogue);
             }
         }
 
@@ -195,7 +195,7 @@ public class ScenarioScreen extends Screen {
 
             if (update) {
                 this.canProceedWithDialogue = false;
-                System.out.println(newDialogueOptions);
+                // System.out.println(newDialogueOptions);
                 setDialogueOptions(new DialogueOptionsRender(this, newDialogueOptions));
                 this.alreadyPlays.add(newDialogueOptions);
             }
@@ -203,7 +203,7 @@ public class ScenarioScreen extends Screen {
 
         if (this.dialogueOptions == null && this.canProceedWithDialogue) {
             setDialogue(null);
-            System.out.println("Set null here!");
+            // System.out.println("Set null here!");
             this.canProceedWithDialogue = false;
         }
     }
@@ -227,7 +227,7 @@ public class ScenarioScreen extends Screen {
                 continue;
             }
 
-            System.out.println("Play: " + timestamp);
+            // System.out.println("Play: " + timestamp);
 
             this.alreadyPlays.add(timestamp);
             timestamp.events().forEach(event -> {
@@ -292,16 +292,16 @@ public class ScenarioScreen extends Screen {
     private void setDialogue(DialogueRender dialogue) {
         if (this.dialogue != null) {
             this.donePlayings.add(this.dialogue.getDialogue());
-            System.out.println("Add: " + this.dialogue.getDialogue());
+            // System.out.println("Add: " + this.dialogue.getDialogue());
         }
         this.dialogue = dialogue;
-        System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
+        // System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
     }
 
     private void setDialogueOptions(DialogueOptionsRender dialogueOptions) {
         if (this.dialogueOptions != null) {
             this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
-            System.out.println("Add: " + this.dialogueOptions.getDialogueOptions());
+            // System.out.println("Add: " + this.dialogueOptions.getDialogueOptions());
         }
         this.dialogueOptions = dialogueOptions;
     }
