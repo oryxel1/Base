@@ -108,7 +108,7 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        if (this.dialogueOptions != null) {
+        if (this.dialogueOptions == null && this.dialogue == null) {
             final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
             for (final Scenario.Dialogue dialogue : dialogues) {
                 if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
@@ -143,7 +143,7 @@ public class ScenarioScreen extends Screen {
             }
         }
 
-        if (newDialogueOptions != null) {
+        if (newDialogueOptions != null && (this.dialogue == null || this.dialogue.isFinished())) {
             boolean update = true;
             if (newDialogue != null) {
                 update = newDialogue.time() > newDialogueOptions.time();
