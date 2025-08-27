@@ -21,7 +21,6 @@ public class Sprite {
     private final long start, end;
 
     private DynamicAnimation xLocation, yLocation;
-    private int targetX, targetY;
 
     public Sprite(String path, long start, long end, int x, int y) {
         this.path = path;

@@ -88,6 +88,48 @@ public class ScenarioRenderTest {
                 .cutscene(false)
                 .build());
 
+        dialogues.add(Scenario.Dialogue.builder().dialogue("(move)")
+                .time(206L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("Hina and I found a bench and sat side-by-side.")
+                .time(206L).name("").association("")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
+                .time(206L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm.")
+                .time(206L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
+                .time(207L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
+                .time(208L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
+        dialogues.add(Scenario.Dialogue.builder().dialogue("(stands up) Nope. This isn't doing it for me.")
+                .time(208L).name("Hina").association("Prefect Team")
+                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
+                .cutscene(false)
+                .build());
+
         scenario.getDialogues().put(0, dialogues);
 
         scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg",

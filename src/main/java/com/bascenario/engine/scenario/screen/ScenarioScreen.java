@@ -67,6 +67,7 @@ public class ScenarioScreen extends Screen {
         this.duration += deltaTime;
         this.realDuration += (System.currentTimeMillis() - this.sinceLast);
         this.sinceLast = System.currentTimeMillis();
+        // System.out.println(this.duration);
 
         // System.out.println("Render!-----------------------");
         this.pollBackground();
@@ -227,6 +228,8 @@ public class ScenarioScreen extends Screen {
                 continue;
             }
 
+            this.duration = timestamp.time();
+
             // System.out.println("Play: " + timestamp);
 
             this.alreadyPlays.add(timestamp);
@@ -258,6 +261,7 @@ public class ScenarioScreen extends Screen {
                 continue;
             }
 
+            this.duration = background.start();
             selected = background;
         }
 
@@ -295,6 +299,9 @@ public class ScenarioScreen extends Screen {
             // System.out.println("Add: " + this.dialogue.getDialogue());
         }
         this.dialogue = dialogue;
+        if (dialogue != null) {
+            this.duration = this.dialogue.getDialogue().time();
+        }
         // System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
     }
 
@@ -304,6 +311,9 @@ public class ScenarioScreen extends Screen {
             // System.out.println("Add: " + this.dialogueOptions.getDialogueOptions());
         }
         this.dialogueOptions = dialogueOptions;
+        if (dialogueOptions != null) {
+            this.duration = this.dialogueOptions.getDialogueOptions().time();
+        }
     }
 
     private boolean canPickupTimestamp(long time) {
