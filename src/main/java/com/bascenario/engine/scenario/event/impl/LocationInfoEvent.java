@@ -36,29 +36,27 @@ public class LocationInfoEvent extends Event {
         }
 
         float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
-        Font font = FontUtil.getFont("NotoSansSemiBold", Math.round(0.03F * ((width + height) / 2F)));
+        Font font = FontUtil.getFont("NotoSansSemiBold", Math.round(0.02666666666F * ((width + height) / 2F)));
 
         final TextRun text = TextRun.fromString(font, this.location, Color.fromRGBA(255, 255, 255, Math.round(this.textFade.getValue())));
 
-        float locationY = 0.14457831325F * height;
+        float locationY = (0.18518518518F * height);
         float sizeY = 0.06F * height;
-        float sizeWidth = ThinGL.rendererText().getExactWidth(text.shape()) + 100;
+        float sizeWidth = ThinGL.rendererText().getExactWidth(text.shape()) + 85;
 
         Color color = Color.fromRGBA(255, 255, 255, Math.round(this.popupFade.getValue()));
         ThinGL.renderer2D().filledRectangle(
                 positionMatrix, 0, locationY, sizeWidth, locationY + sizeY,
                 Color.fromRGBA(85, 91, 124, Math.round(this.popupFade.getValue()))
         );
-        float separatorY = locationY + (sizeY / 2) - ((sizeY / 1.5F) / 2);
+        float separatorY = locationY + (sizeY / 2) - ((sizeY / 2F) / 2);
         ThinGL.renderer2D().filledRectangle(
-                positionMatrix, 20, separatorY, 25, separatorY + (sizeY / 1.5F),
+                positionMatrix, 30, separatorY, 35, separatorY + (sizeY / 2F),
                 Color.fromRGBA(182, 182, 182, Math.round(this.popupFade.getValue()))
         );
         ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/location_popup.png"),
                 sizeWidth, locationY,  30,  sizeY, color);
 
-        ThinGL.rendererText().textRun(positionMatrix, text, 40, locationY + (sizeY / 2) - (ThinGL.rendererText().getExactHeight(text.shape()) / 2));
-
-
+        ThinGL.rendererText().textRun(positionMatrix, text, 56, locationY + (sizeY / 2) - (ThinGL.rendererText().getExactHeight(text.shape()) / 2));
     }
 }

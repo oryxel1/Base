@@ -22,7 +22,6 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 
 public class MainRendererWindow extends GLFWApplicationRunner {
-    @Setter
     @Getter
     private Screen currentScreen;
 

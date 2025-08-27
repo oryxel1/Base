@@ -30,7 +30,7 @@ public class ScenarioRenderTest {
 //                .cutscene(false)
 //                .build());
 
-        dialogues.add(Scenario.Dialogue.builder().dialogue("...Hi, Sensei.")
+        dialogues.add(Scenario.Dialogue.builder().dialogue("Hi, Sensei.")
                 .time(200L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
