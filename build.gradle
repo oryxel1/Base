@@ -18,6 +18,8 @@ repositories {
             includeModule "org.lwjgl", "lwjgl-sdl"
         }
     }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
@@ -56,6 +58,10 @@ dependencies {
         implementation "org.lwjgl:lwjgl-meshoptimizer:3.3.6:$it"
         implementation "org.lwjgl:lwjgl-par:3.3.6:$it"
     }
+
+    // Mostly just to parse spine.
+    implementation "com.badlogicgames.gdx:gdx:1.13.1"
+    implementation("com.esotericsoftware.spine:spine-libgdx:3.8.99.2-SNAPSHOT")
 }
 
 test {
