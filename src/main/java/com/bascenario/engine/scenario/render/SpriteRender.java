@@ -82,8 +82,8 @@ public class SpriteRender {
 
         final WindowInterface window = ThinGL.windowInterface();
 
-        // The position is relative to the screen width/height, also the position should be flip.
-        final float posX = (this.xLocation.getValue() / 100) * -window.getFramebufferWidth(), posY = (this.yLocation.getValue() / 100) * -window.getFramebufferHeight();
+        // The position is relative to the screen width/height, also the y position should be flip.
+        final float posX = (this.xLocation.getValue() / 100) * window.getFramebufferWidth(), posY = (this.yLocation.getValue() / 100) * -window.getFramebufferHeight();
         this.skeleton.setPosition(posX, posY);
         this.skeletonFade.setPosition(posX, posY);
 

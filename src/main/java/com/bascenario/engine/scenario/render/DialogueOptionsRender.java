@@ -3,6 +3,7 @@ package com.bascenario.engine.scenario.render;
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
+import com.bascenario.util.math.MathUtil;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -89,7 +90,7 @@ public class DialogueOptionsRender {
 
             TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
             if (ThinGL.rendererText().getExactWidth(textRun.shape()) > buttonWidth - 100) {
-                fontSize = Math.round(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));
+                fontSize = MathUtil.ceil(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));
             }
             textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
 

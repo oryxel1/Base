@@ -114,13 +114,13 @@ public class ScenarioScreen extends Screen {
 
                 RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
             }
-
-            this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
         });
 
         this.sprites.forEach(sprite -> sprite.render(this.duration));
 
         RenderUtil.render(() -> {
+            this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
+
             if (this.dialogue != null) {
                 this.dialogue.render(positionMatrix, window);
             }

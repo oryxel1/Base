@@ -1,8 +1,5 @@
 import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.engine.scenario.event.impl.LocationInfoEvent;
-import com.bascenario.engine.scenario.event.impl.RedirectDialogueEvent;
-import com.bascenario.engine.scenario.event.impl.SpriteAnimationEvent;
-import com.bascenario.engine.scenario.event.impl.SpriteLocationEvent;
+import com.bascenario.engine.scenario.event.impl.*;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
@@ -53,26 +50,47 @@ public class ScenarioRenderTest {
                 .build());
         scenario.getDialogues().put(0, dialogues);
 
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                202L, List.of(new DialogueLockEvent(true))));
+
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
                 .time(202L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                203L, List.of(new SpriteLocationEvent(1200, hinaSprite, 300, 50))));
+
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                702L, List.of(new DialogueLockEvent(false))));
+
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                702L, List.of(new SpriteLocationEvent(1200, hinaSprite, 0, 50))));
+
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                702L, List.of(new SpriteAnimationEvent(hinaSprite, "00", 1, true))));
+
         dialogues.add(Scenario.Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
-                .time(203L).name("Hina").association("Prefect Team")
+                .time(703L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
+
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                703L, List.of(new SpriteAnimationEvent(hinaSprite, "04", 1, true))));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("I still haven't slept, and I have bags under my eyes. Not to mention my hair is a mess since I didn't wash it...")
-                .time(204L).name("Hina").association("Prefect Team")
+                .time(704L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                704L, List.of(new SpriteAnimationEvent(hinaSprite, "06", 1, true))));
+
         dialogues.add(Scenario.Dialogue.builder().dialogue("It's your fault for asking me to meet you like this!")
-                .time(205L).name("Hina").association("Prefect Team")
+                .time(705L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
@@ -80,63 +98,67 @@ public class ScenarioRenderTest {
         final LinkedHashMap<String, Integer> map1 = new LinkedHashMap<>();
         map1.put("Ask Hina to take a break because she looks like she's about to fall over.", 1);
         map1.put("Ask Hina to sit on a bench and photosynthesize with you.", 2);
-        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(205L, map1));
+        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(705L, map1));
         scenario.getDialogues().put(1, List.of(Scenario.Dialogue.builder().dialogue("What? You just want to sit on a bench and take in the sun...?")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(706L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build()));
         scenario.getDialogues().put(2, List.of(Scenario.Dialogue.builder().dialogue("Photosynthesize...? What am I, a plant?")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(706L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build()));
-        scenario.getTimestamps().add(new Scenario.Timestamp(206L, List.of(new RedirectDialogueEvent(0))));
+        scenario.getTimestamps().add(new Scenario.Timestamp(706L, List.of(new RedirectDialogueEvent(0))));
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                705L, List.of(new SpriteAnimationEvent(hinaSprite, "14", 1, true))));
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                706L, List.of(new SpriteAnimationEvent(hinaSprite, "00", 1, true))));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("I'll give you that the weather is nice today...")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(707L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("(move)")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(707L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hina and I found a bench and sat side-by-side.")
-                .time(206L).name("").association("")
+                .time(707L).name("").association("")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(706L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm.")
-                .time(206L).name("Hina").association("Prefect Team")
+                .time(706L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-                .time(207L).name("Hina").association("Prefect Team")
+                .time(707L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-                .time(208L).name("Hina").association("Prefect Team")
+                .time(708L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("(stands up) Nope. This isn't doing it for me.")
-                .time(208L).name("Hina").association("Prefect Team")
+                .time(708L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
