@@ -3,7 +3,6 @@ package com.bascenario.engine.scenario.event.impl;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
-import com.bascenario.util.RenderUtil;
 import com.bascenario.util.render.FontUtil;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;

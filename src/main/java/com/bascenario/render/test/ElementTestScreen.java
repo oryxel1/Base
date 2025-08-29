@@ -4,9 +4,8 @@ import com.bascenario.launcher.Launcher;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;
-import com.bascenario.util.RenderUtil;
+import com.bascenario.util.render.RenderUtil;
 import com.bascenario.util.render.FontUtil;
-import com.bascenario.util.render.MathUtil;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
@@ -82,20 +81,24 @@ public class ElementTestScreen extends Screen {
 
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
-        RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), "/cool.jpg");
+        RenderUtil.render(() -> {
+            RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), "/cool.jpg");
 
-        if (!this.appear) {
-            RenderUtil.blurRectangle(positionMatrix, 0, 0, window.getFramebufferWidth(), window.getFramebufferHeight(), 3);
-        }
+            if (!this.appear) {
+                RenderUtil.blurRectangle(positionMatrix, 0, 0, window.getFramebufferWidth(), window.getFramebufferHeight(), 3);
+            }
+        });
 
         super.render(positionMatrix, window, mouseX, mouseY);
 
-        if (this.appear) {
-            ThinGL.rendererText().textRun(positionMatrix, TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Yay! No more blur!"), 50, 50);
-        }
-        
-        ThinGL.renderer2D().outlinedCircle(positionMatrix, 50, 400, 50, Color.WHITE, 3);
-        ThinGL.renderer2D().outlinedCircle(positionMatrix, 150, 400, 50, Color.WHITE, 3);
-        ThinGL.renderer2D().outlinedCircle(positionMatrix, 250, 400, 50, Color.WHITE, 3);
+        RenderUtil.render(() -> {
+            if (this.appear) {
+                ThinGL.rendererText().textRun(positionMatrix, TextRun.fromString(FontUtil.getFont("NotoSansRegular", 15), "Yay! No more blur!"), 50, 50);
+            }
+
+            ThinGL.renderer2D().outlinedCircle(positionMatrix, 50, 400, 50, Color.WHITE, 3);
+            ThinGL.renderer2D().outlinedCircle(positionMatrix, 150, 400, 50, Color.WHITE, 3);
+            ThinGL.renderer2D().outlinedCircle(positionMatrix, 250, 400, 50, Color.WHITE, 3);
+        });
     }
 }

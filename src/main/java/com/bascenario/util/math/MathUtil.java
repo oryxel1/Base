@@ -1,4 +1,4 @@
-package com.bascenario.util.render;
+package com.bascenario.util.math;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;

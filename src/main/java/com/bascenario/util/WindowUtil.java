@@ -1,9 +1,6 @@
-package com.bascenario.util.render;
+package com.bascenario.util;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
-
-import java.awt.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 

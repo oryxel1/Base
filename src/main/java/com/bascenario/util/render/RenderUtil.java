@@ -1,17 +1,33 @@
-package com.bascenario.util;
+package com.bascenario.util.render;
 
 import com.bascenario.render.manager.TextureManager;
-import com.bascenario.util.render.MathUtil;
+import com.bascenario.util.math.MathUtil;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.resource.image.texture.Texture2D;
+import net.raphimc.thingl.util.DefaultGLStates;
 import org.joml.Matrix4fStack;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11C;
 
 import java.io.File;
 
 public class RenderUtil {
+    public static void render(final Runnable runnable) {
+        final int width = ThinGL.windowInterface().getFramebufferWidth();
+        final int height = ThinGL.windowInterface().getFramebufferHeight();
+        ThinGL.globalUniforms().getViewMatrix().pushMatrix().identity();
+        ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, width, height, 0F, -1000F, 1000F);
+        DefaultGLStates.push();
+        ThinGL.glStateStack().disable(GL11C.GL_DEPTH_TEST);
+        runnable.run();
+        ThinGL.glStateStack().enable(GL11C.GL_DEPTH_TEST);
+        DefaultGLStates.pop();
+        ThinGL.globalUniforms().getProjectionMatrix().popMatrix();
+        ThinGL.globalUniforms().getViewMatrix().popMatrix();
+    }
+
     public static void blurRectangle(final Matrix4fStack positionMatrix, float x, float y, float width, float height, int strength) {
         ThinGL.programs().getGaussianBlur().bindInput();
         ThinGL.renderer2D().filledRectangle(positionMatrix, x, y, x + width, y + height, Color.WHITE);

@@ -1,5 +1,7 @@
 package com.bascenario.launcher;
 
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.bascenario.render.MainRendererWindow;
 import com.bascenario.render.api.Screen;
 
@@ -11,8 +13,11 @@ public class Launcher {
     }
 
     public static void launch(Screen screen, boolean fullScreen) {
-//        AudioManager.getInstance().play(new File("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg"));
+        Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
+        configuration.setTitle("Blue Archive Scenario Engine.");
+//        configuration.setWindowSizeLimits(1280, 899, -1, -1);
+
         WINDOW = new MainRendererWindow(screen, fullScreen);
-        WINDOW.launch();
+        new Lwjgl3Application(WINDOW, configuration);
     }
 }

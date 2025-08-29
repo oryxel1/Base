@@ -6,7 +6,7 @@ import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
 import com.bascenario.render.api.Screen;
-import com.bascenario.util.RenderUtil;
+import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +14,7 @@ import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
@@ -79,28 +80,34 @@ public class ScenarioScreen extends Screen {
 
         this.pollDialogueAgain = false;
 
-        if (this.background != null) {
-            Color color;
-            if (this.backgroundFadeOut != null) {
-                color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
-            } else if (this.backgroundFadeIn != null) {
-                color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeIn.getValue()));
-            } else {
-                color = Color.WHITE;
+        RenderUtil.render(() -> {
+            if (this.background != null) {
+                Color color;
+                if (this.backgroundFadeOut != null) {
+                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
+                } else if (this.backgroundFadeIn != null) {
+                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeIn.getValue()));
+                } else {
+                    color = Color.WHITE;
+                }
+
+                RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
             }
 
-            RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
-        }
+            this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
+        });
 
-        this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
+        this.scenario.getSprites().forEach(sprite -> sprite.render(this.duration));
 
-        if (this.dialogue != null) {
-            this.dialogue.render(positionMatrix, window);
-        }
+        RenderUtil.render(() -> {
+            if (this.dialogue != null) {
+                this.dialogue.render(positionMatrix, window);
+            }
 
-        if (this.dialogueOptions != null) {
-            this.dialogueOptions.render(positionMatrix, window);
-        }
+            if (this.dialogueOptions != null) {
+                this.dialogueOptions.render(positionMatrix, window);
+            }
+        });
     }
 
     @Override
