@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.*;
 
 public class ScenarioScreen extends Screen {
+    private static final Background NULL_BACKGROUND = new Background("", false, false);
+
     @Getter
     private final Scenario scenario;
     private final List<Scenario.Timestamp> copiedAlls = new ArrayList<>();
@@ -73,7 +75,7 @@ public class ScenarioScreen extends Screen {
         this.sinceRender = System.currentTimeMillis();
 
         RenderUtil.render(() -> {
-            if (this.background != null) {
+            if (this.background != null && this.background != NULL_BACKGROUND) {
                 Color color;
                 if (this.backgroundFadeOut != null) {
                     color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
@@ -178,6 +180,10 @@ public class ScenarioScreen extends Screen {
     }
 
     public void setBackground(Background background, boolean skipFadeOut) {
+        if (background == null) {
+            background = NULL_BACKGROUND;
+        }
+
         if (this.background != null && this.background.fadeOut() && !skipFadeOut) {
             this.queueBackground = background;
             this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
