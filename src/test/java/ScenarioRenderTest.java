@@ -1,11 +1,9 @@
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.*;
 import com.bascenario.engine.scenario.event.impl.*;
-import com.bascenario.engine.scenario.event.impl.dialogue.CloseDialogueEvent;
 import com.bascenario.engine.scenario.event.impl.dialogue.PlayDialogueEvent;
 import com.bascenario.engine.scenario.event.impl.dialogue.RedirectDialogueEvent;
 import com.bascenario.engine.scenario.event.impl.dialogue.ShowDialogueOptionEvent;
-import com.bascenario.engine.scenario.event.impl.lock.LockClickEvent;
 import com.bascenario.engine.scenario.event.impl.sound.PlaySoundEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteAnimationEvent;
@@ -140,49 +138,14 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("Hina and I found a bench and sat side-by-side.")
-//                .time(707L).name("").association("")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-//                .time(707L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm.")
-//                .time(708L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-//                .time(709L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-//                .time(710L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("(stands up) Nope. This isn't doing it for me.")
-//                .time(711L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        scenario.getDialogues().put(0, dialogues);
-//
-//        scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg",
-//                -1, 1, 300L));
-//
-//        System.out.println(Arrays.toString(scenario.getDialogueOptions().toArray()));
-//
+        scenario.add(true, 1, new PlayDialogueEvent(Dialogue.builder().dialogue("Hina and I found a bench and sat side-by-side.")
+                .name("").association("")
+                .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                .cutscene(false)
+                .build()));
+
+//        System.out.println(scenario.toJson().toString());
+
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
             Launcher.launch(new ScenarioScreen(scenario), fullScreen);

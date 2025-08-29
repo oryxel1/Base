@@ -1,6 +1,5 @@
 package com.bascenario.engine.scenario.event.impl.sprite;
 
-import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.render.SpriteRender;

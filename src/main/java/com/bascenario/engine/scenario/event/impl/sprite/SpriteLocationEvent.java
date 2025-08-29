@@ -1,6 +1,5 @@
 package com.bascenario.engine.scenario.event.impl.sprite;
 
-import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.render.SpriteRender;
@@ -9,7 +8,7 @@ import com.bascenario.engine.scenario.screen.ScenarioScreen;
 public class SpriteLocationEvent extends Event {
     private final Sprite sprite;
     private final float x, y;
-    public SpriteLocationEvent(long duration, Sprite sprite, int x, int y) {
+    public SpriteLocationEvent(long duration, Sprite sprite, float x, float y) {
         super(duration);
         this.sprite = sprite;
         this.x = x;

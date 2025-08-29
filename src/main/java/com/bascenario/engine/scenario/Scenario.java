@@ -2,6 +2,7 @@ package com.bascenario.engine.scenario;
 
 import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.elements.Sound;
+import com.bascenario.engine.scenario.event.EventSerializer;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +18,12 @@ import java.util.*;
 @Getter
 @Builder
 public class Scenario {
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+            .registerTypeAdapter(Event.class, new EventSerializer())
+            .create();
+    public static Scenario fromJson(String json) {
+        return GSON.fromJson(json.trim(), Scenario.class);
+    }
 
     private final String name;
 
