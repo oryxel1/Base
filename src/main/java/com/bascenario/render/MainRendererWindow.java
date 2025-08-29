@@ -32,19 +32,13 @@ public class MainRendererWindow extends ApplicationAdapter {
 
     private double mouseX, mouseY;
 
-    private final boolean fullscreen;
-    public MainRendererWindow(Screen screen, boolean fullscreen) {
-        this.fullscreen = fullscreen;
+    public MainRendererWindow(Screen screen) {
         setCurrentScreen(screen);
     }
 
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle();
-        // Fix libgdx full screen lol.
-        if (this.fullscreen) {
-            WindowUtil.setFullScreen(windowHandle, true);
-        }
 
         new ThinGL(new GLFWWindowInterface(windowHandle)) {
             @Override

@@ -209,7 +209,7 @@ public class ScenarioScreen extends Screen {
 
             if (update) {
                 this.canProceedWithDialogue = false;
-                // System.out.println("Yep: " + newDialogue);
+                 System.out.println("Yep: " + newDialogue);
                 setDialogue(new DialogueRender(newDialogue));
                 this.alreadyPlays.add(newDialogue);
                 // System.out.println("Proceed: " + this.canProceedWithDialogue);

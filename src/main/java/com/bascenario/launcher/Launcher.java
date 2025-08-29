@@ -15,9 +15,13 @@ public class Launcher {
     public static void launch(Screen screen, boolean fullScreen) {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Blue Archive Scenario Engine.");
-//        configuration.setWindowSizeLimits(1280, 899, -1, -1);
+        configuration.setWindowedMode(1280, 899);
+        configuration.setWindowSizeLimits(1280, 899, -1, -1);
+        if (fullScreen) {
+            configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+        }
 
-        WINDOW = new MainRendererWindow(screen, fullScreen);
+        WINDOW = new MainRendererWindow(screen);
         new Lwjgl3Application(WINDOW, configuration);
     }
 }
