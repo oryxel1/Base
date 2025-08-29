@@ -182,12 +182,6 @@ public class ScenarioScreen extends Screen {
                 if (event.getDuration() > 0) {
                     this.events.add(new EventRenderer(event));
                 }
-
-                if (event instanceof AddSpriteEvent add) {
-                    final SpriteRender spriteRender = new SpriteRender(add.getSprite());
-                    spriteRender.init();
-                    this.sprites.add(spriteRender);
-                }
             });
             iterator.remove();
         }

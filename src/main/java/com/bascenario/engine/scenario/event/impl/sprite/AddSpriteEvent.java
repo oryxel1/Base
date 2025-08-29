@@ -16,6 +16,8 @@ public class AddSpriteEvent extends Event {
 
     @Override
     public void onStart(ScenarioScreen screen) {
-        screen.getSprites().add(new SpriteRender(this.sprite));
+        final SpriteRender spriteRender = new SpriteRender(this.sprite);
+        spriteRender.init();
+        screen.getSprites().add(spriteRender);
     }
 }

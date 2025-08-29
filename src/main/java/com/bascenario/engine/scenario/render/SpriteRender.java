@@ -103,14 +103,13 @@ public class SpriteRender {
         this.batch.getProjectionMatrix().set(camera.combined);
 
         this.batch.begin();
-        this.skeleton.setColor(new Color(1, 1, 1, 1));
         this.renderer.draw(this.batch, this.skeleton);
         this.batch.end();
 
-        this.fadeBatch.getProjectionMatrix().set(camera.combined);
-
         // Now we can render!
         if (this.fadeColor.isRunning()) {
+            this.fadeBatch.getProjectionMatrix().set(camera.combined);
+
             this.fadeBatch.begin();
             this.skeletonFade.setColor(new Color(0, 0, 0, this.fadeColor.getValue()));
             this.renderer.draw(this.fadeBatch, this.skeletonFade);
