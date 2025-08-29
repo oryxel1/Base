@@ -2,6 +2,7 @@ package com.bascenario.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,24 @@ public class AudioManager {
     private final Map<String, CachedMusic> nameToMusics = new HashMap<>();
 
     @SneakyThrows
-    public void play(String path) {
-        Music music = Gdx.audio.newMusic(new FileHandle(path));
-        music.play();
+    public void play(String path, boolean loop) {
+        long id = -1;
+        final Object object;
+        if (path.contains(".wav")) {
+            object = Gdx.audio.newSound(new FileHandle(path));
+            id = ((Sound)object).play();
+            if (loop) {
+                ((Sound)object).loop();
+            }
+        } else {
+            object = Gdx.audio.newMusic(new FileHandle(path));
+            ((Music)object).play();
+            if (loop) {
+                ((Music)object).setLooping(true);
+            }
+        }
 
-        this.nameToMusics.put(path, new CachedMusic(music));
+        this.nameToMusics.put(path, new CachedMusic(id, object));
     }
 
     public boolean fadeOut(String name) {
@@ -45,9 +59,18 @@ public class AudioManager {
         }
 
         float volume = music.fadeOut.getValue();
-        music.music.setVolume(volume);
+
+        if (music.music instanceof Sound sound) {
+            sound.setVolume(music.id, volume);
+        } else if (music.music instanceof Music music1) {
+            music1.setVolume(volume);
+        }
         if (volume <= 0.001) {
-            music.music.stop();
+            if (music.music instanceof Sound sound) {
+                sound.stop(music.id);
+            } else if (music.music instanceof Music music1) {
+                music1.stop();
+            }
             this.nameToMusics.remove(name);
             return true;
         }
@@ -61,17 +84,18 @@ public class AudioManager {
             return;
         }
 
-        music.music.stop();
-    }
-
-    public void loop(String name) {
-        this.nameToMusics.get(name).music.setLooping(true);
+        if (music.music instanceof Sound sound) {
+            sound.stop(music.id);
+        } else if (music.music instanceof Music music1) {
+            music1.stop();
+        }
     }
 
     @RequiredArgsConstructor
     @Setter
     public static class CachedMusic {
-        private final Music music;
+        private final long id;
+        private final Object music;
         private final DynamicAnimation fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 1000L, 1);
         private boolean fadingOut;
     }

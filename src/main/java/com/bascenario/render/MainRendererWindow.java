@@ -139,7 +139,7 @@ public class MainRendererWindow extends ApplicationAdapter {
         final Iterator<Scenario.Sound> soundIterator = this.playingSounds.iterator();
         while (soundIterator.hasNext()) {
             Scenario.Sound sound = soundIterator.next();
-            if (sound == null || sound.end() > time) {
+            if (sound == null || sound.end() > time || sound.end() == 0) {
                 break;
             }
 
@@ -167,13 +167,11 @@ public class MainRendererWindow extends ApplicationAdapter {
                 continue;
             }
 
+            System.out.println("Play sound: " + sound);
             this.playedSounds.add(sound);
             this.playingSounds.add(sound);
             // System.out.println("add playing sound!: " + sound);
-            AudioManager.getInstance().play(sound.path());
-            if (sound.end() < 0) {
-                AudioManager.getInstance().loop(sound.path());
-            }
+            AudioManager.getInstance().play(sound.path(), sound.end() < 0);
         }
     }
 }
