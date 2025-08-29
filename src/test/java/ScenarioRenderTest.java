@@ -1,10 +1,17 @@
 import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.elements.*;
 import com.bascenario.engine.scenario.event.impl.*;
+import com.bascenario.engine.scenario.event.impl.dialogue.CloseDialogueEvent;
+import com.bascenario.engine.scenario.event.impl.dialogue.PlayDialogueEvent;
+import com.bascenario.engine.scenario.event.impl.dialogue.ShowDialogueOptionEvent;
+import com.bascenario.engine.scenario.event.impl.lock.LockClickEvent;
+import com.bascenario.engine.scenario.event.impl.sound.PlaySoundEvent;
+import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
+import com.bascenario.engine.scenario.event.impl.sprite.SpriteAnimationEvent;
+import com.bascenario.engine.scenario.event.impl.sprite.SpriteLocationEvent;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
-import com.bascenario.render.MainRendererWindow;
 
 import java.util.*;
 
@@ -14,59 +21,53 @@ public class ScenarioRenderTest {
                 "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\01_Background\\BG_RiversideRoad.jpg",
                 false, false);
 
-//        Scenario scenario = Scenario.builder()
-//                .name("Warm Sunshine").previewBackground(background)
-//                .build();
-//        scenario.getBackgrounds().add(background);
-//
-//        scenario.getTimestamps().add(new Scenario.Timestamp(
-//                200L, List.of(new LocationInfoEvent("A Riverside Road on the Outskirts of Gehenna"))
-//        ));
-//
-//        final Scenario.Sprite hinaSprite = new Scenario.Sprite(
-//                "C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas",
-//                "Idle_01", 200, -1, true
-//        );
-//        scenario.getSprites().add(hinaSprite);
-//        scenario.getTimestamps().add(new Scenario.Timestamp(
-//                0, List.of(new SpriteLocationEvent(0, hinaSprite, 0, 50), new SpriteAnimationEvent(hinaSprite, "15",
-//                1, true))));
-//
-//        final List<Scenario.Dialogue> dialogues = new ArrayList<>();
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("Hi, Sensei.")
-//                .time(201L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-//        map.put("\"What's with the scowl, Hina?\"", 0);
-//        map.put("\"Why so serious?\"", 0);
-//        scenario.getDialogueOptions().add(new Scenario.DialogueOptions(201L, map));
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("Hmm?")
-//                .time(202L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//        scenario.getDialogues().put(0, dialogues);
-//
-//        scenario.getTimestamps().add(new Scenario.Timestamp(202L, List.of(new DialogueLockEvent(true))));
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-//                .time(203L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
-//        scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\SE_Run_03.wav", 203L, 0, -1));
-//        scenario.getTimestamps().add(new Scenario.Timestamp(203L, List.of(new SpriteLocationEvent(1200, hinaSprite, 300, 50))));
-//
-////        scenario.getTimestamps().add(new Scenario.Timestamp(202L, List.of(new DialogueLockQueueEvent(1910, false))));
-//
-//        scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\SE_Run_04.wav", 700L, 0, -1));
-//        scenario.getTimestamps().add(new Scenario.Timestamp(
-//                702L, List.of(new SpriteLocationEvent(1200, hinaSprite, 0, 50))));
+        Scenario scenario = Scenario.builder()
+                .name("Warm Sunshine").previewBackground(background)
+                .build();
+
+        final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
+        scenario.add(0, new SetBackgroundEvent(background),
+                new AddSpriteEvent(hinaSprite),
+                new SpriteLocationEvent(0, hinaSprite, 0, 50),
+                new SpriteAnimationEvent(hinaSprite, "15", 1, true)
+        );
+
+        scenario.add(200, new LocationInfoEvent("A Riverside Road on the Outskirts of Gehenna"));
+//        scenario.add(0, new LockClickEvent(true));
+        scenario.add(0, new PlayDialogueEvent(Dialogue.builder().dialogue("Hi, Sensei.")
+                .name("Hina").association("Prefect Team")
+                .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                .cutscene(false)
+                .build()));
+
+        {
+            final LinkedHashMap<String, Integer> options = new LinkedHashMap<>();
+            options.put("\"What's with the scowl, Hina?\"", 0);
+            options.put("\"Why so serious?\"", 0);
+
+            scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(options)));
+        }
+
+        scenario.add(true, 1, new PlayDialogueEvent(Dialogue.builder().dialogue("Hmm?")
+                .name("Hina").association("Prefect Team")
+                .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                .cutscene(false)
+                .build()));
+        scenario.add(true, 1, new PlayDialogueEvent(Dialogue.builder().dialogue("...")
+                .name("Hina").association("Prefect Team")
+                .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                .cutscene(false)
+                .build()));
+
+        scenario.add(true, 1,
+                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_03.wav", -1), false),
+                new SpriteLocationEvent(800, hinaSprite, 300, 50)
+        );
+        scenario.add(800, new SpriteAnimationEvent(hinaSprite, "02", 1, true));
+        scenario.add(400,
+                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_04.wav", -1), false),
+                new SpriteLocationEvent(800, hinaSprite, 0, 50)
+        );
 //
 //        scenario.getTimestamps().add(new Scenario.Timestamp(
 //                702L, List.of(new SpriteAnimationEvent(hinaSprite, "02", 1, true))));
@@ -170,11 +171,11 @@ public class ScenarioRenderTest {
 //
 //        System.out.println(Arrays.toString(scenario.getDialogueOptions().toArray()));
 //
-//        boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
-//        if (args.length > 0 && args[0].equals("skip-preview")) {
-//            Launcher.launch(new ScenarioScreen(scenario), fullScreen);
-//        } else {
-//            Launcher.launch(new ScenarioPreviewScreen(scenario), fullScreen);
-//        }
+        boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
+        if (args.length > 0 && args[0].equals("skip-preview")) {
+            Launcher.launch(new ScenarioScreen(scenario), fullScreen);
+        } else {
+            Launcher.launch(new ScenarioPreviewScreen(scenario), fullScreen);
+        }
     }
 }

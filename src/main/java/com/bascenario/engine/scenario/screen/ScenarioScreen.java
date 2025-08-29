@@ -40,10 +40,23 @@ public class ScenarioScreen extends Screen {
 
     @Getter @Setter
     private int dialogueIndex = 0;
-    @Getter @Setter
+    @Getter
     private DialogueRender dialogue;
-    @Getter @Setter
+    private boolean isDialogueBusy;
+
+    public void setDialogue(DialogueRender dialogue) {
+        this.dialogue = dialogue;
+        this.isDialogueBusy = this.dialogue != null;
+    }
+
+    @Getter
     private DialogueOptionsRender dialogueOptions;
+    private boolean isDialogueOptionsBusy;
+
+    public void setDialogueOptions(DialogueOptionsRender dialogueOptions) {
+        this.dialogueOptions = dialogueOptions;
+        this.isDialogueOptionsBusy = this.dialogueOptions != null;
+    }
 
     @Setter
     private boolean lockClick;
@@ -68,7 +81,7 @@ public class ScenarioScreen extends Screen {
 
         long timeDelta = System.currentTimeMillis() - this.sinceRender;
         this.sincePoll += timeDelta;
-        if (this.dialogue == null && this.dialogueOptions == null) {
+        if (!this.isDialogueBusy && !this.isDialogueOptionsBusy) {
             this.sinceDialogue += timeDelta;
         }
 
@@ -117,8 +130,12 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        if (DialogueRender.hasClickedDialogue(window, mouseX, mouseY) && button == 0) {
-            this.dialogue = null;
+        if (this.dialogue != null && this.dialogue.isCanSkip() && DialogueRender.hasClickedDialogue(window, mouseX, mouseY) && button == 0) {
+            if (this.dialogue.getDialogue().closeOnClick()) {
+                this.dialogue = null;
+            }
+
+            this.isDialogueBusy = false;
         }
     }
 
@@ -130,6 +147,10 @@ public class ScenarioScreen extends Screen {
     }
 
     private void poll() {
+        if (this.dialogueOptions != null && this.dialogueOptions.isFinished()) {
+            this.setDialogueOptions(null);
+        }
+
         if (this.backgroundFadeIn != null && !this.backgroundFadeIn.isRunning()) {
             this.backgroundFadeIn = null;
         }
@@ -146,15 +167,10 @@ public class ScenarioScreen extends Screen {
             final long duration = next.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
 
             if (duration < next.time()) {
-                continue;
+                break;
             }
 
-            // Reset time.
-            if (next.waitForDialogue()) {
-                this.sinceDialogue = 0;
-            } else {
-                this.sincePoll = 0;
-            }
+            this.sincePoll = this.sinceDialogue = 0;
 
             next.events().forEach(event -> {
                 event.onStart(this);
@@ -163,7 +179,9 @@ public class ScenarioScreen extends Screen {
                 }
 
                 if (event instanceof AddSpriteEvent add) {
-                    this.sprites.add(new SpriteRender(add.getSprite()));
+                    final SpriteRender spriteRender = new SpriteRender(add.getSprite());
+                    spriteRender.init();
+                    this.sprites.add(spriteRender);
                 }
             });
             iterator.remove();

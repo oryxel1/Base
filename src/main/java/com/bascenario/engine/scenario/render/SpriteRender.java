@@ -136,6 +136,9 @@ public class SpriteRender {
     }
 
     public void dispose() {
+        if (this.atlas == null) {
+            return;
+        }
         this.atlas.dispose();
     }
 }
