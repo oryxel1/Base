@@ -167,6 +167,10 @@ public class MainRendererWindow extends ApplicationAdapter {
                 continue;
             }
 
+            if (this.currentScreen instanceof ScenarioScreen screen && !screen.canPickupTimestamp(sound.start())) {
+                return;
+            }
+
             System.out.println("Play sound: " + sound);
             this.playedSounds.add(sound);
             this.playingSounds.add(sound);

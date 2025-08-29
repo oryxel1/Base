@@ -139,6 +139,11 @@ public class ScenarioScreen extends Screen {
 
         // Event use this.
         if (this.lockClick) {
+            if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
+                if (this.dialogue != null && this.dialogue.isCanSkip()) {
+                    this.donePlayings.add(this.dialogue.getDialogue());
+                }
+            }
             return;
         }
 
@@ -344,7 +349,7 @@ public class ScenarioScreen extends Screen {
         }
     }
 
-    private boolean canPickupTimestamp(long time) {
+    public boolean canPickupTimestamp(long time) {
         for (final Scenario.DialogueOptions dialogue : scenario.getDialogueOptions()) {
             if (this.donePlayings.contains(dialogue)) {
                 continue;

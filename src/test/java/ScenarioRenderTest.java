@@ -50,20 +50,18 @@ public class ScenarioRenderTest {
                 .build());
         scenario.getDialogues().put(0, dialogues);
 
-        scenario.getTimestamps().add(new Scenario.Timestamp(
-                202L, List.of(new DialogueLockEvent(true))));
+        scenario.getTimestamps().add(new Scenario.Timestamp(202L, List.of(new DialogueLockEvent(true))));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("...")
-                .time(202L).name("Hina").association("Prefect Team")
+                .time(203L).name("Hina").association("Prefect Team")
                 .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
                 .cutscene(false)
                 .build());
 
-        scenario.getTimestamps().add(new Scenario.Timestamp(
-                203L, List.of(new SpriteLocationEvent(1200, hinaSprite, 300, 50))));
+        scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\SE_Run_03.wav", 203L, 0, -1));
+        scenario.getTimestamps().add(new Scenario.Timestamp(203L, List.of(new SpriteLocationEvent(1200, hinaSprite, 300, 50))));
 
-        scenario.getTimestamps().add(new Scenario.Timestamp(
-                702L, List.of(new DialogueLockEvent(false))));
+        scenario.getTimestamps().add(new Scenario.Timestamp(202L, List.of(new DialogueLockQueueEvent(1000, false))));
 
         scenario.getTimestamps().add(new Scenario.Timestamp(
                 702L, List.of(new SpriteLocationEvent(1200, hinaSprite, 0, 50))));
