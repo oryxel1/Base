@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.elements.Dialogue;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DialogueRender {
     @Getter
-    private final Scenario.Dialogue dialogue;
+    private final Dialogue dialogue;
     @Getter
     private boolean finished, canSkip;
 
@@ -50,7 +51,7 @@ public class DialogueRender {
         // TODO: Actually support dialogue settings?
         int size42 = (int) Math.round(0.028 * ((width + height) / 2));
 
-        long msPerWord = (long) (Scenario.Dialogue.MS_PER_WORD * (1 / dialogue.playSpeed()) * (this.builders.getFirst().isEmpty() ? 10 : 1));
+        long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.playSpeed()) * (this.builders.getFirst().isEmpty() ? 10 : 1));
         if (System.currentTimeMillis() - this.sinceLast >= msPerWord) {
             if (this.wordIndex < dialogue.dialogue().length()) {
                 char next = dialogue.dialogue().toCharArray()[this.wordIndex];

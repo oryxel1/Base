@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.launcher.Launcher;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.manager.TextureManager;
@@ -49,7 +50,7 @@ public class ScenarioPreviewScreen extends Screen {
 
             boolean doingTheFinalFade = this.finalFadeOut.getTarget() == 0;
 
-            final Scenario.Background previewBackground = this.scenario.getPreviewBackground();
+            final Background previewBackground = this.scenario.getPreviewBackground();
             if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
                 Color color = Color.fromRGBA(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
                 RenderUtil.renderBackground(positionMatrix, width, height, new File(previewBackground.path()), color);

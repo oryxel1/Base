@@ -1,6 +1,7 @@
 package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.elements.DialogueOptions;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.math.MathUtil;
@@ -24,7 +25,7 @@ import java.util.Collection;
 public class DialogueOptionsRender {
     private final ScenarioScreen screen;
     @Getter
-    private final Scenario.DialogueOptions dialogueOptions;
+    private final DialogueOptions dialogueOptions;
 
     private String clicked;
     private DynamicAnimation scaleAnimation;

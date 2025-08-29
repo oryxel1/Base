@@ -1,5 +1,7 @@
 package com.bascenario.engine.scenario;
 
+import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.elements.Sound;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,50 +22,21 @@ public class Scenario {
     private final String name;
 
     private final Background previewBackground;
-
     private final Sound previewSound;
 
     @Getter
-    private final List<Next> alls = new ArrayList<>();
+    private final List<Timestamp> timestamps = new ArrayList<>();
 
-    public void add(Object object) {
-        this.add(false, object);
+    public void add(long time, Event... events) {
+        this.add(false, time, events);
     }
 
-    public void add(boolean waitForDialogue, Object object) {
-        this.alls.add(new Next(waitForDialogue, object));
-    }
-
-    public record Next(boolean waitForDialogue, Object object) {}
-
-    @Builder
-    public record Timestamp(long time, List<Event> events) {
+    public void add(boolean waitForDialogue, long time, Event... events) {
+        this.timestamps.add(new Timestamp(waitForDialogue, time, List.of(events)));
     }
 
     @Builder
-    public record Sprite(String skeleton, String atlas, String defaultAnimation, long start, long end, boolean fadeIn) {
-    }
-
-    @Builder
-    public record Background(String path, boolean fadeIn, boolean fadeOut) {}
-
-    @Builder
-    public record Sound(String path, long time, long fadeOut) {}
-
-    @Builder
-    public record DialogueOptions(long time, Map<String, Integer> options) {}
-
-    @Builder
-    public record Dialogue(long time, String dialogue, String name, String association, double playSpeed, float textScale, FontType fontType, boolean cutscene) {
-        public static long MS_PER_WORD = 38L;
-
-        public long getMaxDuration() {
-            long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / playSpeed()));
-            return msPerWord * 10 + (msPerWord * (dialogue.length() - 1)) + (msPerWord * 10);
-        }
-    }
-    public enum FontType {
-        REGULAR, BOLD
+    public record Timestamp(boolean waitForDialogue, long time, List<Event> events) {
     }
 
     public JsonObject toJson() {

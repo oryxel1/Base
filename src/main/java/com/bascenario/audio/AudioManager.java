@@ -47,14 +47,14 @@ public class AudioManager {
         this.nameToMusics.put(path, new CachedMusic(id, object));
     }
 
-    public boolean fadeOut(String name) {
+    public void fadeOut(String name, long duration) {
         final CachedMusic music = this.nameToMusics.get(name);
         if (music == null) {
-            return true;
+            return;
         }
 
-        if (!music.fadingOut) {
-            music.fadingOut = true;
+        if (music.fadeOut == null) {
+            music.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, duration, 0);
             music.fadeOut.setTarget(0);
         }
 
@@ -72,10 +72,7 @@ public class AudioManager {
                 music1.stop();
             }
             this.nameToMusics.remove(name);
-            return true;
         }
-
-        return false;
     }
 
     public void stop(String name) {
@@ -92,11 +89,11 @@ public class AudioManager {
     }
 
     @RequiredArgsConstructor
+    @Getter
     @Setter
     public static class CachedMusic {
         private final long id;
         private final Object music;
-        private final DynamicAnimation fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 1000L, 1);
-        private boolean fadingOut;
+        private DynamicAnimation fadeOut;
     }
 }

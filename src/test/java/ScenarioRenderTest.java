@@ -1,4 +1,5 @@
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.event.impl.*;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
@@ -9,8 +10,8 @@ import java.util.*;
 
 public class ScenarioRenderTest {
     public static void main(String[] args) {
-        Scenario.Background background = new Scenario.Background(
-                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\01_Background\\BG_RiversideRoad.jpg", 0, -1,
+        Background background = new Background(
+                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\01_Background\\BG_RiversideRoad.jpg",
                 false, false);
 
 //        Scenario scenario = Scenario.builder()

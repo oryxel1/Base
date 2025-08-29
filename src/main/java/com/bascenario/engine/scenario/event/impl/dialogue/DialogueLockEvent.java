@@ -1,17 +1,17 @@
-package com.bascenario.engine.scenario.event.impl;
+package com.bascenario.engine.scenario.event.impl.dialogue;
 
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 
-public class DialogueLockQueueEvent extends Event {
+public class DialogueLockEvent extends Event {
     private final boolean lock;
-    public DialogueLockQueueEvent(long duration, boolean lock) {
-        super(duration);
+    public DialogueLockEvent(boolean lock) {
+        super(0);
         this.lock = lock;
     }
 
     @Override
-    public void onEnd(ScenarioScreen screen) {
+    public void onStart(ScenarioScreen screen) {
         screen.setLockClick(this.lock);
     }
 }

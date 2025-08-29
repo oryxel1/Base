@@ -1,7 +1,8 @@
 package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.engine.scenario.event.impl.RedirectDialogueEvent;
+import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
@@ -9,7 +10,6 @@ import com.bascenario.engine.scenario.render.SpriteRender;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -25,17 +25,35 @@ import java.util.*;
 public class ScenarioScreen extends Screen {
     @Getter
     private final Scenario scenario;
-    private final List<Scenario.Next> copiedAlls = new ArrayList<>();
+    private final List<Scenario.Timestamp> copiedAlls = new ArrayList<>();
 
-    private Scenario.Background background, queueBackground;
+    private Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
 
-    private long sinceRender;
-    private long sinceDialogue, sincePoll;
+    private long sinceRender, sinceDialogue, sincePoll;
+
+    private final List<EventRenderer> events = new ArrayList<>();
+    @Getter
+    private final List<SpriteRender> sprites = new ArrayList<>();
+
+    @Getter @Setter
+    private int dialogueIndex = 0;
+    @Getter @Setter
+    private DialogueRender dialogue;
+    @Getter @Setter
+    private DialogueOptionsRender dialogueOptions;
+
+    @Setter
+    private boolean lockClick;
 
     public ScenarioScreen(Scenario scenario) {
         this.scenario = scenario;
-        this.copiedAlls.addAll(this.scenario.getAlls());
+        this.copiedAlls.addAll(this.scenario.getTimestamps());
+    }
+
+    @Override
+    public void dispose() {
+        this.sprites.forEach(SpriteRender::dispose);
     }
 
     @Override
@@ -47,8 +65,12 @@ public class ScenarioScreen extends Screen {
         }
 
         long timeDelta = System.currentTimeMillis() - this.sinceRender;
-        this.sinceDialogue += timeDelta;
         this.sincePoll += timeDelta;
+        if (this.dialogue == null && this.dialogueOptions == null) {
+            this.sinceDialogue += timeDelta;
+        }
+
+        this.sinceRender = System.currentTimeMillis();
 
         RenderUtil.render(() -> {
             if (this.background != null) {
@@ -64,322 +86,105 @@ public class ScenarioScreen extends Screen {
                 RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
             }
         });
+
+        this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
+        this.sprites.forEach(SpriteRender::render);
+        RenderUtil.render(() -> {
+            this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
+
+            if (this.dialogue != null) {
+                this.dialogue.render(positionMatrix, window);
+            }
+
+            if (this.dialogueOptions != null) {
+                this.dialogueOptions.render(positionMatrix, window);
+            }
+        });
+    }
+
+    @Override
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.lockClick || ThinGL.windowInterface() == null) {
+            return;
+        }
+
+        final WindowInterface window = ThinGL.windowInterface();
+
+        if (this.dialogueOptions != null) {
+            this.dialogueOptions.mouseClicked(window, mouseX, mouseY, button);
+            return;
+        }
+
+        if (DialogueRender.hasClickedDialogue(window, mouseX, mouseY) && button == 0) {
+            this.dialogue = null;
+        }
+    }
+
+    @Override
+    public void mouseRelease() {
+        if (this.dialogueOptions != null) {
+            this.dialogueOptions.mouseRelease();
+        }
     }
 
     private void poll() {
-        // Pre poll (background part)
         if (this.backgroundFadeIn != null && !this.backgroundFadeIn.isRunning()) {
             this.backgroundFadeIn = null;
         }
         if (this.backgroundFadeOut != null && !this.backgroundFadeOut.isRunning() && this.queueBackground != null) {
-            updateBackground(this.queueBackground);
+            this.setBackground(this.queueBackground, true);
             this.queueBackground = null;
             this.backgroundFadeOut = null;
         }
 
-        // Some info that we get from poll.
-        Scenario.Background selectedBackground = null;
-
-        // Start polling.
-        final Iterator<Scenario.Next> iterator = this.copiedAlls.iterator();
+        final Iterator<Scenario.Timestamp> iterator = this.copiedAlls.iterator();
 
         while (iterator.hasNext()) {
-            final Scenario.Next next = iterator.next();
-
+            final Scenario.Timestamp next = iterator.next();
             final long duration = next.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
-            if (next.object() instanceof Scenario.Background) {
 
+            if (duration < next.time()) {
+                continue;
             }
+
+            // Reset time.
+            if (next.waitForDialogue()) {
+                this.sinceDialogue = 0;
+            } else {
+                this.sincePoll = 0;
+            }
+
+            next.events().forEach(event -> {
+                event.onStart(this);
+                if (event.getDuration() > 0) {
+                    this.events.add(new EventRenderer(event));
+                }
+
+                if (event instanceof AddSpriteEvent add) {
+                    this.sprites.add(new SpriteRender(add.getSprite()));
+                }
+            });
+            iterator.remove();
         }
 
-        this.doPostPollBackground(selectedBackground);
-//
-//        Scenario.Background selected = this.background;
-//        for (Scenario.Background background : scenario.getBackgrounds()) {
-//            if (background.start() > this.duration || background == this.background) {
-//                continue;
-//            }
-//
-//            this.duration = background.start();
-//            selected = background;
-//        }
+        this.events.removeIf(event -> {
+            if (event.isFinished()) {
+                event.onEnd(this);
+                return true;
+            }
+
+            return false;
+        });
     }
 
-    private void doPostPollBackground(Scenario.Background selected) {
-        if (this.background != null && this.background.end() > 0 && this.sinceDialogue > this.background.end()) {
-            selected = null;
-        }
-
-        if (this.background == selected) {
-            return;
-        }
-
-        if (this.background != null && this.background.fadeOut()) {
-            this.queueBackground = selected;
+    public void setBackground(Background background, boolean skipFadeOut) {
+        if (this.background != null && this.background.fadeOut() && !skipFadeOut) {
+            this.queueBackground = background;
             this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
             this.backgroundFadeOut.setTarget(0);
             return;
         }
 
-        updateBackground(selected);
-    }
-
-    //    private long sinceLast = System.currentTimeMillis();
-//    @Getter
-//    private long duration = 0, realDuration = 0;
-//    // We want to keep track of the current background :P;
-//    private Scenario.Background background, queueBackground;
-//    private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
-//
-//    // private Scenario.DialogueOptions dialogueOptions;
-//    @Setter
-//    private int dialogueIndex = -2;
-//    private DialogueRender dialogue, lastDialogue;
-//    private DialogueOptionsRender dialogueOptions, lastDialogueOptions;
-//
-//    private final Set<Object> alreadyPlays = new HashSet<>();
-//    private final Set<Object> donePlayings = new HashSet<>();
-//    private final List<EventRenderer> events = new ArrayList<>();
-//
-//    private boolean canProceedWithDialogue;
-//    @Setter
-//    private boolean lockClick;
-//
-//    private WindowInterface windowInterface;
-//
-//    @Getter
-//    private final List<SpriteRender> sprites = new ArrayList<>();
-//
-//    @Override
-//    public void init() {
-//        if (!this.sprites.isEmpty()) {
-//            this.sprites.forEach(SpriteRender::init);
-//            return;
-//        }
-//
-//        this.scenario.getSprites().forEach(sprite -> this.sprites.add(new SpriteRender(sprite)));
-//        this.sprites.forEach(SpriteRender::init);
-//    }
-//
-//    @Override
-//    public void dispose() {
-//        this.sprites.forEach(SpriteRender::dispose);
-//    }
-//
-//    @Override
-//    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
-//        this.windowInterface = window;
-//
-//        if (this.dialogueIndex == -2) {
-//            this.dialogueIndex = scenario.getDialogues().isEmpty() ? -1 : (int) scenario.getDialogues().keySet().toArray()[0];
-//        }
-//
-//        long deltaTime = (this.dialogue != null || this.dialogueOptions != null) ? 0 : System.currentTimeMillis() - this.sinceLast;
-//        if (this.dialogue != null && this.lastDialogue != this.dialogue) {
-//            this.lastDialogue = this.dialogue;
-//            deltaTime += 1; // Y E P.
-//        }
-//        if (this.dialogueOptions != null && this.lastDialogueOptions != this.dialogueOptions) {
-//            this.lastDialogueOptions = this.dialogueOptions;
-//            deltaTime += 1; // Y E P.
-//        }
-//
-//        this.duration += deltaTime;
-//        this.realDuration += (System.currentTimeMillis() - this.sinceLast);
-//        this.sinceLast = System.currentTimeMillis();
-//        // System.out.println(this.duration);
-//
-//        // System.out.println("Render!-----------------------");
-//        this.pollBackground();
-//        this.pollDialogueAndDialogueOptions();
-//        this.pollEvents();
-//        if (this.pollDialogueAgain) {
-//            this.pollDialogueAndDialogueOptions();
-//        }
-//
-//        this.pollDialogueAgain = false;
-//
-//        RenderUtil.render(() -> {
-//            if (this.background != null) {
-//                Color color;
-//                if (this.backgroundFadeOut != null) {
-//                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
-//                } else if (this.backgroundFadeIn != null) {
-//                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeIn.getValue()));
-//                } else {
-//                    color = Color.WHITE;
-//                }
-//
-//                RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
-//            }
-//        });
-//
-//        this.sprites.forEach(sprite -> sprite.render(this.duration));
-//
-//        RenderUtil.render(() -> {
-//            this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
-//
-//            if (this.dialogue != null) {
-//                this.dialogue.render(positionMatrix, window);
-//            }
-//
-//            if (this.dialogueOptions != null) {
-//                this.dialogueOptions.render(positionMatrix, window);
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void mouseClicked(double mouseX, double mouseY, int button) {
-//        if (this.windowInterface == null) {
-//            return;
-//        }
-//
-//        // Event use this.
-//        if (this.lockClick) {
-//            if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
-//                if (this.dialogue != null && this.dialogue.isCanSkip()) {
-//                    this.donePlayings.add(this.dialogue.getDialogue());
-//                }
-//            }
-//            return;
-//        }
-//
-//        if (this.dialogueOptions != null) {
-//            this.dialogueOptions.mouseClicked(this.windowInterface, mouseX, mouseY, button);
-//        }
-//
-//        if (this.dialogueOptions == null && DialogueRender.hasClickedDialogue(this.windowInterface, mouseX, mouseY) && button == 0) {
-//            this.canProceedWithDialogue = this.dialogue == null || this.dialogue.isCanSkip();
-//        }
-//    }
-//
-//    @Override
-//    public void mouseRelease() {
-//        if (this.dialogueOptions != null) {
-//            this.dialogueOptions.mouseRelease();
-//        }
-//    }
-//
-//    private void pollDialogueAndDialogueOptions() {
-//        if (this.dialogueOptions != null && this.dialogueOptions.isFinished()) {
-//            this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
-//            setDialogueOptions(null);
-//            this.canProceedWithDialogue = true;
-//        }
-//
-//        Scenario.DialogueOptions newDialogueOptions = null;
-//        Scenario.Dialogue newDialogue = null;
-//
-//        boolean free = (this.dialogue == null || this.dialogueOptions == null) && this.dialogueIndex >= 0;
-//        if (!free) {
-//            if (this.canProceedWithDialogue && this.dialogue != null && this.donePlayings.contains(this.dialogue.getDialogue())) {
-//                setDialogue(null);
-//                this.canProceedWithDialogue = false;
-//            }
-//            return;
-//        }
-//
-//        if (this.dialogueOptions == null && (this.dialogue == null || this.canProceedWithDialogue)) {
-//            final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
-//            for (final Scenario.Dialogue dialogue : dialogues) {
-//                if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
-//                    continue;
-//                }
-//
-//                newDialogue = dialogue;
-//                break;
-//            }
-//        }
-//
-//        if (this.dialogue == null || this.canProceedWithDialogue) {
-//            for (final Scenario.DialogueOptions dialogue : scenario.getDialogueOptions()) {
-//                if (dialogue.time() > this.duration || this.alreadyPlays.contains(dialogue)) {
-//                    continue;
-//                }
-//
-//                newDialogueOptions = dialogue;
-//                break;
-//            }
-//        }
-//
-//        if (newDialogue != null) {
-//            boolean update = true;
-//            if (newDialogueOptions != null) {
-//                // System.out.println(newDialogueOptions + "," + newDialogue);
-//                update = newDialogueOptions.time() >= newDialogue.time();
-//            }
-//
-//            if (update) {
-//                this.canProceedWithDialogue = false;
-//                 System.out.println("Yep: " + newDialogue);
-//                setDialogue(new DialogueRender(newDialogue));
-//                this.alreadyPlays.add(newDialogue);
-//                // System.out.println("Proceed: " + this.canProceedWithDialogue);
-//            }
-//        }
-//
-//        if (newDialogueOptions != null && (this.dialogue == null || this.canProceedWithDialogue)) {
-//            boolean update = true;
-//            if (newDialogue != null) {
-//                update = newDialogue.time() >= newDialogueOptions.time();
-//            }
-//
-//            if (update) {
-//                this.canProceedWithDialogue = false;
-//                // System.out.println(newDialogueOptions);
-//                setDialogueOptions(new DialogueOptionsRender(this, newDialogueOptions));
-//                this.alreadyPlays.add(newDialogueOptions);
-//            }
-//        }
-//
-//        if (this.dialogueOptions == null && this.canProceedWithDialogue) {
-//            setDialogue(null);
-//            // System.out.println("Set null here!");
-//            this.canProceedWithDialogue = false;
-//        }
-//    }
-//
-//    private boolean pollDialogueAgain;
-//    private void pollEvents() {
-//        this.events.removeIf(event -> {
-//            if (event.isFinished()) {
-//                event.onEnd(this);
-//                return true;
-//            }
-//
-//            return false;
-//        });
-//
-//        for (Scenario.Timestamp timestamp : scenario.getTimestamps()) {
-//            if (timestamp.time() > this.duration || this.alreadyPlays.contains(timestamp)) {
-//                continue;
-//            }
-//            if (!this.canPickupTimestamp(timestamp.time())) {
-//                continue;
-//            }
-//
-//            this.duration = timestamp.time();
-//
-//            // System.out.println("Play: " + timestamp);
-//
-//            this.alreadyPlays.add(timestamp);
-//            timestamp.events().forEach(event -> {
-//                if (event instanceof RedirectDialogueEvent) {
-//                    this.pollDialogueAgain = true;
-//                }
-//
-//                this.events.add(new EventRenderer(event));
-//                event.onStart(this);
-//            });
-//        }
-//    }
-//
-//    private void pollBackground() {
-
-//    }
-//
-    private void updateBackground(Scenario.Background background) {
         this.background = background;
         if (!this.background.fadeIn()) {
             return;
@@ -388,56 +193,4 @@ public class ScenarioScreen extends Screen {
         this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
         this.backgroundFadeIn.setTarget(255);
     }
-//
-//    private void setDialogue(DialogueRender dialogue) {
-//        if (this.dialogue != null) {
-//            this.donePlayings.add(this.dialogue.getDialogue());
-//            // System.out.println("Add: " + this.dialogue.getDialogue());
-//        }
-//        this.dialogue = dialogue;
-//        if (dialogue != null) {
-//            this.duration = this.dialogue.getDialogue().time();
-//        }
-//        // System.out.println("Set dialogue: " + (this.dialogue == null ? null : this.dialogue.getDialogue()));
-//    }
-//
-//    private void setDialogueOptions(DialogueOptionsRender dialogueOptions) {
-//        if (this.dialogueOptions != null) {
-//            this.donePlayings.add(this.dialogueOptions.getDialogueOptions());
-//            // System.out.println("Add: " + this.dialogueOptions.getDialogueOptions());
-//        }
-//        this.dialogueOptions = dialogueOptions;
-//        if (dialogueOptions != null) {
-//            this.duration = this.dialogueOptions.getDialogueOptions().time();
-//        }
-//    }
-//
-//    public boolean canPickupTimestamp(long time) {
-//        for (final Scenario.DialogueOptions dialogue : scenario.getDialogueOptions()) {
-//            if (this.donePlayings.contains(dialogue)) {
-//                continue;
-//            }
-//            if (dialogue.time() > time) {
-//                break;
-//            }
-//
-//            // System.out.println("False: " + dialogue);
-//            return false;
-//        }
-//
-//        final List<Scenario.Dialogue> dialogues = scenario.getDialogues().get(this.dialogueIndex);
-//        for (final Scenario.Dialogue dialogue : dialogues) {
-//            if (this.donePlayings.contains(dialogue)) {
-//                continue;
-//            }
-//            if (dialogue.time() > time) {
-//                break;
-//            }
-//
-//            // System.out.println("False: " + dialogue);
-//            return false;
-//        }
-//
-//        return true;
-//    }
 }

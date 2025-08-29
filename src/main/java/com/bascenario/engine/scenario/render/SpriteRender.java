@@ -3,10 +3,9 @@ package com.bascenario.engine.scenario.render;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.elements.Sprite;
 import com.esotericsoftware.spine.*;
 import com.esotericsoftware.spine.utils.TwoColorPolygonBatch;
 import lombok.Getter;
@@ -20,7 +19,7 @@ import net.raphimc.thingl.implementation.window.WindowInterface;
 @RequiredArgsConstructor
 public class SpriteRender {
     @Getter
-    private final Scenario.Sprite sprite;
+    private final Sprite sprite;
     private boolean init;
 
     private OrthographicCamera camera;
@@ -64,14 +63,11 @@ public class SpriteRender {
         this.init = true;
     }
 
-    public void render(long duration) {
+    public void render() {
         if (!this.init) {
             return;
         }
 
-        if (this.sprite.end() > 0 && duration > this.sprite.end() || duration < this.sprite.start()) {
-            return;
-        }
         if (this.fadeColor == null) {
             this.fadeColor = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, 1);
 
