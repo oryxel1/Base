@@ -69,7 +69,7 @@ public class ScenarioRenderTest {
                 702L, List.of(new SpriteLocationEvent(1200, hinaSprite, 0, 50))));
 
         scenario.getTimestamps().add(new Scenario.Timestamp(
-                702L, List.of(new SpriteAnimationEvent(hinaSprite, "00", 1, true))));
+                702L, List.of(new SpriteAnimationEvent(hinaSprite, "01", 1, true))));
 
         dialogues.add(Scenario.Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
                 .time(703L).name("Hina").association("Prefect Team")

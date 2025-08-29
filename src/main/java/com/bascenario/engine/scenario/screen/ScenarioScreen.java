@@ -28,7 +28,7 @@ public class ScenarioScreen extends Screen {
     private final Scenario scenario;
     private long sinceLast = System.currentTimeMillis();
     @Getter
-    private long duration = 0, realDuration;
+    private long duration = 0, realDuration = 0;
     // We want to keep track of the current background :P;
     private Scenario.Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;

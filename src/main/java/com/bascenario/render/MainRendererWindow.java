@@ -139,6 +139,8 @@ public class MainRendererWindow extends ApplicationAdapter {
             } else if (time != -1) {
                 if (((ScenarioScreen) this.currentScreen).getDuration() < sound.start()) {
                     continue;
+                } else if (sound.start() == -1 && time >= 0) {
+                    continue;
                 }
             }
             if (this.playedSounds.contains(sound)) {
