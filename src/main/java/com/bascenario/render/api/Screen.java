@@ -30,4 +30,6 @@ public class Screen {
     public void mouseRelease() {
         components.forEach(Component::mouseRelease);
     }
+
+    public void dispose() {}
 }

@@ -16,7 +16,6 @@ import lombok.Getter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
-import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.wrapper.GLStateManager;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
@@ -24,8 +23,6 @@ import org.lwjgl.glfw.GLFW;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 
 public class MainRendererWindow extends ApplicationAdapter {
     @Getter
@@ -45,9 +42,9 @@ public class MainRendererWindow extends ApplicationAdapter {
     public void create() {
         long windowHandle = ((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle();
         // Fix libgdx full screen lol.
-//        if (this.fullscreen) {
-//            WindowUtil.setFullScreen(windowHandle, true);
-//        }
+        if (this.fullscreen) {
+            WindowUtil.setFullScreen(windowHandle, true);
+        }
 
         new ThinGL(new GLFWWindowInterface(windowHandle)) {
             @Override
@@ -108,6 +105,13 @@ public class MainRendererWindow extends ApplicationAdapter {
         ThinGL.get().onFrameEnd();
 
         this.pollSound();
+    }
+
+    @Override
+    public void dispose() {
+        if (this.currentScreen != null) {
+            this.currentScreen.dispose();
+        }
     }
 
     public void setCurrentScreen(Screen currentScreen) {

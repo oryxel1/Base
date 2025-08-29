@@ -1,7 +1,6 @@
 package com.bascenario.engine.scenario;
 
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.sprite.Sprite;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -45,6 +44,16 @@ public class Scenario {
      */
     @Builder
     public record Timestamp(long time, List<Event> events) {
+    }
+
+    /**
+     *  Consist of skeleton file location, file location of atlas, when to start showing sprite and when to stop.
+     *  If this sprite render from the start value to the end of the scenario, then the end value can be any negative value.
+     *  And there is also the default animation to play, this is MANDATORY.
+     *  Fade in is self-explanatory.
+     */
+    @Builder
+    public record Sprite(String skeleton, String atlas, String defaultAnimation, long start, long end, boolean fadeIn) {
     }
 
     /**

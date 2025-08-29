@@ -5,6 +5,7 @@ import com.bascenario.engine.scenario.event.impl.RedirectDialogueEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
+import com.bascenario.engine.scenario.render.SpriteRender;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
@@ -47,6 +48,26 @@ public class ScenarioScreen extends Screen {
     private boolean lockClick;
 
     private WindowInterface windowInterface;
+
+    @Getter
+    private final List<SpriteRender> sprites = new ArrayList<>();
+
+    @Override
+    public void init() {
+        if (!this.sprites.isEmpty()) {
+            this.sprites.forEach(SpriteRender::init);
+            return;
+        }
+
+        this.scenario.getSprites().forEach(sprite -> this.sprites.add(new SpriteRender(sprite)));
+        this.sprites.forEach(SpriteRender::init);
+    }
+
+    @Override
+    public void dispose() {
+        this.sprites.forEach(SpriteRender::dispose);
+    }
+
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.windowInterface = window;
@@ -97,7 +118,7 @@ public class ScenarioScreen extends Screen {
             this.events.forEach(event -> event.render(this, event.getTime(), positionMatrix, window));
         });
 
-        this.scenario.getSprites().forEach(sprite -> sprite.render(this.duration));
+        this.sprites.forEach(sprite -> sprite.render(this.duration));
 
         RenderUtil.render(() -> {
             if (this.dialogue != null) {

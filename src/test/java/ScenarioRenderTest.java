@@ -1,6 +1,8 @@
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.event.impl.LocationInfoEvent;
 import com.bascenario.engine.scenario.event.impl.RedirectDialogueEvent;
+import com.bascenario.engine.scenario.event.impl.SpriteAnimationEvent;
+import com.bascenario.engine.scenario.event.impl.SpriteLocationEvent;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
@@ -22,6 +24,15 @@ public class ScenarioRenderTest {
         scenario.getTimestamps().add(new Scenario.Timestamp(
                 200L, List.of(new LocationInfoEvent("A Riverside Road on the Outskirts of Gehenna"))
         ));
+
+        final Scenario.Sprite hinaSprite = new Scenario.Sprite(
+                "C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas",
+                "Idle_01", 200, -1, true
+        );
+        scenario.getSprites().add(hinaSprite);
+        scenario.getTimestamps().add(new Scenario.Timestamp(
+                0, List.of(new SpriteLocationEvent(0, hinaSprite, 0, 50), new SpriteAnimationEvent(hinaSprite, "15",
+                1, true))));
 
         final List<Scenario.Dialogue> dialogues = new ArrayList<>();
         dialogues.add(Scenario.Dialogue.builder().dialogue("Hi, Sensei.")

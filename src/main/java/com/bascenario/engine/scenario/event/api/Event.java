@@ -9,7 +9,7 @@ import org.joml.Matrix4fStack;
 @RequiredArgsConstructor
 public class Event {
     @Getter
-    private final long duration;
+    protected final long duration;
 
     public void onStart(ScenarioScreen screen) {}
     public void onEnd(ScenarioScreen screen) {}
