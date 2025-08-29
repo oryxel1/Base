@@ -9,10 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Getter
@@ -30,12 +27,36 @@ public class Scenario {
      */
     private final Background previewBackground;
 
-    private final List<Timestamp> timestamps = new ArrayList<>();
-    private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
-    private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
-    private final List<Sound> sounds = new ArrayList<>();
-    private final List<Sprite> sprites = new ArrayList<>();
-    private final List<Background> backgrounds = new ArrayList<>();
+    /**
+     *  The preview sound, play along with the preview screen, if this is null, play nothing
+     *  "start" value won't get use, "end" value is how many ms since the start of the scenario (post preview).
+     *  Fade will act the same as it supposed to.
+     */
+    private final Sound previewSound;
+
+    /**
+     *  Everything happened inside this scenario, should be added in order.
+     */
+    private final List<Next> alls = new ArrayList<>();
+    public List<Next> getAlls() {
+        return Collections.unmodifiableList(this.alls);
+    }
+
+    public void add(Object object) {
+        this.add(false, object);
+    }
+
+    public void add(boolean waitForDialogue, Object object) {
+        this.alls.add(new Next(waitForDialogue, object));
+    }
+//    private final List<Timestamp> timestamps = new ArrayList<>();
+//    private final List<DialogueOptions> dialogueOptions = new ArrayList<>();
+//    private final Map<Integer, List<Dialogue>> dialogues = new HashMap<>();
+//    private final List<Sound> sounds = new ArrayList<>();
+//    private final List<Sprite> sprites = new ArrayList<>();
+//    private final List<Background> backgrounds = new ArrayList<>();
+
+    public record Next(boolean waitForDialogue, Object object) {}
 
     /**
      *  Timestamp, consist of time (in ms since the start of the scenario) and the events going to get play at time.

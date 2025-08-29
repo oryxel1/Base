@@ -18,12 +18,9 @@ import net.raphimc.thingl.wrapper.GLStateManager;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MainRendererWindow extends ApplicationAdapter {
     @Getter
@@ -120,62 +117,62 @@ public class MainRendererWindow extends ApplicationAdapter {
             this.scenario = null;
         }
 
-        if (scenario != this.scenario) {
-            this.playingSounds.clear();
-            this.playedSounds.clear();
-        }
+//        if (scenario != this.scenario) {
+//            this.playingSounds.clear();
+//            this.playedSounds.clear();
+//        }
     }
 
-    private final List<Scenario.Sound> playedSounds = new ArrayList<>();
-    private final List<Scenario.Sound> playingSounds = new ArrayList<>();
+//    private final List<Scenario.Sound> playedSounds = new ArrayList<>();
+//    private final List<Scenario.Sound> playingSounds = new ArrayList<>();
 
     private void pollSound() {
-        if (this.scenario == null) {
-            return;
-        }
-
-        long time = this.currentScreen instanceof ScenarioScreen screen ? screen.getRealDuration() : -1;
-
-        final Iterator<Scenario.Sound> soundIterator = this.playingSounds.iterator();
-        while (soundIterator.hasNext()) {
-            Scenario.Sound sound = soundIterator.next();
-            if (sound == null || sound.end() > time || sound.end() == 0) {
-                break;
-            }
-
-            if (sound.fadeOut() > 0) {
-                if (AudioManager.getInstance().fadeOut(sound.path())) {
-                    soundIterator.remove();
-                }
-            } else {
-                AudioManager.getInstance().stop(sound.path());
-                soundIterator.remove();
-            }
-        }
-
-        for (Scenario.Sound sound : this.scenario.getSounds()) {
-            if (time == -1 && sound.start() != -1) { // Still in preview, only accept start time -1
-                continue;
-            } else if (time != -1) {
-                if (((ScenarioScreen) this.currentScreen).getDuration() < sound.start()) {
-                    continue;
-                } else if (sound.start() == -1 && time >= 0) {
-                    continue;
-                }
-            }
-            if (this.playedSounds.contains(sound)) {
-                continue;
-            }
-
-            if (this.currentScreen instanceof ScenarioScreen screen && !screen.canPickupTimestamp(sound.start())) {
-                return;
-            }
-
-            System.out.println("Play sound: " + sound);
-            this.playedSounds.add(sound);
-            this.playingSounds.add(sound);
-            // System.out.println("add playing sound!: " + sound);
-            AudioManager.getInstance().play(sound.path(), sound.end() < 0);
-        }
+//        if (this.scenario == null) {
+//            return;
+//        }
+//
+//        long time = this.currentScreen instanceof ScenarioScreen screen ? screen.getRealDuration() : -1;
+//
+//        final Iterator<Scenario.Sound> soundIterator = this.playingSounds.iterator();
+//        while (soundIterator.hasNext()) {
+//            Scenario.Sound sound = soundIterator.next();
+//            if (sound == null || sound.end() > time || sound.end() == 0) {
+//                break;
+//            }
+//
+//            if (sound.fadeOut() > 0) {
+//                if (AudioManager.getInstance().fadeOut(sound.path())) {
+//                    soundIterator.remove();
+//                }
+//            } else {
+//                AudioManager.getInstance().stop(sound.path());
+//                soundIterator.remove();
+//            }
+//        }
+//
+//        for (Scenario.Sound sound : this.scenario.getSounds()) {
+//            if (time == -1 && sound.start() != -1) { // Still in preview, only accept start time -1
+//                continue;
+//            } else if (time != -1) {
+//                if (((ScenarioScreen) this.currentScreen).getDuration() < sound.start()) {
+//                    continue;
+//                } else if (sound.start() == -1 && time >= 0) {
+//                    continue;
+//                }
+//            }
+//            if (this.playedSounds.contains(sound)) {
+//                continue;
+//            }
+//
+//            if (this.currentScreen instanceof ScenarioScreen screen && !screen.canPickupTimestamp(sound.start())) {
+//                return;
+//            }
+//
+//            System.out.println("Play sound: " + sound);
+//            this.playedSounds.add(sound);
+//            this.playingSounds.add(sound);
+//            // System.out.println("add playing sound!: " + sound);
+//            AudioManager.getInstance().play(sound.path(), sound.end() < 0);
+//        }
     }
 }

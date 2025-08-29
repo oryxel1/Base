@@ -10,20 +10,20 @@ public class ScenarioSerializerTest {
                 .previewBackground(new Scenario.Background("test", -1, -1, false, false))
                 .build();
 
-        scenario.getBackgrounds().add(new Scenario.Background("really nice background", 0, -1, true, true));
-
-        scenario.getDialogues().put(0, List.of(Scenario.Dialogue.builder()
-                .time(5).dialogue("Hello world").name("potato").association("the real potato").playSpeed(10)
-                .build()));
-
-        scenario.getDialogueOptions().add(Scenario.DialogueOptions.builder().options(
-                Map.of("hiniature hair", 0, "potato", 0)
-        ).time(10L).build());
-
-        scenario.getTimestamps().add(Scenario.Timestamp.builder()
-                .time(5).events(new ArrayList<>())
-                .build());
-
-        System.out.println(scenario.toJson());
+//        scenario.getBackgrounds().add(new Scenario.Background("really nice background", 0, -1, true, true));
+//
+//        scenario.getDialogues().put(0, List.of(Scenario.Dialogue.builder()
+//                .time(5).dialogue("Hello world").name("potato").association("the real potato").playSpeed(10)
+//                .build()));
+//
+//        scenario.getDialogueOptions().add(Scenario.DialogueOptions.builder().options(
+//                Map.of("hiniature hair", 0, "potato", 0)
+//        ).time(10L).build());
+//
+//        scenario.getTimestamps().add(Scenario.Timestamp.builder()
+//                .time(5).events(new ArrayList<>())
+//                .build());
+//
+//        System.out.println(scenario.toJson());
     }
 }
