@@ -28,23 +28,39 @@ public class AudioManager {
 
     @SneakyThrows
     public void play(String path, boolean loop) {
-        long id = -1;
-        final Object object;
-        if (path.contains(".wav")) {
-            object = Gdx.audio.newSound(new FileHandle(path));
-            id = ((Sound)object).play();
-            if (loop) {
-                ((Sound)object).loop();
-            }
+        final Music music = Gdx.audio.newMusic(new FileHandle(path));
+        music.play();
+        music.setLooping(loop);
+
+        this.nameToMusics.put(path, new CachedMusic(music));
+    }
+
+    public void fadeIn(String path, long duration, boolean loop) {
+        CachedMusic cachedMusic = this.nameToMusics.get(path);
+        Music music;
+        if (cachedMusic == null) {
+            music = Gdx.audio.newMusic(new FileHandle(path));
+            music.setVolume(0);
+            music.setLooping(loop);
+            music.play();
+            cachedMusic = new CachedMusic(music);
+
+            cachedMusic.fadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, duration, 0);
+            cachedMusic.fadeIn.setTarget(1);
+
+            this.nameToMusics.put(path, cachedMusic);
         } else {
-            object = Gdx.audio.newMusic(new FileHandle(path));
-            ((Music)object).play();
-            if (loop) {
-                ((Music)object).setLooping(true);
-            }
+            music = cachedMusic.music;
         }
 
-        this.nameToMusics.put(path, new CachedMusic(id, object));
+        System.out.println("Fade in: " + cachedMusic.fadeIn.getValue());
+        if (cachedMusic.fadeIn.isRunning()) {
+            music.setVolume(cachedMusic.fadeIn.getValue());
+        } else {
+            if (music.getVolume() != 1) {
+                music.setVolume(1);
+            }
+        }
     }
 
     public void fadeOut(String name, long duration) {
@@ -54,23 +70,15 @@ public class AudioManager {
         }
 
         if (music.fadeOut == null) {
-            music.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, duration, 0);
+            music.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, duration, 1);
             music.fadeOut.setTarget(0);
         }
 
         float volume = music.fadeOut.getValue();
 
-        if (music.music instanceof Sound sound) {
-            sound.setVolume(music.id, volume);
-        } else if (music.music instanceof Music music1) {
-            music1.setVolume(volume);
-        }
+        music.music.setVolume(volume);
         if (volume <= 0.001) {
-            if (music.music instanceof Sound sound) {
-                sound.stop(music.id);
-            } else if (music.music instanceof Music music1) {
-                music1.stop();
-            }
+            music.music.stop();
             this.nameToMusics.remove(name);
         }
     }
@@ -81,19 +89,14 @@ public class AudioManager {
             return;
         }
 
-        if (music.music instanceof Sound sound) {
-            sound.stop(music.id);
-        } else if (music.music instanceof Music music1) {
-            music1.stop();
-        }
+        music.music.stop();
     }
 
     @RequiredArgsConstructor
     @Getter
     @Setter
     public static class CachedMusic {
-        private final long id;
-        private final Object music;
-        private DynamicAnimation fadeOut;
+        private final Music music;
+        private DynamicAnimation fadeOut, fadeIn;
     }
 }
