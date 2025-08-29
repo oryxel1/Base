@@ -22,11 +22,109 @@ import org.joml.Matrix4fStack;
 import java.io.File;
 import java.util.*;
 
-@RequiredArgsConstructor
 public class ScenarioScreen extends Screen {
     @Getter
     private final Scenario scenario;
-//    private long sinceLast = System.currentTimeMillis();
+    private final List<Scenario.Next> copiedAlls = new ArrayList<>();
+
+    private Scenario.Background background, queueBackground;
+    private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
+
+    private long sinceRender;
+    private long sinceDialogue, sincePoll;
+
+    public ScenarioScreen(Scenario scenario) {
+        this.scenario = scenario;
+        this.copiedAlls.addAll(this.scenario.getAlls());
+    }
+
+    @Override
+    public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+        this.poll();
+
+        if (this.sinceRender == 0) {
+            this.sinceRender = System.currentTimeMillis();
+        }
+
+        long timeDelta = System.currentTimeMillis() - this.sinceRender;
+        this.sinceDialogue += timeDelta;
+        this.sincePoll += timeDelta;
+
+        RenderUtil.render(() -> {
+            if (this.background != null) {
+                Color color;
+                if (this.backgroundFadeOut != null) {
+                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeOut.getValue()));
+                } else if (this.backgroundFadeIn != null) {
+                    color = Color.fromRGBA(255, 255, 255, Math.round(this.backgroundFadeIn.getValue()));
+                } else {
+                    color = Color.WHITE;
+                }
+
+                RenderUtil.renderBackground(positionMatrix, window.getFramebufferWidth(), window.getFramebufferHeight(), new File(this.background.path()), color);
+            }
+        });
+    }
+
+    private void poll() {
+        // Pre poll (background part)
+        if (this.backgroundFadeIn != null && !this.backgroundFadeIn.isRunning()) {
+            this.backgroundFadeIn = null;
+        }
+        if (this.backgroundFadeOut != null && !this.backgroundFadeOut.isRunning() && this.queueBackground != null) {
+            updateBackground(this.queueBackground);
+            this.queueBackground = null;
+            this.backgroundFadeOut = null;
+        }
+
+        // Some info that we get from poll.
+        Scenario.Background selectedBackground = null;
+
+        // Start polling.
+        final Iterator<Scenario.Next> iterator = this.copiedAlls.iterator();
+
+        while (iterator.hasNext()) {
+            final Scenario.Next next = iterator.next();
+
+            final long duration = next.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
+            if (next.object() instanceof Scenario.Background) {
+
+            }
+        }
+
+        this.doPostPollBackground(selectedBackground);
+//
+//        Scenario.Background selected = this.background;
+//        for (Scenario.Background background : scenario.getBackgrounds()) {
+//            if (background.start() > this.duration || background == this.background) {
+//                continue;
+//            }
+//
+//            this.duration = background.start();
+//            selected = background;
+//        }
+    }
+
+    private void doPostPollBackground(Scenario.Background selected) {
+        if (this.background != null && this.background.end() > 0 && this.sinceDialogue > this.background.end()) {
+            selected = null;
+        }
+
+        if (this.background == selected) {
+            return;
+        }
+
+        if (this.background != null && this.background.fadeOut()) {
+            this.queueBackground = selected;
+            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
+            this.backgroundFadeOut.setTarget(0);
+            return;
+        }
+
+        updateBackground(selected);
+    }
+
+    //    private long sinceLast = System.currentTimeMillis();
 //    @Getter
 //    private long duration = 0, realDuration = 0;
 //    // We want to keep track of the current background :P;
@@ -278,53 +376,18 @@ public class ScenarioScreen extends Screen {
 //    }
 //
 //    private void pollBackground() {
-//        if (this.backgroundFadeIn != null && !this.backgroundFadeIn.isRunning()) {
-//            this.backgroundFadeIn = null;
-//        }
-//
-//        if (this.backgroundFadeOut != null && !this.backgroundFadeOut.isRunning() && this.queueBackground != null) {
-//            updateBackground(this.queueBackground);
-//            this.queueBackground = null;
-//            this.backgroundFadeOut = null;
-//        }
-//
-//        Scenario.Background selected = this.background;
-//        for (Scenario.Background background : scenario.getBackgrounds()) {
-//            if (background.start() > this.duration || background == this.background) {
-//                continue;
-//            }
-//
-//            this.duration = background.start();
-//            selected = background;
-//        }
-//
-//        if (this.background != null && this.background.end() > 0 && this.duration > this.background.end()) {
-//            selected = null;
-//        }
-//
-//        if (this.background == selected) {
-//            return;
-//        }
-//
-//        if (this.background != null && this.background.fadeOut()) {
-//            this.queueBackground = selected;
-//            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
-//            this.backgroundFadeOut.setTarget(0);
-//            return;
-//        }
-//
-//        updateBackground(selected);
+
 //    }
 //
-//    private void updateBackground(Scenario.Background background) {
-//        this.background = background;
-//        if (!this.background.fadeIn()) {
-//            return;
-//        }
-//
-//        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
-//        this.backgroundFadeIn.setTarget(255);
-//    }
+    private void updateBackground(Scenario.Background background) {
+        this.background = background;
+        if (!this.background.fadeIn()) {
+            return;
+        }
+
+        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
+        this.backgroundFadeIn.setTarget(255);
+    }
 //
 //    private void setDialogue(DialogueRender dialogue) {
 //        if (this.dialogue != null) {
