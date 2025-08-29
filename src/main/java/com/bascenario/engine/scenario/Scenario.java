@@ -67,12 +67,12 @@ public class Scenario {
 
     /**
      *  Sound, consist of path (the location where the audio is stored in OGG format) and the time when the audio starting to play and stop playing.
-     *  The user can also customize this to fade in or fade out, depending on the context, situation.
      *  If we want the sound to play during the preview, start is going to be a negative value.
      *  If this sound should be looped, then "end" can be any negative value, if end is zero, then it play till the audio end.
+     *  If the user want this sound to slowly fade out, then set it to the duration in ms till fade out, if not then any negative value will do.
      */
     @Builder
-    public record Sound(String path, long start, long end, boolean fadeIn, boolean fadeOut) {}
+    public record Sound(String path, long start, long end, long fadeOut) {}
 
     /**
      *  Tricky one, I want dialogue option to actually affect the next dialogue that we want to play.

@@ -166,7 +166,7 @@ public class ScenarioRenderTest {
         scenario.getDialogues().put(0, dialogues);
 
         scenario.getSounds().add(new Scenario.Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg",
-                -1, 700L, false, true));
+                -1, 0, 300L));
 
         System.out.println(Arrays.toString(scenario.getDialogueOptions().toArray()));
 
