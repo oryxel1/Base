@@ -59,7 +59,7 @@ public class Scenario {
     public record Next(boolean waitForDialogue, Object object) {}
 
     /**
-     *  Timestamp, consist of time (in ms since the start of the scenario) and the events going to get play at time.
+     *  Timestamp, consist of time (in ms since last dialogue/timestamp/...) and the events going to get play at time.
      *  The event can still play after this "time" value and each event can have it own duration, depending on the user.
      *  Note: normally the event is related to the sprite, controlling it, ....
      */
@@ -109,13 +109,13 @@ public class Scenario {
 
     /**
      *  Dialogue, literally what it's, contain dialogue, the text play speed,
-     *  The name that is going to show up, and the association (blue text). The text value can be customized to change the text size or font type (bold/regular),
+     *  The name that is going to show up, and the association (blue text). The text value can be customized to change the text scale or font type (bold/regular),
      *  If we want to use the default text, then set text size to any negative value and fontType to REGULAR.
      *  If the cutscene value is set, both name and association value is ignored and the black gradient background won't show up,
      *  like how it's in the cutscene.
      */
     @Builder
-    public record Dialogue(long time, String dialogue, String name, String association, double playSpeed, int textSize, FontType fontType, boolean cutscene) {
+    public record Dialogue(long time, String dialogue, String name, String association, double playSpeed, float textScale, FontType fontType, boolean cutscene) {
         public static long MS_PER_WORD = 38L;
 
         public long getMaxDuration() {
