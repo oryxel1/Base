@@ -28,6 +28,10 @@ public class EventSerializer implements JsonDeserializer<Event>, JsonSerializer<
             field.setAccessible(true);
             try {
                 Object object1 = field.get(event);
+                if (object1.getClass().equals(DynamicAnimation.class)) {
+                    continue;
+                }
+
                 final JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("class", object1.getClass().getName());
                 jsonObject.addProperty("value", GSON.toJson(object1));
