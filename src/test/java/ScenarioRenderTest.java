@@ -68,20 +68,25 @@ public class ScenarioRenderTest {
                 new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_04.wav", -1), false),
                 new SpriteLocationEvent(800, hinaSprite, 0, 50)
         );
-//
-//        scenario.getTimestamps().add(new Scenario.Timestamp(
-//                702L, List.of(new SpriteAnimationEvent(hinaSprite, "02", 1, true))));
-//
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
-//                .time(703L).name("Hina").association("Prefect Team")
-//                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
-//                .cutscene(false)
-//                .build());
-//
+
+        scenario.add(true, 1, new PlayDialogueEvent(Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
+                .name("Hina").association("Prefect Team")
+                .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                .cutscene(false)
+                .build()));
+        scenario.add(true, 1,
+                new SpriteAnimationEvent(hinaSprite, "04", 1, true),
+                new PlayDialogueEvent(Dialogue.builder().dialogue("I still haven't slept, and I have bags under my eyes. Not to mention my hair is a mess since I didn't wash it...")
+                        .name("Hina").association("Prefect Team")
+                        .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)
+                        .cutscene(false)
+                        .build())
+        );
+
 //        scenario.getTimestamps().add(new Scenario.Timestamp(
 //                703L, List.of(new SpriteAnimationEvent(hinaSprite, "04", 1, true))));
 //
-//        dialogues.add(Scenario.Dialogue.builder().dialogue("I still haven't slept, and I have bags under my eyes. Not to mention my hair is a mess since I didn't wash it...")
+//        dialogues.add(Scenario.Dialogue.builder().dialogue("")
 //                .time(704L).name("Hina").association("Prefect Team")
 //                .playSpeed(1).textSize(-1).fontType(Scenario.FontType.REGULAR)
 //                .cutscene(false)

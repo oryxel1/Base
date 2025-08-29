@@ -72,6 +72,11 @@ public class ScenarioScreen extends Screen {
     }
 
     @Override
+    public void init() {
+        this.sprites.forEach(SpriteRender::init);
+    }
+
+    @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.poll();
 
