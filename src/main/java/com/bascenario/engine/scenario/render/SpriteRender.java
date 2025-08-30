@@ -31,6 +31,7 @@ public class SpriteRender {
     private Skeleton skeletonFade, skeleton;
     private AnimationState state;
 
+    @Getter
     private DynamicAnimation xLocation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 0, 0), yLocation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 0, 0);
     private DynamicAnimation fadeColor;
 

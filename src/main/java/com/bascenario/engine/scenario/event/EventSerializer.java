@@ -5,6 +5,7 @@ import com.google.gson.*;
 import lombok.SneakyThrows;
 import net.lenni0451.commons.animation.DynamicAnimation;
 
+import java.lang.reflect.AccessFlag;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class EventSerializer implements JsonDeserializer<Event>, JsonSerializer<
             field.setAccessible(true);
             try {
                 Object object1 = field.get(event);
-                if (object1.getClass().equals(DynamicAnimation.class)) {
+                if (object1.getClass().equals(DynamicAnimation.class) || !field.accessFlags().contains(AccessFlag.FINAL)) {
                     continue;
                 }
 

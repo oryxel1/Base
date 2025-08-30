@@ -7,6 +7,7 @@ import com.bascenario.engine.scenario.event.impl.sound.PlaySoundEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteAnimationEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteLocationEvent;
+import com.bascenario.engine.scenario.event.impl.sprite.mini.SpriteShakeEvent;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
@@ -77,6 +78,7 @@ public class ScenarioRenderTest {
         );
         scenario.add(true, 1,
                 new SpriteAnimationEvent(hinaSprite, "14", 1, true),
+                new SpriteShakeEvent(600L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(-1).playSpeed(1)
