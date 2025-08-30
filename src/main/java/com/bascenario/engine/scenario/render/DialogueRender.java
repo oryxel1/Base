@@ -74,17 +74,19 @@ public class DialogueRender {
         this.finished = this.wordIndex - dialogue.dialogue().length() >= 10;
         this.canSkip = this.wordIndex - dialogue.dialogue().length() >= -5;
 
-        int r = 36, g = 43, b = 57;
-        ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart, width, height, Color.fromRGBA(r, g, b, 220));
+        if (!this.dialogue.cutscene()) {
+            int r = 36, g = 43, b = 57;
+            ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart, width, height, Color.fromRGBA(r, g, b, 220));
 
-        for (int i = 1; i < theRestPart; i++) {
-            int alpha = Math.max(0, Math.min(255, Math.round(220 + ((i / theRestPart) * (-220)))));
+            for (int i = 1; i < theRestPart; i++) {
+                int alpha = Math.max(0, Math.min(255, Math.round(220 + ((i / theRestPart) * (-220)))));
 
-            ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart - i,
-                    width, height - noGradientPart - i + 1, Color.fromRGBA(r, g, b, alpha));
+                ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart - i,
+                        width, height - noGradientPart - i + 1, Color.fromRGBA(r, g, b, alpha));
+            }
+
+            ThinGL.renderer2D().filledRectangle(positionMatrix, separatorX, separator, separatorX + separatorWidth, separator + 3, Color.fromRGB(116, 116, 126));
         }
-
-        ThinGL.renderer2D().filledRectangle(positionMatrix, separatorX, separator, separatorX + separatorWidth, separator + 3, Color.fromRGB(116, 116, 126));
 
         float y = 0;
         for (final StringBuilder builder : this.builders) {
@@ -107,15 +109,5 @@ public class DialogueRender {
                 Color.fromRGB(132, 212, 249), 0, Color.fromRGB(50, 70, 90)));
         ThinGL.rendererText().textRun(positionMatrix, association, separatorX + nameTextSizeX + (0.015625F * width),
                 separator - (0.01018518518F * height), RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
-
-        // 1280 889
-//        ImmediateMultiDrawBatchDataHolder drawBatch = new ImmediateMultiDrawBatchDataHolder();
-//        ThinGL.renderer2D().beginBuffering(drawBatch);
-
-//        ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height, width, height - noGradientPart, Color.fromRGBA(192, 192, 192, 180));
-//        ThinGL.renderer2D().endBuffering();
-
-//        drawBatch.draw();
-//        drawBatch.free();
     }
 }

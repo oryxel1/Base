@@ -7,7 +7,6 @@ import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
-import org.joml.Matrix4fStack;
 
 public class RemoveSpriteEvent extends Event {
     private final Sprite sprite;
