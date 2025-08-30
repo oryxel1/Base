@@ -128,9 +128,9 @@ public class SpriteRender {
         }
 
         final Matrix4fStack positionMatrix = new Matrix4fStack(8);
-        this.emoticons.forEach(emoticon -> {
-            RenderUtil.render(() -> emoticon.render(positionMatrix, posX, -posY));
-        });
+        this.emoticons.forEach(emoticon -> RenderUtil.render(() -> emoticon.render(positionMatrix, posX, -posY)));
+
+        this.emoticons.removeIf(EmoticonRender::isFinished);
     }
 
     public void playAnimation(int layer, String name, boolean loop) {

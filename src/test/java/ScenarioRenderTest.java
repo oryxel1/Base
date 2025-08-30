@@ -54,7 +54,8 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "12", 1, true),
                 new SpriteLocationEvent(0, hinaSprite, 100, 50),
                 new SpriteLocationEvent(1000L, hinaSprite, 20, 50),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 800, -360, Sprite.EmoticonType.SWEAT))
+                new QueueEventEvent(800L, new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L,
+                        2200L, 800,-360, Sprite.EmoticonType.SWEAT)))
         );
         scenario.add(true, 1, new ShowDialogueOptionEvent(
                 DialogueOptions.builder()

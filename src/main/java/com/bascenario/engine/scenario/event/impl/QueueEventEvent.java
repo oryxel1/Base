@@ -1,14 +1,13 @@
 package com.bascenario.engine.scenario.event.impl;
 
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.event.render.EventRenderer;
+import lombok.Getter;
 
 public class QueueEventEvent extends Event {
-    private final Event event;
+    @Getter
+    private final Event queuedEvent;
     public QueueEventEvent(long duration, Event event) {
         super(duration);
-        this.event = event;
-
-        this.onEndUnsafeQueue = screen -> screen.getEvents().add(new EventRenderer(this.event));
+        this.queuedEvent = event;
     }
 }

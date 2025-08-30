@@ -22,7 +22,7 @@ public class EmoticonTest {
                 new SetBackgroundEvent(background),
                 new AddSpriteEvent(hinaSprite),
                 new SpriteLocationEvent(0, hinaSprite, 0, 50),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 800, -360, Sprite.EmoticonType.SWEAT))
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT))
         );
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");

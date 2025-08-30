@@ -11,12 +11,7 @@ public class Event {
     @Getter
     protected final long duration;
 
-    public Queue onEndUnsafeQueue;
     public void onStart(ScenarioScreen screen) {}
     public void onEnd(ScenarioScreen screen) {}
     public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {}
-
-    public interface Queue {
-        void run(ScenarioScreen screen);
-    }
 }

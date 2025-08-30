@@ -3,6 +3,7 @@ package com.bascenario.engine.scenario.screen;
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.event.api.Event;
+import com.bascenario.engine.scenario.event.impl.QueueEventEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
 import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
@@ -187,21 +188,24 @@ public class ScenarioScreen extends Screen {
             iterator.remove();
         }
 
-        final List<Event.Queue> onEndQueues = new ArrayList<>();
+        final List<Event> queuedEvents = new ArrayList<>();
 
         final Iterator<EventRenderer> rendererIterator = this.events.iterator();
         while (rendererIterator.hasNext()) {
             final EventRenderer event = rendererIterator.next();
             if (event.isFinished()) {
                 event.onEnd(this);
-                if (event.getEvent().onEndUnsafeQueue != null) {
-                    onEndQueues.add(event.getEvent().onEndUnsafeQueue);
+                if (event.getEvent() instanceof QueueEventEvent queued) {
+                    queuedEvents.add(queued.getQueuedEvent());
                 }
                 rendererIterator.remove();
             }
         }
 
-        onEndQueues.forEach(queue -> queue.run(this));
+        queuedEvents.forEach(queue -> {
+            queue.onStart(this);
+            this.events.add(new EventRenderer(queue));
+        });
     }
 
     public void setBackground(Background background, boolean skipFadeOut) {
