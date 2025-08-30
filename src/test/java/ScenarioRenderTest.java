@@ -18,7 +18,7 @@ import java.util.Map;
 public class ScenarioRenderTest {
     public static void main(String[] args) {
         Background background = new Background(
-                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
+                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
         Scenario scenario = Scenario.builder()
@@ -53,7 +53,8 @@ public class ScenarioRenderTest {
                 new AddSpriteEvent(hinaSprite),
                 new SpriteAnimationEvent(hinaSprite, "12", 1, true),
                 new SpriteLocationEvent(0, hinaSprite, 100, 50),
-                new SpriteLocationEvent(1000L, hinaSprite, 20, 50)
+                new SpriteLocationEvent(1000L, hinaSprite, 20, 50),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 800, -360, Sprite.EmoticonType.SWEAT))
         );
         scenario.add(true, 1, new ShowDialogueOptionEvent(
                 DialogueOptions.builder()

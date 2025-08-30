@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bascenario.engine.scenario.elements.Sprite;
+import com.bascenario.util.render.RenderUtil;
 import com.esotericsoftware.spine.*;
 import com.esotericsoftware.spine.utils.TwoColorPolygonBatch;
 import lombok.Getter;
@@ -16,6 +17,10 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
+import org.joml.Matrix4fStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class SpriteRender {
@@ -36,6 +41,9 @@ public class SpriteRender {
     private DynamicAnimation xLocation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 0, 0), yLocation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 0, 0);
     @Getter @Setter
     private DynamicAnimation fadeColor;
+
+    @Getter
+    private final List<EmoticonRender> emoticons = new ArrayList<>();
 
     public void init() {
         if (this.init) {
@@ -118,6 +126,11 @@ public class SpriteRender {
             this.renderer.draw(this.fadeBatch, this.skeletonFade);
             this.fadeBatch.end();
         }
+
+        final Matrix4fStack positionMatrix = new Matrix4fStack(8);
+        this.emoticons.forEach(emoticon -> {
+            RenderUtil.render(() -> emoticon.render(positionMatrix, posX, -posY));
+        });
     }
 
     public void playAnimation(int layer, String name, boolean loop) {

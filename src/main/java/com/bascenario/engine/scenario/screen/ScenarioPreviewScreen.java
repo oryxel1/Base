@@ -77,10 +77,10 @@ public class ScenarioPreviewScreen extends Screen {
             final String border = previewBackground == null ? "border_non_background.png" : "border_with_background.png";
             if (doingTheFinalFade) {
                 Color color = Color.fromRGBA(255, 255, 255, Math.round(100 * this.finalFadeOut.getValue() / 255F));
-                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/" + border, color);
+                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/preview/" + border, color);
             } else {
                 Color fadeeee = Color.fromRGBA(255, 255, 255, Math.round(100 * (1 - (this.backgroundFadeIn.getValue() / 255F))));
-                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/" + border, fadeeee);
+                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/preview/" + border, fadeeee);
             }
 
             Color backgroundFadeColor = Color.fromRGBA(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
