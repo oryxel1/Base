@@ -27,11 +27,11 @@ public class DialogueOptionsRender {
 
     private String clicked;
     private DynamicAnimation scaleAnimation;
-    private DynamicAnimation fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 200L, 255);
+    private DynamicAnimation flashAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 100L, 255);
 
     private long sinceFinished = -1;
     public boolean isFinished() {
-        return this.sinceFinished > 0 && System.currentTimeMillis() - this.sinceFinished >= 200L;
+        return this.sinceFinished > 0 && System.currentTimeMillis() - this.sinceFinished >= 10L;
     }
 
     public void render(Matrix4fStack positionMatrix, WindowInterface window) {
@@ -40,8 +40,16 @@ public class DialogueOptionsRender {
             this.scaleAnimation.setTarget(1F);
         }
 
-        if (!this.fadeAnimation.isRunning() && this.fadeAnimation.getTarget() == 0 && this.sinceFinished == -1) {
+        if (!this.scaleAnimation.isRunning() && !this.flashAnimation.isRunning() && this.flashAnimation.getTarget() == 0) {
             this.sinceFinished = System.currentTimeMillis();
+        }
+
+        if (!this.flashAnimation.isRunning() && this.clicked != null && this.scaleAnimation != null) {
+            if (this.flashAnimation.getTarget() == 255 || !this.scaleAnimation.isRunning()) {
+                this.flashAnimation.setTarget(0);
+            } else if (this.flashAnimation.getTarget() == 0 && this.scaleAnimation.isRunning()) {
+                this.flashAnimation.setTarget(255);
+            }
         }
 
         final Collection<String> options = this.dialogueOptions.options().keySet();
@@ -77,8 +85,8 @@ public class DialogueOptionsRender {
 
                 fontSize = Math.round((0.02866666666F * ((width + height) / 2)) * scale1);
 
-                color = Color.fromRGBA(255, 255, 255, Math.round(this.fadeAnimation.getValue()));
-                textColor = Color.fromRGBA(44, 67, 90, Math.round(this.fadeAnimation.getValue()));
+                color = Color.fromRGBA(255, 255, 255, Math.round(this.flashAnimation.getValue()));
+                textColor = Color.fromRGBA(44, 67, 90, Math.round(this.flashAnimation.getValue()));
             }
 
             final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png");
@@ -107,11 +115,11 @@ public class DialogueOptionsRender {
 
     public void mouseRelease() {
         if (this.clicked != null) {
-            this.fadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 350L, 255);
-            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 250L, this.scaleAnimation.getValue());
+            this.flashAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 70L, 255);
+            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 220L, this.scaleAnimation.getValue());
 
             this.scaleAnimation.setTarget(1.1F);
-            this.fadeAnimation.setTarget(0);
+            this.flashAnimation.setTarget(0);
         }
     }
 
