@@ -11,14 +11,14 @@ import com.bascenario.launcher.Launcher;
 public class EmoticonTest {
     public static void main(String[] args) {
         Background background = new Background(
-                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
+                "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
         Scenario scenario = Scenario.builder()
                 .name("Emoticon Test").previewBackground(background)
                 .build();
 
-        final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
+        final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\CH0230_spr.skel", "C:\\Users\\PC\\Downloads\\CH0230_spr.atlas", "Idle_01", true);
         final Sprite hoshinoSprite = new Sprite("C:\\Users\\PC\\Downloads\\hoshino_swimsuit_spr.skel",
                 "C:\\Users\\PC\\Downloads\\hoshino_swimsuit_spr.atlas", "Idle_01", true);
         scenario.add(0,
@@ -27,7 +27,7 @@ public class EmoticonTest {
                 new AddSpriteEvent(hoshinoSprite),
                 new SpriteLocationEvent(0, hinaSprite, -30, 50),
                 new SpriteLocationEvent(0, hoshinoSprite, 30, 50),
-                new SpriteAnimationEvent(hoshinoSprite, "07", 1, true),
+                new SpriteAnimationEvent(hoshinoSprite, "11", 1, true),
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT)),
                 new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT))
         );

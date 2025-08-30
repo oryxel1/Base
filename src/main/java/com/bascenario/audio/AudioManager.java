@@ -27,19 +27,19 @@ public class AudioManager {
     private final Map<String, CachedMusic> nameToMusics = new HashMap<>();
 
     @SneakyThrows
-    public void play(String path, boolean loop) {
-        final Music music = Gdx.audio.newMusic(new FileHandle(path));
+    public void play(String path, boolean loop, boolean internal) {
+        final Music music = Gdx.audio.newMusic(internal ? Gdx.files.internal(path) : new FileHandle(path));
         music.play();
         music.setLooping(loop);
 
         this.nameToMusics.put(path, new CachedMusic(music));
     }
 
-    public void fadeIn(String path, long duration, boolean loop) {
+    public void fadeIn(String path, long duration, boolean loop, boolean internal) {
         CachedMusic cachedMusic = this.nameToMusics.get(path);
         Music music;
         if (cachedMusic == null) {
-            music = Gdx.audio.newMusic(new FileHandle(path));
+            music = Gdx.audio.newMusic(internal ? Gdx.files.internal(path) : new FileHandle(path));
             music.setVolume(0);
             music.setLooping(loop);
             music.play();

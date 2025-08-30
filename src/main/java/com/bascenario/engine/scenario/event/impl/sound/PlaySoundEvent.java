@@ -20,14 +20,14 @@ public class PlaySoundEvent extends Event {
     @Override
     public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
         if (sound.fadeIn() > 0) {
-            AudioManager.getInstance().fadeIn(this.sound.path(), this.sound.fadeIn(), this.loop);
+            AudioManager.getInstance().fadeIn(this.sound.path(), this.sound.fadeIn(), this.loop, false);
         }
     }
 
     @Override
     public void onStart(ScenarioScreen screen) {
         if (sound.fadeIn() <= 0) {
-            AudioManager.getInstance().play(this.sound.path(), this.loop);
+            AudioManager.getInstance().play(this.sound.path(), this.loop, false);
         }
     }
 }

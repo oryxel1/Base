@@ -45,7 +45,7 @@ public class ScenarioPreviewScreen extends Screen {
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         if (!this.playSound) {
             if (this.scenario.getPreviewSound() != null) {
-                AudioManager.getInstance().play(this.scenario.getPreviewSound().path(), true);
+                AudioManager.getInstance().play(this.scenario.getPreviewSound().path(), true, false);
             }
             this.playSound = true;
         }

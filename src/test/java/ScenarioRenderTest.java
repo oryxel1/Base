@@ -18,7 +18,7 @@ import java.util.Map;
 public class ScenarioRenderTest {
     public static void main(String[] args) {
         Background background = new Background(
-                "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
+                "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
         Scenario scenario = Scenario.builder()
