@@ -44,7 +44,7 @@ public class DialogueOptionsRender {
             this.sinceFinished = System.currentTimeMillis();
         }
 
-        if (!this.flashAnimation.isRunning() && this.clicked != null && this.scaleAnimation != null) {
+        if (this.scaleAnimation.getTarget() == 1.1F && !this.flashAnimation.isRunning() && this.clicked != null && this.scaleAnimation != null) {
             if (this.flashAnimation.getTarget() == 255 || !this.scaleAnimation.isRunning()) {
                 this.flashAnimation.setTarget(0);
             } else if (this.flashAnimation.getTarget() == 0 && this.scaleAnimation.isRunning()) {
@@ -97,7 +97,7 @@ public class DialogueOptionsRender {
 
             // I'm struggling here, what the font size and type, or is that the dialogue button use a different font.
             // My recreation was really close but now the only problem is the text is about 3-4 px thicker, which is weird
-            // But the font size is about the sameish, maybe NotoSansThin/Regular with bold?
+            // But the font size is about the sameish, maybe NotoSansThin/Light with bold?
             TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
             if (ThinGL.rendererText().getExactWidth(textRun.shape()) > buttonWidth - 100) {
                 fontSize = MathUtil.ceil(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));

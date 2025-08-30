@@ -20,10 +20,12 @@ public class PlayEmoticonEvent extends Event {
     public void onStart(ScenarioScreen screen) {
         String location = switch (emoticon.type()) {
             case SWEAT -> "assets/base/sounds/SFX_Emoticon_Motion_Sweat.wav";
+            case EXCLAMATION_MARK -> "assets/base/sounds/SFX_Emoticon_Motion_Exclaim.wav";
+            case ANXIETY -> "assets/base/sounds/SFX_Emoticon_Motion_Upset.wav";
             default -> null;
         };
 
-        if (location != null) {
+        if (location != null && emoticon.playSound()) {
             AudioManager.getInstance().play(location, false, true);
         }
 
