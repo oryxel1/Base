@@ -12,6 +12,7 @@ import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.launcher.Launcher;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ScenarioRenderTest {
@@ -78,14 +79,30 @@ public class ScenarioRenderTest {
         );
         scenario.add(true, 1,
                 new SpriteAnimationEvent(hinaSprite, "14", 1, true),
-                new SpriteShakeEvent(600L, hinaSprite),
+                new SpriteShakeEvent(500L, 60L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(-1).playSpeed(1)
                         .dialogue("I can't imagine you do either.")
                         .build())
         );
-//        System.out.println(scenario.toJson().toString());
+
+        {
+            final Map<String, Integer> options = new LinkedHashMap<>();
+            options.put("\"I have nothing to hide when it comes to you.\"", 0);
+            options.put("\"You're worth any hassle that comes my way.\"", 0);
+
+            scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(options)));
+        }
+
+        scenario.add(true, 1,
+                new SpriteAnimationEvent(hinaSprite, "04", 1, true),
+                new PlayDialogueEvent(Dialogue.builder()
+                        .name("Hina").association("Prefect Team")
+                        .textScale(-1).playSpeed(1)
+                        .dialogue("*sigh* What does someone say to something like that?")
+                        .build())
+        );
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
