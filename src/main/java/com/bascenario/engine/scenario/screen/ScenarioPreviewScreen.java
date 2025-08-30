@@ -101,7 +101,7 @@ public class ScenarioPreviewScreen extends Screen {
                     titleBoxFade = Color.fromRGBA(255, 255, 255, Math.max(0, Math.round(this.finalFadeOut.getValue())));
                 }
 
-                ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/title.png"),
+                ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/preview/title.png"),
                         0, Math.max(0, height / 2F - (sizeY / 2)), width, sizeY, titleBoxFade);
             }
 

@@ -54,7 +54,7 @@ public class LocationInfoEvent extends Event {
                 positionMatrix, 30, separatorY, 35, separatorY + (sizeY / 2F),
                 Color.fromRGBA(182, 182, 182, Math.round(this.popupFade.getValue()))
         );
-        ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/location_popup.png"),
+        ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/other/location_popup.png"),
                 sizeWidth, locationY,  30,  sizeY, color);
 
         ThinGL.rendererText().textRun(positionMatrix, text, 56, locationY + (sizeY / 2) - (ThinGL.rendererText().getExactHeight(text.shape()) / 2));

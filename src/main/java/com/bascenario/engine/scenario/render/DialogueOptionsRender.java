@@ -1,6 +1,5 @@
 package com.bascenario.engine.scenario.render;
 
-import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.DialogueOptions;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.manager.TextureManager;
@@ -83,10 +82,10 @@ public class DialogueOptionsRender {
                 textColor = Color.fromRGBA(44, 67, 90, Math.round(this.fadeAnimation.getValue()));
             }
 
-            final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/button.png");
+            final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png");
             ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, clonedX + 2, clonedY + 5, clonedWidth, clonedHeight,
                     Color.fromRGBA(0, 0, 0, 30));
-            ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/button.png"),
+            ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png"),
                     clonedX, clonedY, clonedWidth, clonedHeight, color);
 
             TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);

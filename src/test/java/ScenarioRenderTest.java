@@ -62,7 +62,7 @@ public class ScenarioRenderTest {
         ));
         scenario.add(true, 1,
                 new SpriteAnimationEvent(hinaSprite, "11", 1, true),
-                new SpriteLocationEvent(500L, hinaSprite, 0, 50),
+                new SpriteLocationEvent(300L, hinaSprite, 0, 50),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(-1).playSpeed(1)
