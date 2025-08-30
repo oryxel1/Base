@@ -81,6 +81,7 @@ public class ScenarioRenderTest {
         );
         scenario.add(true, 1,
                 new SpriteAnimationEvent(hinaSprite, "14", 1, true),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 2200L, 800,-360, Sprite.EmoticonType.SWEAT)),
                 new SpriteShakeEvent(500L, 60L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")

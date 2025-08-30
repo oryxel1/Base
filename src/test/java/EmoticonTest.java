@@ -2,6 +2,7 @@ import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.*;
 import com.bascenario.engine.scenario.event.impl.*;
 import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
+import com.bascenario.engine.scenario.event.impl.sprite.SpriteAnimationEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteLocationEvent;
 import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
@@ -18,11 +19,17 @@ public class EmoticonTest {
                 .build();
 
         final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
+        final Sprite hoshinoSprite = new Sprite("C:\\Users\\PC\\Downloads\\hoshino_swimsuit_spr.skel",
+                "C:\\Users\\PC\\Downloads\\hoshino_swimsuit_spr.atlas", "Idle_01", true);
         scenario.add(0,
                 new SetBackgroundEvent(background),
                 new AddSpriteEvent(hinaSprite),
-                new SpriteLocationEvent(0, hinaSprite, 0, 50),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT))
+                new AddSpriteEvent(hoshinoSprite),
+                new SpriteLocationEvent(0, hinaSprite, -30, 50),
+                new SpriteLocationEvent(0, hoshinoSprite, 30, 50),
+                new SpriteAnimationEvent(hoshinoSprite, "07", 1, true),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(600L, 1000L, 800, -360, Sprite.EmoticonType.SWEAT))
         );
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
