@@ -13,7 +13,6 @@ import net.lenni0451.commons.animation.easing.EasingMode;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
-import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.image.texture.Texture2D;
 import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
@@ -83,11 +82,14 @@ public class DialogueOptionsRender {
             }
 
             final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png");
-            ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, clonedX + 2, clonedY + 5, clonedWidth, clonedHeight,
-                    Color.fromRGBA(0, 0, 0, 30));
+//            ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, clonedX + 2, clonedY + 5, clonedWidth, clonedHeight,
+//                    Color.fromRGBA(0, 0, 0, 30));
             ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png"),
                     clonedX, clonedY, clonedWidth, clonedHeight, color);
 
+            // I'm struggling here, what the font size and type, or is that the dialogue button use a different font.
+            // My recreation was really close but now the only problem is the text is about 3-4 px thicker, which is weird
+            // But the font size is about the sameish, maybe NotoSansThin/Regular with bold?
             TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
             if (ThinGL.rendererText().getExactWidth(textRun.shape()) > buttonWidth - 100) {
                 fontSize = MathUtil.ceil(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));
@@ -96,8 +98,8 @@ public class DialogueOptionsRender {
 
             float textX = (width / 2) - (ThinGL.rendererText().getExactWidth(textRun.shape()) / 2);
 
-            float textY = clonedY + (ThinGL.rendererText().getExactHeight(textRun.shape()) + clonedHeight + 0.01388888888F * height) / 2;
-            ThinGL.rendererText().textRun(positionMatrix, textRun, textX, textY, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
+            float textY = clonedY + (clonedHeight / 2) - (ThinGL.rendererText().getExactHeight(textRun.shape()) / 2);
+            ThinGL.rendererText().textRun(positionMatrix, textRun, textX, textY);
 
             extraY += buttonHeight + distanceBetween * scale;
         }

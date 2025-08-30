@@ -21,8 +21,9 @@ public class ScenarioRenderTest {
                 "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
+        final Sound sound = new Sound("C:\\Users\\PC\\Downloads\\Track_15_Mitsukiyo_Honey_Jam.ogg", 100L);
         Scenario scenario = Scenario.builder()
-                .name("Hesitant Yet Eager to Share").previewBackground(background)
+                .name("Hesitant Yet Eager to Share").previewBackground(background).previewSound(sound)
                 .build();
 
         scenario.add(0, new SetBackgroundEvent(background),
