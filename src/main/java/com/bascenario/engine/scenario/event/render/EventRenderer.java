@@ -2,12 +2,14 @@ package com.bascenario.engine.scenario.event.render;
 
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
 @RequiredArgsConstructor
 public class EventRenderer {
+    @Getter
     private final Event event;
     private final long startTime = System.currentTimeMillis();
 

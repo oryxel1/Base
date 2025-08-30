@@ -57,13 +57,13 @@ public class DialogueRender {
                 char next = dialogue.dialogue().toCharArray()[this.wordIndex];
                 String predictedAppend = this.builders.get(this.builderIndex).toString() + next;
                 final TextRun testDialogue = TextRun.fromString(FontUtil.getFont("NotoSansRegular", size42), predictedAppend);
-                if (ThinGL.rendererText().getExactWidth(testDialogue.shape()) >= separatorWidth - 5) {
+                if (ThinGL.rendererText().getExactWidth(testDialogue.shape()) >= separatorWidth - 5 || next == '\n') {
                     this.builderIndex++;
                     this.builders.add(new StringBuilder());
                 }
 
                 final StringBuilder builder = this.builders.get(this.builderIndex);
-                if (!(builder.isEmpty() && String.valueOf(next).equals(" "))) {
+                if (!(builder.isEmpty() && String.valueOf(next).equals(" ")) && next != '\n') {
                     builder.append(next);
                 }
             }
