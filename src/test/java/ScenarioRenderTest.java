@@ -5,6 +5,7 @@ import com.bascenario.engine.scenario.event.impl.dialogue.PlayDialogueEvent;
 import com.bascenario.engine.scenario.event.impl.dialogue.RedirectDialogueEvent;
 import com.bascenario.engine.scenario.event.impl.dialogue.ShowDialogueOptionEvent;
 import com.bascenario.engine.scenario.event.impl.sound.PlaySoundEvent;
+import com.bascenario.engine.scenario.event.impl.sound.StopSoundEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.AddSpriteEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteAnimationEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.SpriteLocationEvent;
@@ -20,12 +21,15 @@ public class ScenarioRenderTest {
                 "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\01_Background\\BG_RiversideRoad.jpg",
                 false, false);
 
+        final Sound previewSound = new Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg", -1);
         Scenario scenario = Scenario.builder()
-                .name("Warm Sunshine").previewBackground(background)
+                .name("Warm Sunshine").previewBackground(background).previewSound(previewSound)
                 .build();
 
         final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
-        scenario.add(0, new SetBackgroundEvent(background),
+        scenario.add(0,
+                new StopSoundEvent(previewSound, true, 200L),
+                new SetBackgroundEvent(background),
                 new AddSpriteEvent(hinaSprite),
                 new SpriteLocationEvent(0, hinaSprite, 0, 50),
                 new SpriteAnimationEvent(hinaSprite, "15", 1, true)
@@ -59,17 +63,17 @@ public class ScenarioRenderTest {
                 .build()));
 
         scenario.add(true, 1,
-                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_03.wav", -1, -1), false),
+                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_03.wav", -1), false),
                 new SpriteLocationEvent(800, hinaSprite, 300, 50)
         );
         scenario.add(800, new SpriteAnimationEvent(hinaSprite, "02", 1, true));
         scenario.add(400,
-                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_04.wav", -1, -1), false),
+                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Run_04.wav", -1), false),
                 new SpriteLocationEvent(800, hinaSprite, 0, 50)
         );
 
         scenario.add(true, 1,
-                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg", 1500L, -1), false),
+                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\Track_10_Mitsukiyo_Romantic_Smile.ogg", 1500L), false),
                 new PlayDialogueEvent(Dialogue.builder().dialogue("My apologies. I was up all night doing some work.")
                 .name("Hina").association("Prefect Team")
                 .playSpeed(1).textScale(-1).fontType(Dialogue.FontType.REGULAR)

@@ -3,14 +3,11 @@ package com.bascenario.render;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
-import com.bascenario.audio.AudioManager;
-import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.engine.scenario.screen.ScenarioPreviewScreen;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
@@ -18,22 +15,15 @@ import net.raphimc.thingl.wrapper.GLStateManager;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 public class MainRendererWindow extends ApplicationAdapter {
-    @Getter
+    @Getter @Setter
     private Screen currentScreen;
 
-    private Scenario scenario;
-
-    private double mouseX, mouseY;
-
     public MainRendererWindow(Screen screen) {
-        setCurrentScreen(screen);
+        this.currentScreen = screen;
     }
 
+    private double mouseX, mouseY;
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle();
@@ -95,8 +85,6 @@ public class MainRendererWindow extends ApplicationAdapter {
 
         ThinGL.get().onFrameFinished();
         ThinGL.get().onFrameEnd();
-
-        this.pollSound();
     }
 
     @Override
@@ -104,75 +92,5 @@ public class MainRendererWindow extends ApplicationAdapter {
         if (this.currentScreen != null) {
             this.currentScreen.dispose();
         }
-    }
-
-    public void setCurrentScreen(Screen currentScreen) {
-        this.currentScreen = currentScreen;
-        Scenario scenario = this.scenario;
-        if (this.currentScreen instanceof ScenarioScreen screen) {
-            this.scenario = screen.getScenario();
-        } else if (this.currentScreen instanceof ScenarioPreviewScreen screen) {
-            this.scenario = screen.getScenario();
-        } else {
-            this.scenario = null;
-        }
-
-//        if (scenario != this.scenario) {
-//            this.playingSounds.clear();
-//            this.playedSounds.clear();
-//        }
-    }
-
-//    private final List<Scenario.Sound> playedSounds = new ArrayList<>();
-//    private final List<Scenario.Sound> playingSounds = new ArrayList<>();
-
-    private void pollSound() {
-//        if (this.scenario == null) {
-//            return;
-//        }
-//
-//        long time = this.currentScreen instanceof ScenarioScreen screen ? screen.getRealDuration() : -1;
-//
-//        final Iterator<Scenario.Sound> soundIterator = this.playingSounds.iterator();
-//        while (soundIterator.hasNext()) {
-//            Scenario.Sound sound = soundIterator.next();
-//            if (sound == null || sound.end() > time || sound.end() == 0) {
-//                break;
-//            }
-//
-//            if (sound.fadeOut() > 0) {
-//                if (AudioManager.getInstance().fadeOut(sound.path())) {
-//                    soundIterator.remove();
-//                }
-//            } else {
-//                AudioManager.getInstance().stop(sound.path());
-//                soundIterator.remove();
-//            }
-//        }
-//
-//        for (Scenario.Sound sound : this.scenario.getSounds()) {
-//            if (time == -1 && sound.start() != -1) { // Still in preview, only accept start time -1
-//                continue;
-//            } else if (time != -1) {
-//                if (((ScenarioScreen) this.currentScreen).getDuration() < sound.start()) {
-//                    continue;
-//                } else if (sound.start() == -1 && time >= 0) {
-//                    continue;
-//                }
-//            }
-//            if (this.playedSounds.contains(sound)) {
-//                continue;
-//            }
-//
-//            if (this.currentScreen instanceof ScenarioScreen screen && !screen.canPickupTimestamp(sound.start())) {
-//                return;
-//            }
-//
-//            System.out.println("Play sound: " + sound);
-//            this.playedSounds.add(sound);
-//            this.playingSounds.add(sound);
-//            // System.out.println("add playing sound!: " + sound);
-//            AudioManager.getInstance().play(sound.path(), sound.end() < 0);
-//        }
     }
 }

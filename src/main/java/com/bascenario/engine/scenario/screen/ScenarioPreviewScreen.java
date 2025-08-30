@@ -1,5 +1,6 @@
 package com.bascenario.engine.scenario.screen;
 
+import com.bascenario.audio.AudioManager;
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.launcher.Launcher;
@@ -39,8 +40,16 @@ public class ScenarioPreviewScreen extends Screen {
 
     private final DynamicAnimation finalFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 255);
 
+    private boolean playSound;
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
+        if (!this.playSound) {
+            if (this.scenario.getPreviewSound() != null) {
+                AudioManager.getInstance().play(this.scenario.getPreviewSound().path(), true);
+            }
+            this.playSound = true;
+        }
+
         RenderUtil.render(() -> {
             if (this.backgroundFadeIn.getValue() == 255) {
                 this.backgroundFadeIn.setTarget(0);

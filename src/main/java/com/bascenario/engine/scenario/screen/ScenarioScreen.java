@@ -34,6 +34,7 @@ public class ScenarioScreen extends Screen {
 
     private long sinceRender, sinceDialogue, sincePoll;
 
+    @Getter
     private final List<EventRenderer> events = new ArrayList<>();
     @Getter
     private final List<SpriteRender> sprites = new ArrayList<>();
