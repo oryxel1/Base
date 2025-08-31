@@ -49,7 +49,7 @@ public record Sprite(String skeleton, String atlas, String defaultAnimation, boo
     }
 
     public enum EmoticonType {
-        RESPOND, ANGRY, SWEAT, THINKING, HESITATED, CHAT, EXCLAMATION_MARK, HEART, SURPRISED,
+        NOTE, RESPOND, ANGRY, SWEAT, THINKING, HESITATED, CHAT, EXCLAMATION_MARK, HEART, SURPRISED,
         QUESTION_MARK, SHY, ANXIETY, TWINKLE
     }
 }

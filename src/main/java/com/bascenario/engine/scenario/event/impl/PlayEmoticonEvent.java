@@ -26,7 +26,7 @@ public class PlayEmoticonEvent extends Event {
             case SHY -> "assets/base/sounds/SFX_Emoticon_Motion_Shy.wav";
             case CHAT -> "assets/base/sounds/SFX_Emoticon_Motion_Chat.wav";
             case QUESTION_MARK -> "assets/base/sounds/SFX_Emoticon_Motion_Question.wav";
-            case TWINKLE -> "assets/base/sounds/SFX_Emoticon_Motion_Twinkle.wav";
+            case TWINKLE, NOTE -> "assets/base/sounds/SFX_Emoticon_Motion_Twinkle.wav";
             case SURPRISED -> "assets/base/sounds/SFX_Emoticon_Motion_Surprise.wav";
             case HEART -> "assets/base/sounds/SFX_Emoticon_Motion_Heart.wav";
             case RESPOND -> "assets/base/sounds/SFX_Emoticon_Motion_Respond.wav";

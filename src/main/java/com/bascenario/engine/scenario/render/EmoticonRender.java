@@ -28,6 +28,7 @@ public class EmoticonRender {
     private final DynamicAnimation shyAnimation, chatAnimation;
     private final DynamicAnimation twinkle1, twinkle2, twinkle3;
     private final DynamicAnimation suprisedEM, suprisedQM;
+    private final DynamicAnimation note, noteShake;
 
     private boolean lastAnxiety;
     private long lastAnxietyTime;
@@ -76,6 +77,11 @@ public class EmoticonRender {
         this.suprisedQM = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 220L, 0.6F);
         this.suprisedEM.setTarget(1);
         this.suprisedQM.setTarget(1);
+
+        this.note = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 520L, -10);
+        this.note.setTarget(-50);
+        this.noteShake = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 120L, 0);
+        this.noteShake.setTarget(6);
     }
 
     public void render(final Matrix4fStack positionMatrix, float x, float y) {
@@ -279,6 +285,27 @@ public class EmoticonRender {
                     ThinGL.renderer2D().coloredTexture(positionMatrix, dot, dotX + 54 * (i == 0 ? -1 : i == 1 ? 0 : 1), 50 + bubbleHeight / 2 - dotWidthAndHeight / 2, dotWidthAndHeight, dotWidthAndHeight, color);
                 }
             }
+            case NOTE -> {
+                if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() &&
+                        this.globalFadeOut.getTarget() == 255 && this.flipCount > 3 && !this.note.isRunning()) {
+                    this.globalFadeOut.setTarget(0);
+                }
+
+                if (this.noteShake.getValue() == 6 && this.flipCount % 2 == 0) {
+                    this.noteShake.setTarget(-6);
+                    this.flipCount++;
+                } else if (this.noteShake.getValue() == -6 && this.flipCount % 2 != 0) {
+                    this.noteShake.setTarget(6);
+                    this.flipCount++;
+                }
+
+                final Texture2D note = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Note.png");
+                final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
+                positionMatrix.translate(this.note.getValue() + 137F / 2, 131F / 2, 0);
+                positionMatrix.rotateZ((float) Math.toRadians(this.noteShake.getValue()));
+                positionMatrix.translate(-137F / 2F, -131F / 2F, 0);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, note, 0, 0, 137, 131, color);
+            }
             case SHY, HEART -> {
                 if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() &&
                         this.globalFadeOut.getTarget() == 255 && this.flipCount > 3) {
@@ -344,7 +371,8 @@ public class EmoticonRender {
         if (
                 type == Sprite.EmoticonType.EXCLAMATION_MARK || type == Sprite.EmoticonType.ANXIETY ||
                 type == Sprite.EmoticonType.HESITATED || type == Sprite.EmoticonType.THINKING ||
-                type == Sprite.EmoticonType.TWINKLE || type == Sprite.EmoticonType.SURPRISED || type == Sprite.EmoticonType.RESPOND
+                type == Sprite.EmoticonType.TWINKLE || type == Sprite.EmoticonType.SURPRISED ||
+                type == Sprite.EmoticonType.RESPOND || type == Sprite.EmoticonType.NOTE
         ) {
             if (this.globalFadeOut.isRunning()) {
                 return false;
