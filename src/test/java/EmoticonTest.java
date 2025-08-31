@@ -28,18 +28,18 @@ public class EmoticonTest {
                 new SpriteLocationEvent(0, hinaSprite, -30, 50),
                 new SpriteLocationEvent(0, hoshinoSprite, 30, 50),
                 new SpriteAnimationEvent(hoshinoSprite, "11", 1, true),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800, -360, Sprite.EmoticonType.SWEAT)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800, -360, Sprite.EmoticonType.SWEAT))
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800 + 300, -390, Sprite.EmoticonType.SWEAT)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800 + 300, -390, Sprite.EmoticonType.SWEAT))
         );
 
         scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800, -360, Sprite.EmoticonType.EXCLAMATION_MARK)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800, -360, Sprite.EmoticonType.EXCLAMATION_MARK))
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK))
                 );
 
         scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670, -360, Sprite.EmoticonType.ANXIETY)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670, -360, Sprite.EmoticonType.ANXIETY))
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.ANXIETY)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.ANXIETY))
         );
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
