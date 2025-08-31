@@ -340,7 +340,7 @@ public class ScenarioRenderTest {
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(-1).playSpeed(1)
-                        .dialogue("You, fool! Chocolate is meant to be eaten, not guarded like some kind of antique.")
+                        .dialogue("You, fool! Chocolate is meant to be eaten, not guarded after like some kind of antique.")
                         .build())
         );
 
