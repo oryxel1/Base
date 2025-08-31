@@ -115,8 +115,8 @@ public class DialogueOptionsRender {
 
     public void mouseRelease() {
         if (this.clicked != null) {
-            this.flashAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 70L, 255);
-            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 220L, this.scaleAnimation.getValue());
+            this.flashAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 100L, 255);
+            this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 250L, this.scaleAnimation.getValue());
 
             this.scaleAnimation.setTarget(1.1F);
             this.flashAnimation.setTarget(0);

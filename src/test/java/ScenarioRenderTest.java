@@ -119,6 +119,16 @@ public class ScenarioRenderTest {
                         .build())
         );
 
+        scenario.add(true, 1,
+                new SpriteAnimationEvent(hinaSprite, "18", 1, true),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(4000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
+                new PlayDialogueEvent(Dialogue.builder()
+                        .name("Hina").association("Prefect Team")
+                        .textScale(-1).playSpeed(1)
+                        .dialogue("Moving on... I'm sorry for contacting you on such short notice,\nbut I'm grateful you made the time to come see me.")
+                        .build())
+        );
+
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
             Launcher.launch(new ScenarioScreen(scenario), fullScreen);
