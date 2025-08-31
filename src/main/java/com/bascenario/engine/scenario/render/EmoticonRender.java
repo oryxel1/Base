@@ -32,10 +32,10 @@ public class EmoticonRender {
 
         this.fadeInAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 600L / 3, 0);
 
-        this.sweat1Animation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, (long) (600L / 1.3F), -20);
-        this.sweat2Animation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 600L, -80);
-        this.sweat1Animation.setTarget(50);
-        this.sweat2Animation.setTarget(50);
+        this.sweat1Animation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, (long) (600L / 1.3F), 0);
+        this.sweat2Animation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 600L, 0);
+        this.sweat1Animation.setTarget(1);
+        this.sweat2Animation.setTarget(1);
 
         float scale = 0.6F;
         if (emoticon.type() == Sprite.EmoticonType.ANXIETY) {
@@ -58,32 +58,31 @@ public class EmoticonRender {
         }
 
         float scale = 1050 / ((window.getFramebufferWidth() + window.getFramebufferHeight()) / 2f);
-
-        final float offsetX = (this.emoticon.offsetX() / 1920) * window.getFramebufferWidth(), offsetY = (this.emoticon.offsetY() / 1080) * window.getFramebufferHeight();
-        positionMatrix.translate(x, y, 0);
-        positionMatrix.translate(offsetX, offsetY, 0);
-        positionMatrix.scale(scale);
+        float averageScale = Math.min(window.getFramebufferWidth() / 1920F, window.getFramebufferHeight() / 1080F);
 
         positionMatrix.pushMatrix();
+        positionMatrix.translate(x, y, 0);
+        positionMatrix.translate(this.emoticon.offsetX() * averageScale, this.emoticon.offsetY() * averageScale, 0);
+        positionMatrix.scale(scale);
+
         switch (this.emoticon.type()) {
             case SWEAT -> {
                 final Color color = Color.fromRGBA(255, 255, 255, !this.fadeInAnimation.isRunning() ? 255 : Math.round(this.fadeInAnimation.getValue()));
                 final Texture2D emoticonSweat1 = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Sweat_1.png");
                 final Texture2D emoticonSweat2 = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Sweat_2.png");
 
-                ThinGL.renderer2D().coloredTexture(positionMatrix, emoticonSweat1, 0, this.sweat1Animation.getValue(),
-                        0.03854166666F * window.getFramebufferWidth(), 0.10555555555F * window.getFramebufferHeight(),
-                        color);
-                ThinGL.renderer2D().coloredTexture(positionMatrix, emoticonSweat2, 0.03645833333F * window.getFramebufferWidth(), this.sweat2Animation.getValue(),
-                        0.02395833333F * window.getFramebufferWidth(), 0.06018518518F * window.getFramebufferHeight(),
-                        color);
+                float sweat1Y = (70) * averageScale * this.sweat1Animation.getValue();
+                float sweat2Y = (120) * averageScale * this.sweat2Animation.getValue();
+
+                ThinGL.renderer2D().coloredTexture(positionMatrix, emoticonSweat1, 0, sweat1Y, 74 * averageScale, 113 * averageScale, color);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, emoticonSweat2, 70 * averageScale, sweat2Y, 46 * averageScale, 65 * averageScale, color);
             }
             case EXCLAMATION_MARK -> {
                 final Texture2D texture = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_ExclamationMark.png");
 
                 final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
                 positionMatrix.scale(this.globalScale.getValue());
-                ThinGL.renderer2D().coloredTexture(positionMatrix, texture, 0, 50, 0.04635416666F * window.getFramebufferWidth(), 0.16944444444F * window.getFramebufferHeight(), color);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, texture, 0, 50, 89 * averageScale, 183 * averageScale, color);
 
                 if (!this.globalScale.isRunning() && System.currentTimeMillis() - time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255) {
                     this.globalFadeOut.setTarget(0);
@@ -109,11 +108,11 @@ public class EmoticonRender {
                 positionMatrix.scale(this.globalScale.getValue());
 
                 final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
-                float bubbleWidth = 0.1328125F * window.getFramebufferWidth();
-                float bubbleHeight = 0.18333333333F * window.getFramebufferHeight();
+                float bubbleWidth = 255 * averageScale;
+                float bubbleHeight = 198 * averageScale;
 
-                float anxietyWidth = 0.0819128788F * this.anxietyScaleX.getValue() * window.getFramebufferWidth();
-                float anxietyHeight = 0.10606060605F * this.anxietyScaleY.getValue() * window.getFramebufferHeight();
+                float anxietyWidth = 157 * averageScale * this.anxietyScaleX.getValue();
+                float anxietyHeight = 114 * averageScale * this.anxietyScaleY.getValue();
                 ThinGL.renderer2D().coloredTexture(positionMatrix, bubble, 0, 50, bubbleWidth, bubbleHeight, color);
 
                 ThinGL.renderer2D().coloredTexture(positionMatrix, anxiety, bubbleWidth / 2 - (anxietyWidth / 2), 50 + bubbleHeight / 2 - (anxietyHeight / 2), anxietyWidth, anxietyHeight, color);
@@ -129,7 +128,7 @@ public class EmoticonRender {
 
     private final long time = System.currentTimeMillis();
     public boolean isFinished() {
-        if (this.emoticon.type() == Sprite.EmoticonType.EXCLAMATION_MARK) {
+        if (this.emoticon.type() == Sprite.EmoticonType.EXCLAMATION_MARK || this.emoticon.type() == Sprite.EmoticonType.ANXIETY) {
             if (this.globalFadeOut.isRunning()) {
                 return false;
             }
