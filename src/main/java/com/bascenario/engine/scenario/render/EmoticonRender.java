@@ -2,6 +2,7 @@ package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.render.manager.TextureManager;
+import com.bascenario.util.math.MathUtil;
 import lombok.Getter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -24,9 +25,11 @@ public class EmoticonRender {
     // Now individuals for type.
     private final DynamicAnimation sweat1Animation, sweat2Animation;
     private final DynamicAnimation anxietyScaleX, anxietyScaleY;
+    private final DynamicAnimation dotIncrementAnimation;
 
     private boolean lastAnxiety;
     private long lastAnxietyTime;
+
     public EmoticonRender(Sprite.Emoticon emoticon) {
         this.emoticon = emoticon;
 
@@ -49,6 +52,9 @@ public class EmoticonRender {
 
         this.anxietyScaleX = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, 1);
         this.anxietyScaleY = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, 1);
+
+        this.dotIncrementAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 990L, 0);
+        this.dotIncrementAnimation.setTarget(3);
     }
 
     public void render(final Matrix4fStack positionMatrix, float x, float y) {
@@ -119,6 +125,37 @@ public class EmoticonRender {
                     this.globalFadeOut.setTarget(0);
                 }
             }
+            case THINKING, HESITATED -> {
+                if (!this.globalScale.isRunning() && System.currentTimeMillis() -
+                        this.time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255 && this.dotIncrementAnimation.getValue() == 3) {
+                    this.globalFadeOut.setTarget(0);
+                }
+
+                positionMatrix.scale(this.globalScale.getValue());
+
+                boolean hesitated = this.emoticon.type() == Sprite.EmoticonType.HESITATED;
+                final Texture2D bubble = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Balloon_" + (hesitated ? "N.png" : "T.png"));
+                final Texture2D dot = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Idea.png");
+
+                final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
+
+                float bubbleWidth = 255, bubbleHeight = hesitated ? 198 : 222;
+                ThinGL.renderer2D().coloredTexture(positionMatrix, bubble, 0, 50, bubbleWidth, bubbleHeight, color);
+
+                int dotCount = MathUtil.floor(this.dotIncrementAnimation.getValue());
+
+                float dotWidthAndHeight = 39;
+                float maxDotWidth = 54 * 2 - dotWidthAndHeight;
+
+                for (int i = 0; i <= dotCount; i++) {
+                    float dotX = bubbleWidth / 2 - maxDotWidth / 2;
+                    if (i == 0 || i == 3) {
+                        dotX += 54 * (i == 0 ? -1 : 1);
+                    }
+
+                    ThinGL.renderer2D().coloredTexture(positionMatrix, dot, dotX, 50 + bubbleHeight / 2 - dotWidthAndHeight / 2, dotWidthAndHeight, dotWidthAndHeight, color);
+                }
+            }
         }
 
         positionMatrix.popMatrix();
@@ -126,7 +163,8 @@ public class EmoticonRender {
 
     private final long time = System.currentTimeMillis();
     public boolean isFinished() {
-        if (this.emoticon.type() == Sprite.EmoticonType.EXCLAMATION_MARK || this.emoticon.type() == Sprite.EmoticonType.ANXIETY) {
+        if (this.emoticon.type() == Sprite.EmoticonType.EXCLAMATION_MARK || this.emoticon.type() == Sprite.EmoticonType.ANXIETY
+                || this.emoticon.type() == Sprite.EmoticonType.HESITATED || this.emoticon.type() == Sprite.EmoticonType.THINKING) {
             if (this.globalFadeOut.isRunning()) {
                 return false;
             }

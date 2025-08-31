@@ -18,4 +18,9 @@ public class MathUtil {
         int i = (int)value;
         return value > i ? i + 1 : i;
     }
+
+    public static int floor(float value) {
+        int i = (int)value;
+        return i > value ? i - 1 : i;
+    }
 }

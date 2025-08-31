@@ -42,6 +42,11 @@ public class EmoticonTest {
                 new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.ANXIETY))
         );
 
+        scenario.add(1200L,
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.HESITATED)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.HESITATED))
+        );
+
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
             Launcher.launch(new ScenarioScreen(scenario), fullScreen);
