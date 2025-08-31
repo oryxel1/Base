@@ -24,6 +24,7 @@ public class PlayEmoticonEvent extends Event {
             case ANXIETY -> "assets/base/sounds/SFX_Emoticon_Motion_Upset.wav";
             case THINKING, HESITATED -> "assets/base/sounds/SFX_Emoticon_Motion_Dot.wav";
             case SHY -> "assets/base/sounds/SFX_Emoticon_Motion_Shy.wav";
+            case CHAT -> "assets/base/sounds/SFX_Emoticon_Motion_Chat.wav";
             default -> null;
         };
 

@@ -25,7 +25,7 @@ public class EmoticonRender {
     // Now individuals for type.
     private final DynamicAnimation sweat1Animation, sweat2Animation;
     private final DynamicAnimation anxietyScaleX, anxietyScaleY;
-    private final DynamicAnimation shyAnimation;
+    private final DynamicAnimation shyAnimation, chatAnimation;
 
     private boolean lastAnxiety;
     private long lastAnxietyTime;
@@ -57,6 +57,9 @@ public class EmoticonRender {
 
         this.shyAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 200L, 0);
         this.shyAnimation.setTarget(5);
+
+        this.chatAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 250L, 0);
+        this.chatAnimation.setTarget(12);
     }
 
     public void render(final Matrix4fStack positionMatrix, float x, float y) {
@@ -157,7 +160,7 @@ public class EmoticonRender {
                 }
             }
             case SHY -> {
-                if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255 && dotCount == 3) {
+                if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255 && this.flipCount > 3) {
                     this.globalFadeOut.setTarget(0);
                 }
                 if (this.shyAnimation.getValue() == 5 && this.flipCount % 2 == 0) {
@@ -183,6 +186,30 @@ public class EmoticonRender {
                 positionMatrix.translate(-shyWidth / 2F, -shyHeight / 2F, 0);
                 ThinGL.renderer2D().coloredTexture(positionMatrix, shy, 0, -5, shyWidth, shyHeight, color);
             }
+            case CHAT -> {
+                if (this.chatAnimation.getValue() == 12 && this.flipCount % 2 == 0) {
+                    this.chatAnimation.setTarget(-12);
+                    this.flipCount++;
+                } else if (this.chatAnimation.getValue() == -12 && this.flipCount % 2 != 0) {
+                    this.chatAnimation.setTarget(12);
+                    this.flipCount++;
+                }
+
+                if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255 && this.flipCount > 3) {
+                    this.globalFadeOut.setTarget(0);
+                }
+                positionMatrix.scale(this.globalScale.getValue());
+                final Texture2D chat = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Chat.png");
+
+                final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
+
+                float chatWidth = 147, chatHeight = 205;
+
+//                positionMatrix.translate(chatWidth / 2, chatHeight / 2, 0);
+                positionMatrix.rotateZ((float) Math.toRadians(this.chatAnimation.getValue()));
+                positionMatrix.translate(-chatWidth / 2F, -chatWidth / 2F, 0);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, chat, 0, 0, chatWidth, chatHeight, color);
+            }
         }
 
         positionMatrix.popMatrix();
@@ -203,7 +230,7 @@ public class EmoticonRender {
             }
         }
 
-        if (this.emoticon.type() == Sprite.EmoticonType.SHY) {
+        if (this.emoticon.type() == Sprite.EmoticonType.SHY || this.emoticon.type() == Sprite.EmoticonType.CHAT) {
             if (this.flipCount < 4) {
                 return false;
             }
