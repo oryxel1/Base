@@ -84,13 +84,13 @@ public class EmoticonRender {
         this.noteShake.setTarget(6);
     }
 
-    public void render(final Matrix4fStack positionMatrix, float x, float y) {
+    public void render(final Matrix4fStack positionMatrix, final SpriteRender render, float x, float y) {
         final WindowInterface window = ThinGL.windowInterface();
         if (this.fadeInAnimation.getTarget() == 0) {
             this.fadeInAnimation.setTarget(255);
         }
 
-        float averageScale = 0.00046666666F * ((window.getFramebufferWidth() + window.getFramebufferHeight()) / 2f);
+        float averageScale = 0.00046666666F * render.getScale().getValue() * ((window.getFramebufferWidth() + window.getFramebufferHeight()) / 2f);
 //        float averageScale = Math.min(window.getFramebufferWidth() / 1920F, window.getFramebufferHeight() / 1080F);
 
         positionMatrix.pushMatrix();

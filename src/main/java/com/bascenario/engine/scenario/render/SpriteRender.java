@@ -45,6 +45,9 @@ public class SpriteRender {
     @Getter
     private final List<EmoticonRender> emoticons = new ArrayList<>();
 
+    @Getter
+    private DynamicAnimation scale = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 0, 1);
+
     public void init() {
         if (this.init) {
             this.camera.setToOrtho(false);
@@ -100,7 +103,7 @@ public class SpriteRender {
         this.state.apply(this.skeleton);
         this.state.apply(this.skeletonFade);
 
-        float scale = 0.00046666666F * ((window.getFramebufferWidth() + window.getFramebufferHeight()) / 2f);
+        float scale = 0.00046666666F * this.scale.getValue() * ((window.getFramebufferWidth() + window.getFramebufferHeight()) / 2f);
         this.skeleton.setScale(scale, scale);
         this.skeleton.update(delta);
         this.skeleton.updateWorldTransform();
@@ -128,7 +131,7 @@ public class SpriteRender {
         }
 
         final Matrix4fStack positionMatrix = new Matrix4fStack(8);
-        this.emoticons.forEach(emoticon -> RenderUtil.render(() -> emoticon.render(positionMatrix, posX, -posY)));
+        this.emoticons.forEach(emoticon -> RenderUtil.render(() -> emoticon.render(positionMatrix, this, posX, -posY)));
 
         this.emoticons.removeIf(EmoticonRender::isFinished);
     }
@@ -148,6 +151,27 @@ public class SpriteRender {
         this.yLocation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, duration, this.yLocation.getValue());
         this.xLocation.setTarget(targetX);
         this.yLocation.setTarget(targetY);
+    }
+
+    public void setFadeColor(float value, long duration) {
+        value = Math.min(1, Math.max(0, value));
+        if (duration < 1) {
+            this.fadeColor = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, duration, value);
+            return;
+        }
+
+        this.fadeColor = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, duration, this.fadeColor.getValue());
+        this.fadeColor.setTarget(value);
+    }
+
+    public void lerpTo(float scale, long duration) {
+        if (duration < 1) {
+            this.scale = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, duration, scale);
+            return;
+        }
+
+        this.scale = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, duration, this.scale.getValue());
+        this.yLocation.setTarget(scale);
     }
 
     public void dispose() {
