@@ -34,7 +34,7 @@ public class PlayEmoticonEvent extends Event {
         };
 
         if (this.emoticon.playSound()) {
-            AudioManager.getInstance().play(location, false, true);
+            AudioManager.getInstance().play(location, false, 1, true);
         }
 
         SpriteRender render = null;

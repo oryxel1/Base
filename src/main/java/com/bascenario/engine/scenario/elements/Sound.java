@@ -3,5 +3,5 @@ package com.bascenario.engine.scenario.elements;
 import lombok.Builder;
 
 @Builder
-public record Sound(String path, long fadeIn) {
+public record Sound(String path, float maxVolume, long fadeIn) {
 }

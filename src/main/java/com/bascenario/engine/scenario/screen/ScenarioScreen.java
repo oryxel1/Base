@@ -2,6 +2,8 @@ package com.bascenario.engine.scenario.screen;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.elements.Image;
+import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.event.impl.QueueEventEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
@@ -9,6 +11,7 @@ import com.bascenario.engine.scenario.render.DialogueOptionsRender;
 import com.bascenario.engine.scenario.render.DialogueRender;
 import com.bascenario.engine.scenario.render.SpriteRender;
 import com.bascenario.render.api.Screen;
+import com.bascenario.render.manager.TextureManager;
 import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +48,13 @@ public class ScenarioScreen extends Screen {
     @Getter
     private DialogueRender dialogue;
     private boolean isDialogueBusy;
+
+    private PopupImage popupImage;
+    private long sincePopup;
+    public void setPopupImage(PopupImage popupImage) {
+        this.popupImage = popupImage;
+        this.sincePopup = System.currentTimeMillis();
+    }
 
     public void setDialogue(DialogueRender dialogue) {
         this.dialogue = dialogue;
@@ -120,6 +130,16 @@ public class ScenarioScreen extends Screen {
 
             if (this.dialogueOptions != null) {
                 this.dialogueOptions.render(positionMatrix, window);
+            }
+
+            // For popup image, ignore all value and hardcode it to 850x850 (and depending on the screen size).
+            if (this.popupImage != null) {
+                float widthHeight = 0.28645833333F * window.getFramebufferWidth();
+                ThinGL.renderer2D().texture(positionMatrix, TextureManager.getInstance().getTexture(new File(this.popupImage.path())), window.getFramebufferWidth() / 2F - (widthHeight / 2F), 0.14074074074F * window.getFramebufferHeight(), widthHeight, widthHeight);
+
+                if (System.currentTimeMillis() - this.sincePopup >= this.popupImage.duration()) {
+                    this.popupImage = null;
+                }
             }
         });
     }

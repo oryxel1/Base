@@ -27,15 +27,16 @@ public class AudioManager {
     private final Map<String, CachedMusic> nameToMusics = new HashMap<>();
 
     @SneakyThrows
-    public void play(String path, boolean loop, boolean internal) {
+    public void play(String path, boolean loop, float maxVolume, boolean internal) {
         final Music music = Gdx.audio.newMusic(internal ? Gdx.files.internal(path) : new FileHandle(path));
         music.play();
+        music.setVolume(Math.abs(maxVolume));
         music.setLooping(loop);
 
         this.nameToMusics.put(path, new CachedMusic(music));
     }
 
-    public void fadeIn(String path, long duration, boolean loop, boolean internal) {
+    public void fadeIn(String path, long duration, boolean loop, float maxVolume, boolean internal) {
         CachedMusic cachedMusic = this.nameToMusics.get(path);
         Music music;
         if (cachedMusic == null) {
@@ -46,7 +47,7 @@ public class AudioManager {
             cachedMusic = new CachedMusic(music);
 
             cachedMusic.fadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, duration, 0);
-            cachedMusic.fadeIn.setTarget(1);
+            cachedMusic.fadeIn.setTarget(Math.abs(maxVolume));
 
             this.nameToMusics.put(path, cachedMusic);
         } else {
@@ -57,8 +58,8 @@ public class AudioManager {
         if (cachedMusic.fadeIn.isRunning()) {
             music.setVolume(cachedMusic.fadeIn.getValue());
         } else {
-            if (music.getVolume() != 1) {
-                music.setVolume(1);
+            if (music.getVolume() != Math.abs(maxVolume)) {
+                music.setVolume(Math.abs(maxVolume));
             }
         }
     }
@@ -70,7 +71,7 @@ public class AudioManager {
         }
 
         if (music.fadeOut == null) {
-            music.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, duration, 1);
+            music.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, duration, music.music.getVolume());
             music.fadeOut.setTarget(0);
         }
 

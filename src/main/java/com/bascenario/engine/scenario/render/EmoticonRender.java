@@ -94,8 +94,8 @@ public class EmoticonRender {
 //        float averageScale = Math.min(window.getFramebufferWidth() / 1920F, window.getFramebufferHeight() / 1080F);
 
         positionMatrix.pushMatrix();
-        positionMatrix.translate(x, y, 0);
         positionMatrix.translate(this.emoticon.offsetX() * averageScale, this.emoticon.offsetY() * averageScale, 0);
+        positionMatrix.translate(x, y, 0);
         positionMatrix.scale(averageScale);
 
         switch (this.emoticon.type()) {

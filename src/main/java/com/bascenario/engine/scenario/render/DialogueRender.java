@@ -2,6 +2,7 @@ package com.bascenario.engine.scenario.render;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Dialogue;
+import com.bascenario.util.math.MathUtil;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,10 @@ public class DialogueRender {
         float separatorWidth = width - (0.19F * width);
         float separatorX = width / 2 - (separatorWidth / 2);
 
-        // TODO: Actually support dialogue settings?
         int size42 = (int) Math.round(0.028 * ((width + height) / 2));
+        if (this.dialogue.textScale() != -1) {
+            size42 = MathUtil.floor(this.dialogue.textScale() * size42);
+        }
 
         long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.playSpeed()) * (this.builders.getFirst().isEmpty() ? 10 : 1));
         if (System.currentTimeMillis() - this.sinceLast >= msPerWord) {
