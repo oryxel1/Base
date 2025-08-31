@@ -33,6 +33,11 @@ public class EmoticonTest {
         );
 
         scenario.add(1200L,
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.SHY)),
+                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.SHY))
+        );
+
+        scenario.add(1200L,
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
                 new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK))
                 );

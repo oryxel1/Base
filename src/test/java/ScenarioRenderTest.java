@@ -121,11 +121,33 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(hinaSprite, "18", 1, true),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(4000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(-1).playSpeed(1)
                         .dialogue("Moving on... I'm sorry for contacting you on such short notice,\nbut I'm grateful you made the time to come see me.")
+                        .build())
+        );
+
+        scenario.add(true, 1,
+                new SpriteShakeEvent(500L, 60L, hinaSprite),
+                new SpriteAnimationEvent(hinaSprite, "12", 1, true),
+                new PlayDialogueEvent(Dialogue.builder()
+                        .name("Hina").association("Prefect Team")
+                        .textScale(-1).playSpeed(1)
+                        .dialogue("So...")
+                        .build())
+        );
+
+        scenario.add(true, 1,
+                new SpriteLocationEvent(300L, hinaSprite, 0, 60),
+                new QueueEventEvent(300L, new SpriteLocationEvent(300L, hinaSprite, 0, 50)),
+                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.SHY)),
+                new SpriteAnimationEvent(hinaSprite, "17", 1, true),
+                new PlayDialogueEvent(Dialogue.builder()
+                        .name("Hina").association("Prefect Team")
+                        .textScale(-1).playSpeed(1)
+                        .dialogue("Thank you.")
                         .build())
         );
 
