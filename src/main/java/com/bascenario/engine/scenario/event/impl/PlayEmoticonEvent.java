@@ -25,10 +25,15 @@ public class PlayEmoticonEvent extends Event {
             case THINKING, HESITATED -> "assets/base/sounds/SFX_Emoticon_Motion_Dot.wav";
             case SHY -> "assets/base/sounds/SFX_Emoticon_Motion_Shy.wav";
             case CHAT -> "assets/base/sounds/SFX_Emoticon_Motion_Chat.wav";
-            default -> null;
+            case QUESTION_MARK -> "assets/base/sounds/SFX_Emoticon_Motion_Question.wav";
+            case TWINKLE -> "assets/base/sounds/SFX_Emoticon_Motion_Twinkle.wav";
+            case SURPRISED -> "assets/base/sounds/SFX_Emoticon_Motion_Surprise.wav";
+            case HEART -> "assets/base/sounds/SFX_Emoticon_Motion_Heart.wav";
+            case RESPOND -> "assets/base/sounds/SFX_Emoticon_Motion_Respond.wav";
+            case ANGRY -> "assets/base/sounds/SFX_Emoticon_Motion_Angry.wav";
         };
 
-        if (location != null && emoticon.playSound()) {
+        if (this.emoticon.playSound()) {
             AudioManager.getInstance().play(location, false, true);
         }
 

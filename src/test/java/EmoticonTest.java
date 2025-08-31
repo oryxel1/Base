@@ -27,35 +27,12 @@ public class EmoticonTest {
                 new AddSpriteEvent(hoshinoSprite),
                 new SpriteLocationEvent(0, hinaSprite, -30, 50),
                 new SpriteLocationEvent(0, hoshinoSprite, 30, 50),
-                new SpriteAnimationEvent(hoshinoSprite, "11", 1, true),
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800 + 300, -390, Sprite.EmoticonType.SWEAT)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800 + 300, -390, Sprite.EmoticonType.SWEAT))
+                new SpriteAnimationEvent(hoshinoSprite, "11", 1, true)
         );
 
-        scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.SHY)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.SHY))
-        );
-
-        scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -300, Sprite.EmoticonType.CHAT)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -300, Sprite.EmoticonType.CHAT))
-        );
-
-        scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon( 1000L, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK))
-                );
-
-        scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.ANXIETY)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.ANXIETY))
-        );
-
-        scenario.add(1200L,
-                new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.HESITATED)),
-                new PlayEmoticonEvent(hoshinoSprite, new Sprite.Emoticon(1200L, 670 + 300, -390, Sprite.EmoticonType.HESITATED))
-        );
+        for (Sprite.EmoticonType type : Sprite.EmoticonType.values()) {
+            addEmoticon(scenario, type, hinaSprite, hoshinoSprite);
+        }
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
@@ -63,5 +40,12 @@ public class EmoticonTest {
         } else {
             Launcher.launch(new ScenarioPreviewScreen(scenario), fullScreen);
         }
+    }
+
+    private static void addEmoticon(final Scenario scenario, Sprite.EmoticonType type, final Sprite... sprite) {
+        scenario.add(type.ordinal() == 0 ? 0 : 1200L,
+                new PlayEmoticonEvent(sprite[0], new Sprite.Emoticon(1200L, 670 + 300, -390, type)),
+                new PlayEmoticonEvent(sprite[1], new Sprite.Emoticon(1200L, 670 + 300, -390, type))
+        );
     }
 }
