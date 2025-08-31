@@ -108,14 +108,15 @@ public class EmoticonRender {
                 positionMatrix.scale(this.globalScale.getValue());
 
                 final Color color = Color.fromRGBA(255, 255, 255, !this.globalFadeOut.isRunning() ? 255 : Math.round(this.globalFadeOut.getValue()));
+                averageScale *= 0.9F;
                 float bubbleWidth = 255 * averageScale;
                 float bubbleHeight = 198 * averageScale;
 
                 float anxietyWidth = 157 * averageScale * this.anxietyScaleX.getValue();
                 float anxietyHeight = 114 * averageScale * this.anxietyScaleY.getValue();
-                ThinGL.renderer2D().coloredTexture(positionMatrix, bubble, 0, 50, bubbleWidth, bubbleHeight, color);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, bubble, 0, 50 * averageScale, bubbleWidth, bubbleHeight, color);
 
-                ThinGL.renderer2D().coloredTexture(positionMatrix, anxiety, bubbleWidth / 2 - (anxietyWidth / 2), 50 + bubbleHeight / 2 - (anxietyHeight / 2), anxietyWidth, anxietyHeight, color);
+                ThinGL.renderer2D().coloredTexture(positionMatrix, anxiety, bubbleWidth / 2 - (anxietyWidth / 2), 50 * averageScale + bubbleHeight / 2 - (anxietyHeight / 2), anxietyWidth, anxietyHeight, color);
 
                 if (!this.globalScale.isRunning() && System.currentTimeMillis() - this.time + 500L >= this.emoticon.duration() && this.globalFadeOut.getTarget() == 255) {
                     this.globalFadeOut.setTarget(0);
