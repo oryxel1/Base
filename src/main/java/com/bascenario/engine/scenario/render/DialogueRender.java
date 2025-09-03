@@ -96,7 +96,7 @@ public class DialogueRender {
             final TextRun dialogue = new TextRun(FontUtil.getFont("NotoSansRegular", size42), new TextSegment(builder.toString(),
                     Color.WHITE, 0, Color.fromRGB(50, 70, 90)));
 
-            ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.07037037037F * height) + y, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
+            ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.07037037037F * this.dialogue.textScale() * height) + y, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);
             y += ThinGL.rendererText().getExactHeight(dialogue.shape()) + 15;
         }
 

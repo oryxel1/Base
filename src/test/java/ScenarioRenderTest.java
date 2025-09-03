@@ -28,7 +28,7 @@ public class ScenarioRenderTest {
         scenario.add(0, new SetBackgroundEvent(background),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("").association("")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I made plans to meet with Hina on Valentine's Day evening.")
                         .closeOnClick(true)
                         .build())
@@ -46,7 +46,7 @@ public class ScenarioRenderTest {
         scenario.add(2000L,
                 new PlayDialogueEvent(Dialogue.builder()
                 .name("Hina").association("Prefect Team")
-                .textScale(-1).playSpeed(1)
+                .textScale(1).playSpeed(1)
                 .dialogue("Oh... Hello, Sensei.")
                 .build()),
 
@@ -68,7 +68,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("D-Don't shout like that!")
                         .build())
         );
@@ -76,7 +76,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "04", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Please keep your voice down. I snuck away from duties.\nThe last thing I want is for us to draw unwanted attention.")
                         .build())
         );
@@ -86,7 +86,7 @@ public class ScenarioRenderTest {
                 new SpriteShakeEvent(500L, 60L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I can't imagine you do either.")
                         .build())
         );
@@ -104,7 +104,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(1400L, 670 + 300,-390, Sprite.EmoticonType.ANXIETY)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("*sigh* What does someone say to something like that?")
                         .build())
         );
@@ -113,7 +113,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "16", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Not that I've come to expect anything less from you.")
                         .build())
         );
@@ -123,7 +123,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Moving on... I'm sorry for contacting you on such short notice,\nbut I'm grateful you made the time to come see me.")
                         .build())
         );
@@ -133,7 +133,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "12", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("So...")
                         .build())
         );
@@ -145,7 +145,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "17", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Thank you.").closeOnClick(true)
                         .build())
         );
@@ -165,7 +165,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(800, 700, -700, Sprite.EmoticonType.SURPRISED)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Wh-What are you getting at?!")
                         .build())
         );
@@ -182,7 +182,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "10", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I told you to lower your voice, but you don't have to whisper in my ear!")
                         .build())
         );
@@ -196,7 +196,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("B-Back up!")
                         .build())
         );
@@ -208,7 +208,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2200L, 800 + 300,-390, Sprite.EmoticonType.SWEAT)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Let's both just...calm down first.")
                         .build())
         );
@@ -230,7 +230,7 @@ public class ScenarioRenderTest {
                 new QueueEventEvent(300L, new SpriteLocationEvent(300L, hinaSprite, 0, 50)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("R-Regardless! I asked you here tonight because of this.").closeOnClick(true)
                         .build())
         );
@@ -253,7 +253,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "12", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Since it's Valentine's Day, I tried my hand at...making some myself.")
                         .build())
         );
@@ -262,7 +262,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "13", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I know it doesn't look very appetizing.")
                         .build())
         );
@@ -274,7 +274,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "14", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("It was the best I could do after several tries.")
                         .build())
         );
@@ -283,7 +283,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "99", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Maybe it's fitting that it's ugly and anything but cutesy on the outside.")
                         .build())
         );
@@ -293,7 +293,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "12", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("But under the surface, it should still...")
                         .build())
         );
@@ -302,7 +302,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "18", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("...taste like any other chocolate.")
                         .build())
         );
@@ -313,7 +313,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "19", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("S-So if you wouldn't mind accepting it, then I...")
                         .build())
         );
@@ -326,7 +326,7 @@ public class ScenarioRenderTest {
                 new SpriteShakeEvent(500L, 60L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I-It's not that big of a deal, Sensei! You don't have to sound so...")
                         .build())
         );
@@ -339,7 +339,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("You, fool! Chocolate is meant to be eaten, not guarded after like some kind of antique.")
                         .build())
         );
@@ -349,7 +349,7 @@ public class ScenarioRenderTest {
                 new SpriteShakeEvent(500L, 60L, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("*sigh* Seriously...")
                         .build())
         );
@@ -358,7 +358,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "14", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Heh...")
                         .build())
         );
@@ -369,7 +369,7 @@ public class ScenarioRenderTest {
                 new QueueEventEvent(300L, new SpriteLocationEvent(300L, hinaSprite, 0, 50)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Of course that's what you'd say. Why was I so worried?")
                         .build())
         );
@@ -377,7 +377,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1,
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Thank you, Sensei. I hope you enjoy it.")
                         .build())
         );
@@ -387,7 +387,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.SHY)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I... put a lot of effort into it.")
                         .build())
         );
@@ -399,7 +399,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "16", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Do be sure to eat it, though. I don't want to catch you keeping it like some kind of family heirloom.")
                         .build())
         );
@@ -411,7 +411,7 @@ public class ScenarioRenderTest {
                 new PlayEmoticonEvent(hinaSprite, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.QUESTION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("I'm not sure what that supposed to mean...")
                         .build())
         );
@@ -421,7 +421,7 @@ public class ScenarioRenderTest {
                 new SpriteShakeEvent(500, 60, hinaSprite),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Well, as long as you enjoyed it, I supposed it all the same to me.")
                         .build())
         );
@@ -430,7 +430,7 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(hinaSprite, "17", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
-                        .textScale(-1).playSpeed(1)
+                        .textScale(1).playSpeed(1)
                         .dialogue("Heehee.")
                         .build())
         );
