@@ -83,7 +83,7 @@ public class DialogueOptionsRender {
                 float totalSizeY1 = buttonHeight + buttonHeight * (options.size() - 1) + distanceBetween * (options.size() - 1);
                 clonedY = (height / 2) - (totalSizeY1 / 2F) - buttonHeight + (0.01387F * height) + extraY;
 
-                fontSize = Math.round((0.02866666666F * ((width + height) / 2)) * scale1);
+                fontSize = Math.round((0.02866666666F * scale1 * ((width + height) / 2)));
 
                 color = Color.fromRGBA(255, 255, 255, Math.round(this.flashAnimation.getValue()));
                 textColor = Color.fromRGBA(44, 67, 90, Math.round(this.flashAnimation.getValue()));
@@ -99,8 +99,9 @@ public class DialogueOptionsRender {
             // My recreation was really close but now the only problem is the text is about 3-4 px thicker, which is weird
             // But the font size is about the sameish, maybe NotoSansThin/Light with bold?
             TextRun textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
-            if (ThinGL.rendererText().getExactWidth(textRun.shape()) > buttonWidth - 100) {
-                fontSize = MathUtil.ceil(fontSize / (ThinGL.rendererText().getExactWidth(textRun.shape()) / (buttonWidth - 100)));
+            if (ThinGL.rendererText().getExactWidth(textRun.shape()) > clonedWidth - 100) {
+                float diff = ThinGL.rendererText().getExactWidth(textRun.shape()) / (clonedWidth - 100);
+                fontSize = MathUtil.floor(fontSize / diff);
             }
             textRun = TextRun.fromString(FontUtil.getFont("NotoSansRegular", fontSize), text, textColor);
 
