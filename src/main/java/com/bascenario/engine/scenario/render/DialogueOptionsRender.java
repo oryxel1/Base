@@ -92,7 +92,7 @@ public class DialogueOptionsRender {
             final Texture2D texture2D = TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png");
 //            ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, clonedX + 2, clonedY + 5, clonedWidth, clonedHeight,
 //                    Color.fromRGBA(0, 0, 0, 30));
-            ThinGL.renderer2D().coloredTexture(positionMatrix, TextureManager.getInstance().getTexture("/assets/base/uis/buttons/button.png"),
+            ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D,
                     clonedX, clonedY, clonedWidth, clonedHeight, color);
 
             // I'm struggling here, what the font size and type, or is that the dialogue button use a different font.
@@ -115,7 +115,7 @@ public class DialogueOptionsRender {
     }
 
     public void mouseRelease() {
-        if (this.clicked != null) {
+        if (this.clicked != null && this.scaleAnimation != null && this.scaleAnimation.getTarget() == 0.9F) {
             this.flashAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 100L, 255);
             this.scaleAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 250L, this.scaleAnimation.getValue());
 
