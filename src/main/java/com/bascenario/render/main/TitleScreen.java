@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bascenario.managers.AudioManager;
 import com.bascenario.managers.TextureManager;
 import com.bascenario.render.api.Screen;
+import com.bascenario.render.main.components.TitleScreenButton;
+import com.bascenario.util.MathUtil;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.RenderUtil;
 import com.esotericsoftware.spine.*;
@@ -30,7 +32,7 @@ public class TitleScreen extends Screen {
     private TextureAtlas atlas;
 
     public void init() {
-        this.components.clear();
+        this.initComponents();
 
         if (this.init) {
             this.camera.setToOrtho(false);
@@ -103,8 +105,31 @@ public class TitleScreen extends Screen {
 
         ThinGL.rendererText().textRun(
                 positionMatrix,
-                TextRun.fromString(FontUtil.getFont("NotoSansSemiBold", 32), "Scenario Engine"),
+                TextRun.fromString(FontUtil.getFont("NotoSansSemiBold", MathUtil.floor(0.0213F * ((windowWidth + windowHeight) / 2F))), "Scenario Engine"),
                 logoX + logoWidth / 2, logoY + logoHeight
         );
+    }
+
+    private void initComponents() {
+        final WindowInterface window = ThinGL.windowInterface();
+        final float windowWidth = window.getFramebufferWidth(), windowHeight = window.getFramebufferHeight();
+
+        float logoWidth = ((3385 / 5F) / 1920F) * windowWidth;
+        float logoHeight = ((1218 / 5F) / 1080F) * windowHeight;
+        float logoX = window.getFramebufferWidth() - logoWidth - (0.02604F * windowWidth);
+        float logoY = 0.0185F * windowHeight;
+
+        float textHeightY = ThinGL.rendererText().getExactHeight(TextRun.fromString(FontUtil.getFont("NotoSansSemiBold", MathUtil.floor(0.0213F * ((windowWidth + windowHeight) / 2F))), "Scenario Engine").shape());
+
+        float posY = logoY + logoHeight + textHeightY + 0.04629629629F * windowHeight;
+        this.components.clear();
+        this.components.add(new TitleScreenButton("Play Scenario", logoX, posY, logoWidth, 0.08F * windowHeight, () -> {
+        }));
+        posY += 0.08F * windowHeight + 0.04629629629F * windowHeight;
+        this.components.add(new TitleScreenButton("Scenario Editor", logoX, posY, logoWidth, 0.08F * windowHeight, () -> {
+        }));
+        posY += 0.08F * windowHeight + 0.04629629629F * windowHeight;
+        this.components.add(new TitleScreenButton("Settings", logoX, posY, logoWidth, 0.08F * windowHeight, () -> {
+        }));
     }
 }

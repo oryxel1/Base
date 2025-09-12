@@ -3,7 +3,7 @@ package com.bascenario.render.api.components.impl.base;
 import com.bascenario.render.api.components.api.Component;
 
 public class ClickableComponent extends Component {
-    private final float width, height;
+    protected final float width, height;
     private final Runnable action;
 
     public ClickableComponent(float x, float y, float width, float height, Runnable action) {
