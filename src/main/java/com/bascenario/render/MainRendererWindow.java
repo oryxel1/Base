@@ -13,7 +13,6 @@ import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import lombok.Getter;
-import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
@@ -26,8 +25,16 @@ public class MainRendererWindow extends ApplicationAdapter {
     protected ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     protected ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
-    @Getter @Setter
+    @Getter
     private Screen currentScreen;
+
+    public void setCurrentScreen(Screen currentScreen) {
+        if (this.currentScreen != null && this.currentScreen != currentScreen) {
+            this.currentScreen.dispose();
+        }
+
+        this.currentScreen = currentScreen;
+    }
 
     public MainRendererWindow(Screen screen) {
         this.currentScreen = screen;
