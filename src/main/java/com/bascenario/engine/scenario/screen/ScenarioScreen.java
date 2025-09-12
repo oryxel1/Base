@@ -73,9 +73,16 @@ public class ScenarioScreen extends Screen {
     @Setter
     private boolean lockClick;
 
+    private final boolean debugMode;
+    public ScenarioScreen(Scenario scenario, boolean debugMode) {
+        this.scenario = scenario;
+        this.copiedAlls.addAll(this.scenario.getTimestamps());
+        this.debugMode = debugMode;
+    }
     public ScenarioScreen(Scenario scenario) {
         this.scenario = scenario;
         this.copiedAlls.addAll(this.scenario.getTimestamps());
+        this.debugMode = false;
     }
 
     @Override
@@ -157,7 +164,7 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        if (this.dialogue != null && this.dialogue.isCanSkip() && DialogueRender.hasClickedDialogue(window, mouseX, mouseY) && button == 0) {
+        if (this.dialogue != null && (this.dialogue.isCanSkip() || this.debugMode) && DialogueRender.hasClickedDialogue(window, mouseX, mouseY) && button == 0) {
             if (this.dialogue.getDialogue().closeOnClick()) {
                 this.dialogue = null;
             }
@@ -235,7 +242,7 @@ public class ScenarioScreen extends Screen {
 
         if (this.background != null && this.background.fadeOut() && !skipFadeOut) {
             this.queueBackground = background;
-            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 500L, 255);
+            this.backgroundFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, 1000L, 255);
             this.backgroundFadeOut.setTarget(0);
             return;
         }
@@ -245,7 +252,7 @@ public class ScenarioScreen extends Screen {
             return;
         }
 
-        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 500L, 0);
+        this.backgroundFadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, 1000L, 0);
         this.backgroundFadeIn.setTarget(255);
     }
 }

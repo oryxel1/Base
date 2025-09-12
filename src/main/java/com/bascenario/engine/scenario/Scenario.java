@@ -18,7 +18,7 @@ import java.util.*;
 @Getter
 @Builder
 public class Scenario {
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
             .registerTypeAdapter(Event.class, new EventSerializer())
             .create();
     public static Scenario fromJson(String json) {
