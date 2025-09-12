@@ -6,6 +6,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.RenderUtil;
+import imgui.ImGui;
+import imgui.ImGuiIO;
+import imgui.extension.implot.ImPlot;
+import imgui.flag.ImGuiConfigFlags;
+import imgui.gl3.ImGuiImplGl3;
+import imgui.glfw.ImGuiImplGlfw;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.color.Color;
@@ -14,8 +20,12 @@ import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import net.raphimc.thingl.wrapper.GLStateManager;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL32;
 
 public class MainRendererWindow extends ApplicationAdapter {
+    protected ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    protected ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+
     @Getter @Setter
     private Screen currentScreen;
 
@@ -61,12 +71,29 @@ public class MainRendererWindow extends ApplicationAdapter {
                 this.currentScreen.mouseRelease();
             }
         });
-//
         FontUtil.loadFonts();
+
+        ImGui.createContext();
+        ImPlot.createContext();
+
+        final ImGuiIO data = ImGui.getIO();
+        data.setIniFilename("base.imgui");
+        data.setFontGlobalScale(1F);
+        data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
+
+        imGuiGlfw.init(windowHandle, true);
+        imGuiGl3.init();
     }
 
     @Override
     public void render() {
+        GL32.glClearColor(1, 1, 1, 1);
+        GL32.glClear(GL32.GL_COLOR_BUFFER_BIT | GL32.GL_DEPTH_BUFFER_BIT);
+
+        imGuiGl3.newFrame();
+        imGuiGlfw.newFrame();
+        ImGui.newFrame();
+
         final Matrix4fStack positionMatrix = new Matrix4fStack(8);
 
         RenderUtil.render(() -> ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight(), Color.BLACK));
@@ -83,6 +110,11 @@ public class MainRendererWindow extends ApplicationAdapter {
             this.currentScreen.render(positionMatrix, ThinGL.windowInterface(), this.mouseX, this.mouseY);
         }
 
+//        ImGui.showDemoWindow();
+
+        ImGui.render();
+        imGuiGl3.renderDrawData(ImGui.getDrawData());
+
         ThinGL.get().onFrameFinished();
         ThinGL.get().onFrameEnd();
     }
@@ -92,5 +124,10 @@ public class MainRendererWindow extends ApplicationAdapter {
         if (this.currentScreen != null) {
             this.currentScreen.dispose();
         }
+
+        imGuiGlfw.shutdown();
+        imGuiGl3.shutdown();
+        ImPlot.destroyContext();
+        ImGui.destroyContext();
     }
 }

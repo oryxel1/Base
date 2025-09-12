@@ -62,6 +62,13 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-box2d:1.13.1"
     implementation "com.badlogicgames.gdx:gdx-platform:1.13.1:natives-desktop"
     implementation "com.esotericsoftware.spine:spine-libgdx:3.8.99.2-SNAPSHOT"
+    
+    implementation "io.github.spair:imgui-java-binding:1.89.0"
+    implementation "io.github.spair:imgui-java-lwjgl3:1.89.0"
+
+    implementation "io.github.spair:imgui-java-natives-windows:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-linux:1.89.0"
+    implementation "io.github.spair:imgui-java-natives-macos:1.89.0"
 }
 
 test {
