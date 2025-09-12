@@ -7,8 +7,6 @@ import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
-import java.lang.reflect.Type;
-
 public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
     private final long shakeDuration;
     private final int spriteId;
@@ -68,8 +66,14 @@ public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
     }
 
     @Override
-    public SpriteShakeEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("shake-duration", this.shakeDuration);
+    }
+
+    @Override
+    public SpriteShakeEvent deserialize(JsonObject serialized) {
         return new SpriteShakeEvent(
                 serialized.get("sprite").getAsInt(),
                 serialized.get("duration").getAsLong(),
@@ -78,13 +82,7 @@ public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
     }
 
     @Override
-    public JsonElement serialize(SpriteShakeEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-
-        serialized.addProperty("sprite", src.spriteId);
-        serialized.addProperty("duration", src.duration);
-        serialized.addProperty("shake-duration", src.shakeDuration);
-
-        return serialized;
+    public String type() {
+        return "sprite-shake";
     }
 }

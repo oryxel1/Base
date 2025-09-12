@@ -3,7 +3,6 @@ package com.bascenario.engine.scenario.event.impl;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.managers.TextureManager;
-import com.bascenario.util.GsonUtil;
 import com.bascenario.util.render.FontUtil;
 import com.google.gson.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
@@ -65,12 +64,17 @@ public class LocationInfoEvent extends Event<LocationInfoEvent> {
     }
 
     @Override
-    public LocationInfoEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new LocationInfoEvent(json.getAsString());
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("location", this.location);
     }
 
     @Override
-    public JsonElement serialize(LocationInfoEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.location);
+    public LocationInfoEvent deserialize(JsonObject serialized) {
+        return new LocationInfoEvent(serialized.get("location").getAsString());
+    }
+
+    @Override
+    public String type() {
+        return "show-location-popup";
     }
 }

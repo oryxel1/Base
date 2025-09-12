@@ -1,16 +1,12 @@
 package com.bascenario.engine.scenario.event.impl.sprite;
 
-import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
-import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
-
-import java.lang.reflect.Type;
 
 public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
     private final int spriteId;
@@ -69,8 +65,14 @@ public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
     }
 
     @Override
-    public RemoveSpriteEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("fade-out", this.fadeOut);
+        serialized.addProperty("fade-duration", this.fadeDuration);
+    }
+
+    @Override
+    public RemoveSpriteEvent deserialize(JsonObject serialized) {
         return new RemoveSpriteEvent(
                 serialized.get("sprite").getAsInt(),
                 serialized.get("fade-out").getAsBoolean(),
@@ -79,11 +81,7 @@ public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
     }
 
     @Override
-    public JsonElement serialize(RemoveSpriteEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("sprite", src.spriteId);
-        serialized.addProperty("fade-out", src.fadeOut);
-        serialized.addProperty("fade-duration", src.fadeDuration);
-        return serialized;
+    public String type() {
+        return "remove-sprite";
     }
 }

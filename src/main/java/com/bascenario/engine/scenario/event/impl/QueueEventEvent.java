@@ -5,8 +5,6 @@ import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 import lombok.Getter;
 
-import java.lang.reflect.Type;
-
 public class QueueEventEvent extends Event<QueueEventEvent> {
     @Getter
     private final Event<?> queuedEvent;
@@ -16,16 +14,18 @@ public class QueueEventEvent extends Event<QueueEventEvent> {
     }
 
     @Override
-    public QueueEventEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
-        return new QueueEventEvent(serialized.get("duration").getAsLong(), GsonUtil.getGson().fromJson(serialized.get("dialogue").getAsString().trim(), Event.class));
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("duration", this.duration);
+        serialized.add("queued-event", GsonUtil.toJson(this.queuedEvent));
     }
 
     @Override
-    public JsonElement serialize(QueueEventEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("duration", src.duration);
-        serialized.add("queued-event", GsonUtil.toJson(src.queuedEvent));
-        return serialized;
+    public QueueEventEvent deserialize(JsonObject serialized) {
+        return new QueueEventEvent(serialized.get("duration").getAsLong(), GsonUtil.getGson().fromJson(serialized.get("queued-event"), Event.class));
+    }
+
+    @Override
+    public String type() {
+        return "queue-event";
     }
 }

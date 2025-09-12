@@ -17,12 +17,15 @@ public class CloseDialogueEvent extends Event<CloseDialogueEvent> {
     }
 
     @Override
-    public CloseDialogueEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public CloseDialogueEvent deserialize(JsonObject serialized) {
         return new CloseDialogueEvent();
     }
 
     @Override
-    public JsonElement serialize(CloseDialogueEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonObject();
+    public void serialize(JsonObject serialized) {}
+
+    @Override
+    public String type() {
+        return "close-dialogue";
     }
 }

@@ -34,11 +34,7 @@ public class ScenarioRenderTest {
                         .closeOnClick(true)
                         .build())
         );
-        scenario.add(true, 1, new ShowDialogueOptionEvent(
-                DialogueOptions.builder()
-                        .options(Map.of("\"She said to meet somewhere around here...\"", 0))
-                        .build()
-        ));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"She said to meet somewhere around here...\"", 0)));
         scenario.add(true, 1, new PlaySoundEvent(
                 new Sound("C:\\Users\\PC\\Downloads\\SE_FootStep_02.wav", 1, -1), false
         ));
@@ -60,11 +56,7 @@ public class ScenarioRenderTest {
                 new QueueEventEvent(800L, new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(
                         2200L, 800 + 300,-390, Sprite.EmoticonType.SWEAT)))
         );
-        scenario.add(true, 1, new ShowDialogueOptionEvent(
-                DialogueOptions.builder()
-                        .options(Map.of("\"Hina!\"", 0))
-                        .build()
-        ));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"Hina!\"", 0)));
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "11", 1, true),
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50),
@@ -99,7 +91,7 @@ public class ScenarioRenderTest {
             options.put("\"I have nothing to hide when it comes to you.\"", 0);
             options.put("\"You're worth any hassle that comes my way.\"", 0);
 
-            scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(options)));
+            scenario.add(true, 1, new ShowDialogueOptionEvent(options));
         }
 
         scenario.add(true, 1,
@@ -153,7 +145,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"Sure, but if you don't want us to be seen, does that mean...\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"Sure, but if you don't want us to be seen, does that mean...\"", 0)));
 
         scenario.add(true, 1,
                 new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_FootStep_02.wav", 1,-1), false),
@@ -178,7 +170,7 @@ public class ScenarioRenderTest {
             options.put("\"(What's really going on, Hina?)\"", 0);
             options.put("\"(Is this some kind of secret meeting?)\"", 0);
 
-            scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(options)));
+            scenario.add(true, 1, new ShowDialogueOptionEvent(options));
         }
 
         scenario.add(true, 1,
@@ -204,7 +196,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"What's wrong?\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"What's wrong?\"", 0)));
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "18", 1, true),
@@ -246,7 +238,7 @@ public class ScenarioRenderTest {
                         "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\04_ScenarioImage\\Event01_Hina.PNG", 3000L)))
         );
 
-        scenario.add(3500L, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"Is this what I think it is?\"", 0))));
+        scenario.add(3500L, new ShowDialogueOptionEvent(Map.of("\"Is this what I think it is?\"", 0)));
 
         final Sound sound1 = new Sound("C:\\Users\\PC\\Downloads\\Track_46_Nor_Sugar_story.ogg", 0.5F, 100L);
         scenario.add(true, 1,
@@ -321,7 +313,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"Homemade chocolate from you, Hina? I'm honored!\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"Homemade chocolate from you, Hina? I'm honored!\"", 0)));
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "11", 1, true),
@@ -334,7 +326,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"I actually got homemade chocolate from Hina! I'll cherish it!\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"I actually got homemade chocolate from Hina! I'll cherish it!\"", 0)));
 
         scenario.add(true, 1,
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 40),
@@ -395,7 +387,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"No, thank YOU, Hina!\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"No, thank YOU, Hina!\"", 0)));
 
         scenario.add(true, 1,
                 new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
@@ -407,7 +399,7 @@ public class ScenarioRenderTest {
                         .build())
         );
 
-        scenario.add(true, 1, new ShowDialogueOptionEvent(new DialogueOptions(Map.of("\"I'll see what I can do.\"", 0))));
+        scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"I'll see what I can do.\"", 0)));
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "14", 1, true),

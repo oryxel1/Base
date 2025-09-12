@@ -5,8 +5,6 @@ import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.google.gson.*;
 
-import java.lang.reflect.Type;
-
 public class SpriteFadeEvent extends Event<SpriteFadeEvent> {
     private final int spriteId;
     private final float value;
@@ -33,8 +31,14 @@ public class SpriteFadeEvent extends Event<SpriteFadeEvent> {
     }
 
     @Override
-    public SpriteFadeEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("value", this.value);
+    }
+
+    @Override
+    public SpriteFadeEvent deserialize(JsonObject serialized) {
         return new SpriteFadeEvent(
                 serialized.get("sprite").getAsInt(),
                 serialized.get("duration").getAsLong(),
@@ -43,11 +47,7 @@ public class SpriteFadeEvent extends Event<SpriteFadeEvent> {
     }
 
     @Override
-    public JsonElement serialize(SpriteFadeEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("sprite", this.spriteId);
-        serialized.addProperty("duration", this.duration);
-        serialized.addProperty("value", this.value);
-        return serialized;
+    public String type() {
+        return "sprite-fade";
     }
 }

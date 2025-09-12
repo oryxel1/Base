@@ -7,8 +7,6 @@ import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 
-import java.lang.reflect.Type;
-
 public class PlayDialogueEvent extends Event<PlayDialogueEvent> {
     private final Dialogue dialogue;
     public PlayDialogueEvent(Dialogue dialogue) {
@@ -26,12 +24,17 @@ public class PlayDialogueEvent extends Event<PlayDialogueEvent> {
     }
 
     @Override
-    public JsonElement serialize(PlayDialogueEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return GsonUtil.toJson(src.dialogue);
+    public PlayDialogueEvent deserialize(JsonObject serialized) {
+        return new PlayDialogueEvent(GsonUtil.getGson().fromJson(serialized.get("dialogue"), Dialogue.class));
     }
 
     @Override
-    public PlayDialogueEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new PlayDialogueEvent(GsonUtil.getGson().fromJson(json, Dialogue.class));
+    public void serialize(JsonObject serialized) {
+        serialized.add("dialogue", GsonUtil.toJson(this.dialogue));
+    }
+
+    @Override
+    public String type() {
+        return "play-dialogue";
     }
 }

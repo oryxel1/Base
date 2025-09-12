@@ -1,6 +1,5 @@
 package com.bascenario.render.scenario.others;
 
-import com.bascenario.engine.scenario.elements.DialogueOptions;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.managers.TextureManager;
 import com.bascenario.util.MathUtil;
@@ -18,12 +17,13 @@ import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class DialogueOptionsRender {
     private final ScenarioScreen screen;
     @Getter
-    private final DialogueOptions dialogueOptions;
+    private final Map<String, Integer> dialogueOptions;
 
     private String clicked;
     private DynamicAnimation scaleAnimation;
@@ -52,7 +52,7 @@ public class DialogueOptionsRender {
             }
         }
 
-        final Collection<String> options = this.dialogueOptions.options().keySet();
+        final Collection<String> options = this.dialogueOptions.keySet();
         // 1337 97
         // dis between 35, 1080
 
@@ -136,7 +136,7 @@ public class DialogueOptionsRender {
         float buttonWidth = 0.69635416666f * width * scale, buttonHeight = 0.08981481481f * height * scale;
         float centerX = width / 2 - (buttonWidth / 2);
 
-        final Collection<String> options = this.dialogueOptions.options().keySet();
+        final Collection<String> options = this.dialogueOptions.keySet();
 
         float distanceBetween = 0.0324074074f * height;
 
@@ -147,7 +147,7 @@ public class DialogueOptionsRender {
             if (mouseX >= centerX && mouseX <= centerX + buttonWidth && mouseY >= posY && mouseY <= posY + buttonHeight) {
                 this.clicked = text;
                 this.scaleAnimation.setTarget(0.9F);
-                this.screen.setDialogueIndex(this.dialogueOptions.options().get(text));
+                this.screen.setDialogueIndex(this.dialogueOptions.get(text));
                 break;
             }
 

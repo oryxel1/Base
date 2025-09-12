@@ -19,12 +19,17 @@ public class RedirectDialogueEvent extends Event<RedirectDialogueEvent> {
     }
 
     @Override
-    public JsonElement serialize(RedirectDialogueEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.index);
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("dialogue-index", this.index);
     }
 
     @Override
-    public RedirectDialogueEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new RedirectDialogueEvent(json.getAsJsonPrimitive().getAsInt());
+    public RedirectDialogueEvent deserialize(JsonObject serialized) {
+        return new RedirectDialogueEvent(serialized.get("dialogue-index").getAsInt());
+    }
+
+    @Override
+    public String type() {
+        return "set-dialogue-index";
     }
 }

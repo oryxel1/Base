@@ -9,8 +9,6 @@ import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
-import java.lang.reflect.Type;
-
 public class PlaySoundEvent extends Event<PlaySoundEvent> {
     private final Sound sound;
     private final boolean loop;
@@ -36,16 +34,18 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
     }
 
     @Override
-    public PlaySoundEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.add("sound", GsonUtil.toJson(this.sound));
+        serialized.addProperty("loop", this.loop);
+    }
+
+    @Override
+    public PlaySoundEvent deserialize(JsonObject serialized) {
         return new PlaySoundEvent(GsonUtil.getGson().fromJson(serialized.get("sound"), Sound.class), serialized.get("loop").getAsBoolean());
     }
 
     @Override
-    public JsonElement serialize(PlaySoundEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.add("sound", GsonUtil.toJson(src.sound));
-        serialized.addProperty("loop", src.loop);
-        return serialized;
+    public String type() {
+        return "play-sound";
     }
 }

@@ -33,8 +33,14 @@ public class SpriteScaleEvent extends Event<SpriteScaleEvent> {
     }
 
     @Override
-    public SpriteScaleEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("scale", this.scale);
+    }
+
+    @Override
+    public SpriteScaleEvent deserialize(JsonObject serialized) {
         return new SpriteScaleEvent(
                 serialized.get("sprite").getAsInt(),
                 serialized.get("duration").getAsLong(),
@@ -43,11 +49,7 @@ public class SpriteScaleEvent extends Event<SpriteScaleEvent> {
     }
 
     @Override
-    public JsonElement serialize(SpriteScaleEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("sprite", this.spriteId);
-        serialized.addProperty("duration", this.duration);
-        serialized.addProperty("scale", this.scale);
-        return serialized;
+    public String type() {
+        return "scale-sprite";
     }
 }

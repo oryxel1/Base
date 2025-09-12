@@ -18,14 +18,18 @@ public class LockClickEvent extends Event<LockClickEvent> {
         screen.setLockClick(this.lock);
     }
 
-
     @Override
-    public LockClickEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new LockClickEvent(json.getAsBoolean());
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("locked", this.lock);
     }
 
     @Override
-    public JsonElement serialize(LockClickEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.lock);
+    public LockClickEvent deserialize(JsonObject serialized) {
+        return new LockClickEvent(serialized.get("locked").getAsBoolean());
+    }
+
+    @Override
+    public String type() {
+        return "set-lock-click";
     }
 }

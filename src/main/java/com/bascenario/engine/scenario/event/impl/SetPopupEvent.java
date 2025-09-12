@@ -4,10 +4,7 @@ import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
+import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
@@ -24,12 +21,17 @@ public class SetPopupEvent extends Event<SetPopupEvent> {
     }
 
     @Override
-    public SetPopupEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new SetPopupEvent(GsonUtil.getGson().fromJson(json, PopupImage.class));
+    public void serialize(JsonObject serialized) {
+        serialized.add("image", GsonUtil.toJson(this.popupImage));
     }
 
     @Override
-    public JsonElement serialize(SetPopupEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return GsonUtil.toJson(src.popupImage);
+    public SetPopupEvent deserialize(JsonObject serialized) {
+        return new SetPopupEvent(GsonUtil.getGson().fromJson(serialized.get("image"), PopupImage.class));
+    }
+
+    @Override
+    public String type() {
+        return "set-popup-image";
     }
 }

@@ -28,17 +28,17 @@ public class AddSpriteEvent extends Event<AddSpriteEvent> {
     }
 
     @Override
-    public AddSpriteEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
-        return new AddSpriteEvent(GsonUtil.getGson().fromJson(serialized.get("sprite"), Sprite.class), serialized.get("sprite-id").getAsInt());
+    public void serialize(JsonObject serialized) {
+        serialized.add("sprite", GsonUtil.toJson(this.sprite));
+        serialized.addProperty("sprite-id", this.spriteId);
     }
 
     @Override
-    public JsonElement serialize(AddSpriteEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.add("sprite", GsonUtil.toJson(src.sprite));
-        serialized.addProperty("sprite-id", src.spriteId);
+    public AddSpriteEvent deserialize(JsonObject serialized) {
+        return new AddSpriteEvent(GsonUtil.getGson().fromJson(serialized.get("sprite"), Sprite.class), serialized.get("sprite-id").getAsInt());    }
 
-        return serialized;
+    @Override
+    public String type() {
+        return "add-sprite";
     }
 }

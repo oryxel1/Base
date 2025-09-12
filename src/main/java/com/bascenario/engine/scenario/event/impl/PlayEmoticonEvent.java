@@ -9,8 +9,6 @@ import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 
-import java.lang.reflect.Type;
-
 public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
     private final int spriteId;
     private final Sprite.Emoticon emoticon;
@@ -54,18 +52,19 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
     }
 
     @Override
-    public PlayEmoticonEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("attached-sprite", this.spriteId);
+        serialized.add("emoticon", GsonUtil.toJson(this.emoticon));
+    }
 
-        final Sprite.Emoticon emoticon = GsonUtil.getGson().fromJson(serialized.get("emoticon").getAsString().trim(), Sprite.Emoticon.class);
+    @Override
+    public PlayEmoticonEvent deserialize(JsonObject serialized) {
+        final Sprite.Emoticon emoticon = GsonUtil.getGson().fromJson(serialized.get("emoticon"), Sprite.Emoticon.class);
         return new PlayEmoticonEvent(serialized.get("attached-sprite").getAsInt(), emoticon);
     }
 
     @Override
-    public JsonElement serialize(PlayEmoticonEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("attached-sprite", src.spriteId);
-        serialized.add("emoticon", GsonUtil.toJson(src.emoticon));
-        return serialized;
+    public String type() {
+        return "play-emoticon";
     }
 }

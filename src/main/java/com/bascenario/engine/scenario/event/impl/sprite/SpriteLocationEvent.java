@@ -5,8 +5,6 @@ import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.google.gson.*;
 
-import java.lang.reflect.Type;
-
 public class SpriteLocationEvent extends Event<SpriteLocationEvent> {
     private final int spriteId;
     private final float x, y;
@@ -34,8 +32,15 @@ public class SpriteLocationEvent extends Event<SpriteLocationEvent> {
     }
 
     @Override
-    public SpriteLocationEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("x", this.x);
+        serialized.addProperty("y", this.y);
+    }
+
+    @Override
+    public SpriteLocationEvent deserialize(JsonObject serialized) {
         return new SpriteLocationEvent(
                 serialized.get("sprite").getAsInt(),
                 serialized.get("duration").getAsLong(),
@@ -45,12 +50,7 @@ public class SpriteLocationEvent extends Event<SpriteLocationEvent> {
     }
 
     @Override
-    public JsonElement serialize(SpriteLocationEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.addProperty("sprite", this.spriteId);
-        serialized.addProperty("duration", this.duration);
-        serialized.addProperty("x", this.x);
-        serialized.addProperty("y", this.y);
-        return serialized;
+    public String type() {
+        return "set-sprite-location";
     }
 }

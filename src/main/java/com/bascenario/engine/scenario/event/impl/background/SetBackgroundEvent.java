@@ -6,8 +6,6 @@ import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 
-import java.lang.reflect.Type;
-
 public class SetBackgroundEvent extends Event<SetBackgroundEvent> {
     private final Background background;
     public SetBackgroundEvent(Background background) {
@@ -21,12 +19,17 @@ public class SetBackgroundEvent extends Event<SetBackgroundEvent> {
     }
 
     @Override
-    public JsonElement serialize(SetBackgroundEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        return GsonUtil.toJson(src.background);
+    public SetBackgroundEvent deserialize(JsonObject serialized) {
+        return new SetBackgroundEvent(GsonUtil.getGson().fromJson(serialized.get("background"), Background.class));
     }
 
     @Override
-    public SetBackgroundEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new SetBackgroundEvent(GsonUtil.getGson().fromJson(json, Background.class));
+    public void serialize(JsonObject serialized) {
+        serialized.add("background", GsonUtil.toJson(this.background));
+    }
+
+    @Override
+    public String type() {
+        return "set-background";
     }
 }

@@ -45,17 +45,19 @@ public class StopSoundEvent extends Event<StopSoundEvent> {
     }
 
     @Override
-    public StopSoundEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        final JsonObject serialized = json.getAsJsonObject();
+    public void serialize(JsonObject serialized) {
+        serialized.add("sound", GsonUtil.toJson(this.sound));
+        serialized.addProperty("fade", this.fade);
+        serialized.addProperty("fade-duration", this.fadeDuration);
+    }
+
+    @Override
+    public StopSoundEvent deserialize(JsonObject serialized) {
         return new StopSoundEvent(GsonUtil.getGson().fromJson(serialized.get("sound"), Sound.class), serialized.get("fade").getAsBoolean(), serialized.get("fade-duration").getAsLong());
     }
 
     @Override
-    public JsonElement serialize(StopSoundEvent src, Type typeOfSrc, JsonSerializationContext context) {
-        final JsonObject serialized = new JsonObject();
-        serialized.add("sound", GsonUtil.toJson(src.sound));
-        serialized.addProperty("fade", src.fade);
-        serialized.addProperty("fade-duration", src.fadeDuration);
-        return serialized;
+    public String type() {
+        return "stop-sound";
     }
 }

@@ -5,7 +5,7 @@ import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.event.impl.QueueEventEvent;
-import com.bascenario.engine.scenario.event.render.EventRenderer;
+import com.bascenario.render.scenario.others.EventRenderer;
 import com.bascenario.render.scenario.others.DialogueOptionsRender;
 import com.bascenario.render.scenario.others.DialogueRender;
 import com.bascenario.render.scenario.others.SpriteRender;
