@@ -1,16 +1,18 @@
 package com.bascenario.engine.scenario.event.impl.sprite;
 
-import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.render.SpriteRender;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.others.SpriteRender;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.google.gson.*;
 
-public class SpriteScaleEvent extends Event {
-    private final Sprite sprite;
+import java.lang.reflect.Type;
+
+public class SpriteScaleEvent extends Event<SpriteScaleEvent> {
+    private final int spriteId;
     private final float scale;
-    public SpriteScaleEvent(long duration, Sprite sprite, float scale) {
+    public SpriteScaleEvent(int spriteId, long duration, float scale) {
         super(duration);
-        this.sprite = sprite;
+        this.spriteId = spriteId;
         this.scale = scale;
     }
 
@@ -18,7 +20,7 @@ public class SpriteScaleEvent extends Event {
     public void onStart(ScenarioScreen screen) {
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -28,5 +30,24 @@ public class SpriteScaleEvent extends Event {
         }
 
         render.lerpTo(this.scale, this.duration);
+    }
+
+    @Override
+    public SpriteScaleEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+        return new SpriteScaleEvent(
+                serialized.get("sprite").getAsInt(),
+                serialized.get("duration").getAsLong(),
+                serialized.get("scale").getAsFloat()
+        );
+    }
+
+    @Override
+    public JsonElement serialize(SpriteScaleEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("scale", this.scale);
+        return serialized;
     }
 }

@@ -1,11 +1,11 @@
-package com.bascenario.engine.scenario.screen;
+package com.bascenario.render.scenario;
 
-import com.bascenario.audio.AudioManager;
+import com.bascenario.managers.AudioManager;
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
-import com.bascenario.launcher.Launcher;
+import com.bascenario.Launcher;
 import com.bascenario.render.api.Screen;
-import com.bascenario.render.manager.TextureManager;
+import com.bascenario.managers.TextureManager;
 import com.bascenario.util.render.RenderUtil;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;

@@ -2,27 +2,31 @@ package com.bascenario.engine.scenario.event.impl.sprite;
 
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.render.SpriteRender;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.others.SpriteRender;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.GsonUtil;
+import com.google.gson.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 
-public class RemoveSpriteEvent extends Event {
-    private final Sprite sprite;
+import java.lang.reflect.Type;
+
+public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
+    private final int spriteId;
     private final boolean fadeOut;
     private final long fadeDuration;
 
-    public RemoveSpriteEvent(Sprite sprite, boolean fadeOut, long fadeDuration) {
+    public RemoveSpriteEvent(int spriteId, boolean fadeOut, long fadeDuration) {
         super(fadeDuration > 0 ? fadeDuration + 200L : 0);
-        this.sprite = sprite;
+        this.spriteId = spriteId;
         this.fadeOut = fadeOut;
         this.fadeDuration = fadeDuration;
     }
 
-    public RemoveSpriteEvent(Sprite sprite) {
+    public RemoveSpriteEvent(int spriteId) {
         super(0);
-        this.sprite = sprite;
+        this.spriteId = spriteId;
         this.fadeOut = false;
         this.fadeDuration = 0;
     }
@@ -50,7 +54,7 @@ public class RemoveSpriteEvent extends Event {
     private SpriteRender getRender(final ScenarioScreen screen) {
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -62,5 +66,24 @@ public class RemoveSpriteEvent extends Event {
         SpriteRender render = getRender(screen);
         render.dispose();
         screen.getSprites().remove(render);
+    }
+
+    @Override
+    public RemoveSpriteEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+        return new RemoveSpriteEvent(
+                serialized.get("sprite").getAsInt(),
+                serialized.get("fade-out").getAsBoolean(),
+                serialized.get("fade-duration").getAsLong()
+        );
+    }
+
+    @Override
+    public JsonElement serialize(RemoveSpriteEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+        serialized.addProperty("sprite", src.spriteId);
+        serialized.addProperty("fade-out", src.fadeOut);
+        serialized.addProperty("fade-duration", src.fadeDuration);
+        return serialized;
     }
 }

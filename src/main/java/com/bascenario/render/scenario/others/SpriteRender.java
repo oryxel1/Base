@@ -1,4 +1,4 @@
-package com.bascenario.engine.scenario.render;
+package com.bascenario.render.scenario.others;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -25,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpriteRender {
     @Getter
+    private final int spriteId;
     private final Sprite sprite;
     private boolean init;
 

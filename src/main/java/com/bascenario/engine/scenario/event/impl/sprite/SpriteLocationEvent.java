@@ -1,16 +1,18 @@
 package com.bascenario.engine.scenario.event.impl.sprite;
 
-import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.render.SpriteRender;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.others.SpriteRender;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.google.gson.*;
 
-public class SpriteLocationEvent extends Event {
-    private final Sprite sprite;
+import java.lang.reflect.Type;
+
+public class SpriteLocationEvent extends Event<SpriteLocationEvent> {
+    private final int spriteId;
     private final float x, y;
-    public SpriteLocationEvent(long duration, Sprite sprite, float x, float y) {
+    public SpriteLocationEvent(int spriteId, long duration, float x, float y) {
         super(duration);
-        this.sprite = sprite;
+        this.spriteId = spriteId;
         this.x = x;
         this.y = y;
     }
@@ -19,7 +21,7 @@ public class SpriteLocationEvent extends Event {
     public void onStart(ScenarioScreen screen) {
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -29,5 +31,26 @@ public class SpriteLocationEvent extends Event {
         }
 
         render.lerpTo(this.x, this.y, duration);
+    }
+
+    @Override
+    public SpriteLocationEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+        return new SpriteLocationEvent(
+                serialized.get("sprite").getAsInt(),
+                serialized.get("duration").getAsLong(),
+                serialized.get("x").getAsFloat(),
+                serialized.get("y").getAsFloat()
+        );
+    }
+
+    @Override
+    public JsonElement serialize(SpriteLocationEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+        serialized.addProperty("sprite", this.spriteId);
+        serialized.addProperty("duration", this.duration);
+        serialized.addProperty("x", this.x);
+        serialized.addProperty("y", this.y);
+        return serialized;
     }
 }

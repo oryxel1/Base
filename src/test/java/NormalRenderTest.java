@@ -1,4 +1,4 @@
-import com.bascenario.launcher.Launcher;
+import com.bascenario.Launcher;
 import com.bascenario.render.test.ElementTestScreen;
 
 public class NormalRenderTest {

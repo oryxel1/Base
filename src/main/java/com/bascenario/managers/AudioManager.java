@@ -1,4 +1,4 @@
-package com.bascenario.audio;
+package com.bascenario.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -53,7 +53,7 @@ public class AudioManager {
             music = cachedMusic.music;
         }
 
-        System.out.println("Fade in: " + cachedMusic.fadeIn.getValue());
+//        System.out.println("Fade in: " + cachedMusic.fadeIn.getValue());
         if (cachedMusic.fadeIn.isRunning()) {
             music.setVolume(cachedMusic.fadeIn.getValue());
         } else {

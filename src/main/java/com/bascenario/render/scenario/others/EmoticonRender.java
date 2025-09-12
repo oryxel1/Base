@@ -1,7 +1,7 @@
-package com.bascenario.engine.scenario.render;
+package com.bascenario.render.scenario.others;
 
 import com.bascenario.engine.scenario.elements.Sprite;
-import com.bascenario.render.manager.TextureManager;
+import com.bascenario.managers.TextureManager;
 import lombok.Getter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;

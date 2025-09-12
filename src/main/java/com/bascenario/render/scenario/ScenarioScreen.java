@@ -1,17 +1,16 @@
-package com.bascenario.engine.scenario.screen;
+package com.bascenario.render.scenario;
 
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
-import com.bascenario.engine.scenario.elements.Image;
 import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.engine.scenario.event.impl.QueueEventEvent;
 import com.bascenario.engine.scenario.event.render.EventRenderer;
-import com.bascenario.engine.scenario.render.DialogueOptionsRender;
-import com.bascenario.engine.scenario.render.DialogueRender;
-import com.bascenario.engine.scenario.render.SpriteRender;
+import com.bascenario.render.scenario.others.DialogueOptionsRender;
+import com.bascenario.render.scenario.others.DialogueRender;
+import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.api.Screen;
-import com.bascenario.render.manager.TextureManager;
+import com.bascenario.managers.TextureManager;
 import com.bascenario.util.render.RenderUtil;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.bascenario.engine.scenario.event.render;
 
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.ScenarioScreen;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;

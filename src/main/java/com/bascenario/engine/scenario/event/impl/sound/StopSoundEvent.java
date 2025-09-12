@@ -1,13 +1,17 @@
 package com.bascenario.engine.scenario.event.impl.sound;
 
-import com.bascenario.audio.AudioManager;
+import com.bascenario.managers.AudioManager;
 import com.bascenario.engine.scenario.elements.Sound;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.GsonUtil;
+import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
-public class StopSoundEvent extends Event {
+import java.lang.reflect.Type;
+
+public class StopSoundEvent extends Event<StopSoundEvent> {
     private final Sound sound;
     private final boolean fade;
     private final long fadeDuration;
@@ -38,5 +42,20 @@ public class StopSoundEvent extends Event {
         if (!this.fade) {
             AudioManager.getInstance().stop(this.sound.path());
         }
+    }
+
+    @Override
+    public StopSoundEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+        return new StopSoundEvent(GsonUtil.getGson().fromJson(serialized.get("sound"), Sound.class), serialized.get("fade").getAsBoolean(), serialized.get("fade-duration").getAsLong());
+    }
+
+    @Override
+    public JsonElement serialize(StopSoundEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+        serialized.add("sound", GsonUtil.toJson(src.sound));
+        serialized.addProperty("fade", src.fade);
+        serialized.addProperty("fade-duration", src.fadeDuration);
+        return serialized;
     }
 }

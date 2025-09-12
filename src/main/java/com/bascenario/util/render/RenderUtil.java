@@ -1,7 +1,7 @@
 package com.bascenario.util.render;
 
-import com.bascenario.render.manager.TextureManager;
-import com.bascenario.util.math.MathUtil;
+import com.bascenario.managers.TextureManager;
+import com.bascenario.util.MathUtil;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.resource.image.texture.Texture2D;

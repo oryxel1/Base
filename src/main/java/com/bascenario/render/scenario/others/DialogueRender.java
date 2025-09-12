@@ -1,8 +1,7 @@
-package com.bascenario.engine.scenario.render;
+package com.bascenario.render.scenario.others;
 
-import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Dialogue;
-import com.bascenario.util.math.MathUtil;
+import com.bascenario.util.MathUtil;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,7 @@
-package com.bascenario.render.manager;
+package com.bascenario.managers;
 
-import com.bascenario.render.manager.api.TextureKey;
+import com.bascenario.managers.api.TextureKey;
 import lombok.Getter;
-import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.resource.image.texture.Texture2D;
 
 import java.io.File;

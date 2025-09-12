@@ -1,6 +1,6 @@
 package com.bascenario.render.test;
 
-import com.bascenario.launcher.Launcher;
+import com.bascenario.Launcher;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.api.components.impl.base.ClickableComponent;
 import com.bascenario.render.api.components.impl.base.DraggableComponent;

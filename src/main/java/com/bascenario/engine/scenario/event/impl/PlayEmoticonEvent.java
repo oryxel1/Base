@@ -1,24 +1,28 @@
 package com.bascenario.engine.scenario.event.impl;
 
-import com.bascenario.audio.AudioManager;
+import com.bascenario.managers.AudioManager;
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.render.EmoticonRender;
-import com.bascenario.engine.scenario.render.SpriteRender;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.others.EmoticonRender;
+import com.bascenario.render.scenario.others.SpriteRender;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.GsonUtil;
+import com.google.gson.*;
 
-public class PlayEmoticonEvent extends Event {
-    private final Sprite sprite;
+import java.lang.reflect.Type;
+
+public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
+    private final int spriteId;
     private final Sprite.Emoticon emoticon;
-    public PlayEmoticonEvent(Sprite sprite, Sprite.Emoticon emoticon) {
+    public PlayEmoticonEvent(int spriteId, Sprite.Emoticon emoticon) {
         super(0);
-        this.sprite = sprite;
+        this.spriteId = spriteId;
         this.emoticon = emoticon;
     }
 
     @Override
     public void onStart(ScenarioScreen screen) {
-        String location = switch (emoticon.type()) {
+        final String location = switch (emoticon.type()) {
             case SWEAT -> "assets/base/sounds/SFX_Emoticon_Motion_Sweat.wav";
             case EXCLAMATION_MARK -> "assets/base/sounds/SFX_Emoticon_Motion_Exclaim.wav";
             case ANXIETY -> "assets/base/sounds/SFX_Emoticon_Motion_Upset.wav";
@@ -39,7 +43,7 @@ public class PlayEmoticonEvent extends Event {
 
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -47,5 +51,21 @@ public class PlayEmoticonEvent extends Event {
         if (render != null) {
             render.getEmoticons().add(new EmoticonRender(this.emoticon));
         }
+    }
+
+    @Override
+    public PlayEmoticonEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+
+        final Sprite.Emoticon emoticon = GsonUtil.getGson().fromJson(serialized.get("emoticon").getAsString().trim(), Sprite.Emoticon.class);
+        return new PlayEmoticonEvent(serialized.get("attached-sprite").getAsInt(), emoticon);
+    }
+
+    @Override
+    public JsonElement serialize(PlayEmoticonEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+        serialized.addProperty("attached-sprite", src.spriteId);
+        serialized.add("emoticon", GsonUtil.toJson(src.emoticon));
+        return serialized;
     }
 }

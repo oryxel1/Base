@@ -1,8 +1,9 @@
-package com.bascenario.engine.scenario.screen;
+package com.bascenario.render.scenario.extra;
 
 import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.launcher.Launcher;
+import com.bascenario.Launcher;
 import com.bascenario.render.api.Screen;
+import com.bascenario.render.scenario.ScenarioPreviewScreen;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;

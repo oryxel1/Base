@@ -1,19 +1,21 @@
 package com.bascenario.engine.scenario.event.impl.sprite.mini;
 
-import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
-import com.bascenario.engine.scenario.render.SpriteRender;
-import com.bascenario.engine.scenario.screen.ScenarioScreen;
+import com.bascenario.render.scenario.others.SpriteRender;
+import com.bascenario.render.scenario.ScenarioScreen;
+import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
-public class SpriteShakeEvent extends Event {
+import java.lang.reflect.Type;
+
+public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
     private final long shakeDuration;
-    private final Sprite sprite;
-    public SpriteShakeEvent(long duration, long shakeDuration, Sprite sprite) {
+    private final int spriteId;
+    public SpriteShakeEvent(int spriteId, long duration, long shakeDuration) {
         super(duration);
+        this.spriteId = spriteId;
         this.shakeDuration = shakeDuration;
-        this.sprite = sprite;
     }
 
     private boolean startShaking;
@@ -25,7 +27,7 @@ public class SpriteShakeEvent extends Event {
     public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -53,7 +55,7 @@ public class SpriteShakeEvent extends Event {
     public void onEnd(ScenarioScreen screen) {
         SpriteRender render = null;
         for (SpriteRender spriteRender : screen.getSprites()) {
-            if (spriteRender.getSprite().equals(this.sprite)) {
+            if (spriteRender.getSpriteId() == this.spriteId) {
                 render = spriteRender;
             }
         }
@@ -63,5 +65,26 @@ public class SpriteShakeEvent extends Event {
         }
 
         render.lerpTo(this.cachedXPos, render.getYLocation().getValue(), this.shakeDuration);
+    }
+
+    @Override
+    public SpriteShakeEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        final JsonObject serialized = json.getAsJsonObject();
+        return new SpriteShakeEvent(
+                serialized.get("sprite").getAsInt(),
+                serialized.get("duration").getAsLong(),
+                serialized.get("shake-duration").getAsLong()
+        );
+    }
+
+    @Override
+    public JsonElement serialize(SpriteShakeEvent src, Type typeOfSrc, JsonSerializationContext context) {
+        final JsonObject serialized = new JsonObject();
+
+        serialized.addProperty("sprite", src.spriteId);
+        serialized.addProperty("duration", src.duration);
+        serialized.addProperty("shake-duration", src.shakeDuration);
+
+        return serialized;
     }
 }
