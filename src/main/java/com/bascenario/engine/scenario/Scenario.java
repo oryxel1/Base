@@ -6,6 +6,7 @@ import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,9 @@ public class Scenario {
 
     private final String name;
 
+    @SerializedName("preview-background")
     private final Background previewBackground;
+    @SerializedName("preview-sound")
     private final Sound previewSound;
 
     @Getter
@@ -37,7 +40,7 @@ public class Scenario {
     }
 
     @Builder
-    public record Timestamp(boolean waitForDialogue, long time, List<Event<?>> events) {
+    public record Timestamp(@SerializedName("wait-for-dialogue") boolean waitForDialogue, long time, List<Event<?>> events) {
     }
 
     public JsonObject toJson() {

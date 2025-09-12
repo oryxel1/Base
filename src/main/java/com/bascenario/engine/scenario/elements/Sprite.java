@@ -1,14 +1,18 @@
 package com.bascenario.engine.scenario.elements;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 
 @Builder
-public record Sprite(String skeleton, String atlas, String defaultAnimation, boolean fadeIn) {
+public record Sprite(String skeleton, String atlas, @SerializedName("default-animation") String defaultAnimation, @SerializedName("fade-in") boolean fadeIn) {
     public static final class Emoticon {
         private final long duration;
+        @SerializedName("offset-x")
         private final float offsetX;
+        @SerializedName("offset-y")
         private final float offsetY;
         private final EmoticonType type;
+        @SerializedName("play-sound")
         private final boolean playSound;
 
         public Emoticon(long duration, float offsetX, float offsetY, EmoticonType type) {
