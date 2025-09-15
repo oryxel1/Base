@@ -9,8 +9,6 @@ import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
-import java.lang.reflect.Type;
-
 public class StopSoundEvent extends Event<StopSoundEvent> {
     private final Sound sound;
     private final boolean fade;
@@ -31,16 +29,11 @@ public class StopSoundEvent extends Event<StopSoundEvent> {
     }
 
     @Override
-    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
-        if (this.fade) {
-            AudioManager.getInstance().fadeOut(this.sound.path(), this.fadeDuration);
-        }
-    }
-
-    @Override
     public void onStart(ScenarioScreen screen) {
         if (!this.fade) {
             AudioManager.getInstance().stop(this.sound.path());
+        } else {
+            AudioManager.getInstance().stopFadeOut(this.sound.path(), this.fadeDuration);
         }
     }
 

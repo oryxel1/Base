@@ -3,6 +3,7 @@ package com.bascenario.render.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.bascenario.Launcher;
 import com.bascenario.managers.AudioManager;
 import com.bascenario.managers.TextureManager;
 import com.bascenario.render.api.Screen;
@@ -39,7 +40,7 @@ public class TitleScreen extends Screen {
             return;
         }
 
-        AudioManager.getInstance().play("assets/base/musics/title/hiniature.mp3", true, 0.5F, true);
+        AudioManager.getInstance().playFadeIn("assets/base/musics/title/hiniature.mp3", 800L, true, 0.5F, true);
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false);
@@ -61,7 +62,7 @@ public class TitleScreen extends Screen {
 
     @Override
     public void dispose() {
-        AudioManager.getInstance().fadeOut("assets/base/musics/title/hiniature.mp3", 500L);
+        AudioManager.getInstance().stopFadeOut("assets/base/musics/title/hiniature.mp3", 800L);
 
         this.atlas.dispose();
     }
@@ -123,8 +124,7 @@ public class TitleScreen extends Screen {
 
         float posY = logoY + logoHeight + textHeightY + 0.04629629629F * windowHeight;
         this.components.clear();
-        this.components.add(new TitleScreenButton("Play Scenario", logoX, posY, logoWidth, 0.08F * windowHeight, () -> {
-        }));
+        this.components.add(new TitleScreenButton("Play Scenario", logoX, posY, logoWidth, 0.08F * windowHeight, () -> Launcher.WINDOW.setCurrentScreen(new ScenarioListScreen())));
         posY += 0.08F * windowHeight + 0.04629629629F * windowHeight;
         this.components.add(new TitleScreenButton("Scenario Editor", logoX, posY, logoWidth, 0.08F * windowHeight, () -> {
         }));

@@ -3,6 +3,7 @@ package com.bascenario.render;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.bascenario.managers.AudioManager;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.RenderUtil;
@@ -94,6 +95,9 @@ public class MainRendererWindow extends ApplicationAdapter {
 
     @Override
     public void render() {
+        AudioManager.getInstance().tickFadeIn();
+        AudioManager.getInstance().tickFadeOut();
+
         GL32.glClearColor(1, 1, 1, 1);
         GL32.glClear(GL32.GL_COLOR_BUFFER_BIT | GL32.GL_DEPTH_BUFFER_BIT);
 

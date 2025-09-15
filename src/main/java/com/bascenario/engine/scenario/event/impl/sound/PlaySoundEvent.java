@@ -6,8 +6,6 @@ import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
-import net.raphimc.thingl.implementation.window.WindowInterface;
-import org.joml.Matrix4fStack;
 
 public class PlaySoundEvent extends Event<PlaySoundEvent> {
     private final Sound sound;
@@ -20,16 +18,11 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
     }
 
     @Override
-    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {
-        if (sound.fadeIn() > 0) {
-            AudioManager.getInstance().fadeIn(this.sound.path(), this.sound.fadeIn(), this.loop, this.sound.maxVolume(), false);
-        }
-    }
-
-    @Override
     public void onStart(ScenarioScreen screen) {
         if (sound.fadeIn() <= 0) {
             AudioManager.getInstance().play(this.sound.path(), this.loop, this.sound.maxVolume(), false);
+        } else {
+            AudioManager.getInstance().playFadeIn(this.sound.path(), this.sound.fadeIn(), this.loop, this.sound.maxVolume(), false);
         }
     }
 
