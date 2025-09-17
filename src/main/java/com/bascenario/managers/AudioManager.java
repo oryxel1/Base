@@ -3,10 +3,8 @@ package com.bascenario.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import com.bascenario.util.MathUtil;
+import lombok.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
@@ -92,7 +90,7 @@ public class AudioManager {
         while (iterator.hasNext()) {
             final CachedMusic music = iterator.next().getValue();
             if (music == null || music.fadeOut == null) {
-                return;
+                continue;
             }
 
             if (music.fadeOut.isRunning()) {
@@ -105,6 +103,7 @@ public class AudioManager {
     }
 
     @RequiredArgsConstructor
+    @ToString
     @Getter
     @Setter
     public static class CachedMusic {
