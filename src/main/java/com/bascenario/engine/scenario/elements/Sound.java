@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 
 @Builder
-public record Sound(String path, @SerializedName("max-volume") float maxVolume, @SerializedName("fade-in") long fadeIn) {
+public record Sound(String path, @SerializedName("max-volume") float maxVolume, @SerializedName("fade-in") long fadeIn, @SerializedName("sound-id") int soundId) {
 }

@@ -20,9 +20,9 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
     @Override
     public void onStart(ScenarioScreen screen) {
         if (sound.fadeIn() <= 0) {
-            AudioManager.getInstance().play(this.sound.path(), this.loop, this.sound.maxVolume(), false);
+            AudioManager.getInstance().play(this.sound.soundId(), this.sound.path(), this.loop, this.sound.maxVolume(), false);
         } else {
-            AudioManager.getInstance().playFadeIn(this.sound.path(), this.sound.fadeIn(), this.loop, this.sound.maxVolume(), false);
+            AudioManager.getInstance().playFadeIn(this.sound.soundId(), this.sound.path(), this.sound.fadeIn(), this.loop, this.sound.maxVolume(), false);
         }
     }
 
@@ -34,7 +34,10 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
 
     @Override
     public PlaySoundEvent deserialize(JsonObject serialized) {
-        return new PlaySoundEvent(GsonUtil.getGson().fromJson(serialized.get("sound"), Sound.class), serialized.get("loop").getAsBoolean());
+        Sound sound = GsonUtil.getGson().fromJson(serialized.get("sound"), Sound.class);
+        sound = new Sound(sound.path(), sound.maxVolume(), sound.fadeIn(), Math.abs(sound.soundId()));
+
+        return new PlaySoundEvent(sound, serialized.get("loop").getAsBoolean());
     }
 
     @Override

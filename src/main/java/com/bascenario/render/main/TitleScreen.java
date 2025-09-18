@@ -32,6 +32,7 @@ public class TitleScreen extends Screen {
 
     private TextureAtlas atlas;
 
+    private int cachedSoundId;
     public void init() {
         this.initComponents();
 
@@ -40,7 +41,7 @@ public class TitleScreen extends Screen {
             return;
         }
 
-        AudioManager.getInstance().playFadeIn("assets/base/musics/title/hiniature.mp3", 800L, true, 0.5F, true);
+        this.cachedSoundId = AudioManager.getInstance().playFadeIn("assets/base/musics/title/hiniature.mp3", 800L, true, 0.5F, true);
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false);
@@ -62,7 +63,7 @@ public class TitleScreen extends Screen {
 
     @Override
     public void dispose() {
-        AudioManager.getInstance().stopFadeOut("assets/base/musics/title/hiniature.mp3", 800L);
+        AudioManager.getInstance().stopFadeOut(this.cachedSoundId, 800L);
 
         this.atlas.dispose();
     }

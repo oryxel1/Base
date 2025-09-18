@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EventSerializer implements JsonSerializer<Event<?>>, JsonDeserializer<Event<?>> {
-    private static final Sound DUMMY_SOUND = new Sound("dummy", 0, 0);
+    private static final Sound DUMMY_SOUND = new Sound("dummy", 0, 0, Integer.MIN_VALUE);
 
     private static final Map<Class<?>, Event<?>> CLASS_TO_DUMMY = new HashMap<>();
     private static final Map<String, Event<?>> TYPE_TO_DUMMY = new HashMap<>();
@@ -40,7 +40,7 @@ public class EventSerializer implements JsonSerializer<Event<?>>, JsonDeserializ
         register(LockClickEvent.class, new LockClickEvent(false));
         // Sound
         register(PlaySoundEvent.class, new PlaySoundEvent(DUMMY_SOUND, false));
-        register(StopSoundEvent.class, new StopSoundEvent(DUMMY_SOUND));
+        register(StopSoundEvent.class, new StopSoundEvent(Integer.MIN_VALUE));
         // Sprite
         register(SpriteShakeEvent.class, new SpriteShakeEvent(-1, 0, 0)); // (mini event)
         register(AddSpriteEvent.class, new AddSpriteEvent(null, -1));
