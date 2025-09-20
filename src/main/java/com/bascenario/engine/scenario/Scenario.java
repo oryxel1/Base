@@ -91,7 +91,7 @@ public class Scenario {
         }
 
         public List<Timestamp> timestamps() {
-            return Collections.unmodifiableList(this.timestamps);
+            return this.timestamps;
         }
 
         public Scenario build() {

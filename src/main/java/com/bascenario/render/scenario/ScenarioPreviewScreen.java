@@ -10,6 +10,7 @@ import com.bascenario.util.render.RenderUtil;
 import com.bascenario.util.render.FontUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
@@ -37,6 +38,12 @@ public class ScenarioPreviewScreen extends Screen {
     private final DynamicAnimation titleTextFadeAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 0);
     private DynamicAnimation titleTextPopupAnimation;
     private long finishAll = -1;
+
+    @Getter
+    @Setter
+    private boolean editing;
+    @Getter
+    private boolean done;
 
     private final DynamicAnimation finalFadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1000L, 255);
 
@@ -149,7 +156,10 @@ public class ScenarioPreviewScreen extends Screen {
                 }
 
                 if (this.finishAll != -1 && System.currentTimeMillis() - this.finishAll >= 500L) {
-                    Launcher.WINDOW.setCurrentScreen(new ScenarioScreen(this.scenario));
+                    if (!this.editing) {
+                        Launcher.WINDOW.setCurrentScreen(new ScenarioScreen(this.scenario));
+                    }
+                    this.done = true;
                 }
             }
         });
