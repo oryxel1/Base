@@ -23,9 +23,8 @@ public class ScenarioRenderTest {
 
         final int SOUND_1_ID = 0;
         final Sound sound = new Sound("C:\\Users\\PC\\Downloads\\Track_15_Mitsukiyo_Honey_Jam.ogg", 0.5F, 100L, SOUND_1_ID);
-        Scenario scenario = Scenario.builder()
-                .name("Hesitant Yet Eager to Share").previewBackground(background).previewSound(sound)
-                .build();
+        Scenario.Builder scenario = Scenario.builder()
+                .name("Hesitant Yet Eager to Share").previewBackground(background).previewSound(sound);
 
         scenario.add(0, new SetBackgroundEvent(background),
                 new PlayDialogueEvent(Dialogue.builder()
@@ -433,9 +432,9 @@ public class ScenarioRenderTest {
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
-            Launcher.launch(new ScenarioScreen(scenario), fullScreen);
+            Launcher.launch(new ScenarioScreen(scenario.build()), fullScreen);
         } else {
-            Launcher.launch(new ScenarioPreviewScreen(scenario), fullScreen);
+            Launcher.launch(new ScenarioPreviewScreen(scenario.build()), fullScreen);
         }
     }
 }

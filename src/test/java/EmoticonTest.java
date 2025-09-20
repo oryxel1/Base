@@ -15,9 +15,8 @@ public class EmoticonTest {
                 "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
-        Scenario scenario = Scenario.builder()
-                .name("Emoticon Test").previewBackground(background)
-                .build();
+        Scenario.Builder scenario = Scenario.builder()
+                .name("Emoticon Test").previewBackground(background);
 
         final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\CH0230_spr.skel", "C:\\Users\\PC\\Downloads\\CH0230_spr.atlas", "Idle_01", true);
         final Sprite hoshinoSprite = new Sprite("C:\\Users\\PC\\Downloads\\hoshino_swimsuit_spr.skel",
@@ -39,13 +38,13 @@ public class EmoticonTest {
 
         boolean fullScreen = args.length > 1 && args[1].equals("fullscreen") || args.length > 0 && args[0].equals("fullscreen");
         if (args.length > 0 && args[0].equals("skip-preview")) {
-            Launcher.launch(new ScenarioScreen(scenario), fullScreen);
+            Launcher.launch(new ScenarioScreen(scenario.build()), fullScreen);
         } else {
-            Launcher.launch(new ScenarioPreviewScreen(scenario), fullScreen);
+            Launcher.launch(new ScenarioPreviewScreen(scenario.build()), fullScreen);
         }
     }
 
-    private static void addEmoticon(final Scenario scenario, Sprite.EmoticonType type, final int... sprite) {
+    private static void addEmoticon(final Scenario.Builder scenario, Sprite.EmoticonType type, final int... sprite) {
         scenario.add(type.ordinal() == 0 ? 0 : 1200L,
                 new PlayEmoticonEvent(sprite[0], new Sprite.Emoticon(1200L, 670 + 300, -390, type)),
                 new PlayEmoticonEvent(sprite[1], new Sprite.Emoticon(1200L, 670 + 300, -390, type))

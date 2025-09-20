@@ -1,6 +1,7 @@
 package com.bascenario.render.scenario;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.Timestamp;
 import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
@@ -30,7 +31,7 @@ public class ScenarioScreen extends Screen {
 
     @Getter
     private final Scenario scenario;
-    private final List<Scenario.Timestamp> copiedAlls = new ArrayList<>();
+    private final List<Timestamp> copiedAlls = new ArrayList<>();
 
     private Background background, queueBackground;
     private DynamicAnimation backgroundFadeIn, backgroundFadeOut;
@@ -193,10 +194,10 @@ public class ScenarioScreen extends Screen {
             this.backgroundFadeOut = null;
         }
 
-        final Iterator<Scenario.Timestamp> iterator = this.copiedAlls.iterator();
+        final Iterator<Timestamp> iterator = this.copiedAlls.iterator();
 
         while (iterator.hasNext()) {
-            final Scenario.Timestamp next = iterator.next();
+            final Timestamp next = iterator.next();
             final long duration = next.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
 
             if (duration < next.time()) {

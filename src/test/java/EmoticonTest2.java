@@ -15,9 +15,8 @@ public class EmoticonTest2 {
                 "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
-        Scenario scenario = Scenario.builder()
-                .name("Emoticon Test").previewBackground(background)
-                .build();
+        Scenario.Builder scenario = Scenario.builder()
+                .name("Emoticon Test").previewBackground(background);
 
         final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
         scenario.add(0,
@@ -31,10 +30,10 @@ public class EmoticonTest2 {
             addEmoticon(scenario, type);
         }
 
-        Launcher.launch(new ScenarioScreen(scenario), false);
+        Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
 
-    private static void addEmoticon(final Scenario scenario, Sprite.EmoticonType type) {
+    private static void addEmoticon(final Scenario.Builder scenario, Sprite.EmoticonType type) {
         scenario.add(type.ordinal() == 0 ? 0 : 1200L, new PlayEmoticonEvent(0, new Sprite.Emoticon(1200L, 800 / 1.32F, -390 * 1.32F, type)));
     }
 }
