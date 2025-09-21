@@ -1,21 +1,33 @@
 package com.bascenario.render.editor;
 
 import com.bascenario.engine.scenario.Scenario;
-import com.bascenario.engine.scenario.Timestamp;
+import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.elements.Sound;
 import com.bascenario.managers.AudioManager;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.scenario.ScenarioPreviewScreen;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
+import imgui.flag.ImGuiInputTextFlags;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImInt;
+import imgui.type.ImString;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.util.nfd.NativeFileDialog;
 
+import java.nio.ByteBuffer;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.lwjgl.util.nfd.NativeFileDialog.NFD_OKAY;
+
+// Worse code I'm ever going to write hooo rayyyy!
 @RequiredArgsConstructor
 public class ScenarioEditorScreen extends Screen {
     private final Scenario.Builder scenario;
@@ -23,7 +35,7 @@ public class ScenarioEditorScreen extends Screen {
 
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
-        this.renderImGui();
+        this.renderScenarioInfo();
 
         if (this.preview != null) {
             this.preview.render(positionMatrix, window, mouseX, mouseY);
@@ -33,7 +45,8 @@ public class ScenarioEditorScreen extends Screen {
         }
     }
 
-    private void renderImGui() {
+    private boolean editPreviewBackground, editPreviewSound, editPreviewName;
+    private void renderScenarioInfo() {
         // Scenario details.
         ImGui.setNextWindowPos(new ImVec2(10, 10), ImGuiCond.Always, new ImVec2(0, 0));
         ImGui.setNextWindowBgAlpha(0.35F);
@@ -46,6 +59,118 @@ public class ScenarioEditorScreen extends Screen {
         ImGui.text("Preview background: " + this.scenario.previewBackground());
         ImGui.text("Preview sound: " + this.scenario.previewSound());
         ImGui.text("Total timestamps: " + this.scenario.timestamps().size() + " (total events: " + totalEventSize.get() + ")");
+
+        // Oof, ImGui doesn't like calling popup inside menuItem, so hack around that.
+        if (this.editPreviewBackground) {
+            ImGui.openPopup("Preview Background");
+            this.editPreviewBackground = false;
+        }
+
+        if (this.editPreviewSound) {
+            ImGui.openPopup("Preview Sound");
+            this.editPreviewSound = false;
+        }
+
+        if (this.editPreviewName) {
+            ImGui.openPopup("Preview Name");
+            this.editPreviewName = false;
+        }
+
+        if (ImGui.beginPopupContextWindow()){
+            if (ImGui.menuItem("Edit preview name")) {
+                this.editPreviewName = true;
+            }
+            if (ImGui.menuItem("Edit preview background")) {
+                this.editPreviewBackground = true;
+            }
+            if (ImGui.menuItem("Edit preview sound")) {
+                this.editPreviewSound = true;
+            }
+
+            ImGui.endPopup();
+        }
+
+        if (ImGui.beginPopupModal("Preview Name", ImGuiWindowFlags.AlwaysAutoResize)) {
+            final ImString string = new ImString(this.scenario.name());
+            ImGui.inputText("Text", string, ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackResize);
+            if (!Objects.equals(string.get(), this.scenario.name())) {
+                this.scenario.name(string.get());
+            }
+            if (ImGui.button("Done!")) {
+                ImGui.closeCurrentPopup();
+            }
+            ImGui.endPopup();
+        }
+
+        if (ImGui.beginPopupModal("Preview Sound", ImGuiWindowFlags.AlwaysAutoResize)) {
+            Sound sound = this.scenario.previewSound();
+            ImGui.text("Sound path: " + sound.path());
+            ImGui.sameLine();
+            if (ImGui.button("Browse")) {
+                final String path = this.pickFile("mp3", "wav", "ogg");
+                if (!path.isBlank()) {
+                    sound = new Sound(path, sound.maxVolume(), sound.fadeIn(), sound.soundId());
+                }
+            }
+
+            float[] maxVolume = new float[] {sound.maxVolume()};
+            ImGui.sliderFloat("Max volume", maxVolume, 0, 1);
+            if (maxVolume[0] != sound.maxVolume()) {
+                sound = new Sound(sound.path(), maxVolume[0], sound.fadeIn(), sound.soundId());
+            }
+
+            if (ImGui.checkbox("Fade in", sound.fadeIn() > 0)) {
+                sound = new Sound(sound.path(), maxVolume[0], sound.fadeIn() <= 0 ? 1 : 0, sound.soundId());
+            }
+            if (sound.fadeIn() > 0) {
+                int[] fadeIn = new int[] {(int) sound.fadeIn()};
+                ImGui.sliderInt("Fade in duration", fadeIn, 0, 10000);
+                if (fadeIn[0] != sound.fadeIn()) {
+                    sound = new Sound(sound.path(), sound.maxVolume(), fadeIn[0], sound.soundId());
+                }
+            }
+            final ImInt soundIdIm = new ImInt(sound.soundId());
+            ImGui.inputInt("Sound id", soundIdIm);
+            int soundId = soundIdIm.get();
+            if (soundId >= 0 && soundId != sound.soundId()) {
+                sound = new Sound(sound.path(), sound.maxVolume(), sound.fadeIn(), soundId);
+            }
+
+            this.scenario.previewSound(sound);
+            if (ImGui.button("Done!")) {
+                ImGui.closeCurrentPopup();
+            }
+            ImGui.endPopup();
+        }
+
+        if (ImGui.beginPopupModal("Preview Background", ImGuiWindowFlags.AlwaysAutoResize)) {
+            Background background = this.scenario.previewBackground();
+            if (background == null) {
+                background = new Background("", false, false);
+            }
+
+            ImGui.text("Background path: " + background.path());
+            ImGui.sameLine();
+            if (ImGui.button("Browse")) {
+                final String path = this.pickFile("jpg", "png");
+                if (!path.isBlank()) {
+                    background = new Background(path, !background.fadeIn(), background.fadeOut());
+                }
+            }
+            if (ImGui.checkbox("Fade in", background.fadeIn())) {
+                background = new Background(background.path(), !background.fadeIn(), background.fadeOut());
+            }
+            if (ImGui.checkbox("Fade out", background.fadeOut())) {
+                background = new Background(background.path(), background.fadeIn(), !background.fadeOut());
+            }
+
+            this.scenario.previewBackground(background);
+            if (ImGui.button("Done!")) {
+                ImGui.closeCurrentPopup();
+            }
+            ImGui.endPopup();
+        }
+
         ImGui.end();
 
         // Timestamps and event.
@@ -100,5 +225,32 @@ public class ScenarioEditorScreen extends Screen {
             AudioManager.getInstance().stop(this.preview.getScenario().getPreviewSound().soundId());
         }
         this.preview = null;
+    }
+
+    private String pickFile(String... extensions) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            PointerBuffer outPath = stack.mallocPointer(1);
+
+            int result = NativeFileDialog.NFD_OpenDialog(outPath, null, (ByteBuffer) null);
+            if (result == NFD_OKAY) {
+                String filePath = outPath.getStringUTF8(0).toLowerCase(Locale.ROOT);
+                boolean valid = false;
+                for (String ext : extensions) {
+                    if (filePath.endsWith("." + ext)) {
+                        valid = true;
+                        break;
+                    }
+                }
+
+                if (!valid) {
+                    return "";
+                }
+
+                NativeFileDialog.nNFD_FreePath(outPath.get(0));
+                return filePath;
+            }
+        }
+
+        return "";
     }
 }
