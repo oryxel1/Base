@@ -6,6 +6,7 @@ import com.bascenario.engine.scenario.elements.Sound;
 import com.bascenario.managers.AudioManager;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.scenario.ScenarioPreviewScreen;
+import com.bascenario.util.FileUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
@@ -16,26 +17,23 @@ import imgui.type.ImString;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.nfd.NativeFileDialog;
 
-import java.nio.ByteBuffer;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.lwjgl.util.nfd.NativeFileDialog.NFD_OKAY;
 
 // Worse code I'm ever going to write hooo rayyyy!
 @RequiredArgsConstructor
 public class ScenarioEditorScreen extends Screen {
+    private static final Background NULL_BACKGROUND = new Background("", false, false);
+    private static final Sound NULL_SOUND = new Sound("", 1, 0, 0);
+
     private final Scenario.Builder scenario;
     private ScenarioPreviewScreen preview;
 
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.renderScenarioInfo();
+        this.renderTimestampEditor();
 
         if (this.preview != null) {
             this.preview.render(positionMatrix, window, mouseX, mouseY);
@@ -43,6 +41,9 @@ public class ScenarioEditorScreen extends Screen {
                 this.stopPreviewingPreview();
             }
         }
+    }
+
+    private void renderTimestampEditor() {
     }
 
     private boolean editPreviewBackground, editPreviewSound, editPreviewName;
@@ -104,39 +105,46 @@ public class ScenarioEditorScreen extends Screen {
 
         if (ImGui.beginPopupModal("Preview Sound", ImGuiWindowFlags.AlwaysAutoResize)) {
             Sound sound = this.scenario.previewSound();
+            if (sound == null) {
+                sound = new Sound("", 1, 0, 0);
+            }
+
             ImGui.text("Sound path: " + sound.path());
             ImGui.sameLine();
             if (ImGui.button("Browse")) {
-                final String path = this.pickFile("mp3", "wav", "ogg");
+                final String path = FileUtil.pickFile("mp3", "wav", "ogg");
                 if (!path.isBlank()) {
-                    sound = new Sound(path, sound.maxVolume(), sound.fadeIn(), sound.soundId());
+                    sound.path(path);
                 }
             }
 
             float[] maxVolume = new float[] {sound.maxVolume()};
             ImGui.sliderFloat("Max volume", maxVolume, 0, 1);
             if (maxVolume[0] != sound.maxVolume()) {
-                sound = new Sound(sound.path(), maxVolume[0], sound.fadeIn(), sound.soundId());
+                sound.maxVolume(maxVolume[0]);
             }
 
             if (ImGui.checkbox("Fade in", sound.fadeIn() > 0)) {
-                sound = new Sound(sound.path(), maxVolume[0], sound.fadeIn() <= 0 ? 1 : 0, sound.soundId());
+                sound.fadeIn(sound.fadeIn() <= 0 ? 1 : 0);
             }
             if (sound.fadeIn() > 0) {
                 int[] fadeIn = new int[] {(int) sound.fadeIn()};
                 ImGui.sliderInt("Fade in duration", fadeIn, 0, 10000);
                 if (fadeIn[0] != sound.fadeIn()) {
-                    sound = new Sound(sound.path(), sound.maxVolume(), fadeIn[0], sound.soundId());
+                    sound.fadeIn(fadeIn[0]);
                 }
             }
             final ImInt soundIdIm = new ImInt(sound.soundId());
             ImGui.inputInt("Sound id", soundIdIm);
             int soundId = soundIdIm.get();
             if (soundId >= 0 && soundId != sound.soundId()) {
-                sound = new Sound(sound.path(), sound.maxVolume(), sound.fadeIn(), soundId);
+                sound.soundId(soundId);
             }
 
-            this.scenario.previewSound(sound);
+            if (!sound.equals(NULL_SOUND) && this.scenario.previewSound() == null) {
+                this.scenario.previewSound(sound);
+            }
+
             if (ImGui.button("Done!")) {
                 ImGui.closeCurrentPopup();
             }
@@ -152,19 +160,23 @@ public class ScenarioEditorScreen extends Screen {
             ImGui.text("Background path: " + background.path());
             ImGui.sameLine();
             if (ImGui.button("Browse")) {
-                final String path = this.pickFile("jpg", "png");
+                final String path = FileUtil.pickFile("jpg", "png");
                 if (!path.isBlank()) {
-                    background = new Background(path, !background.fadeIn(), background.fadeOut());
+                    background.path(path);
                 }
             }
             if (ImGui.checkbox("Fade in", background.fadeIn())) {
+                background.fadeIn(!background.fadeIn());
                 background = new Background(background.path(), !background.fadeIn(), background.fadeOut());
             }
             if (ImGui.checkbox("Fade out", background.fadeOut())) {
-                background = new Background(background.path(), background.fadeIn(), !background.fadeOut());
+                background.fadeOut(!background.fadeOut());
             }
 
-            this.scenario.previewBackground(background);
+            if (!background.equals(NULL_BACKGROUND) && this.scenario.previewBackground() == null) {
+                this.scenario.previewBackground(background);
+            }
+
             if (ImGui.button("Done!")) {
                 ImGui.closeCurrentPopup();
             }
@@ -194,7 +206,8 @@ public class ScenarioEditorScreen extends Screen {
 //        List<Timestamp> timestamps = new ArrayList<>();
 //        boolean changed = false;
 //        for (Timestamp timestamp : this.scenario.timestamps()) {
-//            index++;
+//            index++
+
 //            if (ImGui.collapsingHeader("Timestamp##" + index)) {
 //                if (ImGui.checkbox("Wait For Dialogue##" + index, timestamp.waitForDialogue())) {
 //                    timestamp = new Timestamp(!timestamp.waitForDialogue(), timestamp.time(), timestamp.events());
@@ -225,32 +238,5 @@ public class ScenarioEditorScreen extends Screen {
             AudioManager.getInstance().stop(this.preview.getScenario().getPreviewSound().soundId());
         }
         this.preview = null;
-    }
-
-    private String pickFile(String... extensions) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            PointerBuffer outPath = stack.mallocPointer(1);
-
-            int result = NativeFileDialog.NFD_OpenDialog(outPath, null, (ByteBuffer) null);
-            if (result == NFD_OKAY) {
-                String filePath = outPath.getStringUTF8(0).toLowerCase(Locale.ROOT);
-                boolean valid = false;
-                for (String ext : extensions) {
-                    if (filePath.endsWith("." + ext)) {
-                        valid = true;
-                        break;
-                    }
-                }
-
-                if (!valid) {
-                    return "";
-                }
-
-                NativeFileDialog.nNFD_FreePath(outPath.get(0));
-                return filePath;
-            }
-        }
-
-        return "";
     }
 }

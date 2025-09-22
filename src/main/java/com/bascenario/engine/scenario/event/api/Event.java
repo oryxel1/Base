@@ -16,6 +16,8 @@ public abstract class Event<T>  {
     public void onEnd(ScenarioScreen screen) {}
     public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {}
 
+//    public abstract void renderImGui();
+
     public abstract void serialize(JsonObject serialized);
     public abstract T deserialize(JsonObject serialized);
     public abstract String type();

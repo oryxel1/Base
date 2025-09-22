@@ -48,7 +48,7 @@ public class Scenario {
     }
 
     public static class Builder {
-        private String name;
+        private String name = "";
         private Background previewBackground;
         private Sound previewSound;
         private final List<Timestamp> timestamps = new ArrayList<>();
