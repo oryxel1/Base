@@ -7,8 +7,7 @@ import com.bascenario.managers.AudioManager;
 import com.bascenario.render.api.Screen;
 import com.bascenario.util.render.FontUtil;
 import com.bascenario.util.render.RenderUtil;
-import imgui.ImGui;
-import imgui.ImGuiIO;
+import imgui.*;
 import imgui.extension.implot.ImPlot;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
@@ -18,9 +17,12 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import net.raphimc.thingl.wrapper.GLStateManager;
+import org.apache.commons.io.IOUtils;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL32;
+
+import java.util.Objects;
 
 public class MainRendererWindow extends ApplicationAdapter {
     protected ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
@@ -88,6 +90,21 @@ public class MainRendererWindow extends ApplicationAdapter {
         data.setIniFilename("base.imgui");
         data.setFontGlobalScale(1F);
         data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
+
+        {
+            final ImFontAtlas fonts = data.getFonts();
+            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
+
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesDefault());
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesCyrillic());
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesJapanese());
+
+            final short[] glyphRanges = rangesBuilder.buildRanges();
+
+            try {
+                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(FontUtil.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
+            } catch (Exception ignored) {}
+        }
 
         imGuiGlfw.init(windowHandle, true);
         imGuiGl3.init();
