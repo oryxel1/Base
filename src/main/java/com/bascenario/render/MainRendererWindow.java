@@ -48,6 +48,7 @@ public class MainRendererWindow extends ApplicationAdapter {
     public void create() {
         long windowHandle = ((Lwjgl3Graphics)Gdx.graphics).getWindow().getWindowHandle();
 
+        // Setup ThinGL, since we use this library for the main rendering logic.
         new ThinGL(new GLFWWindowInterface(windowHandle)) {
             @Override
             protected GLStateManager createGLStateManager() {
@@ -62,6 +63,8 @@ public class MainRendererWindow extends ApplicationAdapter {
                 this.currentScreen.init();
             }
         });
+
+        // Now setup some stuff related to mouse handling to so WE can handle it separately.
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
             if (window != windowHandle) {
                 return;
@@ -81,40 +84,29 @@ public class MainRendererWindow extends ApplicationAdapter {
                 this.currentScreen.mouseRelease();
             }
         });
-        FontUtil.loadFonts();
+        // --------------------------------------------------------------------------------------
 
+        // Init stuff needed for ImGui to render.
         ImGui.createContext();
         ImPlot.createContext();
 
         final ImGuiIO data = ImGui.getIO();
         data.setIniFilename("base.imgui");
         data.setFontGlobalScale(1F);
-        data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
 
-        {
-            final ImFontAtlas fonts = data.getFonts();
-            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
+        FontUtil.loadFonts();
 
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesDefault());
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesCyrillic());
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesJapanese());
-
-            final short[] glyphRanges = rangesBuilder.buildRanges();
-
-            try {
-                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(FontUtil.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
-            } catch (Exception ignored) {}
-        }
-
-        imGuiGlfw.init(windowHandle, true);
-        imGuiGl3.init();
+        this.imGuiGlfw.init(windowHandle, true);
+        this.imGuiGl3.init();
     }
 
     @Override
     public void render() {
+        // Nothing worth noting here, just ticking fade in/out audio.
         AudioManager.getInstance().tickFadeIn();
         AudioManager.getInstance().tickFadeOut();
 
+        // Setup stuff for rendering.
         GL32.glClearColor(1, 1, 1, 1);
         GL32.glClear(GL32.GL_COLOR_BUFFER_BIT | GL32.GL_DEPTH_BUFFER_BIT);
 
@@ -124,8 +116,10 @@ public class MainRendererWindow extends ApplicationAdapter {
 
         final Matrix4fStack positionMatrix = new Matrix4fStack(8);
 
+        // I don't want every screen to have to render their own black BG, so render one by default.
         RenderUtil.render(() -> ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight(), Color.BLACK));
 
+        // Now let's render the screen, and ThinGL.
         ThinGL.get().onFrameBegin();
         ThinGL.get().onFrameStart();
 
@@ -138,13 +132,15 @@ public class MainRendererWindow extends ApplicationAdapter {
             this.currentScreen.render(positionMatrix, ThinGL.windowInterface(), this.mouseX, this.mouseY);
         }
 
-//        ImGui.showDemoWindow();
-
-        ImGui.render();
+        ImGui.render(); // Let's render ImGui
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
+        // We're finished!
         ThinGL.get().onFrameFinished();
         ThinGL.get().onFrameEnd();
+
+        ImGui.endFrame();
+        ImGui.updatePlatformWindows();
     }
 
     @Override

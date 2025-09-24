@@ -13,6 +13,7 @@ import net.raphimc.thingl.implementation.window.WindowInterface;
 import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 
+// For testing rendering component in ThinGL + ImGui.
 public class ElementTestScreen extends Screen {
     private final Screen screen;
     public boolean appear;

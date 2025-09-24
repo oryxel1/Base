@@ -43,10 +43,21 @@ public class ScenarioScreen extends Screen {
     @Getter
     private final List<SpriteRender> sprites = new ArrayList<>();
 
+    // Dialogue index, determine what dialogue index it's (yes lol).
+    // So if for example, I want to make dialogue different depending on the dialogue option I use
+    // I can make that there is different dialogue list, each with it own index value, and for example
+    // Index 0: "First dialogue", "Third dialogue"
+    // Index 1: "Second Dialogue (option 1)"
+    // Index 2: "Second Dialogue (option 2)"
+    // I can switch back and forth depending on the dialogue option, which is nice.
     @Getter @Setter
     private int dialogueIndex = 0;
     @Getter
     private DialogueRender dialogue;
+
+    // This determined whether we can move on to the next timestamp.
+    // I used to do this by setting dialogue to null, but sometimes closing dialogue doesn't look ideal.
+    // So now we can let the dialogue tell us if it has already finished playing, and we can move on to the next timestamp.
     private boolean isDialogueBusy;
 
     private PopupImage popupImage;
@@ -140,6 +151,7 @@ public class ScenarioScreen extends Screen {
             }
 
             // For popup image, ignore all value and hardcode it to 850x850 (and depending on the screen size).
+            // TODO: This is a fucking retarded way to do it, so don't hardcoded, to lazy for that for now.
             if (this.popupImage != null) {
                 float widthHeight = 0.28645833333F * window.getFramebufferWidth();
                 ThinGL.renderer2D().texture(positionMatrix, TextureManager.getInstance().getTexture(new File(this.popupImage.path())), window.getFramebufferWidth() / 2F - (widthHeight / 2F), 0.14074074074F * window.getFramebufferHeight(), widthHeight, widthHeight);
@@ -196,6 +208,12 @@ public class ScenarioScreen extends Screen {
 
         final Iterator<Timestamp> iterator = this.copiedAlls.iterator();
 
+        // So here is how the event system, dialogue system works, quite proud of it
+        // There will be timestamps, and each timestamps will have an X distance between each other
+        // to determine when to play. After this X amount of time then it will play the next timestamp.
+        // However, if waitForDialogue is true, then it will wait for the current dialogue (option) to finish
+        // before waiting for another X distance to play... Simple enough? And each timestamp will have events
+        // that responsible for playing dialogue, adding sprite, play sound, ....
         while (iterator.hasNext()) {
             final Timestamp next = iterator.next();
             final long duration = next.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
@@ -215,13 +233,15 @@ public class ScenarioScreen extends Screen {
             iterator.remove();
         }
 
-        final List<Event> queuedEvents = new ArrayList<>();
+        final List<Event<?>> queuedEvents = new ArrayList<>();
 
+        // Let's see what event has finished playing and remove them.
         final Iterator<EventRenderer> rendererIterator = this.events.iterator();
         while (rendererIterator.hasNext()) {
             final EventRenderer event = rendererIterator.next();
             if (event.isFinished()) {
                 event.onEnd(this);
+                // If this is a queue event, then we should play the queued event after the duration finish!
                 if (event.getEvent() instanceof QueueEventEvent queued) {
                     queuedEvents.add(queued.getQueuedEvent());
                 }
@@ -239,6 +259,8 @@ public class ScenarioScreen extends Screen {
         if (background == null) {
             background = NULL_BACKGROUND;
         }
+
+        // TODO: Again, hardcoding a specific fading value is such a retarded design choice, so change that later i guess.
 
         if (this.background != null && this.background.fadeOut() && !skipFadeOut) {
             this.queueBackground = background;

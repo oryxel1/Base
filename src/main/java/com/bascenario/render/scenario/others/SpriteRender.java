@@ -22,6 +22,7 @@ import org.joml.Matrix4fStack;
 import java.util.ArrayList;
 import java.util.List;
 
+// Don't fucking ask me, I don't understand how sprite rendering works, it's from a library.
 @RequiredArgsConstructor
 public class SpriteRender {
     @Getter

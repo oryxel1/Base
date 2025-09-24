@@ -25,6 +25,7 @@ import java.io.File;
 
 import static org.lwjgl.opengl.GL11.*;
 
+// This is unreadable....
 @RequiredArgsConstructor
 public class ScenarioPreviewScreen extends Screen {
     @Getter
@@ -51,6 +52,7 @@ public class ScenarioPreviewScreen extends Screen {
     @Override
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         if (!this.playSound) {
+            // Start playing sound if one is present.
             if (this.scenario.getPreviewSound() != null) {
                 AudioManager.getInstance().play(this.scenario.getPreviewSound().soundId(), this.scenario.getPreviewSound().path(), true, this.scenario.getPreviewSound().maxVolume(), false);
             }
@@ -58,46 +60,54 @@ public class ScenarioPreviewScreen extends Screen {
         }
 
         RenderUtil.render(() -> {
+            // Now let's fade in the background first, this will render a black color with transparency dependent on this value, make it easier to keep track of.
             if (this.backgroundFadeIn.getValue() == 255) {
                 this.backgroundFadeIn.setTarget(0);
             }
 
             float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
 
-            boolean doingTheFinalFade = this.finalFadeOut.getTarget() == 0;
+            boolean doingTheFinalFade = this.finalFadeOut.getTarget() == 0; // Whether we're fading out.
 
+            // This is just rendering the preview background, just read the code ig, ik it look bad.
             final Background previewBackground = this.scenario.getPreviewBackground();
             if (previewBackground != null && previewBackground.path() != null && !previewBackground.path().isBlank()) {
                 Color color = Color.fromRGBA(255, 255, 255, doingTheFinalFade && previewBackground.fadeOut() ? Math.round(this.finalFadeOut.getValue()) : 255);
                 RenderUtil.renderBackground(positionMatrix, width, height, new File(previewBackground.path()), color);
 
                 int strength = (int) (20 * (this.finalFadeOut.getValue() / 255F));
-                RenderUtil.blurRectangle(positionMatrix, 0, 0, width, height, strength);
+                RenderUtil.blurRectangle(positionMatrix, 0, 0, width, height, strength); // Very nice blur thanks to ThinGL.
 
-                Color fadeeee = Color.fromRGBA(60, 60, 60, Math.round(100 * this.finalFadeOut.getValue() / 255F));
-                ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, fadeeee);
+                Color fade = Color.fromRGBA(60, 60, 60, Math.round(100 * this.finalFadeOut.getValue() / 255F));
+                ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, fade); // The dark transparency layer here.
             } else {
                 int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : 255;
+
+                // If there is no background, default back to the dark gray colored background.
                 ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, Color.fromRGBA(22, 23, 26, alpha));
             }
 
+            // This is the border that show up, there is a different one for scenario with no preview background and has one
+            // which is what people normally messed up for reason I don't understand, also it will fade along with the BG.
             final String border = previewBackground == null ? "border_non_background.png" : "border_with_background.png";
             if (doingTheFinalFade) {
                 Color color = Color.fromRGBA(255, 255, 255, Math.round(100 * this.finalFadeOut.getValue() / 255F));
                 RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/preview/" + border, color);
             } else {
-                Color fadeeee = Color.fromRGBA(255, 255, 255, Math.round(100 * (1 - (this.backgroundFadeIn.getValue() / 255F))));
-                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/preview/" + border, fadeeee);
+                Color fade = Color.fromRGBA(255, 255, 255, Math.round(100 * (1 - (this.backgroundFadeIn.getValue() / 255F))));
+                RenderUtil.renderBorder(positionMatrix, width, height, "/assets/base/uis/preview/" + border, fade);
             }
 
             Color backgroundFadeColor = Color.fromRGBA(0, 0, 0, Math.round(this.backgroundFadeIn.getValue()));
             ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, backgroundFadeColor);
 
+            // The background is about to finish fading in (yay!), let's start doing the title popup animation.
             if (this.backgroundFadeIn.getValue() < 80) {
                 this.titleBoxPopupAnimation.setTarget(0);
                 this.titleBoxFadeAnimation.setTarget(255);
             }
 
+            // The title popup animation actually start animating let's goooo, nothing worth noting here just render it.
             if (this.titleBoxPopupAnimation.getTarget() != 92) {
                 float sizeY = height - this.titleBoxPopupAnimation.getValue();
 
@@ -112,12 +122,14 @@ public class ScenarioPreviewScreen extends Screen {
                         0, Math.max(0, height / 2F - (sizeY / 2)), width, sizeY, titleBoxFade);
             }
 
+            // Title box animation is also finished, now it's the text popup turn.
             if (this.titleBoxFadeAnimation.getValue() > 180 && this.titleTextPopupAnimation == null) {
                 this.titleTextPopupAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 400L, 0.85F);
                 this.titleTextPopupAnimation.setTarget(1);
                 this.titleTextFadeAnimation.setTarget(255);
             }
 
+            // The text popup animation logic, nothing here, however I'd like to make this look smoother than this IMPL.
             if (this.titleTextFadeAnimation.getTarget() != 0) {
                 int alpha = doingTheFinalFade ? Math.round(this.finalFadeOut.getValue()) : Math.round(this.titleTextFadeAnimation.getValue());
                 final TextRun textRun = TextRun.fromString(
@@ -137,7 +149,7 @@ public class ScenarioPreviewScreen extends Screen {
                 positionMatrix.popMatrix();
 
                 if (!this.titleBoxFadeAnimation.isRunning() && this.finishAll == -1 && this.finalFadeOut.getTarget() == 255) {
-                    this.finishAll = System.currentTimeMillis();
+                    this.finishAll = System.currentTimeMillis(); // We're finish, time to do the final fade out.
                 }
             }
 
@@ -148,6 +160,7 @@ public class ScenarioPreviewScreen extends Screen {
 
             if (this.finalFadeOut.getTarget() == 0) {
                 if (this.scenario.getPreviewBackground() == null) {
+                    // Draw a black color on top if there is no background to fade (weird choice ig).
                     ThinGL.renderer2D().filledRectangle(positionMatrix, 0, 0, width, height, Color.fromRGBA(0, 0, 0, Math.round(255 - this.finalFadeOut.getValue())));
                 }
 
@@ -157,6 +170,7 @@ public class ScenarioPreviewScreen extends Screen {
 
                 if (this.finishAll != -1 && System.currentTimeMillis() - this.finishAll >= 500L) {
                     if (!this.editing) {
+                        // Switch to scenario screen, if we're not in the scenario editor.
                         Launcher.WINDOW.setCurrentScreen(new ScenarioScreen(this.scenario));
                     }
                     this.done = true;

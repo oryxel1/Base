@@ -1,11 +1,11 @@
 package com.bascenario.util.render;
 
-import com.bascenario.engine.scenario.event.api.Event;
 import imgui.ImGui;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
 
+// Just so the code can look cleaner!
 public class ImGuiUtil {
     public static int COUNTER = 0;
 
