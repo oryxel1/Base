@@ -28,6 +28,16 @@ public class AddSpriteEvent extends Event<AddSpriteEvent> {
     }
 
     @Override
+    public void renderImGui() {
+
+    }
+
+    @Override
+    public AddSpriteEvent defaultEvent() {
+        return new AddSpriteEvent(new Sprite("", "", "", true), 0);
+    }
+
+    @Override
     public void serialize(JsonObject serialized) {
         serialized.add("sprite", GsonUtil.toJson(this.sprite));
         serialized.addProperty("sprite-id", this.spriteId);
@@ -35,7 +45,8 @@ public class AddSpriteEvent extends Event<AddSpriteEvent> {
 
     @Override
     public AddSpriteEvent deserialize(JsonObject serialized) {
-        return new AddSpriteEvent(GsonUtil.getGson().fromJson(serialized.get("sprite"), Sprite.class), serialized.get("sprite-id").getAsInt());    }
+        return new AddSpriteEvent(GsonUtil.getGson().fromJson(serialized.get("sprite"), Sprite.class), serialized.get("sprite-id").getAsInt());
+    }
 
     @Override
     public String type() {

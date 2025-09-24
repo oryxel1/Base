@@ -13,11 +13,19 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TextureManager {
+    private static TextureKey INVALID_TEXTURE;
+
     @Getter
     private static final TextureManager instance = new TextureManager();
     private TextureManager() {
         if (instance != null) {
             throw new RuntimeException("This class can only create one instance!");
+        }
+
+        try {
+            INVALID_TEXTURE = new TextureKey("invalid_texture", Texture2D.fromImage(Objects.requireNonNull(TextureManager.class.getResourceAsStream("/assets/base/black.png")).readAllBytes()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -32,17 +40,17 @@ public class TextureManager {
         }
     }
 
-    public void loadTexture(String path, final File file) {
-        try {
-            this.textures.put(path, new TextureKey(path, Texture2D.fromImage(Files.readAllBytes(file.toPath()))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void loadTexture(String path, final File file) throws IOException {
+        this.textures.put(path, new TextureKey(path, Texture2D.fromImage(Files.readAllBytes(file.toPath()))));
     }
 
     public Texture2D getTexture(File file) {
         if (!this.textures.containsKey(file.getPath())) {
-            loadTexture(file.getPath(), file);
+            try {
+                loadTexture(file.getPath(), file);
+            } catch (IOException exception) {
+                return INVALID_TEXTURE.key();
+            }
         }
 
         return this.textures.get(file.getPath()).key();

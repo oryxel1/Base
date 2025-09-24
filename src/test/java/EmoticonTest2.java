@@ -1,6 +1,7 @@
 import com.bascenario.Launcher;
 import com.bascenario.engine.scenario.Scenario;
 import com.bascenario.engine.scenario.elements.Background;
+import com.bascenario.engine.scenario.elements.Emoticon;
 import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.impl.PlayEmoticonEvent;
 import com.bascenario.engine.scenario.event.impl.background.SetBackgroundEvent;
@@ -26,14 +27,14 @@ public class EmoticonTest2 {
                 new SpriteLocationEvent(0, 0, 0, 80)
         );
 
-        for (Sprite.EmoticonType type : Sprite.EmoticonType.values()) {
+        for (Emoticon.EmoticonType type : Emoticon.EmoticonType.values()) {
             addEmoticon(scenario, type);
         }
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
 
-    private static void addEmoticon(final Scenario.Builder scenario, Sprite.EmoticonType type) {
-        scenario.add(type.ordinal() == 0 ? 0 : 1200L, new PlayEmoticonEvent(0, new Sprite.Emoticon(1200L, 800 / 1.32F, -390 * 1.32F, type)));
+    private static void addEmoticon(final Scenario.Builder scenario, Emoticon.EmoticonType type) {
+        scenario.add(type.ordinal() == 0 ? 0 : 1200L, new PlayEmoticonEvent(0, new Emoticon(1200L, 800 / 1.32F, -390 * 1.32F, type)));
     }
 }

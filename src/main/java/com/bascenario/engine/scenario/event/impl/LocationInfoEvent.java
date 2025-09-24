@@ -4,6 +4,7 @@ import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.managers.TextureManager;
 import com.bascenario.util.render.FontUtil;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -18,7 +19,7 @@ import org.joml.Matrix4fStack;
 import java.lang.reflect.Type;
 
 public class LocationInfoEvent extends Event<LocationInfoEvent> {
-    private final String location;
+    private String location;
 
     private final DynamicAnimation popupFade = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 500L, 0);
     private final DynamicAnimation textFade = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 500L, 0);
@@ -61,6 +62,16 @@ public class LocationInfoEvent extends Event<LocationInfoEvent> {
                 sizeWidth, locationY,  30,  sizeY, color);
 
         ThinGL.rendererText().textRun(positionMatrix, text, 56, locationY + (sizeY / 2) - (ThinGL.rendererText().getExactHeight(text.shape()) / 2));
+    }
+
+    @Override
+    public void renderImGui() {
+        this.location = ImGuiUtil.inputText("Location Name", this.location);
+    }
+
+    @Override
+    public LocationInfoEvent defaultEvent() {
+        return new LocationInfoEvent("Very nice place.");
     }
 
     @Override

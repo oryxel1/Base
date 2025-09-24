@@ -3,13 +3,14 @@ package com.bascenario.engine.scenario.event.impl.sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 
 public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
-    private final int spriteId;
-    private final String animation;
-    private final int layer;
-    private final boolean loop;
+    private int spriteId;
+    private String animation;
+    private int layer;
+    private boolean loop;
 
     public SpriteAnimationEvent(int spriteId, String animation, int layer, boolean loop) {
         super(0);
@@ -33,6 +34,19 @@ public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
         }
 
         render.playAnimation(layer, animation, loop);
+    }
+
+    @Override
+    public void renderImGui() {
+        this.spriteId = ImGuiUtil.inputInt("Sprite ID", this.spriteId);
+        this.animation = ImGuiUtil.inputText("Animation", this.animation);
+        this.layer = ImGuiUtil.inputInt("Animation Layer", this.layer);
+        this.loop = ImGuiUtil.checkbox("Loop", this.loop);
+    }
+
+    @Override
+    public SpriteAnimationEvent defaultEvent() {
+        return new SpriteAnimationEvent(0, "Idle_01", 1, true);
     }
 
     @Override

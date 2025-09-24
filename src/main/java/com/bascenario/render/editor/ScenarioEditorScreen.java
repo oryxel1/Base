@@ -1,12 +1,16 @@
 package com.bascenario.render.editor;
 
 import com.bascenario.engine.scenario.Scenario;
+import com.bascenario.engine.scenario.Timestamp;
 import com.bascenario.engine.scenario.elements.Background;
 import com.bascenario.engine.scenario.elements.Sound;
+import com.bascenario.engine.scenario.event.api.Event;
+import com.bascenario.engine.scenario.event.impl.QueueEventEvent;
 import com.bascenario.managers.AudioManager;
 import com.bascenario.render.api.Screen;
 import com.bascenario.render.scenario.ScenarioPreviewScreen;
 import com.bascenario.util.FileUtil;
+import com.bascenario.util.render.ImGuiUtil;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
@@ -18,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,6 +40,7 @@ public class ScenarioEditorScreen extends Screen {
     public void render(Matrix4fStack positionMatrix, WindowInterface window, double mouseX, double mouseY) {
         this.renderScenarioInfo();
         this.renderTimestampEditor();
+        this.poorlyMadeTestEditor();
 
         if (this.preview != null) {
             this.preview.render(positionMatrix, window, mouseX, mouseY);
@@ -92,11 +99,7 @@ public class ScenarioEditorScreen extends Screen {
         }
 
         if (ImGui.beginPopupModal("Preview Name", ImGuiWindowFlags.AlwaysAutoResize)) {
-            final ImString string = new ImString(this.scenario.name());
-            ImGui.inputText("Text", string, ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackResize);
-            if (!Objects.equals(string.get(), this.scenario.name())) {
-                this.scenario.name(string.get());
-            }
+            this.scenario.name(ImGuiUtil.inputText("Name", this.scenario.name()));
             if (ImGui.button("Done!")) {
                 ImGui.closeCurrentPopup();
             }
@@ -109,7 +112,7 @@ public class ScenarioEditorScreen extends Screen {
                 sound = new Sound("", 1, 0, 0);
             }
 
-            ImGui.text("Sound path: " + sound.path());
+            ImGui.text("Sound Path: " + sound.path());
             ImGui.sameLine();
             if (ImGui.button("Browse")) {
                 final String path = FileUtil.pickFile("mp3", "wav", "ogg");
@@ -118,25 +121,16 @@ public class ScenarioEditorScreen extends Screen {
                 }
             }
 
-            float[] maxVolume = new float[] {sound.maxVolume()};
-            ImGui.sliderFloat("Max volume", maxVolume, 0, 1);
-            if (maxVolume[0] != sound.maxVolume()) {
-                sound.maxVolume(maxVolume[0]);
-            }
+            sound.maxVolume(ImGuiUtil.sliderFloat("Max Volume", sound.maxVolume(), 0, 1));
 
-            if (ImGui.checkbox("Fade in", sound.fadeIn() > 0)) {
+            if (ImGui.checkbox("Fade In", sound.fadeIn() > 0)) {
                 sound.fadeIn(sound.fadeIn() <= 0 ? 1 : 0);
             }
+
             if (sound.fadeIn() > 0) {
-                int[] fadeIn = new int[] {(int) sound.fadeIn()};
-                ImGui.sliderInt("Fade in duration", fadeIn, 0, 10000);
-                if (fadeIn[0] != sound.fadeIn()) {
-                    sound.fadeIn(fadeIn[0]);
-                }
+                sound.fadeIn(ImGuiUtil.sliderInt("Fade In Duration", (int) sound.fadeIn(), 0, 10000));
             }
-            final ImInt soundIdIm = new ImInt(sound.soundId());
-            ImGui.inputInt("Sound id", soundIdIm);
-            int soundId = soundIdIm.get();
+            int soundId = ImGuiUtil.inputInt("Sound ID", sound.soundId());
             if (soundId >= 0 && soundId != sound.soundId()) {
                 sound.soundId(soundId);
             }
@@ -165,13 +159,8 @@ public class ScenarioEditorScreen extends Screen {
                     background.path(path);
                 }
             }
-            if (ImGui.checkbox("Fade in", background.fadeIn())) {
-                background.fadeIn(!background.fadeIn());
-                background = new Background(background.path(), !background.fadeIn(), background.fadeOut());
-            }
-            if (ImGui.checkbox("Fade out", background.fadeOut())) {
-                background.fadeOut(!background.fadeOut());
-            }
+            background.fadeIn(ImGui.checkbox("Fade in", background.fadeIn()));
+            background.fadeOut(ImGui.checkbox("Fade out", background.fadeOut()));
 
             if (!background.equals(NULL_BACKGROUND) && this.scenario.previewBackground() == null) {
                 this.scenario.previewBackground(background);
@@ -184,53 +173,71 @@ public class ScenarioEditorScreen extends Screen {
         }
 
         ImGui.end();
+    }
 
-        // Timestamps and event.
-        // Still unsure how I should do this.
-//        ImGui.begin("Timestamps and events.");
-//        if (ImGui.collapsingHeader("Preview")) {
-//            if (ImGui.button("Play")) {
-//                if (this.preview != null) {
-//                    this.stopPreviewingPreview();
-//                }
-//
-//                this.preview = new ScenarioPreviewScreen(scenario.build());
-//                this.preview.setEditing(true);
-//            }
-//
-//        }
-//
-//        ImGui.separatorText("Main Scenario");
-//
-//        int index = -1;
-//        List<Timestamp> timestamps = new ArrayList<>();
-//        boolean changed = false;
-//        for (Timestamp timestamp : this.scenario.timestamps()) {
-//            index++
+    // Mostly for testing...
+    private void poorlyMadeTestEditor() {
+        ImGuiUtil.COUNTER = 0;
+        ImGui.begin("Timestamps and events.");
+        if (ImGui.collapsingHeader("Preview")) {
+            if (ImGui.button("Play")) {
+                if (this.preview != null) {
+                    this.stopPreviewingPreview();
+                }
 
-//            if (ImGui.collapsingHeader("Timestamp##" + index)) {
-//                if (ImGui.checkbox("Wait For Dialogue##" + index, timestamp.waitForDialogue())) {
-//                    timestamp = new Timestamp(!timestamp.waitForDialogue(), timestamp.time(), timestamp.events());
-//                    changed = true;
-//                }
-//
-//                final ImInt time = new ImInt((int) timestamp.time());
-//                ImGui.inputInt("Time Till Next", time);
-//                if (time.get() != timestamp.time()) {
-//                    timestamp = new Timestamp(timestamp.waitForDialogue(), time.get(), timestamp.events());
-//                    changed = true;
-//                }
-//            }
-//
-//            timestamps.add(timestamp);
-//        }
-//
-//        if (changed) {
-//            this.scenario.timestamps().clear();
-//            this.scenario.timestamps().addAll(timestamps);
-//        }
-//
-//        ImGui.end();
+                this.preview = new ScenarioPreviewScreen(scenario.build());
+                this.preview.setEditing(true);
+            }
+
+        }
+
+        ImGui.separatorText("Main Scenario");
+
+        int index = -1;
+        List<Timestamp> timestamps = new ArrayList<>();
+        boolean changed = false;
+        for (Timestamp timestamp : this.scenario.timestamps()) {
+            index++;
+
+            if (ImGui.collapsingHeader("Timestamp##" + index)) {
+                if (ImGui.checkbox("Wait For Dialogue##" + index, timestamp.waitForDialogue())) {
+                    timestamp = new Timestamp(!timestamp.waitForDialogue(), timestamp.time(), timestamp.events());
+                    changed = true;
+                }
+
+                final ImInt time = new ImInt((int) timestamp.time());
+                ImGui.inputInt("Time Till Next", time);
+                if (time.get() != timestamp.time()) {
+                    timestamp = new Timestamp(timestamp.waitForDialogue(), time.get(), timestamp.events());
+                    changed = true;
+                }
+
+                ImGui.separator();
+
+                int index1 = -1;
+                for (Event<?> event : timestamp.events()) {
+                    index1++;
+                    if (event instanceof QueueEventEvent queueEventEvent) {
+                        event = queueEventEvent.getQueuedEvent();
+                    }
+
+                    if (ImGui.collapsingHeader("Event (" + event.type() + ")##" + + index + "-" + index1)) {
+                        event.renderImGui();
+                    }
+                }
+
+                ImGui.separator();
+            }
+
+            timestamps.add(timestamp);
+        }
+
+        if (changed) {
+            this.scenario.timestamps().clear();
+            this.scenario.timestamps().addAll(timestamps);
+        }
+
+        ImGui.end();
     }
 
     private void stopPreviewingPreview() {

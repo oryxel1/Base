@@ -1,6 +1,6 @@
 package com.bascenario.render.scenario.others;
 
-import com.bascenario.engine.scenario.elements.Sprite;
+import com.bascenario.engine.scenario.elements.Emoticon;
 import com.bascenario.managers.TextureManager;
 import lombok.Getter;
 import net.lenni0451.commons.animation.DynamicAnimation;
@@ -15,7 +15,7 @@ import org.joml.Matrix4fStack;
 // Please don't look at this class, it's really a mess.
 public class EmoticonRender {
     @Getter
-    private final Sprite.Emoticon emoticon;
+    private final Emoticon emoticon;
 
     // Every emoticon should use this... I think.
     private final DynamicAnimation fadeInAnimation;
@@ -35,7 +35,7 @@ public class EmoticonRender {
     private long lastDotTime = System.currentTimeMillis();
     private int dotCount, flipCount;
 
-    public EmoticonRender(Sprite.Emoticon emoticon) {
+    public EmoticonRender(Emoticon emoticon) {
         this.emoticon = emoticon;
 
         this.fadeInAnimation = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 600L / 3, 0);
@@ -46,7 +46,7 @@ public class EmoticonRender {
         this.sweat2Animation.setTarget(1);
 
         float scale = 0.6F;
-        if (emoticon.type() == Sprite.EmoticonType.ANXIETY) {
+        if (emoticon.type() == Emoticon.EmoticonType.ANXIETY) {
             scale = 0.7F;
         }
 
@@ -263,7 +263,7 @@ public class EmoticonRender {
 
                 positionMatrix.scale(this.globalScale.getValue());
 
-                boolean hesitated = this.emoticon.type() == Sprite.EmoticonType.HESITATED;
+                boolean hesitated = this.emoticon.type() == Emoticon.EmoticonType.HESITATED;
                 final Texture2D bubble = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Balloon_" + (hesitated ? "N.png" : "T.png"));
                 final Texture2D dot = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Idea.png");
 
@@ -319,7 +319,7 @@ public class EmoticonRender {
                     this.flipCount++;
                 }
 
-                boolean shy = this.emoticon.type() == Sprite.EmoticonType.SHY;
+                boolean shy = this.emoticon.type() == Emoticon.EmoticonType.SHY;
 
                 positionMatrix.scale(this.globalScale.getValue());
                 final Texture2D bubble = TextureManager.getInstance().getTexture("/assets/base/uis/emoticons/Emoticon_Balloon_N.png");
@@ -367,25 +367,25 @@ public class EmoticonRender {
 
     private final long time = System.currentTimeMillis();
     public boolean isFinished() {
-        final Sprite.EmoticonType type = this.emoticon.type();
+        final Emoticon.EmoticonType type = this.emoticon.type();
         if (
-                type == Sprite.EmoticonType.EXCLAMATION_MARK || type == Sprite.EmoticonType.ANXIETY ||
-                type == Sprite.EmoticonType.HESITATED || type == Sprite.EmoticonType.THINKING ||
-                type == Sprite.EmoticonType.TWINKLE || type == Sprite.EmoticonType.SURPRISED ||
-                type == Sprite.EmoticonType.RESPOND || type == Sprite.EmoticonType.NOTE
+                type == Emoticon.EmoticonType.EXCLAMATION_MARK || type == Emoticon.EmoticonType.ANXIETY ||
+                type == Emoticon.EmoticonType.HESITATED || type == Emoticon.EmoticonType.THINKING ||
+                type == Emoticon.EmoticonType.TWINKLE || type == Emoticon.EmoticonType.SURPRISED ||
+                type == Emoticon.EmoticonType.RESPOND || type == Emoticon.EmoticonType.NOTE
         ) {
             if (this.globalFadeOut.isRunning()) {
                 return false;
             }
         }
 
-        if (this.emoticon.type() == Sprite.EmoticonType.HESITATED || this.emoticon.type() == Sprite.EmoticonType.THINKING) {
+        if (this.emoticon.type() == Emoticon.EmoticonType.HESITATED || this.emoticon.type() == Emoticon.EmoticonType.THINKING) {
             if (dotCount != 3) {
                 return false;
             }
         }
 
-        if (this.emoticon.type() == Sprite.EmoticonType.SHY || this.emoticon.type() == Sprite.EmoticonType.CHAT) {
+        if (this.emoticon.type() == Emoticon.EmoticonType.SHY || this.emoticon.type() == Emoticon.EmoticonType.CHAT) {
             if (this.flipCount < 4) {
                 return false;
             }

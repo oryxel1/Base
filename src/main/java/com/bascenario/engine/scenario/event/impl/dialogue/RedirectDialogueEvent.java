@@ -2,12 +2,13 @@ package com.bascenario.engine.scenario.event.impl.dialogue;
 
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
 public class RedirectDialogueEvent extends Event<RedirectDialogueEvent> {
-    private final int index;
+    private int index;
     public RedirectDialogueEvent(int index) {
         super(1);
         this.index = index;
@@ -16,6 +17,16 @@ public class RedirectDialogueEvent extends Event<RedirectDialogueEvent> {
     @Override
     public void onStart(ScenarioScreen screen) {
         screen.setDialogueIndex(this.index);
+    }
+
+    @Override
+    public void renderImGui() {
+        this.index = ImGuiUtil.inputInt("Dialogue index", this.index);
+    }
+
+    @Override
+    public RedirectDialogueEvent defaultEvent() {
+        return new RedirectDialogueEvent(0);
     }
 
     @Override

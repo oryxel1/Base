@@ -3,13 +3,14 @@ package com.bascenario.engine.scenario.event.impl.sprite.mini;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
 public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
-    private final long shakeDuration;
-    private final int spriteId;
+    private long shakeDuration;
+    private int spriteId;
     public SpriteShakeEvent(int spriteId, long duration, long shakeDuration) {
         super(duration);
         this.spriteId = spriteId;
@@ -47,6 +48,18 @@ public class SpriteShakeEvent extends Event<SpriteShakeEvent> {
             phase++;
             this.last = System.currentTimeMillis();
         }
+    }
+
+    @Override
+    public void renderImGui() {
+        this.duration = ImGuiUtil.sliderInt("Duration", (int) this.duration, 0, 10000);
+        this.shakeDuration = ImGuiUtil.sliderInt("MS-Per-Shake", (int) this.shakeDuration, 0, 10000);
+        this.spriteId = ImGuiUtil.inputInt("Sprite ID", this.spriteId);
+    }
+
+    @Override
+    public SpriteShakeEvent defaultEvent() {
+        return new SpriteShakeEvent(0, 500L, 60L);
     }
 
     @Override

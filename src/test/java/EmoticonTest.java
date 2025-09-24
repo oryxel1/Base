@@ -32,7 +32,7 @@ public class EmoticonTest {
                 new SpriteAnimationEvent(HOSHINO_SPRITE_ID, "11", 1, true)
         );
 
-        for (Sprite.EmoticonType type : Sprite.EmoticonType.values()) {
+        for (Emoticon.EmoticonType type : Emoticon.EmoticonType.values()) {
             addEmoticon(scenario, type, HINA_SPRITE_ID, HOSHINO_SPRITE_ID);
         }
 
@@ -44,10 +44,10 @@ public class EmoticonTest {
         }
     }
 
-    private static void addEmoticon(final Scenario.Builder scenario, Sprite.EmoticonType type, final int... sprite) {
+    private static void addEmoticon(final Scenario.Builder scenario, Emoticon.EmoticonType type, final int... sprite) {
         scenario.add(type.ordinal() == 0 ? 0 : 1200L,
-                new PlayEmoticonEvent(sprite[0], new Sprite.Emoticon(1200L, 670 + 300, -390, type)),
-                new PlayEmoticonEvent(sprite[1], new Sprite.Emoticon(1200L, 670 + 300, -390, type))
+                new PlayEmoticonEvent(sprite[0], new Emoticon(1200L, 670 + 300, -390, type)),
+                new PlayEmoticonEvent(sprite[1], new Emoticon(1200L, 670 + 300, -390, type))
         );
     }
 }

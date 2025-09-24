@@ -1,18 +1,21 @@
 package com.bascenario.engine.scenario.event.impl;
 
+import com.bascenario.engine.scenario.elements.Emoticon;
 import com.bascenario.managers.AudioManager;
-import com.bascenario.engine.scenario.elements.Sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.others.EmoticonRender;
 import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
+import imgui.ImGui;
+import imgui.type.ImInt;
 
 public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
-    private final int spriteId;
-    private final Sprite.Emoticon emoticon;
-    public PlayEmoticonEvent(int spriteId, Sprite.Emoticon emoticon) {
+    private int spriteId;
+    private final Emoticon emoticon;
+    public PlayEmoticonEvent(int spriteId, Emoticon emoticon) {
         super(0);
         this.spriteId = spriteId;
         this.emoticon = emoticon;
@@ -52,6 +55,27 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
     }
 
     @Override
+    public void renderImGui() {
+        this.spriteId = ImGuiUtil.inputInt("Sprite ID", this.spriteId);
+        ImGui.separatorText("Emoticon");
+
+        ImInt emoticonTypeIndex = new ImInt(emoticon.type().ordinal());
+        ImGui.combo("Emoticon Type", emoticonTypeIndex, Emoticon.EmoticonType.getAlls());
+        if (emoticonTypeIndex.get() != emoticon.type().ordinal()) {
+            emoticon.type(Emoticon.EmoticonType.values()[emoticonTypeIndex.get()]);
+        }
+        emoticon.duration(ImGuiUtil.sliderInt("Duration", 1, 10000, (int) emoticon.duration()));
+        emoticon.offsetX(ImGuiUtil.sliderFloat("Offset X", -1000, 1000, emoticon.offsetX()));
+        emoticon.offsetY(ImGuiUtil.sliderFloat("Offset Y", -1000, 1000, emoticon.offsetY()));
+        emoticon.playSound(ImGuiUtil.checkbox("Play Sound", emoticon.playSound()));
+    }
+
+    @Override
+    public PlayEmoticonEvent defaultEvent() {
+        return new PlayEmoticonEvent(0, new Emoticon(5000, 0, 0, Emoticon.EmoticonType.HEART, true));
+    }
+
+    @Override
     public void serialize(JsonObject serialized) {
         serialized.addProperty("attached-sprite", this.spriteId);
         serialized.add("emoticon", GsonUtil.toJson(this.emoticon));
@@ -59,7 +83,7 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
 
     @Override
     public PlayEmoticonEvent deserialize(JsonObject serialized) {
-        final Sprite.Emoticon emoticon = GsonUtil.getGson().fromJson(serialized.get("emoticon"), Sprite.Emoticon.class);
+        final Emoticon emoticon = GsonUtil.getGson().fromJson(serialized.get("emoticon"), Emoticon.class);
         return new PlayEmoticonEvent(serialized.get("attached-sprite").getAsInt(), emoticon);
     }
 

@@ -3,15 +3,16 @@ package com.bascenario.engine.scenario.event.impl.sprite;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.others.SpriteRender;
 import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 
 public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
-    private final int spriteId;
-    private final boolean fadeOut;
-    private final long fadeDuration;
+    private int spriteId;
+    private boolean fadeOut;
+    private long fadeDuration;
 
     public RemoveSpriteEvent(int spriteId, boolean fadeOut, long fadeDuration) {
         super(fadeDuration > 0 ? fadeDuration + 200L : 0);
@@ -45,6 +46,20 @@ public class RemoveSpriteEvent extends Event<RemoveSpriteEvent> {
         if (this.fadeOut) {
             this.yeetSprite(screen);
         }
+    }
+
+    @Override
+    public void renderImGui() {
+        this.spriteId = ImGuiUtil.inputInt("Sprite ID", this.spriteId);
+        this.fadeOut = ImGuiUtil.checkbox("Fade Out", this.fadeOut);
+        if (this.fadeOut) {
+            this.fadeDuration = ImGuiUtil.sliderInt("Fade Duration", (int) this.fadeDuration, 0, 10000);
+        }
+    }
+
+    @Override
+    public RemoveSpriteEvent defaultEvent() {
+        return new RemoveSpriteEvent(0);
     }
 
     private SpriteRender getRender(final ScenarioScreen screen) {

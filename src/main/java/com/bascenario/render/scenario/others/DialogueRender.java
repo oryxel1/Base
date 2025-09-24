@@ -58,7 +58,7 @@ public class DialogueRender {
             if (this.wordIndex < dialogue.dialogue().length()) {
                 char next = dialogue.dialogue().toCharArray()[this.wordIndex];
                 String predictedAppend = this.builders.get(this.builderIndex).toString() + next;
-                final TextRun testDialogue = TextRun.fromString(FontUtil.getFont("NotoSansRegular", size42), predictedAppend);
+                final TextRun testDialogue = TextRun.fromString(FontUtil.getFont(Dialogue.FontType.getFontName(this.dialogue.fontType()), size42), predictedAppend);
                 if (ThinGL.rendererText().getExactWidth(testDialogue.shape()) >= separatorWidth - 5 || next == '\n') {
                     this.builderIndex++;
                     this.builders.add(new StringBuilder());
@@ -92,7 +92,7 @@ public class DialogueRender {
 
         float y = 0;
         for (final StringBuilder builder : this.builders) {
-            final TextRun dialogue = new TextRun(FontUtil.getFont("NotoSansRegular", size42), new TextSegment(builder.toString(),
+            final TextRun dialogue = new TextRun(FontUtil.getFont(Dialogue.FontType.getFontName(this.dialogue.fontType()), size42), new TextSegment(builder.toString(),
                     Color.WHITE, 0, Color.fromRGB(50, 70, 90)));
 
             ThinGL.rendererText().textRun(positionMatrix, dialogue, separatorX + (0.00520833333F * width), separator + (0.07037037037F * this.dialogue.textScale() * height) + y, RendererText.VerticalOrigin.BOTTOM, RendererText.HorizontalOrigin.LEFT);

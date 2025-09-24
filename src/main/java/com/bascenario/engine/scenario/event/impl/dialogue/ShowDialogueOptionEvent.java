@@ -6,8 +6,10 @@ import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import imgui.ImGui;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ShowDialogueOptionEvent extends Event<ShowDialogueOptionEvent> {
@@ -22,6 +24,18 @@ public class ShowDialogueOptionEvent extends Event<ShowDialogueOptionEvent> {
     @Override
     public void onStart(ScenarioScreen screen) {
         screen.setDialogueOptions(new DialogueOptionsRender(screen, this.options));
+    }
+
+    @Override
+    public void renderImGui() {
+        // TODO: Implement this.
+    }
+
+    @Override
+    public ShowDialogueOptionEvent defaultEvent() {
+        final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        map.put("ABC", 0);
+        return new ShowDialogueOptionEvent(map);
     }
 
     @Override

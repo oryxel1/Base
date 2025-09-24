@@ -3,8 +3,10 @@ package com.bascenario.engine.scenario.event.impl;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.util.GsonUtil;
 import com.google.gson.*;
+import imgui.ImGui;
 import lombok.Getter;
 
+// This event will get handle separately as a value instead of an actual event.
 public class QueueEventEvent extends Event<QueueEventEvent> {
     @Getter
     private final Event<?> queuedEvent;
@@ -13,6 +15,15 @@ public class QueueEventEvent extends Event<QueueEventEvent> {
         this.queuedEvent = event;
     }
 
+    @Override
+    public void renderImGui() {
+    }
+
+    @Override
+    public QueueEventEvent defaultEvent() {
+        return null;
+
+    }
     @Override
     public void serialize(JsonObject serialized) {
         serialized.addProperty("duration", this.duration);

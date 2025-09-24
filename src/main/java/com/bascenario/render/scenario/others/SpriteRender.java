@@ -74,7 +74,9 @@ public class SpriteRender {
         this.state = new AnimationState(new AnimationStateData(skeletonData));
 
         // This normally should be the idle animation
-        this.state.addAnimation(0, this.sprite.defaultAnimation(), true, 0);
+        if (this.skeleton.getData().findAnimation(this.sprite.defaultAnimation()) != null) {
+            this.state.addAnimation(0, this.sprite.defaultAnimation(), true, 0);
+        }
         this.init = true;
     }
 
@@ -121,15 +123,14 @@ public class SpriteRender {
         this.renderer.draw(this.batch, this.skeleton);
         this.batch.end();
 
-        // Now we can render!
-        if (this.fadeColor.isRunning()) {
-            this.fadeBatch.getProjectionMatrix().set(camera.combined);
+        // Fade----
+        this.fadeBatch.getProjectionMatrix().set(camera.combined);
 
-            this.fadeBatch.begin();
-            this.skeletonFade.setColor(new Color(0, 0, 0, this.fadeColor.getValue()));
-            this.renderer.draw(this.fadeBatch, this.skeletonFade);
-            this.fadeBatch.end();
-        }
+        this.fadeBatch.begin();
+        this.skeletonFade.setColor(new Color(0, 0, 0, this.fadeColor.getValue()));
+        this.renderer.draw(this.fadeBatch, this.skeletonFade);
+        this.fadeBatch.end();
+        // ------
 
         final Matrix4fStack positionMatrix = new Matrix4fStack(8);
         this.emoticons.forEach(emoticon -> RenderUtil.render(() -> emoticon.render(positionMatrix, this, posX, -posY)));
@@ -138,6 +139,9 @@ public class SpriteRender {
     }
 
     public void playAnimation(int layer, String name, boolean loop) {
+        if (this.skeleton.getData().findAnimation(name) == null) {
+            return;
+        }
         this.state.setAnimation(layer, name, loop);
     }
 

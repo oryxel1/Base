@@ -4,6 +4,7 @@ import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.util.GsonUtil;
+import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
@@ -18,6 +19,17 @@ public class SetPopupEvent extends Event<SetPopupEvent> {
     @Override
     public void onStart(ScenarioScreen screen) {
         screen.setPopupImage(this.popupImage);
+    }
+
+    @Override
+    public void renderImGui() {
+        this.popupImage.path(ImGuiUtil.inputText("Popup Image", this.popupImage.path()));
+        this.popupImage.duration(ImGuiUtil.sliderInt("Duration", (int) this.popupImage.duration(), 1, 10000));
+    }
+
+    @Override
+    public SetPopupEvent defaultEvent() {
+        return new SetPopupEvent(new PopupImage("", 1000L));
     }
 
     @Override

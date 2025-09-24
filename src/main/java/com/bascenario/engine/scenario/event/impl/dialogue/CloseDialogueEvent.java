@@ -17,6 +17,15 @@ public class CloseDialogueEvent extends Event<CloseDialogueEvent> {
     }
 
     @Override
+    public void renderImGui() {
+    }
+
+    @Override
+    public CloseDialogueEvent defaultEvent() {
+        return new CloseDialogueEvent();
+    }
+
+    @Override
     public CloseDialogueEvent deserialize(JsonObject serialized) {
         return new CloseDialogueEvent();
     }

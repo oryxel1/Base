@@ -53,14 +53,14 @@ public class ScenarioRenderTest {
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "12", 1, true),
                 new SpriteLocationEvent(0, HINA_SPRITE_ID, 100, 50),
                 new SpriteLocationEvent(HINA_SPRITE_ID, 1000L, 20, 50),
-                new QueueEventEvent(800L, new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(
-                        2200L, 800 + 300,-390, Sprite.EmoticonType.SWEAT)))
+                new QueueEventEvent(800L, new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(
+                        2200L, 800 + 300,-390, Emoticon.EmoticonType.SWEAT)))
         );
         scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"Hina!\"", 0)));
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "11", 1, true),
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(800, 800 + 300, -390, Emoticon.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -77,7 +77,7 @@ public class ScenarioRenderTest {
         );
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "14", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2200L, 800 + 300,-390, Sprite.EmoticonType.SWEAT)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2200L, 800 + 300,-390, Emoticon.EmoticonType.SWEAT)),
                 new SpriteShakeEvent(HINA_SPRITE_ID, 500L, 60L),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -96,7 +96,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "04", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(1400L, 670 + 300,-390, Sprite.EmoticonType.ANXIETY)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(1400L, 670 + 300,-390, Emoticon.EmoticonType.ANXIETY)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -115,7 +115,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "18", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.HESITATED)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -136,7 +136,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1,
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 60),
                 new QueueEventEvent(300L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50)),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.SHY)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.SHY)),
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "17", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -157,7 +157,7 @@ public class ScenarioRenderTest {
                 new SpriteScaleEvent(HINA_SPRITE_ID, 0, 1.32F),
                 new SpriteLocationEvent(HINA_SPRITE_ID, 0, 0, 80),
                 new SpriteShakeEvent(HINA_SPRITE_ID, 500L, 60L),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(800, 700, -700, Sprite.EmoticonType.SURPRISED)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(800, 700, -700, Emoticon.EmoticonType.SURPRISED)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -188,7 +188,7 @@ public class ScenarioRenderTest {
                 new QueueEventEvent(100L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 40)),
                 new QueueEventEvent(300L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50)),
                 new SpriteScaleEvent(HINA_SPRITE_ID, 0, 1),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(800, 800 + 300, -390, Emoticon.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -200,7 +200,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "18", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2200L, 800 + 300,-390, Sprite.EmoticonType.SWEAT)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2200L, 800 + 300,-390, Emoticon.EmoticonType.SWEAT)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -265,7 +265,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1,
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 60),
                 new QueueEventEvent(300L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50)),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.ANXIETY)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.ANXIETY)),
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "14", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -284,7 +284,7 @@ public class ScenarioRenderTest {
         );
 
         scenario.add(true, 1,
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.HESITATED)),
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "12", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -304,7 +304,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteShakeEvent(HINA_SPRITE_ID, 500L, 60L),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.SHY)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.SHY)),
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "19", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -317,7 +317,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "11", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2200L, 800 + 300,-390, Sprite.EmoticonType.SURPRISED)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2200L, 800 + 300,-390, Emoticon.EmoticonType.SURPRISED)),
                 new SpriteShakeEvent(HINA_SPRITE_ID, 500L, 60L),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -331,7 +331,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1,
                 new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 40),
                 new QueueEventEvent(300L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50)),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.EXCLAMATION_MARK)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(800, 800 + 300, -390, Emoticon.EmoticonType.EXCLAMATION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -379,7 +379,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "14", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.SHY)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.SHY)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
@@ -390,7 +390,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"No, thank YOU, Hina!\"", 0)));
 
         scenario.add(true, 1,
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(2000L, 670 + 300,-400, Sprite.EmoticonType.HESITATED)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(2000L, 670 + 300,-400, Emoticon.EmoticonType.HESITATED)),
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "16", 1, true),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
@@ -403,7 +403,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "14", 1, true),
-                new PlayEmoticonEvent(HINA_SPRITE_ID, new Sprite.Emoticon(800, 800 + 300, -390, Sprite.EmoticonType.QUESTION_MARK)),
+                new PlayEmoticonEvent(HINA_SPRITE_ID, new Emoticon(800, 800 + 300, -390, Emoticon.EmoticonType.QUESTION_MARK)),
                 new PlayDialogueEvent(Dialogue.builder()
                         .name("Hina").association("Prefect Team")
                         .textScale(1).playSpeed(1)
