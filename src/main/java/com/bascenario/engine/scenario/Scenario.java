@@ -86,7 +86,7 @@ public class Scenario {
         }
 
         public Builder add(boolean waitForDialogue, long time, Event<?>... events) {
-            this.timestamps.add(new Timestamp(waitForDialogue, time, List.of(events)));
+            this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(List.of(events))));
             return this;
         }
 

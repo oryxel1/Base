@@ -5,12 +5,13 @@ import com.google.gson.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.joml.Matrix4fStack;
 
 @AllArgsConstructor
 public abstract class Event<T>  {
-    @Getter
+    @Getter @Setter
     protected long duration;
 
     public void onStart(ScenarioScreen screen) {}
