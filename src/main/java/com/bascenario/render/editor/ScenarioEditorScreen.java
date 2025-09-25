@@ -114,7 +114,7 @@ public class ScenarioEditorScreen extends Screen {
 
             ImGui.text("Sound Path: " + sound.path());
             ImGui.sameLine();
-            if (ImGui.button("Browse")) {
+            if (ImGui.button("Browse##" + ImGuiUtil.COUNTER++)) {
                 final String path = FileUtil.pickFile("mp3", "wav", "ogg");
                 if (!path.isBlank()) {
                     sound.path(path);
@@ -153,7 +153,7 @@ public class ScenarioEditorScreen extends Screen {
 
             ImGui.text("Background path: " + background.path());
             ImGui.sameLine();
-            if (ImGui.button("Browse")) {
+            if (ImGui.button("Browse##" + ImGuiUtil.COUNTER++)) {
                 final String path = FileUtil.pickFile("jpg", "png");
                 if (!path.isBlank()) {
                     background.path(path);

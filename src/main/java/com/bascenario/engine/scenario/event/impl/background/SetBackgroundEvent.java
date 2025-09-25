@@ -25,15 +25,15 @@ public class SetBackgroundEvent extends Event<SetBackgroundEvent> {
     public void renderImGui() {
         ImGui.text("Background path: " + this.background.path());
         ImGui.sameLine();
-        if (ImGui.button("Browse")) {
+        if (ImGui.button("Browse##" + ImGuiUtil.COUNTER++)) {
             final String path = FileUtil.pickFile("jpg", "png");
             if (!path.isBlank()) {
                 this.background.path(path);
             }
         }
 
-        this.background.fadeIn(ImGuiUtil.checkbox("Fade in", this.background.fadeIn()));
-        this.background.fadeOut(ImGuiUtil.checkbox("Fade out", this.background.fadeOut()));
+        this.background.fadeIn(ImGuiUtil.checkbox("Fade In", this.background.fadeIn()));
+        this.background.fadeOut(ImGuiUtil.checkbox("Fade Out", this.background.fadeOut()));
     }
 
     @Override

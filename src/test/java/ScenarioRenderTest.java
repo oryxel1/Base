@@ -18,11 +18,11 @@ import java.util.Map;
 public class ScenarioRenderTest {
     public static void main(String[] args) {
         Background background = new Background(
-                "C:\\Users\\PC\\Downloads\\global\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
+                "C:\\Users\\Computer\\BAAS\\Global Assets\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\01_Background\\BG_GehennaCampus_Night.jpg",
                 false, false);
 
         final int SOUND_1_ID = 0;
-        final Sound sound = new Sound("C:\\Users\\PC\\Downloads\\Track_15_Mitsukiyo_Honey_Jam.ogg", 0.5F, 100L, SOUND_1_ID);
+        final Sound sound = new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\Track_15_Mitsukiyo_Honey_Jam.ogg", 0.5F, 100L, SOUND_1_ID);
         Scenario.Builder scenario = Scenario.builder()
                 .name("Hesitant Yet Eager to Share").previewBackground(background).previewSound(sound);
 
@@ -36,10 +36,10 @@ public class ScenarioRenderTest {
         );
         scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"She said to meet somewhere around here...\"", 0)));
         scenario.add(true, 1, new PlaySoundEvent(
-                new Sound("C:\\Users\\PC\\Downloads\\SE_FootStep_02.wav", 1, -1, 1), false
+                new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\SE_FootStep_02.wav", 1, -1, 1), false
         ));
 
-        final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
+        final Sprite hinaSprite = new Sprite("C:\\Users\\Computer\\BAAS\\OldSpine-3.8\\Spine_Characters\\hina_spr\\hina_spr.skel", "C:\\Users\\Computer\\BAAS\\OldSpine-3.8\\Spine_Characters\\hina_spr\\hina_spr.atlas", "Idle_01", true);
         final int HINA_SPRITE_ID = 0;
 
         scenario.add(2000L,
@@ -148,7 +148,7 @@ public class ScenarioRenderTest {
         scenario.add(true, 1, new ShowDialogueOptionEvent(Map.of("\"Sure, but if you don't want us to be seen, does that mean...\"", 0)));
 
         scenario.add(true, 1,
-                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_FootStep_02.wav", 1,-1, 1), false),
+                new PlaySoundEvent(new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\SE_FootStep_02.wav", 1,-1, 1), false),
                 new StopSoundEvent(SOUND_1_ID, 1000L)
         );
 
@@ -220,7 +220,7 @@ public class ScenarioRenderTest {
 
         scenario.add(true, 1,
                 new SpriteAnimationEvent(HINA_SPRITE_ID, "20", 1, false),
-                new PlaySoundEvent(new Sound("C:\\Users\\PC\\Documents\\BAScenarioEngine\\src\\main\\resources\\assets\\base\\sounds\\SFX_Emoticon_Motion_Surprise.wav", 1,-1, 1), false),
+                new PlaySoundEvent(new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\SFX_Emoticon_Motion_Surprise.wav", 1,-1, 1), false),
                 new QueueEventEvent(100L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 60)),
                 new QueueEventEvent(300L, new SpriteLocationEvent(HINA_SPRITE_ID, 300L, 0, 50)),
                 new PlayDialogueEvent(Dialogue.builder()
@@ -233,14 +233,14 @@ public class ScenarioRenderTest {
         scenario.add(true, 1,
                 new SpriteFadeEvent(HINA_SPRITE_ID, 300L, 1),
                 new QueueEventEvent(300L, new SpriteScaleEvent(HINA_SPRITE_ID, 0, 0)),
-                new QueueEventEvent(300L, new PlaySoundEvent(new Sound("C:\\Users\\PC\\Downloads\\SE_Gear_02.wav", 1,-1, 1), false)),
+                new QueueEventEvent(300L, new PlaySoundEvent(new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\SE_Gear_02.wav", 1,-1, 1), false)),
                 new QueueEventEvent(400, new SetPopupEvent(new PopupImage(
-                        "C:\\Users\\PC\\Downloads\\output\\MediaResources\\GameData\\UIs\\03_Scenario\\04_ScenarioImage\\Event01_Hina.PNG", 3000L)))
+                        "C:\\Users\\Computer\\BAAS\\Global Assets\\MediaResources\\GameData\\MediaResources\\UIs\\03_Scenario\\04_ScenarioImage\\Event01_Hina.PNG", 3000L)))
         );
 
         scenario.add(3500L, new ShowDialogueOptionEvent(Map.of("\"Is this what I think it is?\"", 0)));
 
-        final Sound sound1 = new Sound("C:\\Users\\PC\\Downloads\\Track_46_Nor_Sugar_story.ogg", 0.5F, 100L, 2);
+        final Sound sound1 = new Sound("C:\\Users\\Computer\\BAAS\\Named Sound Tracks\\Track_46_Nor_Sugar_story.ogg", 0.5F, 100L, 2);
         scenario.add(true, 1,
                 new PlaySoundEvent(sound1, true),
                 new SpriteScaleEvent(HINA_SPRITE_ID, 0, 1),

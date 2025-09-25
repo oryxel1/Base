@@ -17,8 +17,10 @@ import com.bascenario.engine.scenario.event.impl.sound.StopSoundEvent;
 import com.bascenario.engine.scenario.event.impl.sprite.*;
 import com.bascenario.engine.scenario.event.impl.sprite.mini.SpriteShakeEvent;
 import com.google.gson.*;
+import lombok.Getter;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,9 @@ public class EventSerializer implements JsonSerializer<Event<?>>, JsonDeserializ
     private static final Sound DUMMY_SOUND = new Sound("dummy", 0, 0, Integer.MIN_VALUE);
 
     private static final Map<Class<?>, Event<?>> CLASS_TO_DUMMY = new HashMap<>();
+    public static Map<Class<?>, Event<?>> getEventClassesToDummies() {
+        return Collections.unmodifiableMap(CLASS_TO_DUMMY);
+    }
     private static final Map<String, Event<?>> TYPE_TO_DUMMY = new HashMap<>();
 
     static {

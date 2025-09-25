@@ -19,7 +19,7 @@ public class EmoticonTest2 {
         Scenario.Builder scenario = Scenario.builder()
                 .name("Emoticon Test").previewBackground(background);
 
-        final Sprite hinaSprite = new Sprite("C:\\Users\\PC\\Downloads\\hina_spr.skel", "C:\\Users\\PC\\Downloads\\hina_spr.atlas", "Idle_01", true);
+        final Sprite hinaSprite = new Sprite("C:\\Users\\Computer\\BAAS\\OldSpine-3.8\\Spine_Characters\\hina_spr\\hina_spr.skel", "C:\\Users\\Computer\\BAAS\\OldSpine-3.8\\Spine_Characters\\hina_spr\\hina_spr.atlas", "Idle_01", true);
         scenario.add(0,
                 new SetBackgroundEvent(background),
                 new AddSpriteEvent(hinaSprite, 0),

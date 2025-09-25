@@ -64,6 +64,9 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:1.13.1"
     implementation "com.badlogicgames.gdx:gdx-box2d:1.13.1"
     implementation "com.badlogicgames.gdx:gdx-platform:1.13.1:natives-desktop"
+
+    // Why I'm I still using an old spine version? Some new sprite sometimes works and sometimes break for whatever reason but I think that
+    // might be due to my asset extractor tool, oh well, I already test on new version so it's really easy to update whenever I want anyway so.
     implementation "com.esotericsoftware.spine:spine-libgdx:3.8.99.1"
     
     implementation "io.github.spair:imgui-java-binding:1.89.0"

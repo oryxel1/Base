@@ -56,7 +56,7 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
 
     @Override
     public void renderImGui() {
-        this.spriteId = ImGuiUtil.inputInt("Sprite ID", this.spriteId);
+        this.spriteId = ImGuiUtil.inputInt("Sprite ID##" + ImGuiUtil.COUNTER++, this.spriteId);
         ImGui.separatorText("Emoticon");
 
         ImInt emoticonTypeIndex = new ImInt(emoticon.type().ordinal());
@@ -64,9 +64,9 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
         if (emoticonTypeIndex.get() != emoticon.type().ordinal()) {
             emoticon.type(Emoticon.EmoticonType.values()[emoticonTypeIndex.get()]);
         }
-        emoticon.duration(ImGuiUtil.sliderInt("Duration", 1, 10000, (int) emoticon.duration()));
-        emoticon.offsetX(ImGuiUtil.sliderFloat("Offset X", -1000, 1000, emoticon.offsetX()));
-        emoticon.offsetY(ImGuiUtil.sliderFloat("Offset Y", -1000, 1000, emoticon.offsetY()));
+        emoticon.duration(ImGuiUtil.sliderInt("Duration", (int) emoticon.duration(), 1, 10000));
+        emoticon.offsetX(ImGuiUtil.sliderFloat("Offset X", emoticon.offsetX(), -1000, 1000));
+        emoticon.offsetY(ImGuiUtil.sliderFloat("Offset Y", emoticon.offsetY(), -1000, 1000));
         emoticon.playSound(ImGuiUtil.checkbox("Play Sound", emoticon.playSound()));
     }
 

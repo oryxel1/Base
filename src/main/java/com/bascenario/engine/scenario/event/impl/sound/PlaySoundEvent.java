@@ -33,7 +33,7 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
     public void renderImGui() {
         ImGui.text("Sound Path: " + sound.path());
         ImGui.sameLine();
-        if (ImGui.button("Browse")) {
+        if (ImGui.button("Browse##" + ImGuiUtil.COUNTER++)) {
             final String path = FileUtil.pickFile("mp3", "wav", "ogg");
             if (!path.isBlank()) {
                 sound.path(path);

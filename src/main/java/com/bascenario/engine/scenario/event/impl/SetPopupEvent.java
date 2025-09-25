@@ -3,9 +3,11 @@ package com.bascenario.engine.scenario.event.impl;
 import com.bascenario.engine.scenario.elements.PopupImage;
 import com.bascenario.engine.scenario.event.api.Event;
 import com.bascenario.render.scenario.ScenarioScreen;
+import com.bascenario.util.FileUtil;
 import com.bascenario.util.GsonUtil;
 import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
+import imgui.ImGui;
 
 import java.lang.reflect.Type;
 
@@ -23,6 +25,15 @@ public class SetPopupEvent extends Event<SetPopupEvent> {
 
     @Override
     public void renderImGui() {
+        ImGui.text("Popup Image: " + this.popupImage.path());
+        ImGui.sameLine();
+        if (ImGui.button("Browse##" + ImGuiUtil.COUNTER++)) {
+            final String path = FileUtil.pickFile("jpg", "png");
+            if (!path.isBlank()) {
+                this.popupImage.path(path);
+            }
+        }
+        
         this.popupImage.path(ImGuiUtil.inputText("Popup Image", this.popupImage.path()));
         this.popupImage.duration(ImGuiUtil.sliderInt("Duration", (int) this.popupImage.duration(), 1, 10000));
     }
