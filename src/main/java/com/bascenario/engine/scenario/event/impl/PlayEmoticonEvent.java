@@ -60,7 +60,7 @@ public class PlayEmoticonEvent extends Event<PlayEmoticonEvent> {
         ImGui.separatorText("Emoticon");
 
         ImInt emoticonTypeIndex = new ImInt(emoticon.type().ordinal());
-        ImGui.combo("Emoticon Type", emoticonTypeIndex, Emoticon.EmoticonType.getAlls());
+        ImGui.combo("Emoticon Type##" + ImGuiUtil.COUNTER++, emoticonTypeIndex, Emoticon.EmoticonType.getAlls());
         if (emoticonTypeIndex.get() != emoticon.type().ordinal()) {
             emoticon.type(Emoticon.EmoticonType.values()[emoticonTypeIndex.get()]);
         }

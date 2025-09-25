@@ -40,7 +40,7 @@ public class PlayDialogueEvent extends Event<PlayDialogueEvent> {
 
         int index = this.dialogue.fontType() == null ? 0 : this.dialogue.fontType().ordinal();
         ImInt fontTypeIndex = new ImInt(index);
-        ImGui.combo("Font Type", fontTypeIndex, new String[] {"Regular", "Semi Bold", "Bold"});
+        ImGui.combo("Font Type##" + ImGuiUtil.COUNTER++, fontTypeIndex, new String[] {"Regular", "Semi Bold", "Bold"});
         if (fontTypeIndex.get() != index) {
             this.dialogue.fontType(Dialogue.FontType.values()[fontTypeIndex.get()]);
         }
