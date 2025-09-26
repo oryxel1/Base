@@ -9,6 +9,7 @@ import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,9 +39,12 @@ public class AudioManager {
         return soundId;
     }
 
-    @SneakyThrows
     public void play(int id, String path, boolean loop, float maxVolume, boolean internal) {
         final Music music = Gdx.audio.newMusic(internal ? Gdx.files.internal(path) : new FileHandle(path));
+        if (internal && new File(path).exists()) {
+            return;
+        }
+
         music.play();
         music.setVolume(Math.abs(maxVolume));
         music.setLooping(loop);
@@ -50,6 +54,10 @@ public class AudioManager {
 
     public void playFadeIn(int id, String path, long fadeDuration, boolean loop, float maxVolume, boolean internal) {
         final Music music = Gdx.audio.newMusic(internal ? Gdx.files.internal(path) : new FileHandle(path));
+        if (internal && new File(path).exists()) {
+            return;
+        }
+
         music.play();
         music.setVolume(0);
         music.setLooping(loop);

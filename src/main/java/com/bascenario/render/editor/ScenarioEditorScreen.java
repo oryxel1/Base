@@ -76,6 +76,26 @@ public class ScenarioEditorScreen extends Screen {
                 renderEvent = event;
             }
 
+            if (ImGui.button("Up##" + ImGuiUtil.COUNTER++)) {
+                if (i == 0) {
+                    // TODO: Implement this plz, too lazy!
+                } else {
+                    timestamp.events().set(i, timestamp.events().get(i - 1));
+                    timestamp.events().set(i - 1, event);
+                    break; // This will flash the screen, but easiest way to handle this.
+                }
+            }
+            ImGui.sameLine();
+            if (ImGui.button("Down##" + ImGuiUtil.COUNTER++)) {
+                if (i == timestamp.events().size() - 1) {
+                    // TODO: Implement this plz, too lazy!
+                } else {
+                    timestamp.events().set(i, timestamp.events().get(i + 1));
+                    timestamp.events().set(i + 1, event);
+                    break; // This will flash the screen, but easiest way to handle this.
+                }
+            }
+            ImGui.sameLine();
             if (ImGui.collapsingHeader("Event (" + renderEvent.type() + ")##" + ImGuiUtil.COUNTER++)) {
                 queueTime = ImGuiUtil.sliderInt("Queue Time", (int) queueTime, 0, 10000);
                 ImGui.separator();

@@ -9,8 +9,6 @@ import com.bascenario.util.render.ImGuiUtil;
 import com.google.gson.*;
 import imgui.ImGui;
 
-import java.lang.reflect.Type;
-
 public class SetPopupEvent extends Event<SetPopupEvent> {
     private final PopupImage popupImage;
     public SetPopupEvent(PopupImage popupImage) {
