@@ -91,6 +91,8 @@ public class SpriteRender {
 
             if (this.sprite.fadeIn()) {
                 this.fadeColor.setTarget(0);
+            } else {
+                this.fadeColor = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 300L, 0);
             }
         }
 
