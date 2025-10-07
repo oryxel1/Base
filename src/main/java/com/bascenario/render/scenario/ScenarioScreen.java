@@ -196,6 +196,8 @@ public class ScenarioScreen extends Screen {
 
             this.isDialogueBusy = false;
         }
+
+        this.sinceDialogue = this.sincePoll = Long.MAX_VALUE;
     }
 
     @Override
