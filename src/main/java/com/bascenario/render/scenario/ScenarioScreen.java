@@ -160,6 +160,19 @@ public class ScenarioScreen extends Screen {
                     this.popupImage = null;
                 }
             }
+
+            // Non-functioning button here just for looks, too fucking lazy.
+            float extraButtonWidth = (187 / 1920F) * window.getFramebufferWidth(), extraButtonHeight = (70 / 1080F) * window.getFramebufferHeight();
+            float posX = window.getFramebufferWidth() - (0.10833333333f * window.getFramebufferWidth());
+            final float posY = (26 / 1080F) * window.getFramebufferHeight();
+            ThinGL.renderer2D().texture(positionMatrix,
+                    TextureManager.getInstance().getTexture("/assets/base/uis/buttons/menu.png"),
+                    posX, posY, extraButtonWidth, extraButtonHeight);
+
+            posX -= (191 / 1920F) * window.getFramebufferWidth();
+            ThinGL.renderer2D().texture(positionMatrix,
+                    TextureManager.getInstance().getTexture("/assets/base/uis/buttons/auto.png"),
+                    posX, posY, extraButtonWidth, extraButtonHeight);
         });
     }
 
