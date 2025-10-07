@@ -184,6 +184,10 @@ public class ScenarioScreen extends Screen {
 
         final WindowInterface window = ThinGL.windowInterface();
 
+        if (this.debugMode) {
+            this.sinceDialogue = this.sincePoll = Long.MAX_VALUE;
+        }
+
         if (this.dialogueOptions != null) {
             this.dialogueOptions.mouseClicked(window, mouseX, mouseY, button);
             return;
@@ -196,8 +200,6 @@ public class ScenarioScreen extends Screen {
 
             this.isDialogueBusy = false;
         }
-
-        this.sinceDialogue = this.sincePoll = Long.MAX_VALUE;
     }
 
     @Override
