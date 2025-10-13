@@ -77,7 +77,7 @@ public class DialogueRender {
         this.canSkip = this.wordIndex - dialogue.dialogue().length() >= -5;
 
         if (!this.dialogue.cutscene()) {
-            int r = 36, g = 43, b = 57;
+            int r = 13, g = 31, b = 45;
             ThinGL.renderer2D().filledRectangle(positionMatrix, 0, height - noGradientPart, width, height, Color.fromRGBA(r, g, b, 220));
 
             for (int i = 1; i < theRestPart; i++) {

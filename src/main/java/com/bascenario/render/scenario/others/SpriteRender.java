@@ -114,7 +114,7 @@ public class SpriteRender {
         this.skeleton.update(delta);
         this.skeleton.updateWorldTransform();
 
-        this.skeletonFade.setScale(scale, scale);
+        this.skeletonFade.setScale(scale * 1.01F, scale  * 1.01F);
         this.skeletonFade.update(delta);
         this.skeletonFade.updateWorldTransform();
 
