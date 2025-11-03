@@ -1,5 +1,6 @@
 package com.bascenario.render.scenario.others;
 
+import com.bascenario.managers.AudioManager;
 import com.bascenario.render.scenario.ScenarioScreen;
 import com.bascenario.managers.TextureManager;
 import com.bascenario.util.MathUtil;
@@ -148,6 +149,7 @@ public class DialogueOptionsRender {
                 this.clicked = text;
                 this.scaleAnimation.setTarget(0.9F);
                 this.screen.setDialogueIndex(this.dialogueOptions.get(text));
+                AudioManager.getInstance().play("assets/base/sounds/click-sound.mp3", false, 1, true);
                 break;
             }
 
