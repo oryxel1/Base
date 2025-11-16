@@ -7,14 +7,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.ThinGL;
 import org.joml.Matrix4fStack;
-import oxy.bascenario.renderer.config.RendererConfig;
 import oxy.bascenario.renderer.util.SimpleWindowInterface;
 import oxy.bascenario.renderer.util.ThinGLUtil;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
-    private final RendererConfig config;
-
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();

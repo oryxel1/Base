@@ -20,7 +20,7 @@ public final class Scenario {
     private final Optional<Sound> previewSound;
     private final Optional<Image> previewBackground;
 
-    private final List<String> requiredDownloads = new ArrayList<>();
+    private final List<String> downloads = new ArrayList<>();
     private final List<Timestamp> timestamps = new ArrayList<>();
 
     public static Builder builder() {
@@ -42,7 +42,7 @@ public final class Scenario {
         private Optional<Image> previewBackground;
         private Optional<Sound> previewSound;
         private final List<Timestamp> timestamps = new ArrayList<>();
-        private final List<String> requiredDownloads = new ArrayList<>();
+        private final List<String> downloads = new ArrayList<>();
 
         public Builder name(String name) {
             this.name = name;
@@ -87,7 +87,7 @@ public final class Scenario {
 
         public Builder add(boolean waitForDialogue, long time, Event<?>... events) {
             final List<Event<?>> eventsAsList = List.of(events);
-            eventsAsList.forEach(event -> this.requiredDownloads.addAll(event.downloads()));
+            eventsAsList.forEach(event -> this.downloads.addAll(event.downloads()));
 
             this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(eventsAsList)));
             return this;
@@ -102,14 +102,14 @@ public final class Scenario {
             scenario.timestamps.addAll(this.timestamps);
 
             if (this.previewBackground.isPresent() && this.previewBackground.get().file().url().isPresent()) {
-                scenario.requiredDownloads.add(this.previewBackground.get().file().url().get());
+                scenario.downloads.add(this.previewBackground.get().file().url().get());
             }
 
             if (this.previewSound.isPresent() && this.previewSound.get().file().url().isPresent()) {
-                scenario.requiredDownloads.add(this.previewSound.get().file().url().get());
+                scenario.downloads.add(this.previewSound.get().file().url().get());
             }
 
-            scenario.requiredDownloads.addAll(this.requiredDownloads);
+            scenario.downloads.addAll(this.downloads);
             return scenario;
         }
     }
