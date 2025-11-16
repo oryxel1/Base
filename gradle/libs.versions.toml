@@ -1,0 +1,31 @@
+[versions]
+lombok = "1.18.38"
+gson = "2.13.1"
+lwjgl = "3.3.6"
+lwjgl-sdl = "3.4.0-SNAPSHOT"
+libgdx = "1.13.1"
+spine = "4.2.5"
+thingl = "0.0.11-SNAPSHOT"
+
+[libraries]
+projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
+lwjgl-stb = { module = "org.lwjgl:lwjgl-stb", version.ref = "lwjgl" }
+lwjgl-glfw = { module = "org.lwjgl:lwjgl-glfw", version.ref = "lwjgl" }
+lwjgl-sdl = { module = "org.lwjgl:lwjgl-sdl", version.ref = "lwjgl-sdl" }
+lwjgl-freetype = { module = "org.lwjgl:lwjgl-freetype", version.ref = "lwjgl" }
+lwjgl-harfbuzz = { module = "org.lwjgl:lwjgl-harfbuzz", version.ref = "lwjgl" }
+lwjgl-meshoptimizer = { module = "org.lwjgl:lwjgl-meshoptimizer", version.ref = "lwjgl" }
+lwjgl-par = { module = "org.lwjgl:lwjgl-par", version.ref = "lwjgl" }
+lwjgl-nfd = { module = "org.lwjgl:lwjgl-nfd", version.ref = "lwjgl" }
+
+gdx-base = { module = "com.badlogicgames.gdx:gdx", version.ref = "libgdx" }
+gdx-backend = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "libgdx" }
+gdx-box2d = { module = "com.badlogicgames.gdx:gdx-box2d", version.ref = "libgdx" }
+
+gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = "spine" }
+
+raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
