@@ -1,7 +1,7 @@
 package oxy.bascenario.serializers;
 
 import com.google.gson.*;
-import oxy.bascenario.engine.base.Fade;
+import oxy.bascenario.api.effects.Fade;
 
 import java.lang.reflect.Type;
 

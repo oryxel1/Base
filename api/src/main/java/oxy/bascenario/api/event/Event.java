@@ -1,6 +1,5 @@
 package oxy.bascenario.api.event;
 
-import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,17 +11,11 @@ public abstract class Event<T>  {
     @Getter
     @Setter
     protected long duration;
-
-//    public void onStart(ScenarioScreen screen) {}
-//    public void onEnd(ScenarioScreen screen) {}
-//    public void render(ScenarioScreen screen, long time, Matrix4fStack positionMatrix, WindowInterface window) {}
-
-    public abstract void configurationRender();
-    public abstract T defaultEvent();
-
-    public abstract List<String> downloads();
-
-    public abstract void serialize(JsonObject serialized);
-    public abstract T deserialize(JsonObject serialized);
     public abstract String type();
+
+    public List<String> downloads() {
+        return List.of();
+    }
+
+    public abstract T empty();
 }

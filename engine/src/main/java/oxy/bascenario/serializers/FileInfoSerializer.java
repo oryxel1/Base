@@ -1,7 +1,7 @@
 package oxy.bascenario.serializers;
 
 import com.google.gson.*;
-import oxy.bascenario.engine.base.FileInfo;
+import oxy.bascenario.api.utils.FileInfo;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
