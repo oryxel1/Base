@@ -1,2 +1,2 @@
 rootProject.name = "BAScenarioEngine"
-include("api", "engine")
+include("api", "core")
