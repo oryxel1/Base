@@ -9,11 +9,8 @@ var libGdx = "1.13.1"
 dependencies {
     implementation(project(":api"))
 
-    annotationProcessor(libs.projectlombok.lombok)
-    implementation(libs.projectlombok.lombok)
-    implementation(libs.google.gson)
-
     implementation(libs.raphimc.thingl)
+    implementation(libs.lenni.commons.animations)
 
     implementation(libs.lwjgl.base)
     implementation(libs.lwjgl.opengl)

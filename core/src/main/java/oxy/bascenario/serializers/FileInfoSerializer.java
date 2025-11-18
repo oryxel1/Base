@@ -15,7 +15,7 @@ public class FileInfoSerializer implements JsonSerializer<FileInfo>, JsonDeseria
         if (serialized.get("download-present").getAsBoolean()) {
             url = Optional.of(serialized.get("download-url").getAsString());
         }
-        return new FileInfo(path, url);
+        return new FileInfo(path, url, serialized.get("internal").getAsBoolean());
     }
 
     @Override
@@ -26,6 +26,7 @@ public class FileInfoSerializer implements JsonSerializer<FileInfo>, JsonDeseria
         if (fileInfo.url().isPresent()) {
             serialized.addProperty("download-url", fileInfo.url().get());
         }
+        serialized.addProperty("internal", fileInfo.internal());
         return serialized;
     }
 }

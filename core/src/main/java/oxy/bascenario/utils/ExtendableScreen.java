@@ -1,4 +1,4 @@
-package oxy.bascenario.renderer.utils;
+package oxy.bascenario.utils;
 
 import com.badlogic.gdx.Screen;
 

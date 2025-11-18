@@ -17,3 +17,20 @@ allprojects {
     group = "oxy.bascenario"
     version = "1.0"
 }
+
+subprojects {
+    apply(plugin = "java")
+
+    dependencies {
+        annotationProcessor(rootProject.libs.projectlombok.lombok)
+        implementation(rootProject.libs.projectlombok.lombok)
+        implementation(rootProject.libs.google.gson)
+    }
+}
+
+dependencies {
+    implementation(project(":core"))
+    implementation(project(":api"))
+
+    implementation(libs.gdx.base)
+}

@@ -3,7 +3,7 @@ package oxy.bascenario.api;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.api.elements.Image;
+import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.Event;
 
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class Scenario {
 
     public static class Builder {
         private String title = "", subtitle = "";
-        private Optional<Image> previewBackground;
-        private Optional<Sound> previewSound;
+        private Optional<Image> previewBackground = Optional.empty();
+        private Optional<Sound> previewSound = Optional.empty();
         private final List<Timestamp> timestamps = new ArrayList<>();
         private final List<String> downloads = new ArrayList<>();
 
