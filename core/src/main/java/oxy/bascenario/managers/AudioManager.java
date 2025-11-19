@@ -13,11 +13,8 @@ import oxy.bascenario.api.effects.Sound;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class AudioManager {
-    private static final AtomicInteger SOUND_ID_COUNTER = new AtomicInteger(1);
-
     @Getter
     private static final AudioManager instance = new AudioManager();
     private AudioManager() {
@@ -29,10 +26,6 @@ public class AudioManager {
     private final Map<Integer, CachedSound> cachedSounds = new HashMap<>();
 
     public void play(Sound sound) {
-        this.play(-SOUND_ID_COUNTER.getAndIncrement(), sound);
-    }
-
-    public void play(int identifier, Sound sound) {
         final Music music = Gdx.audio.newMusic(sound.file().internal() ? Gdx.files.internal(sound.file().path()) : new FileHandle(sound.file().path()));
         music.play();
 
@@ -47,7 +40,7 @@ public class AudioManager {
             cache.fadeIn.setTarget(sound.maxVolume());
         }
 
-        this.cachedSounds.put(identifier, cache);
+        this.cachedSounds.put(sound.id(), cache);
     }
 
     public void pause(int id) {
