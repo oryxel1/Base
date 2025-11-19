@@ -9,4 +9,8 @@ public record Fade(int duration) {
             throw new RuntimeException("Fade duration need to be at least larger than 0! If fade is not present then use Fade.DISABLED.");
         }
     }
+
+    public static boolean canFade(Fade fade) {
+        return fade != null && fade != DISABLED;
+    }
 }

@@ -5,7 +5,6 @@ import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.font.Font;
 import oxy.bascenario.Launcher;
@@ -46,6 +45,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
         renderBorder();
         renderTitle();
 
+        // Ehmmm... It's hardcoded yes.... I know but it works!
         if (borderFade instanceof AnimationUtils.DummyAnimation) {
             borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
         } else if (borderFade.getValue() > 20 && titleBoxPopup instanceof AnimationUtils.DummyAnimation) {
@@ -90,7 +90,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     }
 
     private void renderBorder() {
-        // The color of the border is different depending on the
+        // The color of the border is different depending on the background....
         int generalColor = scenario.getPreviewBackground().isPresent() ? 255 : 227;
         Color color = Color.fromRGBA(generalColor, generalColor, generalColor, Math.round(borderFade.getValue()));
         if (isDoingExitingFade()) {

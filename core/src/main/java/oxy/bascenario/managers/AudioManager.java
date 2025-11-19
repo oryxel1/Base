@@ -36,7 +36,7 @@ public class AudioManager {
         final Music music = Gdx.audio.newMusic(sound.file().internal() ? Gdx.files.internal(sound.file().path()) : new FileHandle(sound.file().path()));
         music.play();
 
-        boolean fade = sound.fadeIn() != null && sound.fadeIn() != Fade.DISABLED;
+        boolean fade = Fade.canFade(sound.fadeIn());
 
         music.setVolume(fade ? 0 : sound.maxVolume());
         music.setLooping(sound.loop());
@@ -69,7 +69,7 @@ public class AudioManager {
         if (cache == null) {
             return;
         }
-        boolean fade = cache.sound.fadeOut() != null && cache.sound.fadeOut() != Fade.DISABLED;
+        boolean fade = Fade.canFade(cache.sound.fadeOut());
         if (fade) {
             cache.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, cache.sound.fadeOut().duration(), cache.gdxMusic.getVolume());
             cache.fadeOut.setTarget(0);
