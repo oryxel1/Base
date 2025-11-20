@@ -1,12 +1,11 @@
 package oxy.bascenario.api.event.impl;
 
 import lombok.Getter;
+import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.event.RenderEvent;
 import oxy.bascenario.api.render.RenderLayer;
 
-// I guess use java.awt so we don't have to expose the rendering color to the api.
-import java.awt.Color;
 import java.util.Optional;
 
 // If the id is present then this will try to find an element with that id, else the overlay will be on top of everything.

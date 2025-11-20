@@ -42,8 +42,7 @@ public class FunctionColorOverlay extends EventFunction<ColorOverlayEvent> {
         boolean present = serialized.get("id-present").getAsBoolean();
 
 
-        Color colorLenni = Color.fromABGR(serialized.get("color").getAsInt());
-        java.awt.Color color = new java.awt.Color(colorLenni.getRed(), colorLenni.getGreen(), colorLenni.getBlue(), colorLenni.getAlpha());
+        Color color = Color.fromABGR(serialized.get("color").getAsInt());
         if (present) {
             return new ColorOverlayEvent(serialized.get("id").getAsInt(), fade, color);
         } else {

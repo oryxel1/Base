@@ -83,6 +83,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
             this.renderer.draw(this.batch, this.overlaySkeleton);
             this.batch.end();
+            Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
         }
 
         ThinGLUtils.start(); // Now start rendering ThinGL again!

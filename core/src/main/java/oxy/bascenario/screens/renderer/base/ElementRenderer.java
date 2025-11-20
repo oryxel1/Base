@@ -4,11 +4,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
+import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ColorAnimations;
-
-import java.awt.*;
 
 @RequiredArgsConstructor
 public class ElementRenderer<T> {

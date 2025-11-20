@@ -33,4 +33,5 @@ dependencies {
     implementation(project(":api"))
 
     implementation(libs.gdx.base)
+    implementation(libs.commons.core)
 }

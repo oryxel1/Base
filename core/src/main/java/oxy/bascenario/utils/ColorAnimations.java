@@ -2,51 +2,50 @@ package oxy.bascenario.utils;
 
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
-
-import java.awt.*;
+import net.lenni0451.commons.color.Color;
 
 public class ColorAnimations {
     private DynamicAnimation r, g, b, a;
 
     public ColorAnimations(Color color) {
-        this.r = AnimationUtils.dummy(color.getRed());
-        this.g = AnimationUtils.dummy(color.getGreen());
-        this.b = AnimationUtils.dummy(color.getBlue());
-        this.a = AnimationUtils.dummy(color.getAlpha());
-    }
-
-    public ColorAnimations(net.lenni0451.commons.color.Color color) {
-        this.r = AnimationUtils.dummy(color.getRed());
-        this.g = AnimationUtils.dummy(color.getGreen());
-        this.b = AnimationUtils.dummy(color.getBlue());
-        this.a = AnimationUtils.dummy(color.getAlpha());
+        this.r = AnimationUtils.dummy(color.getRedF());
+        this.g = AnimationUtils.dummy(color.getGreenF());
+        this.b = AnimationUtils.dummy(color.getBlueF());
+        this.a = AnimationUtils.dummy(color.getAlphaF());
     }
 
     public void set(Color color, long duration) {
-        this.r = AnimationUtils.build(duration, this.r.getValue(), color.getRed(), EasingFunction.LINEAR);
-        this.g = AnimationUtils.build(duration, this.g.getValue(), color.getGreen(), EasingFunction.LINEAR);
-        this.b = AnimationUtils.build(duration, this.b.getValue(), color.getBlue(), EasingFunction.LINEAR);
-        this.a = AnimationUtils.build(duration, this.a.getValue(), color.getAlpha(), EasingFunction.LINEAR);
+        if (duration <= 0) {
+            this.r = AnimationUtils.dummy(color.getRedF());
+            this.g = AnimationUtils.dummy(color.getGreenF());
+            this.b = AnimationUtils.dummy(color.getBlueF());
+            this.a = AnimationUtils.dummy(color.getAlphaF());
+            return;
+        }
+
+        this.r = AnimationUtils.build(duration, this.r.getValue(), color.getRedF(), EasingFunction.LINEAR);
+        this.g = AnimationUtils.build(duration, this.g.getValue(), color.getGreenF(), EasingFunction.LINEAR);
+        this.b = AnimationUtils.build(duration, this.b.getValue(), color.getBlueF(), EasingFunction.LINEAR);
+        this.a = AnimationUtils.build(duration, this.a.getValue(), color.getAlphaF(), EasingFunction.LINEAR);
     }
 
-    public net.lenni0451.commons.color.Color color() {
-        return net.lenni0451.commons.color.Color.fromRGBA((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue());
+    public Color color() {
+        return Color.fromRGBAF(r.getValue(), g.getValue(), b.getValue(), a.getValue());
     }
 
     public float red() {
-        return r.getValue() / 255;
+        return r.getValue();
     }
 
     public float green() {
-        return g.getValue() / 255;
+        return g.getValue();
     }
 
     public float blue() {
-        return b.getValue() / 255;
+        return b.getValue();
     }
 
     public float alpha() {
-        return a.getValue() / 255;
+        return a.getValue();
     }
-
 }

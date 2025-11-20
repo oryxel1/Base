@@ -6,7 +6,7 @@ lwjgl-sdl = "3.4.0-SNAPSHOT"
 libgdx = "1.13.1"
 spine = "4.2.5"
 thingl = "0.0.11-SNAPSHOT"
-commons-animations = "1.7.1"
+commons = "1.7.1"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -30,4 +30,5 @@ gdx-box2d = { module = "com.badlogicgames.gdx:gdx-box2d", version.ref = "libgdx"
 gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = "spine" }
 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
-lenni-commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons-animations" }
+commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
+commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }

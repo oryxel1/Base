@@ -10,7 +10,7 @@ dependencies {
     implementation(project(":api"))
 
     implementation(libs.raphimc.thingl)
-    implementation(libs.lenni.commons.animations)
+    implementation(libs.commons.animations)
 
     implementation(libs.lwjgl.base)
     implementation(libs.lwjgl.opengl)
