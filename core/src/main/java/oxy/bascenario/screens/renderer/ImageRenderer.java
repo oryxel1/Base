@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer;
 
+import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.elements.RendererImage;
 import oxy.bascenario.api.render.RenderLayer;
@@ -24,5 +25,17 @@ public class ImageRenderer extends ElementRenderer<RendererImage> {
                 element.height(),
                 ColorUtils.fromAwt(element.color())
         );
+
+        if (color.color().toRGBA() != Color.WHITE.toRGBA()) {
+            ThinGL.renderer2D().coloredTexture(
+                    ThinGLUtils.GLOBAL_RENDER_STACK,
+                    TextureManager.getInstance().getTexture(element.image().file()),
+                    this.x.getValue(),
+                    this.y.getValue(),
+                    element.width(),
+                    element.height(),
+                    color.color()
+            );
+        }
     }
 }
