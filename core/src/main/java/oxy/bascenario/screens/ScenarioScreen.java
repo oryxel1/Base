@@ -1,5 +1,6 @@
 package oxy.bascenario.screens;
 
+import lombok.Getter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -11,17 +12,16 @@ import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.RenderEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.event.EventFunction;
-import oxy.bascenario.event.EventMapper;
+import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.DialogueRenderer;
+import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -83,7 +83,7 @@ public class ScenarioScreen extends ExtendableScreen {
             this.sincePoll = this.sinceDialogue = 0;
             peek.events().forEach(event -> {
                 try {
-                    final EventFunction<?> function = EventMapper.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                    final EventFunction<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
                     function.start(this);
                     if (event.getDuration() > 0) {
                         events.add(function);
@@ -114,6 +114,8 @@ public class ScenarioScreen extends ExtendableScreen {
         });
     }
 
+    @Getter
+    private final Map<Integer, ElementRenderer<?>> elements = new HashMap<>();
     private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
 
     @Override
@@ -124,11 +126,29 @@ public class ScenarioScreen extends ExtendableScreen {
         pollEvents();
         renderBackground();
 
-        this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.render(this));
-        this.dialogueRenderer.render(this);
-        this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.render(this));
+        // Now do the rendering, yeh the code looks like a mess don't question it.
+        this.events.stream().filter(event -> RenderEvent.is(event.event(), RenderLayer.BEHIND_DIALOGUE)).forEach(e -> e.render(this));
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::render);
 
+        this.dialogueRenderer.render(this);
+
+        this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.render(this));
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::render);
+
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::render);
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
+
+
         ThinGLUtils.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.elements.values().forEach(render -> render.resize(width, height));
+    }
+
+    @Override
+    public void dispose() {
+        this.elements.values().forEach(ElementRenderer::dispose);
     }
 }

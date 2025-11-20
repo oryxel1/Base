@@ -35,8 +35,6 @@ public final class EngineRenderer extends Game {
         FontUtils.loadFonts();
 
         this.setScreen(screen);
-
-//        ThinGL.glStateManager().setViewport(0, 0, 1920, 1080);
     }
 
     @Override

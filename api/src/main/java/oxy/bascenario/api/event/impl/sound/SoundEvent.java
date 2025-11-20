@@ -1,0 +1,30 @@
+package oxy.bascenario.api.event.impl.sound;
+
+import lombok.Getter;
+import oxy.bascenario.api.event.Event;
+
+@Getter
+public class SoundEvent extends Event<SoundEvent> {
+    private final int id;
+    private final Event event;
+
+    public SoundEvent(int id, Event event) {
+        super(0);
+        this.id = id;
+        this.event = event;
+    }
+
+    @Override
+    public String type() {
+        return "sound-event";
+    }
+
+    @Override
+    public SoundEvent empty() {
+        return new SoundEvent(0, Event.STOP);
+    }
+
+    public enum Event {
+        PAUSE, STOP, RESUME
+    }
+}

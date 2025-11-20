@@ -1,4 +1,4 @@
-package oxy.bascenario.event;
+package oxy.bascenario.event.base;
 
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;

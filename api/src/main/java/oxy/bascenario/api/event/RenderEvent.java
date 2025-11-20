@@ -12,4 +12,8 @@ public abstract class RenderEvent<T> extends Event<T> {
     public final RenderLayer layer() {
         return layer;
     }
+
+    public static boolean is(Event<?> event, RenderLayer layer) {
+        return event instanceof RenderEvent<?> render && render.layer == layer;
+    }
 }

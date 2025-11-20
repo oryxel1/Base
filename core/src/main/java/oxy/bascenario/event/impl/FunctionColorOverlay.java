@@ -8,7 +8,7 @@ import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.event.EventFunction;
+import oxy.bascenario.event.base.EventFunction;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.serializers.utils.GsonUtils;
 import oxy.bascenario.utils.AnimationUtils;
