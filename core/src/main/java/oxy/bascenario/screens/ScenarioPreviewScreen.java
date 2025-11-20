@@ -5,6 +5,7 @@ import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.font.Font;
 import oxy.bascenario.Launcher;
@@ -160,8 +161,8 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textCenterX, textCenterY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, -10, height - 15, width + 10, height - 15 + 8, Color.fromRGBA(250, 238, 129, Math.round(255 * globalFade.getValue())));
-            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 0, 0);
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, -10, 20, width + 15, 28, Color.fromRGBA(250, 238, 129, Math.round(255 * globalFade.getValue())));
+            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 0, 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
         }
     }
