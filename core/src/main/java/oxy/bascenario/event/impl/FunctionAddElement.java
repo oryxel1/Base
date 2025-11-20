@@ -1,11 +1,13 @@
 package oxy.bascenario.event.impl;
 
 import com.google.gson.JsonObject;
+import oxy.bascenario.api.elements.RendererImage;
 import oxy.bascenario.api.elements.Sprite;
 import oxy.bascenario.api.event.impl.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.EventFunction;
 import oxy.bascenario.screens.ScenarioScreen;
+import oxy.bascenario.screens.renderer.ImageRenderer;
 import oxy.bascenario.screens.renderer.SpriteRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
@@ -22,8 +24,10 @@ public class FunctionAddElement extends EventFunction<AddElementEvent> {
         final ElementRenderer<?> renderer;
         if (event.getElement() instanceof Sprite sprite) {
             renderer = new SpriteRenderer(sprite, event.getLayer());
+        } else if (event.getElement() instanceof RendererImage image) {
+            renderer = new ImageRenderer(image, event.getLayer());
         } else {
-            throw new RuntimeException("Can't find the rendering for the element class type: " + event.getElement().getClass());
+            throw new RuntimeException("Can't find the renderer for the element class type: " + event.getElement().getClass());
         }
 
         renderer.resize(0, 0); // TODO: Properly do this?
