@@ -6,6 +6,9 @@ import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.utils.AnimationUtils;
+import oxy.bascenario.utils.ColorAnimations;
+
+import java.awt.*;
 
 @RequiredArgsConstructor
 public class ElementRenderer<T> {
@@ -23,6 +26,10 @@ public class ElementRenderer<T> {
     public void move(float x, float y, long duration) {
         moveX(x, duration);
         moveY(y, duration);
+    }
+    protected ColorAnimations color = new ColorAnimations(Color.WHITE);
+    public void overlayColor(Color color, long duration) {
+        this.color.set(color, duration);
     }
 
     // A bit misleading, will also get called on start...

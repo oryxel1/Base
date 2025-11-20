@@ -28,7 +28,6 @@ public class FunctionAddElement extends EventFunction<AddElementEvent> {
 
         renderer.resize(0, 0); // TODO: Properly do this?
         screen.getElements().put(event.getId(), renderer);
-        System.out.println(screen.getElements());
     }
 
     @Override
