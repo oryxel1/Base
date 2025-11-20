@@ -19,6 +19,15 @@ public class MoveElementEvent extends Event<MoveElementEvent> {
         this.type = type;
     }
 
+    public MoveElementEvent(long duration, int id, float x, float y) {
+        super(0);
+        this.duration = duration;
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.type = Type.BOTH;
+    }
+
     public MoveElementEvent(long duration, int id, float value, Type type) {
         super(0);
         this.duration = duration;

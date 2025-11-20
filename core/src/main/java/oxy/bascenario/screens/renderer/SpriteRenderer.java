@@ -95,7 +95,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         final WindowInterface window = ThinGL.windowInterface();
         int width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
 
-        final float posX = (this.x.getValue() / 1920) * width, posY = (this.y.getValue() / 1080) * -height;
+        final float posX = ((this.x.getValue() - 960) / 1920) * width, posY = (this.y.getValue() / 1080) * -height;
         skeleton.setPosition(posX, posY);
 
         this.state.apply(skeleton);

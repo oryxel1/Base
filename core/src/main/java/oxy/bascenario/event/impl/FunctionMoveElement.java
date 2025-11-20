@@ -50,6 +50,6 @@ public class FunctionMoveElement extends EventFunction<MoveElementEvent> {
             y = serialized.get("y").getAsFloat();
         }
 
-        return new MoveElementEvent(serialized.get("duration").getAsInt(), serialized.get("id").getAsInt(), x, y, type);
+        return new MoveElementEvent(serialized.get("duration").getAsInt(), serialized.get("id").getAsInt(), x, y);
     }
 }
