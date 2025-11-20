@@ -27,7 +27,8 @@ public class ScenarioPreviewTest {
         final Sprite sprite = new Sprite(FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.skel"), FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.atlas"), null);
         builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 0, 960, 540));
 
-//        builder.add(1000, new ColorOverlayEvent(500, new Fade(100), new Fade(500), Color.WHITE));
+        builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
+        builder.add(120, new ColorOverlayEvent(new Fade(500), new Color(255, 255, 255, 0)));
         builder.add(1000, new ColorOverlayEvent(0, Fade.DISABLED, new Color(0, 0, 0, 0)));
         builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(300), new Color(0, 0, 0, 100)));
 

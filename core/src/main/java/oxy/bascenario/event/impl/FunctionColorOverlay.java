@@ -1,7 +1,7 @@
 package oxy.bascenario.event.impl;
 
 import com.google.gson.JsonObject;
-import net.lenni0451.commons.animation.DynamicAnimation;
+import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
@@ -9,24 +9,17 @@ import oxy.bascenario.event.base.EventFunction;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
-import oxy.bascenario.utils.AnimationUtils;
 
 public class FunctionColorOverlay extends EventFunction<ColorOverlayEvent> {
-    private DynamicAnimation fade = AnimationUtils.dummy(1);
     public FunctionColorOverlay(ColorOverlayEvent event) {
         super(event);
     }
 
-    private ElementRenderer<?> renderer;
     @Override
     public void start(ScenarioScreen screen) {
-        if (event.getId().isPresent()) {
-            ElementRenderer<?> renderer = screen.getElements().get(event.getId().get());
-            if (renderer != null) {
-                renderer.overlayColor(event.getColor(), Math.max(0, event.getFade().duration()));
-            }
-        } else {
-            // TODO....
+        ElementRenderer<?> renderer = screen.getElements().get(event.getId().isEmpty() ? Integer.MIN_VALUE + event.layer().ordinal() : event.getId().get());
+        if (renderer != null) {
+            renderer.overlayColor(event.getColor(), Math.max(0, event.getFade().duration()));
         }
     }
 
@@ -38,7 +31,8 @@ public class FunctionColorOverlay extends EventFunction<ColorOverlayEvent> {
             serialized.addProperty("render-layer", event.layer().name());
         }
 
-        serialized.addProperty("color", event.getColor().getRGB());
+        final Color color = Color.fromRGBA(event.getColor().getRed(), event.getColor().getRed(), event.getColor().getRed(), event.getColor().getRed());
+        serialized.addProperty("color", color.toRGBA());
         serialized.add("fade", GsonUtils.toJson(event.getFade()));
     }
 
@@ -47,11 +41,14 @@ public class FunctionColorOverlay extends EventFunction<ColorOverlayEvent> {
         final Fade fade = GsonUtils.getGson().fromJson(serialized.get("fade"), Fade.class);
         boolean present = serialized.get("id-present").getAsBoolean();
 
+
+        Color colorLenni = Color.fromABGR(serialized.get("color").getAsInt());
+        java.awt.Color color = new java.awt.Color(colorLenni.getRed(), colorLenni.getGreen(), colorLenni.getBlue(), colorLenni.getAlpha());
         if (present) {
-            return new ColorOverlayEvent(serialized.get("id").getAsInt(), fade, new java.awt.Color(serialized.get("color").getAsInt()));
+            return new ColorOverlayEvent(serialized.get("id").getAsInt(), fade, color);
         } else {
             final RenderLayer layer = RenderLayer.valueOf(serialized.get("render-layer").getAsString());
-            return new ColorOverlayEvent(layer, fade, new java.awt.Color(serialized.get("color").getAsInt()));
+            return new ColorOverlayEvent(layer, fade, color);
         }
     }
 }

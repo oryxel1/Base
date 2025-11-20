@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.*;
 import com.esotericsoftware.spine.utils.TwoColorPolygonBatch;
+import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import org.lwjgl.opengl.GL20;
@@ -13,10 +14,6 @@ import oxy.bascenario.api.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.utils.ThinGLUtils;
-
-import java.awt.*;
-import java.util.Comparator;
-import java.util.Locale;
 
 // The fact we're combining libgdx-spine way of rendering with ThinGL is a literal dog shit implement xDDDD
 // It's fine however, I don't really care that much...
@@ -72,7 +69,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.renderer.draw(this.batch, this.skeleton);
         this.batch.end();
 
-        if (this.color.color().getRGB() != Color.WHITE.getRGB()) {
+        if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
             this.overlaySkeleton.setColor(color.red(), color.green(), color.blue(), color.alpha());
             this.skeleton.setColor(color.red(), color.green(), color.blue(), color.alpha());
 

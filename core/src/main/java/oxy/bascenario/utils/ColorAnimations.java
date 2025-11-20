@@ -15,6 +15,13 @@ public class ColorAnimations {
         this.a = AnimationUtils.dummy(color.getAlpha());
     }
 
+    public ColorAnimations(net.lenni0451.commons.color.Color color) {
+        this.r = AnimationUtils.dummy(color.getRed());
+        this.g = AnimationUtils.dummy(color.getGreen());
+        this.b = AnimationUtils.dummy(color.getBlue());
+        this.a = AnimationUtils.dummy(color.getAlpha());
+    }
+
     public void set(Color color, long duration) {
         this.r = AnimationUtils.build(duration, this.r.getValue(), color.getRed(), EasingFunction.LINEAR);
         this.g = AnimationUtils.build(duration, this.g.getValue(), color.getGreen(), EasingFunction.LINEAR);
@@ -22,8 +29,8 @@ public class ColorAnimations {
         this.a = AnimationUtils.build(duration, this.a.getValue(), color.getAlpha(), EasingFunction.LINEAR);
     }
 
-    public Color color() {
-        return new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getStart());
+    public net.lenni0451.commons.color.Color color() {
+        return net.lenni0451.commons.color.Color.fromRGBA((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue());
     }
 
     public float red() {

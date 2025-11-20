@@ -15,6 +15,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.EventFunction;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.TextureManager;
+import oxy.bascenario.screens.renderer.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.DialogueRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.utils.AnimationUtils;
@@ -117,6 +118,14 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final Map<Integer, ElementRenderer<?>> elements = new HashMap<>();
     private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
+
+    @Override
+    public void show() {
+        int start = Integer.MIN_VALUE;
+        for (RenderLayer layer : RenderLayer.values()) {
+            this.elements.put(start++, new ColorOverlayRenderer(layer));
+        }
+    }
 
     @Override
     public void render(float delta) {
