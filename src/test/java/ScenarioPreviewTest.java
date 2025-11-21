@@ -1,7 +1,9 @@
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Fade;
+import oxy.bascenario.api.elements.FontType;
 import oxy.bascenario.api.elements.Sprite;
+import oxy.bascenario.api.elements.Text;
 import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
@@ -27,6 +29,7 @@ public class ScenarioPreviewTest {
 
         final Sprite sprite = new Sprite(FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.skel"), FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.atlas"), null);
         builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 0, 960, 540));
+        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.WHITE), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
 //        builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
 //        builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
