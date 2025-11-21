@@ -25,6 +25,11 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
     private TextureAtlas atlas;
     private Skeleton skeleton, overlaySkeleton;
     private AnimationState state;
+    private AnimationStateData stateData;
+    public void play(String animation, int index, float duration, boolean loop) {
+        stateData.setDefaultMix(duration);
+        state.setAnimation(index, animation, loop);
+    }
 
     public SpriteRenderer(Sprite element, RenderLayer layer) {
         super(element, layer);
@@ -49,7 +54,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.skeleton = new Skeleton(skeletonData);
         this.overlaySkeleton = new Skeleton(skeletonData);
         this.overlaySkeleton.getDrawOrder().reverse(); // Else it will still looks kinda weirdddd
-        this.state = new AnimationState(new AnimationStateData(skeletonData));
+        this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));
     }
 
     @Override

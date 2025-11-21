@@ -1,7 +1,5 @@
 package oxy.bascenario.screens.renderer;
 
-import com.badlogic.gdx.math.MathUtils;
-import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;

@@ -9,6 +9,7 @@ import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.event.impl.SetBackgroundEvent;
+import oxy.bascenario.api.event.impl.SpriteAnimationEvent;
 import oxy.bascenario.api.event.impl.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
@@ -34,7 +35,9 @@ public class ScenarioPreviewTest {
         builder.add(0, new SetBackgroundEvent(new FadeImage(FileInfo.from("C:\\Users\\Computer\\BAAS\\Temporary\\BG_MainOffice_Night.jpg"), Fade.DISABLED, Fade.DISABLED)));
 
         final Sprite sprite = new Sprite(FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.skel"), FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.atlas"), null);
-        builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 0, 960, 540));
+        builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
+                new SpriteAnimationEvent(0, 0,  "Idle_01", 0),
+                new MoveElementEvent(0, 0, 960, 540));
         builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.WHITE), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
         builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));

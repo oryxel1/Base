@@ -3,6 +3,7 @@ package oxy.bascenario.event;
 import oxy.bascenario.api.event.Event;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.event.impl.SetBackgroundEvent;
+import oxy.bascenario.api.event.impl.SpriteAnimationEvent;
 import oxy.bascenario.api.event.impl.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
@@ -46,6 +47,8 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(CloseDialogueEvent.class, FunctionCloseDialogue.class);
 
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
+
+        EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }
