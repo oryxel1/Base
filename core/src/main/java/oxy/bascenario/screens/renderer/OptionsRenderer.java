@@ -23,7 +23,7 @@ public class OptionsRenderer {
     private Map<String, Integer> options;
     public void setOptions(Map<String, Integer> options) {
         this.options = options;
-        this.scale = AnimationUtils.build(200, 0.5F, 1F, EasingFunction.QUAD);
+        this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.QUAD);
     }
 
     public boolean isBusy() {
@@ -63,7 +63,7 @@ public class OptionsRenderer {
             float alpha = this.clicked != null ? text.equals(this.clicked) ? this.flash.getValue() : 1 : this.flash.getValue();
 
             float buttonHeight = BUTTON_HEIGHT * scale, buttonWidth = BUTTON_WIDTH * scale;
-            float buttonY = 540 - (totalHeight / 2f) - BUTTON_HEIGHT + 14.9796f + ((buttonHeight + DISTANCE_BETWEEN) * i);
+            float buttonY = 540 - (totalHeight / 2f) - buttonHeight + 14.9796f + ((buttonHeight + DISTANCE_BETWEEN) * i);
             float buttonX = 1920 / 2f - buttonWidth / 2f;
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(buttonX, buttonY, 0);
