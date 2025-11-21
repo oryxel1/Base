@@ -18,6 +18,7 @@ import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.DialogueRenderer;
+import oxy.bascenario.screens.renderer.OptionsRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
@@ -71,7 +72,7 @@ public class ScenarioScreen extends ExtendableScreen {
     private long sinceDialogue, sincePoll, sinceRender;
 
     @Setter
-    private boolean busyDialogue;
+    private boolean busyDialogue, busyOptions;
     private void pollEvents() {
         while (!timestamps.isEmpty()) {
             final Timestamp peek = timestamps.peek();
@@ -104,7 +105,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
         long timeDelta = System.currentTimeMillis() - this.sinceRender;
         this.sincePoll += timeDelta;
-        if (!this.busyDialogue) {
+        if (!this.busyDialogue && !this.busyOptions) {
             this.sinceDialogue += timeDelta;
         }
         this.sinceRender = System.currentTimeMillis();
@@ -123,6 +124,8 @@ public class ScenarioScreen extends ExtendableScreen {
     private final Map<Integer, ElementRenderer<?>> elements = new HashMap<>();
     @Getter
     private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
+    @Getter
+    private final OptionsRenderer optionsRenderer = new OptionsRenderer();
 
     @Override
     public void show() {
@@ -154,6 +157,8 @@ public class ScenarioScreen extends ExtendableScreen {
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::render);
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
 
+        this.optionsRenderer.render();
+
         ThinGLUtils.end();
     }
 
@@ -165,16 +170,20 @@ public class ScenarioScreen extends ExtendableScreen {
             return;
         }
 
-//        if (this.debugMode) {
-//            this.sinceDialogue = this.sincePoll = Long.MAX_VALUE;
-//        }
-//
-//        if (this.dialogueOptions != null) {
-//            this.dialogueOptions.mouseClicked(window, mouseX, mouseY, button);
-//            return;
-//        }
+        if (this.optionsRenderer.isBusy()) {
+            this.optionsRenderer.mouseClicked(this, mouseX, mouseY);
+            return;
+        }
+
         if (!this.dialogueRenderer.isBusy() && this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
             this.busyDialogue = false;
+        }
+    }
+
+    @Override
+    public void mouseRelease() {
+        if (this.optionsRenderer.isBusy()) {
+            this.optionsRenderer.mouseRelease();
         }
     }
 
