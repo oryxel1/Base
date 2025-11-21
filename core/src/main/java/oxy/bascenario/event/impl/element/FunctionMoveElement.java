@@ -1,4 +1,4 @@
-package oxy.bascenario.event.impl;
+package oxy.bascenario.event.impl.element;
 
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.impl.element.MoveElementEvent;

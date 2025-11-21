@@ -10,7 +10,9 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import net.raphimc.thingl.wrapper.GLStateManager;
 import org.joml.Matrix4fStack;
+import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 
@@ -18,6 +20,7 @@ import oxy.bascenario.utils.ThinGLUtils;
 public final class EngineRenderer extends Game {
     private final Screen screen;
 
+    private double mouseX, mouseY;
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
@@ -31,6 +34,30 @@ public final class EngineRenderer extends Game {
         };
         ThinGL.config().setRestoreVertexArrayBinding(true);
         ThinGL.config().setRestoreProgramBinding(true);
+
+
+        GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
+            if (window != windowHandle) {
+                return;
+            }
+
+            this.mouseX = x;
+            this.mouseY = y;
+        });
+        GLFW.glfwSetMouseButtonCallback(windowHandle, (window, button, action, mode) -> {
+            if (window != windowHandle || !(screen instanceof ExtendableScreen extendableScreen)) {
+                return;
+            }
+
+            if (action == 1) {
+                float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+                float y = ThinGL.windowInterface().getFramebufferHeight() / 1080f;
+
+                extendableScreen.mouseClicked(this.mouseX / x, this.mouseY / y, button);
+            } else {
+                extendableScreen.mouseRelease();
+            }
+        });
 
         FontUtils.loadFonts();
 

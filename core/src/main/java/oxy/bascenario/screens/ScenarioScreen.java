@@ -1,6 +1,7 @@
 package oxy.bascenario.screens;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -68,6 +69,9 @@ public class ScenarioScreen extends ExtendableScreen {
 
     private final List<EventFunction<?>> events = new ArrayList<>();
     private long sinceDialogue, sincePoll, sinceRender;
+
+    @Setter
+    private boolean busyDialogue;
     private void pollEvents() {
         while (!timestamps.isEmpty()) {
             final Timestamp peek = timestamps.peek();
@@ -100,9 +104,9 @@ public class ScenarioScreen extends ExtendableScreen {
 
         long timeDelta = System.currentTimeMillis() - this.sinceRender;
         this.sincePoll += timeDelta;
-//        if (!this.isDialogueBusy && !this.isDialogueOptionsBusy) {
-//            this.sinceDialogue += timeDelta;
-//        }
+        if (!this.busyDialogue) {
+            this.sinceDialogue += timeDelta;
+        }
         this.sinceRender = System.currentTimeMillis();
 
         events.removeIf(event -> {
@@ -117,6 +121,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Getter
     private final Map<Integer, ElementRenderer<?>> elements = new HashMap<>();
+    @Getter
     private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
 
     @Override
@@ -125,6 +130,8 @@ public class ScenarioScreen extends ExtendableScreen {
         for (RenderLayer layer : RenderLayer.values()) {
             this.elements.put(start++, new ColorOverlayRenderer(layer));
         }
+
+        this.dialogueRenderer.create();
     }
 
     @Override
@@ -139,7 +146,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.events.stream().filter(event -> RenderEvent.is(event.event(), RenderLayer.BEHIND_DIALOGUE)).forEach(e -> e.render(this));
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::render);
 
-        this.dialogueRenderer.render(this);
+        this.dialogueRenderer.render();
 
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.render(this));
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::render);
@@ -147,8 +154,28 @@ public class ScenarioScreen extends ExtendableScreen {
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::render);
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
 
-
         ThinGLUtils.end();
+    }
+
+    @Setter
+    private boolean lockClick;
+    @Override
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.lockClick) {
+            return;
+        }
+
+//        if (this.debugMode) {
+//            this.sinceDialogue = this.sincePoll = Long.MAX_VALUE;
+//        }
+//
+//        if (this.dialogueOptions != null) {
+//            this.dialogueOptions.mouseClicked(window, mouseX, mouseY, button);
+//            return;
+//        }
+        if (!this.dialogueRenderer.isBusy() && this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
+            this.busyDialogue = false;
+        }
     }
 
     @Override

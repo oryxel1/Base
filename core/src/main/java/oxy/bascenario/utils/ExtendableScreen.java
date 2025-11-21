@@ -30,4 +30,10 @@ public class ExtendableScreen implements Screen {
     @Override
     public void dispose() {
     }
+
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+    }
+
+    public void mouseRelease() {
+    }
 }
