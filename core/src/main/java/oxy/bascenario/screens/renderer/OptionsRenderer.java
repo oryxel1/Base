@@ -42,6 +42,12 @@ public class OptionsRenderer {
             return;
         }
 
+        if (this.queue && this.scale.getValue() == 0.9f) {
+            this.scale.setTarget(1.1f);
+            this.flash = AnimationUtils.build(110, 1, 0, EasingFunction.LINEAR);
+            this.queue = false;
+        }
+
         if (!(this.flash instanceof AnimationUtils.DummyAnimation) && !this.flash.isRunning()) {
             if (this.flash.getTarget() == 1 || !this.scale.isRunning()) {
                 this.flash.setTarget(0);
@@ -85,10 +91,15 @@ public class OptionsRenderer {
         }
     }
 
+    private boolean queue;
     public void mouseRelease() {
         if (this.clicked != null) {
-            this.scale.setTarget(1.1f);
-            this.flash = AnimationUtils.build(110, 1, 0, EasingFunction.LINEAR);
+            if (this.scale.getValue() != 0.9f) {
+                this.queue = true;
+            } else {
+                this.scale.setTarget(1.1f);
+                this.flash = AnimationUtils.build(110, 1, 0, EasingFunction.LINEAR);
+            }
         }
     }
 

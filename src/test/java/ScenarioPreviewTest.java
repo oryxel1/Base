@@ -64,7 +64,7 @@ public class ScenarioPreviewTest {
             builder.add(true, 1, new ShowOptionsEvent(map));
         }
 
-        launch(new ScenarioScreen(builder.build()), true);
+        launch(new ScenarioScreen(builder.build()), false);
 //        launch(new ScenarioPreviewScreen(builder.build()), true);
     }
 }
