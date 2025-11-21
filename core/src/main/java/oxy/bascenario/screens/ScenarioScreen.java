@@ -157,7 +157,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::render);
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
 
-        this.optionsRenderer.render();
+        this.optionsRenderer.render(this);
 
         ThinGLUtils.end();
     }

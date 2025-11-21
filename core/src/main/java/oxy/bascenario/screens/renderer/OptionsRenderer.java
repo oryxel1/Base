@@ -32,13 +32,14 @@ public class OptionsRenderer {
 
     private DynamicAnimation scale = AnimationUtils.dummy(1), flash = AnimationUtils.dummy(1);
 
-    public void render() {
+    public void render(ScenarioScreen screen) {
         if (this.options == null) {
             return;
         }
 
         if (this.flash.getValue() == 0 && !this.scale.isRunning() && this.clicked != null) {
             this.options = null;
+            screen.setBusyOptions(false);
             return;
         }
 

@@ -32,29 +32,28 @@ public class ScenarioPreviewTest {
         builder.previewBackground(new Image(FileInfo.from("C:\\Users\\Computer\\BAAS\\Temporary\\BG_MainOffice_Night.jpg")));
 
         builder.add(0, new SetBackgroundEvent(new FadeImage(FileInfo.from("C:\\Users\\Computer\\BAAS\\Temporary\\BG_MainOffice_Night.jpg"), Fade.DISABLED, Fade.DISABLED)));
-//        builder.add(1000, new ColorOverlayEvent(500, new Fade(100), new Fade(500), Color.WHITE));
-//
-//        final Sprite sprite = new Sprite(FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.skel"), FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.atlas"), null);
-//        builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 0, 960, 540));
-//        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.WHITE), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
-//        builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
-//        builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
-//        builder.add(1000, new ColorOverlayEvent(0, Fade.DISABLED, Color.fromRGBA(0, 0, 0, 0)));
-//        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
-//
-//        final Dialogue dialogue = Dialogue.builder().dialogue("Sorry for being sexy Reisa.").build();
-//        builder.add(1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", dialogue));
+        final Sprite sprite = new Sprite(FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.skel"), FileInfo.from("C:\\Users\\Computer\\BAAS\\JPSpine\\CH0326_spr.atlas"), null);
+        builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 0, 960, 540));
+        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.WHITE), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
-//        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Of course Sensei.").build()));
-//        builder.add(true, 1, new AddDialogueEvent(0, Dialogue.builder().dialogue("I can't expect you to be skibidi like me.").build()));
-//        builder.add(true, 1, new CloseDialogueEvent());
-//
-//        builder.add(true, 1, new ColorOverlayEvent(0, new Fade(500), Color.fromRGBA(0, 0, 0, 0)));
-//        builder.add(0, new MoveElementEvent(1000, 0, 960, 540));
-//
-//        builder.add(true, 1000, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Perhaps you will...\nsign up for my how to be skibidi course?").build()));
-//        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Come... JOIN ME").color(Color.RED.darker().darker()).build()));
+        builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
+        builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
+        builder.add(1000, new ColorOverlayEvent(0, Fade.DISABLED, Color.fromRGBA(0, 0, 0, 0)));
+        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
+
+        final Dialogue dialogue = Dialogue.builder().dialogue("Sorry for being sexy Reisa.").build();
+        builder.add(1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", dialogue));
+
+        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Of course Sensei.").build()));
+        builder.add(true, 1, new AddDialogueEvent(0, Dialogue.builder().dialogue("I can't expect you to be skibidi like me.").build()));
+        builder.add(true, 1, new CloseDialogueEvent());
+
+        builder.add(true, 1, new ColorOverlayEvent(0, new Fade(500), Color.fromRGBA(0, 0, 0, 0)));
+        builder.add(0, new MoveElementEvent(1000, 0, 960, 540));
+
+        builder.add(true, 1000, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Perhaps you will...\nsign up for my how to be skibidi course?").build()));
+        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Come... JOIN ME").color(Color.RED.darker().darker()).build()));
 
         {
             final Map<String, Integer> map = new LinkedHashMap<>();
@@ -63,6 +62,9 @@ public class ScenarioPreviewTest {
 
             builder.add(true, 1, new ShowOptionsEvent(map));
         }
+
+        builder.add(true, 1, new CloseDialogueEvent());
+        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().dialogue("Also this is a dialogue without background!").build()));
 
         launch(new ScenarioScreen(builder.build()), false);
 //        launch(new ScenarioPreviewScreen(builder.build()), true);
