@@ -43,7 +43,7 @@ public class ScenarioPreviewTest {
         builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
         builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
         builder.add(1000, new ColorOverlayEvent(0, Fade.DISABLED, Color.fromRGBA(0, 0, 0, 0)));
-        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
+//        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
 
         final Dialogue dialogue = Dialogue.builder().dialogue("Sorry for being sexy Reisa.").build();
         builder.add(1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", dialogue));

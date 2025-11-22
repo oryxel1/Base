@@ -121,7 +121,7 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Getter
-    private final Map<Integer, ElementRenderer<?>> elements = new HashMap<>();
+    private final Map<Integer, ElementRenderer<?>> elements = new TreeMap<>();
     @Getter
     private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
     @Getter

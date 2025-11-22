@@ -1,0 +1,40 @@
+package oxy.bascenario.event.impl.element;
+
+import com.google.gson.JsonObject;
+import oxy.bascenario.api.event.impl.element.ElementIndexEvent;
+import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.screens.ScenarioScreen;
+import oxy.bascenario.screens.renderer.base.ElementRenderer;
+
+public class FunctionElementIndex extends EventFunction<ElementIndexEvent> {
+    public FunctionElementIndex(ElementIndexEvent event) {
+        super(event);
+    }
+
+    @Override
+    public void start(ScenarioScreen screen) {
+        final ElementRenderer<?> renderer = screen.getElements().remove(this.event.getIndex());
+        if (renderer == null) {
+            return;
+        }
+
+        if (event.isSwap()) {
+            final ElementRenderer<?> swap = screen.getElements().get(this.event.getNewIndex());
+            if (swap != null) {
+                screen.getElements().put(this.event.getIndex(), swap);
+            }
+        }
+
+        screen.getElements().put(this.event.getNewIndex(), renderer);
+    }
+
+    @Override
+    public void serialize(JsonObject serialized) {
+        // TODO.
+    }
+
+    @Override
+    public ElementIndexEvent deserialize(JsonObject serialized) {
+        return null; // TODO.
+    }
+}
