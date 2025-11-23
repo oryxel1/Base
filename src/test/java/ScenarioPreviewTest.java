@@ -1,5 +1,6 @@
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.elements.Dialogue;
 import oxy.bascenario.api.elements.FontType;
@@ -16,6 +17,7 @@ import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.impl.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.impl.element.AddElementEvent;
 import oxy.bascenario.api.event.impl.element.MoveElementEvent;
+import oxy.bascenario.api.event.impl.element.ScaleElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -38,7 +40,7 @@ public class ScenarioPreviewTest {
         builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
                 new SpriteAnimationEvent(0, 0,  "Idle_01", 0),
                 new MoveElementEvent(0, 0, 960, 540));
-        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.WHITE), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
+        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.BLACK), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
         builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
         builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
@@ -68,6 +70,7 @@ public class ScenarioPreviewTest {
 
         builder.add(true, 1, new CloseDialogueEvent());
         builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().dialogue("Also this is a dialogue without background!").build()));
+        builder.add(true, 1, new ScaleElementEvent(2, 1000, 2, Easing.QUAD));
 
         launch(new ScenarioScreen(builder.build()), false);
 //        launch(new ScenarioPreviewScreen(builder.build()), true);

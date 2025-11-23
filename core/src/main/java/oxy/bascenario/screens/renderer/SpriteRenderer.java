@@ -105,7 +105,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         // Shitty way to scale and stuff? Well it has already been a problem since the legacy engine model of BASE so.....
         float scale = 0.00046666666F * ((width + height) / 2f);
-        skeleton.setScale(scale, scale);
+        skeleton.setScale(scale * this.scale.getValue(), scale * this.scale.getValue());
         skeleton.update(Gdx.graphics.getDeltaTime());
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }

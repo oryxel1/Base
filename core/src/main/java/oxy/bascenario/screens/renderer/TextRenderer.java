@@ -12,6 +12,8 @@ import oxy.bascenario.utils.ColorAnimations;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 
+import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+
 public class TextRenderer extends ElementRenderer<Text> {
     private final Font font;
     public TextRenderer(Text element, RenderLayer layer) {
@@ -23,10 +25,13 @@ public class TextRenderer extends ElementRenderer<Text> {
 
     @Override
     public void render() {
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.scale(this.scale.getValue());
         ThinGL.rendererText().textRun(
                 ThinGLUtils.GLOBAL_RENDER_STACK,
                 TextRun.fromString(font, element.text(), this.color.color()),
                 x.getValue(), y.getValue(), RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT
         );
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 }

@@ -8,9 +8,7 @@ import oxy.bascenario.api.event.impl.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.impl.dialogue.StartDialogueEvent;
-import oxy.bascenario.api.event.impl.element.AddElementEvent;
-import oxy.bascenario.api.event.impl.element.MoveElementEvent;
-import oxy.bascenario.api.event.impl.element.RemoveElementEvent;
+import oxy.bascenario.api.event.impl.element.*;
 import oxy.bascenario.api.event.impl.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.impl.sound.SoundEvent;
 import oxy.bascenario.event.base.EventFunction;
@@ -18,10 +16,8 @@ import oxy.bascenario.event.impl.*;
 import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionStartDialogue;
-import oxy.bascenario.event.impl.element.FunctionAddElement;
+import oxy.bascenario.event.impl.element.*;
 import oxy.bascenario.event.impl.FunctionColorOverlay;
-import oxy.bascenario.event.impl.element.FunctionMoveElement;
-import oxy.bascenario.event.impl.element.FunctionRemoveElement;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 
@@ -41,6 +37,8 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(AddElementEvent.class, FunctionAddElement.class);
         EVENT_TO_FUNCTION.put(RemoveElementEvent.class, FunctionRemoveElement.class);
         EVENT_TO_FUNCTION.put(MoveElementEvent.class, FunctionMoveElement.class);
+        EVENT_TO_FUNCTION.put(ElementIndexEvent.class, FunctionElementIndex.class);
+        EVENT_TO_FUNCTION.put(ScaleElementEvent.class, FunctionScaleElement.class);
 
         EVENT_TO_FUNCTION.put(StartDialogueEvent.class, FunctionStartDialogue.class);
         EVENT_TO_FUNCTION.put(AddDialogueEvent.class, FunctionAddDialogue.class);
