@@ -4,6 +4,7 @@ import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.renderer.impl.RendererText;
+import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import net.raphimc.thingl.text.font.Font;
@@ -59,32 +60,50 @@ public final class DialogueRenderer {
             return;
         }
 
-        Font font = FontUtils.getFont(FontType.toName(dialogue.getFontType()), 42);
+        Font regular = FontUtils.getFont(FontType.toName(FontType.REGULAR), 42);
+        Font bold = FontUtils.getFont(FontType.toName(FontType.BOLD), 42);
+        Font semiBold = FontUtils.getFont(FontType.toName(FontType.SEMI_BOLD), 42);
 
-        List<StringBuilder> builders = new ArrayList<>();
-        builders.add(new StringBuilder());
+        List<TextBuilder> builders = new ArrayList<>();
         int index = 0;
-        for (char c : dialogue.getDialogue().toCharArray()) {
-            String predictedAppend = builders.get(index).toString() + c;
-            final TextRun run = new TextRun(font, new TextSegment(predictedAppend, Color.WHITE, 0, OUTLINE_COLOR));
-            if (ThinGL.rendererText().getVisualWidth(run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
-                builders.add(new StringBuilder());
+        for (oxy.bascenario.api.elements.TextSegment segment : dialogue.getDialogue()) {
+            if (!builders.isEmpty()) {
                 index++;
-
-                if (c == '\n') {
-                    continue;
-                }
             }
+            builders.add(new TextBuilder(new StringBuilder(), !this.texts.isEmpty(), segment));
 
-            builders.get(index).append(c);
+            for (char c : segment.text().toCharArray()) {
+                String predictedAppend = builders.get(index).builder.toString() + c;
+                final TextRun run = new TextRun(switch (segment.type()) {
+                    case REGULAR -> regular;
+                    case SEMI_BOLD -> bold;
+                    case BOLD -> semiBold;
+                }, new TextSegment(predictedAppend, Color.WHITE, 0, OUTLINE_COLOR));
+                if (ThinGL.rendererText().getVisualWidth(run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
+                    builders.add(new TextBuilder(new StringBuilder(), true, segment));
+                    index++;
+
+                    if (c == '\n') {
+                        continue;
+                    }
+                }
+
+                builders.get(index).builder.append(c);
+            }
         }
 
-        for (StringBuilder builder : builders) {
-            this.texts.add(new TextCache(dialogue, font, builder.toString()));
+        for (TextBuilder builder : builders) {
+            this.texts.add(new TextCache(dialogue, builder.segment, switch (builder.segment.type()) {
+                case REGULAR -> regular;
+                case SEMI_BOLD -> bold;
+                case BOLD -> semiBold;
+            }, builder.builder.toString(), builder.down));
         }
 
         this.finished = false;
     }
+
+    private record TextBuilder(StringBuilder builder, boolean down, oxy.bascenario.api.elements.TextSegment segment) {}
 
     public void stop() {
         this.finished = false;
@@ -115,9 +134,22 @@ public final class DialogueRenderer {
             return;
         }
 
+
         float y = SEPARATOR_Y + 76;
+        float lastHeight = 0;
         int count = 0;
+
+        TextLine line = null;
         for (TextCache cache : this.texts) {
+            if (cache.down) {
+                if (line != null) {
+                    ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+                }
+
+                line = null;
+                y += lastHeight;
+            }
+
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / cache.dialogue.getPlaySpeed()) * 1);
 
             boolean finished = cache.count == cache.text.length();
@@ -129,10 +161,21 @@ public final class DialogueRenderer {
                 cache.count++;
             }
 
-            final TextRun textRun = new TextRun(cache.font, new TextSegment(cache.text.substring(0, cache.count), cache.dialogue.getColor(), 0, OUTLINE_COLOR));
-            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, textRun, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+            final TextRun textRun = new TextRun(cache.font, new TextSegment(cache.text.substring(0, cache.count), cache.segment.color(), 0, OUTLINE_COLOR));
+            if (!cache.down) {
+                if (line == null) {
+                    line = new TextLine(new ArrayList<>());
+                }
+                line.add(textRun);
+            } else {
+                ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, textRun, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+            }
 
-            y += ThinGL.rendererText().getLogicalHeight(textRun.shape()) + 5;
+            lastHeight = ThinGL.rendererText().getLogicalHeight(textRun.shape()) + 5;
+        }
+
+        if (line != null) {
+            ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
         this.finished = count == this.texts.size();
@@ -162,14 +205,18 @@ public final class DialogueRenderer {
 
     private static final class TextCache {
         private final Dialogue dialogue;
+        private final oxy.bascenario.api.elements.TextSegment segment;
         private final Font font;
         private final String text;
+        private final boolean down;
         private int count = 0;
 
-        private TextCache(Dialogue dialogue, Font font, String text) {
+        private TextCache(Dialogue dialogue, oxy.bascenario.api.elements.TextSegment segment, Font font, String text, boolean down) {
             this.dialogue = dialogue;
+            this.segment = segment;
             this.text = text;
             this.font = font;
+            this.down = down;
         }
     }
 }

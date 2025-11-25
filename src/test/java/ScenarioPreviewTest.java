@@ -2,10 +2,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Fade;
-import oxy.bascenario.api.elements.Dialogue;
-import oxy.bascenario.api.elements.FontType;
-import oxy.bascenario.api.elements.Sprite;
-import oxy.bascenario.api.elements.Text;
+import oxy.bascenario.api.elements.*;
 import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
@@ -45,20 +42,20 @@ public class ScenarioPreviewTest {
         builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
         builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
         builder.add(1000, new ColorOverlayEvent(0, Fade.DISABLED, Color.fromRGBA(0, 0, 0, 0)));
-//        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
+        builder.add(0, new MoveElementEvent(500, 0, 560, MoveElementEvent.Type.X_ONLY), new ColorOverlayEvent(0, new Fade(1000), Color.fromRGBA(0, 0, 0, 100)));
 
-        final Dialogue dialogue = Dialogue.builder().dialogue("Sorry for being sexy Reisa.").build();
+        final Dialogue dialogue = Dialogue.builder().add("Sorry for being sexy Reisa.").build();
         builder.add(1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", dialogue));
 
-        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Of course Sensei.").build()));
-        builder.add(true, 1, new AddDialogueEvent(0, Dialogue.builder().dialogue("I can't expect you to be skibidi like me.").build()));
+        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().add("Of course Sensei.").build()));
+        builder.add(true, 1, new AddDialogueEvent(0, Dialogue.builder().add("I can't expect you to be skibidi like me.").build()));
         builder.add(true, 1, new CloseDialogueEvent());
 
         builder.add(true, 1, new ColorOverlayEvent(0, new Fade(500), Color.fromRGBA(0, 0, 0, 0)));
         builder.add(0, new MoveElementEvent(1000, 0, 960, 540));
 
-        builder.add(true, 1000, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Perhaps you will...\nsign up for my how to be skibidi course?").build()));
-        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().dialogue("Come... JOIN ME").color(Color.RED.darker().darker()).build()));
+        builder.add(true, 1000, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().add("Perhaps you will...\nsign up for my how to be skibidi course?").build()));
+        builder.add(true, 1, new StartDialogueEvent(0, "Reisa", "Trinity's Vigilante Crew", Dialogue.builder().add("Come... JOIN ME", Color.RED.darker().darker()).build()));
 
         {
             final Map<String, Integer> map = new LinkedHashMap<>();
@@ -69,8 +66,10 @@ public class ScenarioPreviewTest {
         }
 
         builder.add(true, 1, new CloseDialogueEvent());
-        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().dialogue("Also this is a dialogue without background!").build()));
-        builder.add(true, 1, new ScaleElementEvent(2, 1000, 2, Easing.QUAD));
+        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add("Also this is a dialogue without background!").build()));
+        builder.add(true, 1, new ScaleElementEvent(2, 1000, 1.5F, Easing.QUAD));
+        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add("And this a text... ").add("with multiple segments!", FontType.SEMI_BOLD).build()));
+        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add("So ", Color.RED).add("you ", Color.BLACK).add("can ").add("do ", Color.PINK).add("this!", Color.CYAN).build()));
 
         launch(new ScenarioScreen(builder.build()), false);
 //        launch(new ScenarioPreviewScreen(builder.build()), true);
