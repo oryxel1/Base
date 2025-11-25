@@ -23,7 +23,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
     private SkeletonRenderer renderer;
 
     private TextureAtlas atlas;
-    private Skeleton skeleton, overlaySkeleton;
+    private Skeleton skeleton;
     private AnimationState state;
     private AnimationStateData stateData;
     public void play(String animation, int index, float duration, boolean loop) {
@@ -52,8 +52,6 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(new FileHandle(element.skeleton().path()));
 
         this.skeleton = new Skeleton(skeletonData);
-        this.overlaySkeleton = new Skeleton(skeletonData);
-        this.overlaySkeleton.getDrawOrder().reverse(); // Else it will still looks kinda weirdddd
         this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));
     }
 
@@ -63,7 +61,6 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.state.update(Gdx.graphics.getDeltaTime());
         updateSkeleton(this.skeleton);
-        updateSkeleton(this.overlaySkeleton);
 
         this.camera.position.set(0, 0, 0);
         this.camera.update();
@@ -75,20 +72,16 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.batch.end();
 
         if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
-            this.overlaySkeleton.setColor(color.red(), color.green(), color.blue(), color.alpha());
-            this.skeleton.setColor(color.red(), color.green(), color.blue(), color.alpha());
+            ThinGL.programs().getColorTweak().bindInput();
 
-            // This is a very hacky solution to ehm let's see.... Rendering transparency without
-            // increasing the opacity when multiple model part is overlapping....
-            // Well there still some problems but it's looks perfect now at least :P
-            // Tbh there is a better way to do this but do this weird hack with depth test is the only thing I can think of.
             this.batch.begin();
             this.renderer.draw(this.batch, this.skeleton);
-            Gdx.gl.glDepthMask(true);
-            Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-            this.renderer.draw(this.batch, this.overlaySkeleton);
             this.batch.end();
-            Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+
+            ThinGL.programs().getColorTweak().unbindInput();
+            ThinGL.programs().getColorTweak().configureParameters(this.color.color());
+            ThinGL.programs().getColorTweak().render(-1920, -1080, 1920, 1080);
+            ThinGL.programs().getColorTweak().clearInput();
         }
 
         ThinGLUtils.start(); // Now start rendering ThinGL again!
