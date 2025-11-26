@@ -39,6 +39,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(MoveElementEvent.class, FunctionMoveElement.class);
         EVENT_TO_FUNCTION.put(ElementIndexEvent.class, FunctionElementIndex.class);
         EVENT_TO_FUNCTION.put(ScaleElementEvent.class, FunctionScaleElement.class);
+        EVENT_TO_FUNCTION.put(ElementEffectEvent.class, FunctionElementEffect.class);
 
         EVENT_TO_FUNCTION.put(StartDialogueEvent.class, FunctionStartDialogue.class);
         EVENT_TO_FUNCTION.put(AddDialogueEvent.class, FunctionAddDialogue.class);

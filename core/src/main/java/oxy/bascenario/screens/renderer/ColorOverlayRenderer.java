@@ -15,7 +15,7 @@ public class ColorOverlayRenderer extends ElementRenderer<ColorOverlayEvent> {
     }
 
     @Override
-    public void render() {
+    protected void render() {
         ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, color.color());
     }
 }

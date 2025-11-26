@@ -148,14 +148,14 @@ public class ScenarioScreen extends ExtendableScreen {
 
         // Now do the rendering, yeh the code looks like a mess don't question it.
         this.events.stream().filter(event -> RenderEvent.is(event.event(), RenderLayer.BEHIND_DIALOGUE)).forEach(e -> e.render(this));
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::render);
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.dialogueRenderer.render();
 
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.render(this));
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::render);
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
 
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::render);
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
         this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
 
         this.optionsRenderer.render(this);

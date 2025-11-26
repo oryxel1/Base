@@ -33,7 +33,7 @@ public class TextRenderer extends ElementRenderer<Text> {
     }
 
     @Override
-    public void render() {
+    protected void render() {
         GLOBAL_RENDER_STACK.pushMatrix();
         GLOBAL_RENDER_STACK.scale(this.scale.getValue());
 

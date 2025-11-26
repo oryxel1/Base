@@ -2,9 +2,14 @@ package oxy.bascenario.screens.renderer.base;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
+import net.lenni0451.commons.color.ColorUtils;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import oxy.bascenario.api.elements.OverlayEffect;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ColorAnimations;
@@ -36,9 +41,46 @@ public class ElementRenderer<T> {
     public void scale(float scale, long duration, EasingFunction function) {
         this.scale = AnimationUtils.build(duration, this.scale.getValue(), scale, function);
     }
+    @Setter
+    protected OverlayEffect effect; // TODO: Uh toggle on off doesn't sound like a good idea....
+
+    public final void renderAll() {
+        render();
+        renderHologram();
+    }
+
+    protected void renderHologram() {
+        if (this.effect != OverlayEffect.NONE) {
+            return;
+        }
+
+        ThinGL.programs().getColorTweak().bindInput();
+        this.render();
+        ThinGL.programs().getColorTweak().unbindInput();
+
+        if (this.effect == OverlayEffect.HOLOGRAM) {
+            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGBA(30, 97, 205, 60));
+            ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
+            ThinGL.programs().getColorTweak().configureParameters(Color.GRAY.withAlphaF(0.2f));
+            for (int y = (int) -(1080 * 20f); y < 0; y += 200) {
+                long index = System.currentTimeMillis() + y;
+                index %= (long) (1080 * 20f);
+
+                ThinGL.programs().getColorTweak().render(0, (index / 20f), 1920, (index / 20f) + 4);
+            }
+        } else {
+            for (int y = 0; y < 1080; y += 5) {
+                ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(y, 3.5f).getRGB()).withAlphaF(0.3f));
+                ThinGL.programs().getColorTweak().render(0, y, 1920, y + 5);
+            }
+        }
+        ThinGL.programs().getColorTweak().clearInput();
+    }
+
+    protected void render() {
+    }
 
     // A bit misleading, will also get called on start...
     public void resize(int width, int height) {}
-    public void render() {}
     public void dispose() {}
 }
