@@ -18,7 +18,7 @@ import oxy.bascenario.utils.ThinGLUtils;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
-    private final Screen screen;
+    private final Screen initialScreen;
 
     private double mouseX, mouseY;
     @Override
@@ -45,7 +45,7 @@ public final class EngineRenderer extends Game {
             this.mouseY = y;
         });
         GLFW.glfwSetMouseButtonCallback(windowHandle, (window, button, action, mode) -> {
-            if (window != windowHandle || !(screen instanceof ExtendableScreen extendableScreen)) {
+            if (window != windowHandle || !(this.screen instanceof ExtendableScreen extendableScreen)) {
                 return;
             }
 
@@ -61,7 +61,7 @@ public final class EngineRenderer extends Game {
 
         FontUtils.loadFonts();
 
-        this.setScreen(screen);
+        this.setScreen(this.initialScreen);
     }
 
     @Override
