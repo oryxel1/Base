@@ -72,6 +72,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.batch.end();
 
         if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
+            final int width = ThinGL.windowInterface().getFramebufferWidth();
+            final int height = ThinGL.windowInterface().getFramebufferHeight();
             ThinGL.programs().getColorTweak().bindInput();
 
             this.batch.begin();
@@ -80,7 +82,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
             ThinGL.programs().getColorTweak().unbindInput();
             ThinGL.programs().getColorTweak().configureParameters(this.color.color());
-            ThinGL.programs().getColorTweak().render(-1920, -1080, 1920, 1080);
+            ThinGL.programs().getColorTweak().render(-width, -height, width, height);
             ThinGL.programs().getColorTweak().clearInput();
         }
 

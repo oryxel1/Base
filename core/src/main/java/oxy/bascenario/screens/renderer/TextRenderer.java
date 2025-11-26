@@ -46,7 +46,7 @@ public class TextRenderer extends ElementRenderer<Text> {
 
             ThinGL.programs().getColorTweak().unbindInput();
             ThinGL.programs().getColorTweak().configureParameters(this.color.color());
-            ThinGL.programs().getColorTweak().render(-1920, -1080, 1920, 1080);
+            ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
             ThinGL.programs().getColorTweak().clearInput();
         }
 
