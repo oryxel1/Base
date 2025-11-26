@@ -3,7 +3,7 @@ package oxy.bascenario.event.impl.element;
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.elements.RendererImage;
 import oxy.bascenario.api.elements.Sprite;
-import oxy.bascenario.api.elements.Text;
+import oxy.bascenario.api.elements.text.Text;
 import oxy.bascenario.api.event.impl.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.EventFunction;

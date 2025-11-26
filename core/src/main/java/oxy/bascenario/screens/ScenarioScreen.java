@@ -20,6 +20,7 @@ import oxy.bascenario.screens.renderer.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.DialogueRenderer;
 import oxy.bascenario.screens.renderer.OptionsRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
@@ -123,7 +124,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final Map<Integer, ElementRenderer<?>> elements = new TreeMap<>();
     @Getter
-    private final DialogueRenderer dialogueRenderer = new DialogueRenderer();
+    private final BaseDialogueRenderer dialogueRenderer = new DialogueRenderer();
     @Getter
     private final OptionsRenderer optionsRenderer = new OptionsRenderer();
 

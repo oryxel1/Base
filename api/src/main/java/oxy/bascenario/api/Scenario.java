@@ -19,7 +19,6 @@ public class Scenario {
     private final Optional<Sound> previewSound;
     private final Optional<Image> previewBackground;
 
-    private final List<String> downloads = new ArrayList<>();
     private final List<Timestamp> timestamps = new ArrayList<>();
 
     public static Builder builder() {
@@ -36,12 +35,11 @@ public class Scenario {
         return builder;
     }
 
-    public static class Builder {
+    public static final class Builder {
         private String title = "", subtitle = "";
         private Optional<Image> previewBackground = Optional.empty();
         private Optional<Sound> previewSound = Optional.empty();
         private final List<Timestamp> timestamps = new ArrayList<>();
-        private final List<String> downloads = new ArrayList<>();
 
         public Builder title(String title) {
             this.title = title;
@@ -85,10 +83,7 @@ public class Scenario {
         }
 
         public Builder add(boolean waitForDialogue, long time, Event<?>... events) {
-            final List<Event<?>> eventsAsList = List.of(events);
-            eventsAsList.forEach(event -> this.downloads.addAll(event.downloads()));
-
-            this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(eventsAsList)));
+            this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(List.of(events))));
             return this;
         }
 
@@ -99,16 +94,6 @@ public class Scenario {
         public Scenario build() {
             final Scenario scenario = new Scenario(this.title, this.subtitle, this.previewSound, this.previewBackground);
             scenario.timestamps.addAll(this.timestamps);
-
-            if (this.previewBackground.isPresent() && this.previewBackground.get().file().url().isPresent()) {
-                scenario.downloads.add(this.previewBackground.get().file().url().get());
-            }
-
-            if (this.previewSound.isPresent() && this.previewSound.get().file().url().isPresent()) {
-                scenario.downloads.add(this.previewSound.get().file().url().get());
-            }
-
-            scenario.downloads.addAll(this.downloads);
             return scenario;
         }
     }

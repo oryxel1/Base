@@ -1,14 +1,30 @@
 package oxy.bascenario.utils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
 import net.raphimc.thingl.text.font.Font;
 import net.raphimc.thingl.text.font.impl.FreeTypeFont;
+import oxy.bascenario.api.elements.text.FontType;
+import oxy.bascenario.api.elements.text.Text;
+import oxy.bascenario.api.elements.text.TextSegment;
+import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
     private static final Map<String, List<Font>> NAME_TO_FONTS = new HashMap<>();
+
+    public static Font toFont(TextSegment segment, Text text) {
+        Font font;
+        if (segment.font().isPresent()) {
+            font = FontUtils.loadSpecificFont(segment.font().get(), text.size());
+        } else {
+            font = FontUtils.getFont(FontType.toName(segment.type()), text.size());
+        }
+        return font;
+    }
 
     public static Font getFont(String name, int size) {
         return NAME_TO_FONTS.get(name).get(Math.max(0, Math.min(size - 1, 150)));
@@ -36,6 +52,15 @@ public class FontUtils {
 //                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(FontUtils.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
 //            } catch (Exception ignored) {}
 //        }
+    }
+
+    public static Font loadSpecificFont(FileInfo font, int scale) {
+        try {
+            final byte[] fontData = Files.readAllBytes(new File(font.path()).toPath());
+            return new FreeTypeFont(fontData, scale);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void loadFont(String name, String font) {

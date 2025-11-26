@@ -2,6 +2,9 @@ package oxy.bascenario.api.elements;
 
 import lombok.Getter;
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.elements.text.FontType;
+import oxy.bascenario.api.elements.text.Text;
+import oxy.bascenario.api.elements.text.TextSegment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,56 +15,59 @@ import java.util.List;
 public class Dialogue {
     public static long MS_PER_WORD = 38L;
 
-    private List<TextSegment> dialogue;
+    private Text dialogue;
     private float playSpeed;
-    private float scale;
 
     public static Builder builder() {
         return new Builder();
     }
 
     public Builder toBuilder() {
-        return builder().add(this.dialogue).playSpeed(this.playSpeed).scale(this.scale);
+        return builder().dialogue(this.dialogue).playSpeed(this.playSpeed);
     }
 
-    public static class Builder {
-        private List<TextSegment> dialogue = new ArrayList<>();
+    public static final class Builder {
+        private Text dialogue = new Text(new ArrayList<>(), 42);
         private float playSpeed = 1;
-        private float scale = 1;
 
         private Builder() {}
 
-        public List<TextSegment> add() {
+        public Text dialogue() {
             return dialogue;
         }
 
-        public Builder add(List<TextSegment> dialogue) {
+        public Builder dialogue(Text dialogue) {
             this.dialogue = dialogue;
             return this;
         }
 
+        public Builder add(List<TextSegment> dialogue) {
+            this.dialogue.segments().addAll(dialogue);
+            return this;
+        }
+
         public Builder add(String dialogue) {
-            this.dialogue.add(new TextSegment(dialogue, FontType.REGULAR, Color.WHITE));
+            this.add(TextSegment.builder().text(dialogue).build());
             return this;
         }
 
         public Builder add(String dialogue, FontType type) {
-            this.dialogue.add(new TextSegment(dialogue, type, Color.WHITE));
+            this.add(TextSegment.builder().text(dialogue).type(type).build());
             return this;
         }
 
         public Builder add(String dialogue, FontType type, Color color) {
-            this.dialogue.add(new TextSegment(dialogue, type, color));
+            this.add(TextSegment.builder().text(dialogue).type(type).color(color).build());
             return this;
         }
 
         public Builder add(String dialogue, Color color) {
-            this.add(new TextSegment(dialogue, FontType.REGULAR, color));
+            this.add(TextSegment.builder().text(dialogue).color(color).build());
             return this;
         }
 
         public Builder add(TextSegment segment) {
-            this.dialogue.add(segment);
+            this.dialogue.segments().add(segment);
             return this;
         }
 
@@ -74,19 +80,9 @@ public class Dialogue {
             return this;
         }
 
-        public float scale() {
-            return scale;
-        }
-
-        public Builder scale(float scale) {
-            this.scale = scale;
-            return this;
-        }
-
         public Dialogue build() {
             Dialogue dialogue = new Dialogue();
             dialogue.dialogue = this.dialogue;
-            dialogue.scale = this.scale;
             dialogue.playSpeed = this.playSpeed;
             return dialogue;
         }

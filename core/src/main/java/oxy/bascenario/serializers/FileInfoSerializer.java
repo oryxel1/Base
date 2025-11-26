@@ -11,21 +11,14 @@ public class FileInfoSerializer implements JsonSerializer<FileInfo>, JsonDeseria
     public FileInfo deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         final JsonObject serialized = jsonElement.getAsJsonObject();
         String path = serialized.get("path").getAsString();
-        Optional<String> url = Optional.empty();
-        if (serialized.get("download-present").getAsBoolean()) {
-            url = Optional.of(serialized.get("download-url").getAsString());
-        }
-        return new FileInfo(path, url, serialized.get("internal").getAsBoolean());
+        return new FileInfo(path, serialized.get("direct").getAsBoolean(), serialized.get("internal").getAsBoolean());
     }
 
     @Override
     public JsonElement serialize(FileInfo fileInfo, Type type, JsonSerializationContext jsonSerializationContext) {
         final JsonObject serialized = new JsonObject();
         serialized.addProperty("path", fileInfo.path());
-        serialized.addProperty("download-present", fileInfo.url().isPresent());
-        if (fileInfo.url().isPresent()) {
-            serialized.addProperty("download-url", fileInfo.url().get());
-        }
+        serialized.addProperty("direct", fileInfo.direct());
         serialized.addProperty("internal", fileInfo.internal());
         return serialized;
     }

@@ -1,0 +1,170 @@
+package oxy.bascenario.api.elements.text;
+
+import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.utils.FileInfo;
+
+import java.util.EnumSet;
+import java.util.Optional;
+import java.util.Set;
+
+@SuppressWarnings("ALL")
+public class TextSegment {
+    private String text = "";
+    private FontType type = FontType.REGULAR;
+    private Optional<FileInfo> font = Optional.empty();
+    private Color color = Color.WHITE;
+    private Optional<Color> outline = Optional.empty();
+    private final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private String text = "";
+        private FontType type = FontType.REGULAR;
+        private Optional<FileInfo> font = Optional.empty();
+        private Color color = Color.WHITE;
+        private Optional<Color> outline = Optional.empty();
+        private final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
+
+        private Builder() {}
+
+        public TextSegment build() {
+            final TextSegment segment = new TextSegment();
+            segment.text = text;
+            segment.type = type;
+            segment.color = color;
+            segment.outline = outline;
+            segment.font = font;
+            segment.styles.addAll(styles);
+            return segment;
+        }
+
+        public Optional<FileInfo> font() {
+            return font;
+        }
+
+        public Builder font(FileInfo font) {
+            this.font = font == null ? Optional.empty() : Optional.of(font);
+            return this;
+        }
+
+        public Optional<Color> outline() {
+            return outline;
+        }
+
+        public Builder outline(Color outline) {
+            this.outline = outline == null ? Optional.empty() : Optional.of(outline);
+            return this;
+        }
+
+        public String text() {
+            return text;
+        }
+
+        public Builder text(String text) {
+            this.text = text;
+            return this;
+        }
+
+        public FontType type() {
+            return type;
+        }
+
+        public Builder type(FontType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Color color() {
+            return color;
+        }
+
+        public Builder color(Color color) {
+            this.color = color;
+            return this;
+        }
+
+        public Set<TextStyle> styles() {
+            return styles;
+        }
+
+        public Builder bold(boolean value) {
+            if (!value) {
+                this.styles.remove(TextStyle.BOLD);
+            } else {
+                this.styles.add(TextStyle.BOLD);
+            }
+            return this;
+        }
+
+        public Builder shadow(boolean value) {
+            if (!value) {
+                this.styles.remove(TextStyle.SHADOW);
+            } else {
+                this.styles.add(TextStyle.SHADOW);
+            }
+            return this;
+        }
+
+        public Builder italic(boolean value) {
+            if (!value) {
+                this.styles.remove(TextStyle.ITALIC);
+            } else {
+                this.styles.add(TextStyle.ITALIC);
+            }
+            return this;
+        }
+
+        public Builder underline(boolean value) {
+            if (!value) {
+                this.styles.remove(TextStyle.UNDERLINE);
+            } else {
+                this.styles.add(TextStyle.UNDERLINE);
+            }
+            return this;
+        }
+
+        public Builder strikethrough(boolean value) {
+            if (!value) {
+                this.styles.remove(TextStyle.STRIKETHROUGH);
+            } else {
+                this.styles.add(TextStyle.STRIKETHROUGH);
+            }
+            return this;
+        }
+    }
+
+    public int toFlags() {
+        int flags = 0;
+        for (TextStyle style : this.styles) {
+            flags |= style.getValue();
+        }
+        return flags;
+    }
+
+    public String text() {
+        return text;
+    }
+
+    public FontType type() {
+        return type;
+    }
+
+    public Color color() {
+        return color;
+    }
+
+    public Optional<FileInfo> font() {
+        return font;
+    }
+
+    public Optional<Color> outline() {
+        return outline;
+    }
+
+    public Set<TextStyle> styles() {
+        return styles;
+    }
+}

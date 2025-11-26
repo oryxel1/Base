@@ -1,4 +1,4 @@
-package oxy.bascenario.api.elements;
+package oxy.bascenario.api.elements.text;
 
 public enum FontType {
     REGULAR, SEMI_BOLD, BOLD;

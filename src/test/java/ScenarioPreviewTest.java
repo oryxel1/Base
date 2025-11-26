@@ -5,6 +5,9 @@ import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.elements.*;
 import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
+import oxy.bascenario.api.elements.text.FontType;
+import oxy.bascenario.api.elements.text.Text;
+import oxy.bascenario.api.elements.text.TextSegment;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.event.impl.SetBackgroundEvent;
 import oxy.bascenario.api.event.impl.SpriteAnimationEvent;
@@ -20,6 +23,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static oxy.bascenario.Launcher.*;
@@ -37,7 +41,7 @@ public class ScenarioPreviewTest {
         builder.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
                 new SpriteAnimationEvent(0, 0,  "Idle_01", 0),
                 new MoveElementEvent(0, 0, 960, 540));
-        builder.add(0, new AddElementEvent(2, new Text("Hello World!", 40, FontType.REGULAR, Color.BLACK), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
+        builder.add(0, new AddElementEvent(2, new Text(List.of(TextSegment.builder().text("Hello World").outline(Color.BLACK).build()), 42), RenderLayer.BEHIND_DIALOGUE), new MoveElementEvent(0, 2, 100, 100) , new MoveElementEvent(0, 0, 960, 540));
 
         builder.add(1000, new ColorOverlayEvent(new Fade(100), Color.WHITE));
         builder.add(120, new ColorOverlayEvent(new Fade(500), Color.fromRGBA(255, 255, 255, 0)));
@@ -70,6 +74,7 @@ public class ScenarioPreviewTest {
         builder.add(true, 1, new ScaleElementEvent(2, 1000, 1.5F, Easing.QUAD));
         builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add("And this a text... ").add("with multiple segments!", FontType.SEMI_BOLD).build()));
         builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add("So ", Color.RED).add("you ", Color.BLACK).add("can ").add("do ", Color.PINK).add("this!", Color.CYAN).build()));
+        builder.add(true, 1, new StartDialogueEvent(0, "", "", false, Dialogue.builder().add(TextSegment.builder().text("Test strikethrough").strikethrough(true).build()).add(TextSegment.builder().text(" and also this").type(FontType.BOLD).italic(true).build()).build()));
 
         launch(new ScenarioScreen(builder.build()), false);
 //        launch(new ScenarioPreviewScreen(builder.build()), true);
