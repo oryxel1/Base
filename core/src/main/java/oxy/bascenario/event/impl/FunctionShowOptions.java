@@ -2,10 +2,10 @@ package oxy.bascenario.event.impl;
 
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 
-public class FunctionShowOptions extends EventFunction<ShowOptionsEvent> {
+public class FunctionShowOptions extends FunctionEvent<ShowOptionsEvent> {
     public FunctionShowOptions(ShowOptionsEvent event) {
         super(event);
     }

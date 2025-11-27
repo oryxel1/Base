@@ -5,12 +5,12 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.event.impl.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
-public class FunctionColorOverlay extends EventFunction<ColorOverlayEvent> {
+public class FunctionColorOverlay extends FunctionEvent<ColorOverlayEvent> {
     public FunctionColorOverlay(ColorOverlayEvent event) {
         super(event);
     }

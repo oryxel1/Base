@@ -3,12 +3,12 @@ package oxy.bascenario.event.impl.sound;
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.impl.sound.PlaySoundEvent;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
-public class FunctionPlaySoundEvent extends EventFunction<PlaySoundEvent> {
+public class FunctionPlaySoundEvent extends FunctionEvent<PlaySoundEvent> {
     public FunctionPlaySoundEvent(PlaySoundEvent event) {
         super(event);
     }

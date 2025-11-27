@@ -13,7 +13,7 @@ import oxy.bascenario.api.elements.image.FadeImage;
 import oxy.bascenario.api.elements.image.Image;
 import oxy.bascenario.api.event.RenderEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.ColorOverlayRenderer;
@@ -69,7 +69,7 @@ public class ScenarioScreen extends ExtendableScreen {
         }
     }
 
-    private final List<EventFunction<?>> events = new ArrayList<>();
+    private final List<FunctionEvent<?>> events = new ArrayList<>();
     private long sinceDialogue, sincePoll, sinceRender;
 
     @Setter
@@ -90,7 +90,7 @@ public class ScenarioScreen extends ExtendableScreen {
             this.sincePoll = this.sinceDialogue = 0;
             peek.events().forEach(event -> {
                 try {
-                    final EventFunction<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
                     function.start(this);
                     if (event.getDuration() > 0) {
                         events.add(function);

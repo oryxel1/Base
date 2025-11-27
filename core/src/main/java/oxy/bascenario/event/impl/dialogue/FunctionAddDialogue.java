@@ -3,10 +3,10 @@ package oxy.bascenario.event.impl.dialogue;
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.elements.Dialogue;
 import oxy.bascenario.api.event.impl.dialogue.AddDialogueEvent;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 
-public class FunctionAddDialogue extends EventFunction<AddDialogueEvent> {
+public class FunctionAddDialogue extends FunctionEvent<AddDialogueEvent> {
     public FunctionAddDialogue(AddDialogueEvent event) {
         super(event);
     }

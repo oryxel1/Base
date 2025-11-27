@@ -10,7 +10,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.commons.color.ColorUtils;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
-import oxy.bascenario.api.elements.OverlayEffect;
+import oxy.bascenario.api.elements.effect.OverlayEffectType;
 import oxy.bascenario.api.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
@@ -87,7 +87,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             ThinGL.programs().getColorTweak().clearInput();
         }
 
-        if (this.effect != OverlayEffect.NONE) {
+        if (!this.effects.isEmpty()) {
             ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, 1920, 1080, 0F, -1000F, 1000F);
             ThinGL.programs().getColorTweak().bindInput();
 
@@ -96,25 +96,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             this.batch.end();
 
             ThinGL.programs().getColorTweak().unbindInput();
-
-            if (this.effect == OverlayEffect.HOLOGRAM) {
-                ThinGL.programs().getColorTweak().configureParameters(Color.fromRGBA(30, 97, 205, 60));
-                ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
-                ThinGL.programs().getColorTweak().configureParameters(Color.GRAY.withAlphaF(0.2f));
-
-                for (int y = (int) -(1080 * 20f); y < 0; y += 200) {
-                    long index = System.currentTimeMillis() + y;
-                    index %= (long) (1080 * 20f);
-
-                    ThinGL.programs().getColorTweak().render(0, (index / 20f), 1920, (index / 20f) + 4);
-                }
-            } else {
-                for (int y = 0; y < 1080; y += 5) {
-                    ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(y, 3.5f).getRGB()).withAlphaF(0.3f));
-                    ThinGL.programs().getColorTweak().render(0, y, 1920, y + 5);
-                }
-            }
-
+            this.effects.forEach(effect -> renderEffect(effect.getType(), effect.getAxis()));
             ThinGL.programs().getColorTweak().clearInput();
             ThinGL.globalUniforms().getProjectionMatrix().popMatrix();
         }
@@ -124,7 +106,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
     // This already got handled in render()
     @Override
-    protected void renderHologram() {
+    protected void renderEffects() {
     }
 
     private void updateSkeleton(Skeleton skeleton) {

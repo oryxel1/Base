@@ -6,7 +6,7 @@ import oxy.bascenario.api.elements.Sprite;
 import oxy.bascenario.api.elements.text.Text;
 import oxy.bascenario.api.event.impl.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.event.base.EventFunction;
+import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.ImageRenderer;
 import oxy.bascenario.screens.renderer.SpriteRenderer;
@@ -14,7 +14,7 @@ import oxy.bascenario.screens.renderer.TextRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
-public class FunctionAddElement extends EventFunction<AddElementEvent> {
+public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     public FunctionAddElement(AddElementEvent event) {
         super(event);
     }
