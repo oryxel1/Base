@@ -14,7 +14,6 @@ import oxy.bascenario.api.utils.Axis;
 import oxy.bascenario.utils.AnimationUtils;
 import oxy.bascenario.utils.ColorAnimations;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 

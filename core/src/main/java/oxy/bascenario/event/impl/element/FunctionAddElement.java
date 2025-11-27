@@ -3,6 +3,9 @@ package oxy.bascenario.event.impl.element;
 import com.google.gson.JsonObject;
 import oxy.bascenario.api.elements.RendererImage;
 import oxy.bascenario.api.elements.Sprite;
+import oxy.bascenario.api.elements.shape.Circle;
+import oxy.bascenario.api.elements.shape.Rectangle;
+import oxy.bascenario.api.elements.shape.Triangle;
 import oxy.bascenario.api.elements.text.Text;
 import oxy.bascenario.api.event.impl.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
@@ -12,6 +15,9 @@ import oxy.bascenario.screens.renderer.ImageRenderer;
 import oxy.bascenario.screens.renderer.SpriteRenderer;
 import oxy.bascenario.screens.renderer.TextRenderer;
 import oxy.bascenario.screens.renderer.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.shape.CircleRenderer;
+import oxy.bascenario.screens.renderer.shape.RectangleRenderer;
+import oxy.bascenario.screens.renderer.shape.TriangleRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
 public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
@@ -24,12 +30,19 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
         // Yes this is hardcoded, there won't be much element, but it's probably a better idea to add a proper
         // implement down later the line....
         final ElementRenderer<?> renderer;
-        if (event.getElement() instanceof Sprite sprite) {
+        final Object element = event.getElement();
+        if (element instanceof Sprite sprite) {
             renderer = new SpriteRenderer(sprite, event.getLayer());
-        } else if (event.getElement() instanceof RendererImage image) {
+        } else if (element instanceof RendererImage image) {
             renderer = new ImageRenderer(image, event.getLayer());
-        } else if (event.getElement() instanceof Text text) {
+        } else if (element instanceof Text text) {
             renderer = new TextRenderer(text, event.getLayer());
+        } else if (element instanceof Rectangle rectangle) {
+            renderer = new RectangleRenderer(rectangle, event.getLayer());
+        } else if (element instanceof Circle circle) {
+            renderer = new CircleRenderer(circle, event.getLayer());
+        } else if (element instanceof Triangle triangle) {
+            renderer = new TriangleRenderer(triangle, event.getLayer());
         } else {
             throw new RuntimeException("Can't find the renderer for the element class type: " + event.getElement().getClass());
         }

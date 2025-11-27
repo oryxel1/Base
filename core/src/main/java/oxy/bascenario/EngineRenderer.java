@@ -35,7 +35,6 @@ public final class EngineRenderer extends Game {
         ThinGL.config().setRestoreVertexArrayBinding(true);
         ThinGL.config().setRestoreProgramBinding(true);
 
-
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
             if (window != windowHandle) {
                 return;

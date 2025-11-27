@@ -18,4 +18,5 @@ public final class OverlayEffect {
 
     public static final OverlayEffect HOLOGRAM_X = new OverlayEffect(OverlayEffectType.HOLOGRAM, Axis.X);
     public static final OverlayEffect HOLOGRAM_Y = new OverlayEffect(OverlayEffectType.HOLOGRAM, Axis.Y);
+
 }
