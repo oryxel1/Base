@@ -1,22 +1,21 @@
 package oxy.bascenario.api.render.elements.image;
 
-import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.utils.FileInfo;
 
 public class FadeImage extends Image {
-    private final Fade fadeIn, fadeOut;
+    private final int fadeIn, fadeOut;
 
-    public FadeImage(FileInfo file, Fade fadeIn, Fade fadeOut) {
+    public FadeImage(FileInfo file, int fadeIn, int fadeOut) {
         super(file);
         this.fadeIn = fadeIn;
         this.fadeOut = fadeOut;
     }
 
-    public Fade fadeIn() {
+    public int fadeIn() {
         return fadeIn;
     }
 
-    public Fade fadeOut() {
+    public int fadeOut() {
         return fadeOut;
     }
 }

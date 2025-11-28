@@ -7,8 +7,8 @@ import oxy.bascenario.api.event.api.Event;
 @Getter
 public class PlaySoundEvent extends Event<PlaySoundEvent> {
     private final Sound sound;
+
     public PlaySoundEvent(Sound sound) {
-        super(0);
         this.sound = sound;
     }
 

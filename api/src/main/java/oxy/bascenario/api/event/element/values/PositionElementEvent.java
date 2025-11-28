@@ -14,7 +14,6 @@ public class PositionElementEvent extends Event<PositionElementEvent> {
     private final Type type;
 
     public PositionElementEvent(int id, long duration, Vec2 vec, Easing easing, Type type) {
-        super(0);
         this.id = id;
         this.duration = duration;
         this.vec = vec;

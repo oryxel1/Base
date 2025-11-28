@@ -11,13 +11,5 @@ public abstract class FunctionEvent<T extends Event<?>> {
         return event;
     }
 
-    private final long start = System.currentTimeMillis();
-
-    public void start(ScenarioScreen screen) {}
-    public void end(ScenarioScreen screen) {}
-    public void render(ScenarioScreen screen) {}
-
-    public final boolean finished() {
-        return System.currentTimeMillis() - this.start >= this.event.getDuration();
-    }
+    public void run(ScenarioScreen screen) {}
 }

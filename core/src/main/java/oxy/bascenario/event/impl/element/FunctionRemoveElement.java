@@ -11,7 +11,7 @@ public class FunctionRemoveElement extends FunctionEvent<RemoveElementEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         final ElementRenderer<?> renderer = screen.getElements().remove(event.getId());
         if (renderer != null) {
             renderer.dispose();

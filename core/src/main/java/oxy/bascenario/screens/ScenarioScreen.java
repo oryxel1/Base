@@ -8,10 +8,8 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
-import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.render.elements.image.FadeImage;
 import oxy.bascenario.api.render.elements.image.Image;
-import oxy.bascenario.api.event.api.RenderEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
@@ -41,15 +39,15 @@ public class ScenarioScreen extends ExtendableScreen {
 
     public void setBackground(Image background) {
         this.queueBackground = null;
-        if (this.background != null && this.background instanceof FadeImage fade && Fade.canFade(fade.fadeOut())) {
-            this.backgroundFade = AnimationUtils.build(fade.fadeOut().duration(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 1, 0, EasingFunction.LINEAR);
+        if (this.background != null && this.background instanceof FadeImage fade && fade.fadeOut() > 0) {
+            this.backgroundFade = AnimationUtils.build(fade.fadeOut(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 1, 0, EasingFunction.LINEAR);
             this.queueBackground = background;
             return;
         }
 
         this.background = background;
-        if (this.background != null && background instanceof FadeImage fade && Fade.canFade(fade.fadeIn())) {
-            this.backgroundFade = AnimationUtils.build(fade.fadeIn().duration(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 0, 1, EasingFunction.LINEAR);
+        if (this.background != null && background instanceof FadeImage fade && fade.fadeOut() > 0) {
+            this.backgroundFade = AnimationUtils.build(fade.fadeIn(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 0, 1, EasingFunction.LINEAR);
         }
     }
 
@@ -69,7 +67,6 @@ public class ScenarioScreen extends ExtendableScreen {
         }
     }
 
-    private final List<FunctionEvent<?>> events = new ArrayList<>();
     private long sinceDialogue, sincePoll, sinceRender;
 
     @Setter
@@ -91,10 +88,7 @@ public class ScenarioScreen extends ExtendableScreen {
             peek.events().forEach(event -> {
                 try {
                     final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
-                    function.start(this);
-                    if (event.getDuration() > 0) {
-                        events.add(function);
-                    }
+                    function.run(this);
                 } catch (Exception ignored) {
                 }
             });
@@ -110,15 +104,6 @@ public class ScenarioScreen extends ExtendableScreen {
             this.sinceDialogue += timeDelta;
         }
         this.sinceRender = System.currentTimeMillis();
-
-        events.removeIf(event -> {
-            if (event.finished()) {
-                event.end(this);
-                return true;
-            }
-
-            return false;
-        });
     }
 
     @Getter
@@ -141,24 +126,19 @@ public class ScenarioScreen extends ExtendableScreen {
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
-        this.events.stream().filter(event -> !(event.event() instanceof RenderEvent<?>)).forEach(e -> e.render(this));
-
         pollEvents();
         renderBackground();
 
-        // Now do the rendering, yeh the code looks like a mess don't question it.
-        this.events.stream().filter(event -> RenderEvent.is(event.event(), RenderLayer.BEHIND_DIALOGUE)).forEach(e -> e.render(this));
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.dialogueRenderer.render();
 
-        this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.render(this));
+        // TODO: Should the above dialogue render layer above the options as well?
         this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
 
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
-        this.events.stream().filter(event -> event.event() instanceof RenderEvent<?> render && render.layer() == RenderLayer.TOP).forEach(e -> e.render(this));
-
         this.optionsRenderer.render(this);
+
+        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
         ThinGLUtils.end();
     }

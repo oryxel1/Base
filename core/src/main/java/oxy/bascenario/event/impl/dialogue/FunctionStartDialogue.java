@@ -10,7 +10,7 @@ public class FunctionStartDialogue extends FunctionEvent<StartDialogueEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         screen.getDialogueRenderer().start(event.getIndex(), event.getName(), event.getAssociation(), event.isBackground(), event.getDialogues());
         screen.setBusyDialogue(true);
     }

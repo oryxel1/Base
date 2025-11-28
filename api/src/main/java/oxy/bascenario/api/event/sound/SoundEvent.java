@@ -9,7 +9,6 @@ public class SoundEvent extends Event<SoundEvent> {
     private final Event event;
 
     public SoundEvent(int id, Event event) {
-        super(0);
         this.id = id;
         this.event = event;
     }

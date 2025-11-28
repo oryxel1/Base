@@ -23,7 +23,7 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         // Yes this is hardcoded, there won't be much element, but it's probably a better idea to add a proper
         // implement down later the line....
         final ElementRenderer<?> renderer;

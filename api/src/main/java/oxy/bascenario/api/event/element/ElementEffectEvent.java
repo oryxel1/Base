@@ -13,7 +13,6 @@ public class ElementEffectEvent extends Event<ElementEffectEvent> {
     private final Object[] values;
 
     public ElementEffectEvent(int id, Effect effect, Object... values) {
-        super(0);
         this.id = id;
         this.effect = effect;
         this.type = Type.ADD;
@@ -21,7 +20,6 @@ public class ElementEffectEvent extends Event<ElementEffectEvent> {
     }
 
     public ElementEffectEvent(int id, Effect effect, Type type) {
-        super(0);
         this.id = id;
         this.effect = effect;
         this.type = type;

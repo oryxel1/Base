@@ -12,7 +12,6 @@ public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
     private final boolean loop;
 
     public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex, boolean loop) {
-        super(0);
         this.id = id;
         this.mixTime = mixTime;
         this.animationName = animationName;
@@ -21,7 +20,6 @@ public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
     }
 
     public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex) {
-        super(0);
         this.id = id;
         this.mixTime = mixTime;
         this.animationName = animationName;

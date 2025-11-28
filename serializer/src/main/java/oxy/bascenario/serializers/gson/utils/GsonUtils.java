@@ -2,17 +2,11 @@ package oxy.bascenario.serializers.gson.utils;
 
 import com.google.gson.*;
 import lombok.Getter;
-import oxy.bascenario.api.effects.Fade;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.serializers.gson.FadeSerializer;
-import oxy.bascenario.serializers.gson.FileInfoSerializer;
 
 public class GsonUtils {
     @Getter
     private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
 //            .registerTypeAdapter(Event.class, new EventSerializer())
-            .registerTypeAdapter(FileInfo.class, new FileInfoSerializer())
-            .registerTypeAdapter(Fade.class, new FadeSerializer())
             .create();
 
     @SuppressWarnings("ALL")

@@ -10,7 +10,7 @@ public class FunctionCloseDialogue extends FunctionEvent<CloseDialogueEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         screen.getDialogueRenderer().stop();
 
     }

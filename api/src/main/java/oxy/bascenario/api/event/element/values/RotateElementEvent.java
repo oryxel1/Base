@@ -13,7 +13,6 @@ public class RotateElementEvent extends Event<RotateElementEvent> {
     private final Easing easing;
 
     public RotateElementEvent(int id, long duration, Vec3 rotation, Easing easing) {
-        super(0);
         this.id = id;
         this.duration = duration;
         this.rotation = rotation;

@@ -11,11 +11,10 @@ public class FunctionColorOverlay extends FunctionEvent<ColorOverlayEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
-        ElementRenderer<?> renderer = screen.getElements().get(event.getId().isEmpty() ? Integer.MIN_VALUE + event.layer().ordinal() : event.getId().get());
+    public void run(ScenarioScreen screen) {
+        ElementRenderer<?> renderer = screen.getElements().get(event.getId().isEmpty() ? Integer.MIN_VALUE + event.getRenderLayer().ordinal() : event.getId().get());
         if (renderer != null) {
-            renderer.getColor().set(event.getColor(), Math.max(0, event.getFade().duration()));
+            renderer.getColor().set(event.getColor(), Math.max(0, event.getDuration()));
         }
     }
-
 }

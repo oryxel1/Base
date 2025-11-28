@@ -7,8 +7,8 @@ import oxy.bascenario.api.event.api.Event;
 @Getter
 public class SetBackgroundEvent extends Event<SetBackgroundEvent> {
     private final Image background;
+
     public SetBackgroundEvent(Image background) {
-        super(0);
         this.background = background;
     }
 

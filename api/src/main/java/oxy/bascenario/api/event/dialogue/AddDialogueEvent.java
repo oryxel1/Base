@@ -10,7 +10,6 @@ public class AddDialogueEvent extends Event<AddDialogueEvent> {
     private final Dialogue[] dialogues;
 
     public AddDialogueEvent(int index, Dialogue... dialogues) {
-        super(0);
         this.index = index;
         this.dialogues = dialogues;
     }

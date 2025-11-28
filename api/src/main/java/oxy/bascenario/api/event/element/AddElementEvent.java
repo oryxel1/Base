@@ -11,7 +11,6 @@ public class AddElementEvent extends Event<AddElementEvent> {
     private final RenderLayer layer;
 
     public AddElementEvent(int id, Object element, RenderLayer layer) {
-        super(0);
         this.id = id;
         this.element = element;
         this.layer = layer;

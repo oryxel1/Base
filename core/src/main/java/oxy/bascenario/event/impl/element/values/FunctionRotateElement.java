@@ -12,7 +12,7 @@ public class FunctionRotateElement extends FunctionEvent<RotateElementEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         final ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
         if (renderer == null) {
             return;

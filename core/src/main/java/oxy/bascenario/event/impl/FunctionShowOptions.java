@@ -10,7 +10,7 @@ public class FunctionShowOptions extends FunctionEvent<ShowOptionsEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         screen.getOptionsRenderer().setOptions(event.getOptions());
         screen.setBusyOptions(true);
     }

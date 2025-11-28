@@ -11,7 +11,7 @@ public class FunctionElementEffect extends FunctionEvent<ElementEffectEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         final ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
         if (renderer == null) {
             return;

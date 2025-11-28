@@ -10,7 +10,6 @@ public class ShowOptionsEvent extends Event<ShowOptionsEvent> {
     private final Map<String, Integer> options;
 
     public ShowOptionsEvent(Map<String, Integer> options) {
-        super(0);
         this.options = options;
     }
 

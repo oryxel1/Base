@@ -8,7 +8,6 @@ public class RemoveElementEvent extends Event<RemoveElementEvent> {
     private final int id;
 
     public RemoveElementEvent(int id) {
-        super(0);
         this.id = id;
     }
 

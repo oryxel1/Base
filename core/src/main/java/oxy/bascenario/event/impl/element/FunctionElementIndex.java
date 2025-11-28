@@ -11,7 +11,7 @@ public class FunctionElementIndex extends FunctionEvent<ElementIndexEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         final ElementRenderer<?> renderer = screen.getElements().remove(this.event.getIndex());
         if (renderer == null) {
             return;

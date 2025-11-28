@@ -12,7 +12,6 @@ public class StartDialogueEvent extends Event<StartDialogueEvent> {
     private final Dialogue[] dialogues;
 
     public StartDialogueEvent(int index, String name, String association, boolean background, Dialogue... dialogues) {
-        super(0);
         this.index = index;
         this.name = name;
         this.association = association;
@@ -21,7 +20,6 @@ public class StartDialogueEvent extends Event<StartDialogueEvent> {
     }
 
     public StartDialogueEvent(int index, String name, String association, Dialogue... dialogues) {
-        super(0);
         this.index = index;
         this.name = name;
         this.association = association;

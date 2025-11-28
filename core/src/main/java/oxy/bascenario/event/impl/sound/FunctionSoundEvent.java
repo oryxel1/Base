@@ -11,7 +11,7 @@ public class FunctionSoundEvent extends FunctionEvent<SoundEvent> {
     }
 
     @Override
-    public void start(ScenarioScreen screen) {
+    public void run(ScenarioScreen screen) {
         switch (event.getEvent()) {
             case STOP -> AudioManager.getInstance().stop(event.getId());
             case PAUSE -> AudioManager.getInstance().pause(event.getId());
