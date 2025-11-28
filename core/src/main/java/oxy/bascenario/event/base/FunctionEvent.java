@@ -1,9 +1,7 @@
 package oxy.bascenario.event.base;
 
-import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
-import oxy.bascenario.api.event.api.RenderEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 
 @RequiredArgsConstructor
@@ -18,14 +16,6 @@ public abstract class FunctionEvent<T extends Event<?>> {
     public void start(ScenarioScreen screen) {}
     public void end(ScenarioScreen screen) {}
     public void render(ScenarioScreen screen) {}
-
-    public void serialize(JsonObject serialized) {
-        serialized.addProperty("duration", event.getDuration());
-        if (event instanceof RenderEvent<?> render) {
-            serialized.addProperty("render-layer", render.layer().name());
-        }
-    }
-    public abstract T deserialize(JsonObject serialized);
 
     public final boolean finished() {
         return System.currentTimeMillis() - this.start >= this.event.getDuration();

@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.shape.Circle;
@@ -8,7 +7,6 @@ import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.thingl.ImageRenderer;
@@ -18,7 +16,6 @@ import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.RectangleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.TriangleRenderer;
-import oxy.bascenario.serializers.utils.GsonUtils;
 
 public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     public FunctionAddElement(AddElementEvent event) {
@@ -49,17 +46,5 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
 
         renderer.resize(0, 0); // TODO: Properly do this?
         screen.getElements().put(event.getId(), renderer);
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        serialized.addProperty("id", event.getId());
-        serialized.add("object", GsonUtils.toJson(event.getElement()));
-        serialized.addProperty("render-layer", event.getLayer().name());
-    }
-
-    @Override
-    public AddElementEvent deserialize(JsonObject serialized) {
-        return new AddElementEvent(serialized.get("id").getAsInt(), GsonUtils.getGson().fromJson(serialized.get("object"), Object.class), RenderLayer.valueOf(serialized.get("render-layer").getAsString()));
     }
 }

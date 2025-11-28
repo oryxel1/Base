@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element.values;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -20,14 +19,5 @@ public class FunctionRotateElement extends FunctionEvent<RotateElementEvent> {
         }
 
         renderer.getRotation().set(AnimationUtils.toFunction(event.getEasing()), event.getRotation(), event.getDuration());
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-    }
-
-    @Override
-    public RotateElementEvent deserialize(JsonObject serialized) {
-        return null;
     }
 }

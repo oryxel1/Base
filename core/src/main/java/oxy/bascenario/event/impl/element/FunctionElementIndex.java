@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.element.ElementIndexEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -26,15 +25,5 @@ public class FunctionElementIndex extends FunctionEvent<ElementIndexEvent> {
         }
 
         screen.getElements().put(this.event.getNewIndex(), renderer);
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        // TODO.
-    }
-
-    @Override
-    public ElementIndexEvent deserialize(JsonObject serialized) {
-        return null; // TODO.
     }
 }

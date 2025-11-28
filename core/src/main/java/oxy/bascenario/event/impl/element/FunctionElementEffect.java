@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -23,10 +22,5 @@ public class FunctionElementEffect extends FunctionEvent<ElementEffectEvent> {
         } else {
             renderer.getEffects().put(event.getEffect(), event.getValues());
         }
-    }
-
-    @Override
-    public ElementEffectEvent deserialize(JsonObject serialized) {
-        return null;
     }
 }

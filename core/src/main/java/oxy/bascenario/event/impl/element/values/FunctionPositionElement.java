@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element.values;
 
-import com.google.gson.JsonObject;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.event.base.FunctionEvent;
@@ -26,14 +25,5 @@ public class FunctionPositionElement extends FunctionEvent<PositionElementEvent>
             case POSITION -> renderer.getPosition().set(function, event.getVec(), event.getDuration());
             case OFFSET -> renderer.getOffset().set(function, event.getVec(), event.getDuration());
         }
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-    }
-
-    @Override
-    public PositionElementEvent deserialize(JsonObject serialized) {
-        return null;
     }
 }

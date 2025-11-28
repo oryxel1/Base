@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.element;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -17,15 +16,5 @@ public class FunctionRemoveElement extends FunctionEvent<RemoveElementEvent> {
         if (renderer != null) {
             renderer.dispose();
         }
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        serialized.addProperty("id", event.getId());
-    }
-
-    @Override
-    public RemoveElementEvent deserialize(JsonObject serialized) {
-        return new RemoveElementEvent(serialized.get("id").getAsInt());
     }
 }

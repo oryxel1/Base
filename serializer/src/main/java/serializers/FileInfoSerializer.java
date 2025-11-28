@@ -1,4 +1,4 @@
-package oxy.bascenario.serializers;
+package serializers;
 
 import com.google.gson.*;
 import oxy.bascenario.api.utils.FileInfo;

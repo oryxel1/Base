@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.SpriteAnimationEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -20,15 +19,5 @@ public class FunctionSpriteAnimation extends FunctionEvent<SpriteAnimationEvent>
         }
 
         spriteRenderer.play(event.getAnimationName(), event.getTrackIndex(), event.getMixTime(), event.isLoop());
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        // TODO: Implement this.
-    }
-
-    @Override
-    public SpriteAnimationEvent deserialize(JsonObject serialized) {
-        return null; // TODO: Implement this.
     }
 }

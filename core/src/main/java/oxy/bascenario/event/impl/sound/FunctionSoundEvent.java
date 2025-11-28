@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.sound;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.managers.AudioManager;
@@ -18,16 +17,5 @@ public class FunctionSoundEvent extends FunctionEvent<SoundEvent> {
             case PAUSE -> AudioManager.getInstance().pause(event.getId());
             case RESUME -> AudioManager.getInstance().resume(event.getId());
         }
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        serialized.addProperty("id", event.getId());
-        serialized.addProperty("event-type", event.getEvent().name());
-    }
-
-    @Override
-    public SoundEvent deserialize(JsonObject serialized) {
-        return new SoundEvent(serialized.get("id").getAsInt(), SoundEvent.Event.valueOf(serialized.get("event-type").getAsString()));
     }
 }

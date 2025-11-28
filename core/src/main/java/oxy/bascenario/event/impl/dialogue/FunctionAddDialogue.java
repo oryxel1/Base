@@ -1,6 +1,5 @@
 package oxy.bascenario.event.impl.dialogue;
 
-import com.google.gson.JsonObject;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.event.base.FunctionEvent;
@@ -17,15 +16,5 @@ public class FunctionAddDialogue extends FunctionEvent<AddDialogueEvent> {
             screen.getDialogueRenderer().add(event.getIndex(), dialogue);
         }
         screen.setBusyDialogue(true);
-    }
-
-    @Override
-    public void serialize(JsonObject serialized) {
-        // TODO ....
-    }
-
-    @Override
-    public AddDialogueEvent deserialize(JsonObject serialized) {
-        return null; // TODO....
     }
 }
