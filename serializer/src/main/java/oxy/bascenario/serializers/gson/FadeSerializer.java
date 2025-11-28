@@ -1,4 +1,4 @@
-package serializers;
+package oxy.bascenario.serializers.gson;
 
 import com.google.gson.*;
 import oxy.bascenario.api.effects.Fade;

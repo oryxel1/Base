@@ -1,10 +1,9 @@
-package serializers;
+package oxy.bascenario.serializers.gson;
 
 import com.google.gson.*;
 import oxy.bascenario.api.utils.FileInfo;
 
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 public class FileInfoSerializer implements JsonSerializer<FileInfo>, JsonDeserializer<FileInfo> {
     @Override

@@ -1,11 +1,11 @@
-package serializers.utils;
+package oxy.bascenario.serializers.gson.utils;
 
 import com.google.gson.*;
 import lombok.Getter;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.utils.FileInfo;
-import serializers.FadeSerializer;
-import serializers.FileInfoSerializer;
+import oxy.bascenario.serializers.gson.FadeSerializer;
+import oxy.bascenario.serializers.gson.FileInfoSerializer;
 
 public class GsonUtils {
     @Getter
