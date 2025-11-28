@@ -3,11 +3,11 @@ package oxy.bascenario.event.impl;
 import com.google.gson.JsonObject;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Fade;
-import oxy.bascenario.api.event.impl.ColorOverlayEvent;
+import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
 public class FunctionColorOverlay extends FunctionEvent<ColorOverlayEvent> {
@@ -19,7 +19,7 @@ public class FunctionColorOverlay extends FunctionEvent<ColorOverlayEvent> {
     public void start(ScenarioScreen screen) {
         ElementRenderer<?> renderer = screen.getElements().get(event.getId().isEmpty() ? Integer.MIN_VALUE + event.layer().ordinal() : event.getId().get());
         if (renderer != null) {
-            renderer.overlayColor(event.getColor(), Math.max(0, event.getFade().duration()));
+            renderer.getColor().set(event.getColor(), Math.max(0, event.getFade().duration()));
         }
     }
 

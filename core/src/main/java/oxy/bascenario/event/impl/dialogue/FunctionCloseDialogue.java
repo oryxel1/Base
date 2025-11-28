@@ -1,7 +1,7 @@
 package oxy.bascenario.event.impl.dialogue;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.event.impl.dialogue.CloseDialogueEvent;
+import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 

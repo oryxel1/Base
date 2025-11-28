@@ -10,10 +10,10 @@ import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.font.Font;
 import oxy.bascenario.Launcher;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.elements.image.Image;
+import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.managers.TextureManager;
-import oxy.bascenario.utils.AnimationUtils;
+import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
@@ -98,7 +98,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
             color = color.withAlpha(Math.round(100 * globalFade.getValue()));
         }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("/assets/base/uis/preview/border.png"), 0, 0, 1920, 1080, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/preview/border.png"), 0, 0, 1920, 1080, color);
     }
 
     private void renderTitleBox() {
@@ -112,7 +112,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
             color = color.withAlpha(Math.round(255 * globalFade.getValue()));
         }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("/assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
     }
 
     private static Font TITLE, SUBTITLE;

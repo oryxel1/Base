@@ -1,10 +1,10 @@
 package oxy.bascenario.event.impl.element;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.event.impl.element.ElementIndexEvent;
+import oxy.bascenario.api.event.element.ElementIndexEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 
 public class FunctionElementIndex extends FunctionEvent<ElementIndexEvent> {
     public FunctionElementIndex(ElementIndexEvent event) {

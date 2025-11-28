@@ -3,8 +3,8 @@ package oxy.bascenario.api;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.api.elements.image.Image;
-import oxy.bascenario.api.event.Event;
+import oxy.bascenario.api.render.elements.image.Image;
+import oxy.bascenario.api.event.api.Event;
 
 import java.util.ArrayList;
 import java.util.List;

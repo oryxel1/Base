@@ -1,0 +1,39 @@
+package oxy.bascenario.event.impl.element.values;
+
+import com.google.gson.JsonObject;
+import net.lenni0451.commons.animation.easing.EasingFunction;
+import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.event.base.FunctionEvent;
+import oxy.bascenario.screens.ScenarioScreen;
+import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
+import oxy.bascenario.utils.animation.AnimationUtils;
+
+public class FunctionPositionElement extends FunctionEvent<PositionElementEvent> {
+    public FunctionPositionElement(PositionElementEvent event) {
+        super(event);
+    }
+
+    @Override
+    public void start(ScenarioScreen screen) {
+        final ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        if (renderer == null) {
+            return;
+        }
+
+        final EasingFunction function = AnimationUtils.toFunction(event.getEasing());
+        switch (event.getType()) {
+            case SCALE -> renderer.getScale().set(function, event.getVec(), event.getDuration());
+            case POSITION -> renderer.getPosition().set(function, event.getVec(), event.getDuration());
+            case OFFSET -> renderer.getOffset().set(function, event.getVec(), event.getDuration());
+        }
+    }
+
+    @Override
+    public void serialize(JsonObject serialized) {
+    }
+
+    @Override
+    public PositionElementEvent deserialize(JsonObject serialized) {
+        return null;
+    }
+}

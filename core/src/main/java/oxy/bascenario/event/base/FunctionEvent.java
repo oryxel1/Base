@@ -2,8 +2,8 @@ package oxy.bascenario.event.base;
 
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.api.event.Event;
-import oxy.bascenario.api.event.RenderEvent;
+import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.api.RenderEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 
 @RequiredArgsConstructor

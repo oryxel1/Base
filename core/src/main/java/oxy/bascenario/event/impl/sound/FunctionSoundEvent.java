@@ -1,7 +1,7 @@
 package oxy.bascenario.event.impl.sound;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.event.impl.sound.SoundEvent;
+import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.ScenarioScreen;

@@ -8,9 +8,9 @@ import java.util.List;
 
 import net.raphimc.thingl.text.font.Font;
 import net.raphimc.thingl.text.font.impl.FreeTypeFont;
-import oxy.bascenario.api.elements.text.FontType;
-import oxy.bascenario.api.elements.text.Text;
-import oxy.bascenario.api.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.FontType;
+import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
@@ -56,7 +56,13 @@ public class FontUtils {
 
     public static Font loadSpecificFont(FileInfo font, int scale) {
         try {
-            final byte[] fontData = Files.readAllBytes(new File(font.path()).toPath());
+            final byte[] fontData;
+            if (font.internal()) {
+                fontData = FontUtils.class.getResourceAsStream("/" + font.path()).readAllBytes();
+            } else {
+                fontData = Files.readAllBytes(new File(font.path()).toPath());
+            }
+
             return new FreeTypeFont(fontData, scale);
         } catch (IOException e) {
             throw new RuntimeException(e);

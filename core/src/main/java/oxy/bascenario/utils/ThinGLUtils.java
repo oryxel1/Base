@@ -1,13 +1,91 @@
 package oxy.bascenario.utils;
 
 import net.lenni0451.commons.color.Color;
+import net.lenni0451.commons.color.ColorUtils;
 import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.program.post.impl.OutlineProgram;
 import net.raphimc.thingl.util.DefaultGLStates;
 import org.joml.Matrix4fStack;
 import org.lwjgl.opengl.GL11C;
+import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.utils.math.Axis;
+
+import java.util.Map;
 
 public final class ThinGLUtils {
     public static Matrix4fStack GLOBAL_RENDER_STACK;
+
+    public static void renderEffect(final Runnable runnable, final Map<Effect, Object[]> effects) {
+        effects.forEach((k, v) -> {
+            switch (k) {
+                case HOLOGRAM -> {
+                    ThinGL.programs().getColorTweak().bindInput();
+                    runnable.run();
+                    ThinGL.programs().getColorTweak().unbindInput();
+
+                    ThinGL.programs().getColorTweak().configureParameters(Color.fromRGBA(30, 97, 205, 60));
+                    ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
+                    ThinGL.programs().getColorTweak().configureParameters(Color.GRAY.withAlphaF(0.2f));
+                    if (v[0] == Axis.X) {
+                        for (int x = (int) -(1920 * 20f); x < 0; x += 200) {
+                            long index = System.currentTimeMillis() + x;
+                            index %= (long) (1920 * 20f);
+
+                            ThinGL.programs().getColorTweak().render((index / 20f), 0, (index / 20f) + 4, 1080);
+                        }
+                    } else {
+                        for (int y = (int) -(1080 * 20f); y < 0; y += 200) {
+                            long index = System.currentTimeMillis() + y;
+                            index %= (long) (1080 * 20f);
+
+                            ThinGL.programs().getColorTweak().render(0, (index / 20f), 1920, (index / 20f) + 4);
+                        }
+                    }
+
+                    ThinGL.programs().getColorTweak().clearInput();
+                }
+
+                case RAINBOW -> {
+                    // Yes I do know there is a rainbow shader in ThinGL, but this required less input sooooo.
+                    ThinGL.programs().getColorTweak().bindInput();
+                    runnable.run();
+                    ThinGL.programs().getColorTweak().unbindInput();
+
+                    if (v[0] == Axis.X) {
+                        for (int x = 0; x < 1920; x += 5) {
+                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(x, (Float) v[1]).getRGB()).withAlphaF(0.3f));
+                            ThinGL.programs().getColorTweak().render(x, 0, x + 5, 1080);
+                        }
+                    } else {
+                        for (int y = 0; y < 1080; y += 5) {
+                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(y, (Float) v[1]).getRGB()).withAlphaF(0.3f));
+                            ThinGL.programs().getColorTweak().render(0, y, 1920, y + 5);
+                        }
+                    }
+
+                    ThinGL.programs().getColorTweak().clearInput();
+                }
+
+                case BLUR -> {
+                    ThinGL.programs().getGaussianBlur().bindInput();
+                    runnable.run();
+                    ThinGL.programs().getGaussianBlur().unbindInput();
+                    ThinGL.programs().getGaussianBlur().configureParameters((Integer) v[0]);
+                    ThinGL.programs().getGaussianBlur().render(0, 0,1920, 1080);
+                    ThinGL.programs().getGaussianBlur().clearInput();
+                }
+
+                case OUTLINE -> {
+                    ThinGL.programs().getOutline().bindInput();
+                    runnable.run();
+                    ThinGL.programs().getOutline().unbindInput();
+                    ThinGL.programs().getOutline().configureParameters((Integer) v[0], (Integer) v[1]);
+                    ThinGL.programs().getOutline().renderFullscreen();
+                    ThinGL.programs().getOutline().clearInput();
+                }
+            }
+        });
+    }
 
     public static void render(final Runnable runnable) {
         ThinGL.globalUniforms().getViewMatrix().pushMatrix().identity();

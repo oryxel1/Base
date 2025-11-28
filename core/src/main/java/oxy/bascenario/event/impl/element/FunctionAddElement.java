@@ -1,23 +1,23 @@
 package oxy.bascenario.event.impl.element;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.elements.RendererImage;
-import oxy.bascenario.api.elements.Sprite;
-import oxy.bascenario.api.elements.shape.Circle;
-import oxy.bascenario.api.elements.shape.Rectangle;
-import oxy.bascenario.api.elements.shape.Triangle;
-import oxy.bascenario.api.elements.text.Text;
-import oxy.bascenario.api.event.impl.element.AddElementEvent;
+import oxy.bascenario.api.render.elements.RendererImage;
+import oxy.bascenario.api.render.elements.Sprite;
+import oxy.bascenario.api.render.elements.shape.Circle;
+import oxy.bascenario.api.render.elements.shape.Rectangle;
+import oxy.bascenario.api.render.elements.shape.Triangle;
+import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.ImageRenderer;
-import oxy.bascenario.screens.renderer.SpriteRenderer;
-import oxy.bascenario.screens.renderer.TextRenderer;
-import oxy.bascenario.screens.renderer.base.ElementRenderer;
-import oxy.bascenario.screens.renderer.shape.CircleRenderer;
-import oxy.bascenario.screens.renderer.shape.RectangleRenderer;
-import oxy.bascenario.screens.renderer.shape.TriangleRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.ImageRenderer;
+import oxy.bascenario.screens.renderer.element.SpriteRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.TextRenderer;
+import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.shape.RectangleRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.shape.TriangleRenderer;
 import oxy.bascenario.serializers.utils.GsonUtils;
 
 public class FunctionAddElement extends FunctionEvent<AddElementEvent> {

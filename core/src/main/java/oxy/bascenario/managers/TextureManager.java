@@ -63,7 +63,7 @@ public class TextureManager {
 
     public Texture2D getTexture(String path) {
         if (!this.textures.containsKey(path)) {
-            loadTexture(path, Objects.requireNonNull(TextureManager.class.getResourceAsStream(path)));
+            loadTexture(path, Objects.requireNonNull(TextureManager.class.getResourceAsStream("/" + path)));
         }
 
         return this.textures.get(path).key();

@@ -11,6 +11,7 @@ dependencies {
 
     implementation(libs.raphimc.thingl)
     implementation(libs.commons.animations)
+    implementation(libs.unnamed.mocha)
 
     implementation(libs.lwjgl.base)
     implementation(libs.lwjgl.opengl)

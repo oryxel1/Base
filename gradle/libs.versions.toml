@@ -7,6 +7,7 @@ libgdx = "1.13.1"
 spine = "4.2.5"
 thingl = "0.0.11-SNAPSHOT"
 commons = "1.7.1"
+mocha = "3.0.1"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -32,3 +33,5 @@ gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }
+
+unnamed-mocha = { module = "team.unnamed:mocha", version.ref = "mocha" }

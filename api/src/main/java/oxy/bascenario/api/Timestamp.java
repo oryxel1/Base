@@ -1,6 +1,6 @@
 package oxy.bascenario.api;
 
-import oxy.bascenario.api.event.Event;
+import oxy.bascenario.api.event.api.Event;
 
 import java.util.List;
 

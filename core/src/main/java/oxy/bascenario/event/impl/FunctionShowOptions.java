@@ -1,7 +1,7 @@
 package oxy.bascenario.event.impl;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 

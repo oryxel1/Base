@@ -1,0 +1,41 @@
+package oxy.bascenario.api.event;
+
+import lombok.Getter;
+import oxy.bascenario.api.event.api.Event;
+
+@Getter
+public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
+    private final int id;
+    private final float mixTime;
+    private final String animationName;
+    private final int trackIndex;
+    private final boolean loop;
+
+    public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex, boolean loop) {
+        super(0);
+        this.id = id;
+        this.mixTime = mixTime;
+        this.animationName = animationName;
+        this.trackIndex = trackIndex;
+        this.loop = loop;
+    }
+
+    public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex) {
+        super(0);
+        this.id = id;
+        this.mixTime = mixTime;
+        this.animationName = animationName;
+        this.trackIndex = trackIndex;
+        this.loop = true;
+    }
+
+    @Override
+    public String type() {
+        return "sprite-animation";
+    }
+
+    @Override
+    public SpriteAnimationEvent empty() {
+        return new SpriteAnimationEvent(0, 0, "Idle_01", 0);
+    }
+}

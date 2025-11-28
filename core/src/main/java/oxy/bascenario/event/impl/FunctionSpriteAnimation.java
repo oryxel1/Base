@@ -1,11 +1,11 @@
 package oxy.bascenario.event.impl;
 
 import com.google.gson.JsonObject;
-import oxy.bascenario.api.event.impl.SpriteAnimationEvent;
+import oxy.bascenario.api.event.SpriteAnimationEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.SpriteRenderer;
-import oxy.bascenario.screens.renderer.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.element.SpriteRenderer;
+import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 
 public class FunctionSpriteAnimation extends FunctionEvent<SpriteAnimationEvent> {
     public FunctionSpriteAnimation(SpriteAnimationEvent event) {

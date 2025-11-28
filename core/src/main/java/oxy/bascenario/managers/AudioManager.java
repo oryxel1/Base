@@ -9,6 +9,7 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 import oxy.bascenario.api.effects.Fade;
 import oxy.bascenario.api.effects.Sound;
+import oxy.bascenario.utils.FileUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ public class AudioManager {
     private final Map<Integer, CachedSound> cachedSounds = new HashMap<>();
 
     public void play(Sound sound) {
-        final Music music = Gdx.audio.newMusic(sound.file().internal() ? Gdx.files.internal(sound.file().path()) : new FileHandle(sound.file().path()));
+        final Music music = Gdx.audio.newMusic(FileUtils.toHandle(sound.file()));
         music.play();
 
         boolean fade = Fade.canFade(sound.fadeIn());

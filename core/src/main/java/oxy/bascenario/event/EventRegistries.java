@@ -1,17 +1,18 @@
 package oxy.bascenario.event;
 
-import oxy.bascenario.api.event.Event;
-import oxy.bascenario.api.event.impl.ColorOverlayEvent;
-import oxy.bascenario.api.event.impl.SetBackgroundEvent;
-import oxy.bascenario.api.event.impl.SpriteAnimationEvent;
-import oxy.bascenario.api.event.impl.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.impl.dialogue.CloseDialogueEvent;
-import oxy.bascenario.api.event.impl.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.impl.dialogue.StartDialogueEvent;
-import oxy.bascenario.api.event.impl.element.*;
-import oxy.bascenario.api.event.impl.element.effect.OverlayEffectEvent;
-import oxy.bascenario.api.event.impl.sound.PlaySoundEvent;
-import oxy.bascenario.api.event.impl.sound.SoundEvent;
+import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.SpriteAnimationEvent;
+import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
+import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.element.*;
+import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.sound.PlaySoundEvent;
+import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.*;
 import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
@@ -19,7 +20,8 @@ import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionStartDialogue;
 import oxy.bascenario.event.impl.element.*;
 import oxy.bascenario.event.impl.FunctionColorOverlay;
-import oxy.bascenario.event.impl.element.effect.FunctionOverlayEffect;
+import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
+import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 
@@ -38,10 +40,12 @@ public class EventRegistries {
 
         EVENT_TO_FUNCTION.put(AddElementEvent.class, FunctionAddElement.class);
         EVENT_TO_FUNCTION.put(RemoveElementEvent.class, FunctionRemoveElement.class);
-        EVENT_TO_FUNCTION.put(MoveElementEvent.class, FunctionMoveElement.class);
         EVENT_TO_FUNCTION.put(ElementIndexEvent.class, FunctionElementIndex.class);
-        EVENT_TO_FUNCTION.put(ScaleElementEvent.class, FunctionScaleElement.class);
-        EVENT_TO_FUNCTION.put(OverlayEffectEvent.class, FunctionOverlayEffect.class);
+
+        EVENT_TO_FUNCTION.put(PositionElementEvent.class, FunctionPositionElement.class);
+        EVENT_TO_FUNCTION.put(RotateElementEvent.class, FunctionRotateElement.class);
+
+        EVENT_TO_FUNCTION.put(ElementEffectEvent.class, FunctionElementEffect.class);
 
         EVENT_TO_FUNCTION.put(StartDialogueEvent.class, FunctionStartDialogue.class);
         EVENT_TO_FUNCTION.put(AddDialogueEvent.class, FunctionAddDialogue.class);

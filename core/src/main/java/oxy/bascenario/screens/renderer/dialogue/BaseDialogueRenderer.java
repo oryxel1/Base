@@ -7,7 +7,7 @@ import net.raphimc.thingl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import net.raphimc.thingl.text.font.Font;
-import oxy.bascenario.api.elements.Dialogue;
+import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.utils.FontUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;

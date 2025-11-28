@@ -1,0 +1,32 @@
+package oxy.bascenario.screens.renderer.element.base;
+
+import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.utils.ThinGLUtils;
+
+import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+
+public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
+    private static final float DEGREES_TO_RADIANS = 0.017453292519943295f;
+
+    public ThinGLElementRenderer(T element, RenderLayer layer) {
+        super(element, layer);
+    }
+
+    @Override
+    protected final void render() {
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
+        GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
+        if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
+            renderThinGL();
+        }
+
+        ThinGLUtils.renderEffect(this::renderThinGL, this.effects);
+        GLOBAL_RENDER_STACK.popMatrix();
+    }
+
+    protected abstract void renderThinGL();
+}
