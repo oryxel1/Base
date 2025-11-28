@@ -35,6 +35,9 @@ public abstract class ElementRenderer<T> {
     }
 
     protected abstract void render();
+    public boolean selfDestruct() {
+        return false; // Allow the element to automatically delete itself :D
+    }
 
     // A bit misleading, will also get called on start...
     public void resize(int width, int height) {}

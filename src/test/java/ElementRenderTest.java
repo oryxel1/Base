@@ -6,6 +6,7 @@ import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
@@ -40,6 +41,7 @@ public class ElementRenderTest {
         final Text text = new Text(segments, 42);
 
         scenario.add(0,
+                new AddElementEvent(-2, new LocationInfo("The gray room", 2000, 500), RenderLayer.ABOVE_DIALOGUE),
                 new AddElementEvent(-1, new Rectangle(1920, 1080, Color.GRAY, false), RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(1, text, RenderLayer.TOP),

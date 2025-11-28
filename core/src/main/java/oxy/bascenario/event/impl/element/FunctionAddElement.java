@@ -1,5 +1,6 @@
 package oxy.bascenario.event.impl.element;
 
+import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.shape.Circle;
@@ -11,6 +12,7 @@ import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.thingl.ImageRenderer;
 import oxy.bascenario.screens.renderer.element.SpriteRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.LocationInfoRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.TextRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
@@ -24,8 +26,7 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        // Yes this is hardcoded, there won't be much element, but it's probably a better idea to add a proper
-        // implement down later the line....
+        // It's a bunch of if else yes, who cares anyway, not like it's a mess.
         final ElementRenderer<?> renderer;
         final Object element = event.getElement();
         if (element instanceof Sprite sprite) {
@@ -40,6 +41,8 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
             renderer = new CircleRenderer(circle, event.getLayer());
         } else if (element instanceof Triangle triangle) {
             renderer = new TriangleRenderer(triangle, event.getLayer());
+        } else if (element instanceof LocationInfo info) {
+            renderer = new LocationInfoRenderer(info, event.getLayer());
         } else {
             throw new RuntimeException("Can't find the renderer for the element class type: " + event.getElement().getClass());
         }

@@ -29,7 +29,7 @@ public class AnimationUtils {
     }
 
     public DynamicAnimation build(long duration, float start, float end, EasingFunction function) {
-        final DynamicAnimation animation = new DynamicAnimation(function, EasingMode.EASE_IN_OUT, duration, start);
+        final DynamicAnimation animation = new DynamicAnimation(function, EasingMode.EASE_IN_OUT, Math.max(0, duration), start);
         return animation.setTarget(end);
     }
 
