@@ -1,17 +1,14 @@
 package oxy.bascenario.api.event.sound;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
+@RequiredArgsConstructor
 @Getter
 public class SoundEvent extends Event<SoundEvent> {
     private final int id;
     private final Event event;
-
-    public SoundEvent(int id, Event event) {
-        this.id = id;
-        this.event = event;
-    }
 
     @Override
     public String type() {

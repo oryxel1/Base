@@ -1,15 +1,13 @@
 package oxy.bascenario.api.event.element;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
+@RequiredArgsConstructor
 @Getter
 public class RemoveElementEvent extends Event<RemoveElementEvent> {
     private final int id;
-
-    public RemoveElementEvent(int id) {
-        this.id = id;
-    }
 
     @Override
     public String type() {

@@ -1,8 +1,10 @@
 package oxy.bascenario.api.event.animation;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
+@RequiredArgsConstructor
 @Getter
 public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
     private final int id;
@@ -10,14 +12,6 @@ public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
     private final String animationName;
     private final int trackIndex;
     private final boolean loop;
-
-    public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex, boolean loop) {
-        this.id = id;
-        this.mixTime = mixTime;
-        this.animationName = animationName;
-        this.trackIndex = trackIndex;
-        this.loop = loop;
-    }
 
     public SpriteAnimationEvent(int id, float mixTime, String animationName, int trackIndex) {
         this.id = id;

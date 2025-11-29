@@ -1,20 +1,16 @@
 package oxy.bascenario.api.event.element;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.render.RenderLayer;
 
+@RequiredArgsConstructor
 @Getter
 public class AddElementEvent extends Event<AddElementEvent> {
     private final int id;
     private final Object element;
     private final RenderLayer layer;
-
-    public AddElementEvent(int id, Object element, RenderLayer layer) {
-        this.id = id;
-        this.element = element;
-        this.layer = layer;
-    }
 
     @Override
     public String type() {

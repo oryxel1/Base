@@ -1,10 +1,12 @@
 package oxy.bascenario.api.event.element.values;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.math.Vec2;
 
+@RequiredArgsConstructor
 @Getter
 public class PositionElementEvent extends Event<PositionElementEvent> {
     private final int id;
@@ -12,14 +14,6 @@ public class PositionElementEvent extends Event<PositionElementEvent> {
     private final Vec2 vec;
     private final Easing easing;
     private final Type type;
-
-    public PositionElementEvent(int id, long duration, Vec2 vec, Easing easing, Type type) {
-        this.id = id;
-        this.duration = duration;
-        this.vec = vec;
-        this.easing = easing;
-        this.type = type;
-    }
 
     @Override
     public String type() {
