@@ -16,9 +16,13 @@ import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.FileUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 
+import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+
 // The fact we're combining libgdx-spine way of rendering with ThinGL is a literal dog shit implement xDDDD
 // It's fine however, I don't really care that much...
 public class SpriteRenderer extends ElementRenderer<Sprite> {
+    private static final float DEGREES_TO_RADIANS = 0.017453292519943295f;
+
     private OrthographicCamera camera;
     private PolygonSpriteBatch batch;
     private SkeletonRenderer renderer;
@@ -102,6 +106,15 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         }
 
         ThinGLUtils.start(); // Now start rendering ThinGL again!
+
+        // Should allow for proper offsetting and stuff, won't work with sprite inside sprite, but really if they do that, they're fucking crazy.
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
+        GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
+        this.subElements.values().forEach(ElementRenderer::renderAll);
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 
     private void updateSkeleton(Skeleton skeleton) {

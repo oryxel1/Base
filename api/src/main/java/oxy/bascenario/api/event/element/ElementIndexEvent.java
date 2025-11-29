@@ -4,11 +4,25 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
-@RequiredArgsConstructor
 @Getter
 public class ElementIndexEvent extends Event<ElementIndexEvent> {
-    private final int index, newIndex;
+    private final int mainIndex, newIndex;
+    private final Integer subIndex;
     private final boolean swap;
+
+    public ElementIndexEvent(int mainIndex, int index, int newIndex, boolean swap) {
+        this.mainIndex = mainIndex;
+        this.subIndex = index;
+        this.newIndex = newIndex;
+        this.swap = swap;
+    }
+
+    public ElementIndexEvent(int index, int newIndex, boolean swap) {
+        this.mainIndex = index;
+        this.subIndex = null;
+        this.newIndex = newIndex;
+        this.swap = swap;
+    }
 
     @Override
     public String type() {

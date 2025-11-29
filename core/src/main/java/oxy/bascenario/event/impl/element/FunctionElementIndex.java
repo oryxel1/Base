@@ -12,18 +12,35 @@ public class FunctionElementIndex extends FunctionEvent<ElementIndexEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().remove(this.event.getIndex());
-        if (renderer == null) {
-            return;
-        }
-
-        if (event.isSwap()) {
-            final ElementRenderer<?> swap = screen.getElements().get(this.event.getNewIndex());
-            if (swap != null) {
-                screen.getElements().put(this.event.getIndex(), swap);
+        if (event.getSubIndex() != null) {
+            final ElementRenderer<?> renderer = screen.getElements().get(this.event.getMainIndex());
+            if (renderer == null) {
+                return;
             }
-        }
 
-        screen.getElements().put(this.event.getNewIndex(), renderer);
+            final ElementRenderer<?> subRenderer = renderer.getSubElements().remove(this.event.getSubIndex());
+            if (event.isSwap()) {
+                final ElementRenderer<?> swap = renderer.getSubElements().get(this.event.getNewIndex());
+                if (swap != null) {
+                    renderer.getSubElements().put(this.event.getSubIndex(), swap);
+                }
+            }
+
+            renderer.getSubElements().put(this.event.getNewIndex(), subRenderer);
+        } else {
+            final ElementRenderer<?> renderer = screen.getElements().remove(this.event.getMainIndex());
+            if (renderer == null) {
+                return;
+            }
+
+            if (event.isSwap()) {
+                final ElementRenderer<?> swap = screen.getElements().get(this.event.getNewIndex());
+                if (swap != null) {
+                    screen.getElements().put(this.event.getSubIndex(), swap);
+                }
+            }
+
+            screen.getElements().put(this.event.getNewIndex(), renderer);
+        }
     }
 }

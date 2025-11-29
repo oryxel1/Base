@@ -44,6 +44,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(PlaySoundEvent.class, FunctionPlaySoundEvent.class);
 
         EVENT_TO_FUNCTION.put(AddElementEvent.class, FunctionAddElement.class);
+        EVENT_TO_FUNCTION.put(AttachElementEvent.class, FunctionAttachElement.class);
         EVENT_TO_FUNCTION.put(RemoveElementEvent.class, FunctionRemoveElement.class);
         EVENT_TO_FUNCTION.put(ElementIndexEvent.class, FunctionElementIndex.class);
 

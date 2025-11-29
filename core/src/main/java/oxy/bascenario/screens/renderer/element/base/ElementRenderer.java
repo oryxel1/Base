@@ -13,7 +13,6 @@ import oxy.bascenario.utils.animation.math.Vec3Animations;
 import oxy.bascenario.api.utils.math.Vec2;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -30,6 +29,10 @@ public abstract class ElementRenderer<T> {
     protected final Vec3Animations rotation = new Vec3Animations();
 
     protected final Map<Effect, Object[]> effects = new HashMap<>();
+
+    // This will allow attaching elements... Of course, I won't allow for element inside element and inside another element.
+    // However, I will allow users to bypass that using the api, since well if they go that far, why not?
+    protected final Map<Integer, ElementRenderer<?>> subElements = new HashMap<>();
 
     public final void renderAll() {
         render();

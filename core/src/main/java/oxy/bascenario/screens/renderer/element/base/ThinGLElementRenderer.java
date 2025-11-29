@@ -20,6 +20,10 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
+
+        // TODO: The offsetting wouldn't works with Sprite Rendering, but welp, if they put sprite inside an element, they're fucking crazy.
+        this.subElements.values().forEach(ElementRenderer::renderAll);
+
         if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
             renderThinGL();
         }

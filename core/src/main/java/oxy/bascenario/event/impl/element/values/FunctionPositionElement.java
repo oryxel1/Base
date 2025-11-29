@@ -14,9 +14,16 @@ public class FunctionPositionElement extends FunctionEvent<PositionElementEvent>
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
         if (renderer == null) {
             return;
+        }
+
+        if (event.getSubId() != null) {
+            renderer = renderer.getSubElements().get(this.event.getSubId());
+            if (renderer == null) {
+                return;
+            }
         }
 
         final EasingFunction function = AnimationUtils.toFunction(event.getEasing());

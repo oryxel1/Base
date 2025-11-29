@@ -4,10 +4,20 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
-@RequiredArgsConstructor
 @Getter
 public class RemoveElementEvent extends Event<RemoveElementEvent> {
     private final int id;
+    private final Integer subId;
+
+    public RemoveElementEvent(int id, Integer subId) {
+        this.id = id;
+        this.subId = subId;
+    }
+
+    public RemoveElementEvent(int id) {
+        this.id = id;
+        this.subId = null;
+    }
 
     @Override
     public String type() {

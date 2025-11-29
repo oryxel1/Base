@@ -13,9 +13,16 @@ public class FunctionRotateElement extends FunctionEvent<RotateElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
         if (renderer == null) {
             return;
+        }
+
+        if (event.getSubId() != null) {
+            renderer = renderer.getSubElements().get(this.event.getSubId());
+            if (renderer == null) {
+                return;
+            }
         }
 
         renderer.getRotation().set(AnimationUtils.toFunction(event.getEasing()), event.getRotation(), event.getDuration());

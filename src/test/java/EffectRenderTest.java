@@ -6,7 +6,6 @@ import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
-import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
