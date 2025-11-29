@@ -1,0 +1,71 @@
+package oxy.bascenario.managers;
+
+import lombok.Getter;
+import oxy.bascenario.api.animation.Animation;
+import oxy.bascenario.api.animation.AnimationTimeline;
+import oxy.bascenario.api.animation.AnimationValue;
+import oxy.bascenario.api.effects.Easing;
+
+import java.util.HashMap;
+
+public class AnimationManager extends HashMap<String, Animation> {
+    @Getter
+    private static final AnimationManager instance = new AnimationManager();
+
+    private AnimationManager() {
+        if (instance != null) {
+            throw new RuntimeException("This class can only create one instance!");
+        }
+
+        // Initial some test, default animations...
+
+        this.put(
+                "bascenarioengine:default-shake",
+                Animation.builder()
+                        .name("Default Shake")
+                        .offset(new AnimationValue(new String[] {"math.abs(query.offset(0) + 19.2) <= 0.0001 ? 19.2 : -19.2", "0"}, "0.08", Easing.LINEAR))
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.08", Easing.LINEAR))
+                        .maxDuration(0.26f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "bascenarioengine:down-then-up",
+                Animation.builder()
+                        .name("down-then-up")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "108"}, "0.3", Easing.LINEAR)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
+                        .maxDuration(0.3f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "bascenarioengine:hangry",
+                Animation.builder()
+                        .name("Default Angry")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-108"}, "0.2", Easing.LINEAR)).build())
+                        .put(0.2f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.2", Easing.LINEAR)).build())
+                        .put(0.4f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-108"}, "0.2", Easing.LINEAR)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
+                        .maxDuration(0.6f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "bascenarioengine:test",
+                Animation.builder()
+                        .name("Dev Test")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"-960", "0"}, "1", Easing.LINEAR)).build())
+                        .put(1f, AnimationTimeline.builder().scale(new AnimationValue(new String[] {"1.5", "1.5"}, "0.3", Easing.QUAD)).build())
+                        .put(1.3f, AnimationTimeline.builder().scale(new AnimationValue(new String[] {"1", "1"}, "0.3", Easing.QUAD)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.1", Easing.LINEAR))
+                        .maxDuration(1.6f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+    }
+
+}

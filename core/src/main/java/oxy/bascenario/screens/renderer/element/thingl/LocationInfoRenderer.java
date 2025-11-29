@@ -25,8 +25,6 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
 
     public LocationInfoRenderer(LocationInfo element, RenderLayer layer) {
         super(element, layer);
-
-
     }
 
     @Override

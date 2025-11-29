@@ -4,7 +4,15 @@ import lombok.experimental.UtilityClass;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.api.utils.math.Vec2;
+import oxy.bascenario.api.utils.math.Vec3;
+import oxy.bascenario.utils.MochaUtils;
+import team.unnamed.mocha.runtime.Scope;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @UtilityClass
 public class AnimationUtils {
@@ -36,6 +44,30 @@ public class AnimationUtils {
     public static class DummyAnimation extends DynamicAnimation {
         public DummyAnimation(float target) {
             super(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1, target);
+        }
+    }
+
+    public Vec3 evalVec3(Scope scope, AnimationValue expression) {
+        return evalVec3(scope, expression, false);
+    }
+
+    public Vec2 evalVec2(Scope scope, AnimationValue expression) {
+        return evalVec2(scope, expression, false);
+    }
+
+    public Vec3 evalVec3(Scope scope, AnimationValue expression, boolean nullable) {
+        try {
+            return new Vec3((float) MochaUtils.eval(scope, expression.value()[0]).getAsNumber(), (float) MochaUtils.eval(scope, expression.value()[1]).getAsNumber(), (float) MochaUtils.eval(scope, expression.value()[2]).getAsNumber());
+        } catch (IOException ignored) {
+            return nullable ? null : new Vec3(0, 0, 0);
+        }
+    }
+
+    public Vec2 evalVec2(Scope scope, AnimationValue expression, boolean nullable) {
+        try {
+            return new Vec2((float) MochaUtils.eval(scope, expression.value()[0]).getAsNumber(), (float) MochaUtils.eval(scope, expression.value()[1]).getAsNumber());
+        } catch (IOException ignored) {
+            return nullable ? null : new Vec2(0, 0);
         }
     }
 }

@@ -21,7 +21,7 @@ public class Vec2Animations {
         this.y = AnimationUtils.dummy(vec2.y());
     }
 
-    public void set(EasingFunction function, Vec2 vec2, long duration) {
+    public void set(EasingFunction function, Vec2 vec2, long duration, boolean ignoreIfPlaying) {
         this.function = function;
         if (duration <= 0) {
             this.x = AnimationUtils.dummy(vec2.x());
@@ -29,8 +29,20 @@ public class Vec2Animations {
             return;
         }
 
-        this.x = AnimationUtils.build(duration, this.x.getValue(), vec2.x(), this.function);
-        this.y = AnimationUtils.build(duration, this.y.getValue(), vec2.y(), this.function);
+        if (!this.x.isRunning() || ignoreIfPlaying) {
+            this.x = AnimationUtils.build(duration, this.x.getValue(), vec2.x(), this.function);
+        }
+        if (!this.y.isRunning() || ignoreIfPlaying) {
+            this.y = AnimationUtils.build(duration, this.y.getValue(), vec2.y(), this.function);
+        }
+    }
+
+    public void set(EasingFunction function, Vec2 vec2, long duration) {
+        this.set(function, vec2, duration, true);
+    }
+
+    public boolean playing() {
+        return this.x.isRunning() || this.y.isRunning();
     }
 
     public float x() {

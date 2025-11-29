@@ -1,6 +1,6 @@
-package oxy.bascenario.event.impl;
+package oxy.bascenario.event.impl.animation;
 
-import oxy.bascenario.api.event.SpriteAnimationEvent;
+import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.SpriteRenderer;

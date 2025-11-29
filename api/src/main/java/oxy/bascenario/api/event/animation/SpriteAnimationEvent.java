@@ -1,4 +1,4 @@
-package oxy.bascenario.api.event;
+package oxy.bascenario.api.event.animation;
 
 import lombok.Getter;
 import oxy.bascenario.api.event.api.Event;
