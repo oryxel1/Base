@@ -29,8 +29,10 @@ public final class AnimationTicker {
     private final Animation animation;
 
     private final ScenarioScreen screen;
-    public AnimationTicker(ScenarioScreen screen, ElementRenderer<?> renderer, Animation animation) {
+    private final boolean loop;
+    public AnimationTicker(ScenarioScreen screen, ElementRenderer<?> renderer, Animation animation, boolean loop) {
         this.renderer = renderer;
+        this.loop = loop;
         this.baseScope = MochaUtils.BASE_SCOPE.copy();
 
         final MutableObjectBinding variableBinding = new MutableObjectBinding();
@@ -54,6 +56,11 @@ public final class AnimationTicker {
 
     private Scope scope;
     public void tick() {
+        if (this.loop && this.timelines.isEmpty() && System.currentTimeMillis() - this.start >= this.maxDuration) {
+            this.start = System.currentTimeMillis();
+            this.timelines.putAll(animation.getTimelines());
+        }
+
         this.scope = this.baseScope.copy();
 
         final MutableObjectBinding query = new MutableObjectBinding();
@@ -110,7 +117,7 @@ public final class AnimationTicker {
         if (safe) {
             resetWhenFinished();
         }
-        return safe;
+        return safe && !loop;
     }
 
     private void resetWhenFinished() {

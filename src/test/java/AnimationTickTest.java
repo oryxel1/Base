@@ -23,6 +23,9 @@ public class AnimationTickTest {
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
         scenario.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 
+        scenario.add(0, new AddElementEvent(1, new Rectangle(200, 200, Color.RED, false), RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(1, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(0, new PlayAnimationEvent(1, "bascenarioengine:loop-test", true));
+
         scenario.add(0, new SpriteAnimationEvent(0, 0, "Idle_01", 0, true), new SpriteAnimationEvent(0, 0, "06", 0));
         scenario.add(200, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
         scenario.add(1000, new PlayAnimationEvent(0, "bascenarioengine:test", false));

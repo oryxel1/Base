@@ -33,7 +33,7 @@ public class AnimationManager extends HashMap<String, Animation> {
         this.put(
                 "bascenarioengine:down-then-up",
                 Animation.builder()
-                        .name("down-then-up")
+                        .name("Down Then Up")
                         .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "108"}, "0.3", Easing.LINEAR)).build())
                         .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
                         .maxDuration(0.3f)
@@ -65,6 +65,13 @@ public class AnimationManager extends HashMap<String, Animation> {
                         .maxDuration(1.6f)
                         .resetWhenFinish(true)
                         .build()
+        );
+
+        this.put(
+                "bascenarioengine:loop-test",
+                Animation.builder()
+                        .name("Dev Loop Test")
+                        .rotation(new AnimationValue(new String[] {"0", "0", "57.29577951308232 * (math.mod(q.currentTimeMillis, 500) / 500 * math.pi * 2)"}, "0", Easing.LINEAR)).build()
         );
     }
 
