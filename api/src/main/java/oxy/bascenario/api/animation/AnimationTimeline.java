@@ -8,6 +8,6 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @Getter
 public class AnimationTimeline {
-    private AnimationValue rotation, offset, scale;
+    private AnimationValue rotation, offset, scale, pivot;
     private String condition;
 }

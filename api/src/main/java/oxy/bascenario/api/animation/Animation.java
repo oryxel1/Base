@@ -65,6 +65,15 @@ public class Animation {
             return this;
         }
 
+        public AnimationValue defaultPivot() {
+            return defaultTimeline.build().getPivot();
+        }
+
+        public Builder defaultPivot(AnimationValue pivot) {
+            defaultTimeline.pivot(pivot);
+            return this;
+        }
+
         public AnimationValue defaultScale() {
             return defaultTimeline.build().getOffset();
         }
@@ -98,6 +107,15 @@ public class Animation {
 
         public Builder offset(AnimationValue offset) {
             global.offset(offset);
+            return this;
+        }
+
+        public AnimationValue pivot() {
+            return global.build().getPivot();
+        }
+
+        public Builder pivot(AnimationValue pivot) {
+            global.pivot(pivot);
             return this;
         }
 

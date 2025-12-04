@@ -43,6 +43,6 @@ public class PositionElementEvent extends Event<PositionElementEvent> {
     }
 
     public enum Type {
-        POSITION, OFFSET, SCALE
+        POSITION, OFFSET, SCALE, PIVOT
     }
 }

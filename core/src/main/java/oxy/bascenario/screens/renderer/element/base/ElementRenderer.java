@@ -24,7 +24,8 @@ public abstract class ElementRenderer<T> {
 
     protected final Map<String, AnimationTicker> animations = new HashMap<>();
 
-    protected final Vec2Animations position = new Vec2Animations(), offset = new Vec2Animations(), scale = new Vec2Animations(EasingFunction.LINEAR, new Vec2(1, 1));
+    protected final Vec2Animations position = new Vec2Animations(), offset = new Vec2Animations(), pivot = new Vec2Animations();
+    protected final Vec2Animations scale = new Vec2Animations(EasingFunction.LINEAR, new Vec2(1, 1));
     protected final ColorAnimations color = new ColorAnimations(Color.WHITE);
     protected final Vec3Animations rotation = new Vec3Animations();
 

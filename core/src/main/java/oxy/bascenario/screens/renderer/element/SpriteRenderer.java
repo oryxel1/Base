@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.spine.*;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -68,6 +69,11 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         updateSkeleton(this.skeleton);
 
         this.camera.position.set(0, 0, 0);
+
+        this.camera.up.set(0, 1, 0);
+        this.camera.direction.set(0, 0, -1);
+        this.camera.rotate(-this.rotation.z());
+
         this.camera.update();
         this.batch.getProjectionMatrix().set(camera.combined);
 
@@ -109,7 +115,11 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         // Should allow for proper offsetting and stuff, won't work with sprite inside sprite, but really if they do that, they're fucking crazy.
         GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.translate(this.pivot.x(), this.pivot.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
+        GLOBAL_RENDER_STACK.translate(-this.pivot.x(), -this.pivot.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.offset.x(), -this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);

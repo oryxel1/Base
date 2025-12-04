@@ -6,6 +6,7 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
@@ -31,6 +32,7 @@ public class AnimationTickTest {
         scenario.add(1000, new PlayAnimationEvent(0, "bascenarioengine:test", false));
         scenario.add(2000, new PlayAnimationEvent(0, "bascenarioengine:down-then-up", false));
         scenario.add(500, new PlayAnimationEvent(0, "bascenarioengine:hangry", false));
+        scenario.add(1000, new PlayAnimationEvent(0, "bascenarioengine:loop-test", true));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }

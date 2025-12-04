@@ -31,6 +31,7 @@ public class FunctionPositionElement extends FunctionEvent<PositionElementEvent>
             case SCALE -> renderer.getScale().set(function, event.getVec(), event.getDuration());
             case POSITION -> renderer.getPosition().set(function, event.getVec(), event.getDuration());
             case OFFSET -> renderer.getOffset().set(function, event.getVec(), event.getDuration());
+            case PIVOT -> renderer.getPivot().set(function, event.getVec(), event.getDuration());
         }
     }
 }

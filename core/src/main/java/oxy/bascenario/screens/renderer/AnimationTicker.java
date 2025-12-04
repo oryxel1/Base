@@ -88,6 +88,7 @@ public final class AnimationTicker {
         update(animation.getGlobalTimeline().getOffset(), Type.OFFSET, true);
         update(animation.getGlobalTimeline().getScale(), Type.SCALE, true);
         update(animation.getGlobalTimeline().getRotation(), Type.ROTATION, true);
+        update(animation.getGlobalTimeline().getPivot(), Type.PIVOT, true);
 
         final Iterator<Map.Entry<Float, AnimationTimeline>> iterator = this.timelines.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -109,6 +110,7 @@ public final class AnimationTicker {
             update(timeline.getOffset(), Type.OFFSET, false);
             update(timeline.getScale(), Type.SCALE, false);
             update(timeline.getRotation(), Type.ROTATION, false);
+            update(timeline.getPivot(), Type.PIVOT, false);
         }
     }
 
@@ -128,6 +130,7 @@ public final class AnimationTicker {
         update(this.animation.getDefaultTimeline().getOffset(), Type.OFFSET, false);
         update(this.animation.getDefaultTimeline().getScale(), Type.SCALE, false);
         update(this.animation.getDefaultTimeline().getRotation(), Type.ROTATION, false);
+        update(this.animation.getDefaultTimeline().getPivot(), Type.PIVOT, false);
     }
 
     private void update(AnimationValue value, Type type, boolean global) {
@@ -146,7 +149,7 @@ public final class AnimationTicker {
             } else {
                 Vec2 vec2 = AnimationUtils.evalVec2(this.scope.copy(), value, true);
                 if (vec2 != null) {
-                    ((type == Type.SCALE) ? renderer.getScale() : renderer.getOffset()).set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getOffset()).set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
                 }
             }
         } catch (Exception ignored) {
@@ -154,6 +157,6 @@ public final class AnimationTicker {
     }
 
     private enum Type {
-        ROTATION, SCALE, OFFSET
+        ROTATION, SCALE, OFFSET, PIVOT
     }
 }
