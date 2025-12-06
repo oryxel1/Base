@@ -4,6 +4,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
+import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
@@ -16,6 +17,7 @@ import oxy.bascenario.screens.renderer.element.SpriteRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.LocationInfoRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.TextRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.emoticon.EmoticonMainRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.RectangleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.TriangleRenderer;
@@ -51,6 +53,8 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
             renderer = new TriangleRenderer(triangle, layer);
         } else if (element instanceof LocationInfo info) {
             renderer = new LocationInfoRenderer(info, layer);
+        } else if (element instanceof Emoticon emoticon) {
+            renderer = new EmoticonMainRenderer(emoticon, layer);
         } else {
             throw new RuntimeException("Can't find the renderer for the element class type: " + element.getClass());
         }

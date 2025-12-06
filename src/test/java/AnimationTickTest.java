@@ -6,7 +6,6 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
-import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
