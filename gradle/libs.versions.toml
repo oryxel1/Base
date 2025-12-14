@@ -1,7 +1,7 @@
 [versions]
 lombok = "1.18.38"
 gson = "2.13.1"
-lwjgl = "3.3.6"
+lwjgl = "3.4.0-SNAPSHOT"
 lwjgl-sdl = "3.4.0-SNAPSHOT"
 libgdx = "1.13.1"
 spine = "4.2.5"
