@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
-import net.raphimc.thingl.text.font.Font;
-import net.raphimc.thingl.text.font.impl.FreeTypeFont;
+import net.raphimc.thingl.resource.font.Font;
+import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;

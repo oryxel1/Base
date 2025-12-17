@@ -3,10 +3,10 @@ package oxy.bascenario.screens.renderer.dialogue;
 import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.renderer.impl.RendererText;
+import net.raphimc.thingl.gl.renderer.impl.RendererText;
+import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
-import net.raphimc.thingl.text.font.Font;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.utils.FontUtils;
 

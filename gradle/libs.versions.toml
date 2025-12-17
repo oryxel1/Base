@@ -5,7 +5,7 @@ lwjgl = "3.4.0-SNAPSHOT"
 lwjgl-sdl = "3.4.0-SNAPSHOT"
 libgdx = "1.13.1"
 spine = "4.2.5"
-thingl = "0.0.11-SNAPSHOT"
+thingl = "0.1.0-SNAPSHOT"
 commons = "1.7.1"
 mocha = "3.0.1"
 

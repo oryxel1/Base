@@ -3,7 +3,7 @@ package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.resource.image.texture.Texture2D;
+import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.animation.AnimationUtils;

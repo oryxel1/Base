@@ -1,7 +1,7 @@
 package oxy.bascenario.managers;
 
 import lombok.Getter;
-import net.raphimc.thingl.resource.image.texture.Texture2D;
+import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.other.TextureKey;
 
