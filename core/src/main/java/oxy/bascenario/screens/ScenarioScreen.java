@@ -143,6 +143,7 @@ public class ScenarioScreen extends ExtendableScreen {
         ThinGLUtils.end();
 
         this.elements.values().removeIf(ElementRenderer::selfDestruct);
+        this.elements.values().forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
     }
 
     @Setter

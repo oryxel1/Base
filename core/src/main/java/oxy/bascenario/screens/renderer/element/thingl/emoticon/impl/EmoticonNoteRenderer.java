@@ -1,6 +1,5 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -12,21 +11,25 @@ import oxy.bascenario.utils.animation.AnimationUtils;
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 // Note emoticon zoom in first, then move to the left, wiggle a bit then fade out.
-@RequiredArgsConstructor
-public class EmoticonNoteRenderer implements EmoticonRenderer {
-    private final long duration;
-
+public class EmoticonNoteRenderer extends EmoticonRenderer {
     private DynamicAnimation offset = AnimationUtils.dummy(0), opacity = AnimationUtils.dummy(1), zoom = AnimationUtils.dummy(0);
-    private final DynamicAnimation shake = AnimationUtils.build(600, 0, 4, EasingFunction.LINEAR);
+    private final DynamicAnimation shake = AnimationUtils.build(400, 0, 4, EasingFunction.LINEAR);
 
     private long since = -1;
+
+    public EmoticonNoteRenderer(long duration) {
+        super(duration);
+    }
+
+    @Override
+    public void init() {
+        this.zoom = AnimationUtils.build(600, 0, 1, EasingFunction.CUBIC);
+        this.offset = AnimationUtils.build(2000, 0, -100, EasingFunction.LINEAR);
+    }
+
     @Override
     public void render() {
-        if (this.zoom instanceof AnimationUtils.DummyAnimation) {
-            this.zoom = AnimationUtils.build(600, 0, 1, EasingFunction.CUBIC);
-        } else if (this.offset instanceof AnimationUtils.DummyAnimation) {
-            this.offset = AnimationUtils.build(2000, 0, -200, EasingFunction.LINEAR);
-        } else if (!this.offset.isRunning()) {
+        if (!this.offset.isRunning()) {
             if (this.since == -1) {
                 this.since = System.currentTimeMillis();
             } else if (this.since != -2 && System.currentTimeMillis() - this.since >= duration) {
@@ -49,5 +52,10 @@ public class EmoticonNoteRenderer implements EmoticonRenderer {
                 TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Note.png"),
                 0, 0, 96, 92, Color.WHITE.withAlphaF(this.opacity.getValue()));
         GLOBAL_RENDER_STACK.popMatrix();
+    }
+
+    @Override
+    public boolean finished() {
+        return !this.opacity.isRunning() && this.since == -2;
     }
 }
