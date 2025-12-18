@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL32;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.ImGuiUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 
 @RequiredArgsConstructor
@@ -84,19 +85,19 @@ public final class EngineRenderer extends Game {
 
     @Override
     public void render() {
-        GL32.glClearColor(1, 1, 1, 1);
-        GL32.glClear(GL32.GL_COLOR_BUFFER_BIT | GL32.GL_DEPTH_BUFFER_BIT);
+        ScreenUtils.clear(0, 0, 0, 1, true);
 
+        AudioManager.getInstance().tick();
+
+        ThinGLUtils.GLOBAL_RENDER_STACK = new Matrix4fStack(8);
+        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
+
+        ImGuiUtils.COUNTER = 0;
         imGuiGl3.newFrame();
         imGuiGlfw.newFrame();
         ImGui.newFrame();
 
-        AudioManager.getInstance().tick();
-
-        ScreenUtils.clear(0, 0, 0, 1, true);
-        ThinGLUtils.GLOBAL_RENDER_STACK = new Matrix4fStack(8);
-        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
-        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
         super.render();
 
         ImGui.render();

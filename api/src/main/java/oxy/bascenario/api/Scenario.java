@@ -28,6 +28,7 @@ public class Scenario {
 
     public static Builder toBuilder(Scenario scenario) {
         final Builder builder = new Builder();
+        builder.saveType = scenario.saveType;
         builder.previewBackground = scenario.previewBackground;
         builder.previewSound = scenario.previewSound;
         builder.title = scenario.title;

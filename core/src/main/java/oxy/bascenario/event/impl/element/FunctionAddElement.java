@@ -2,6 +2,7 @@ package oxy.bascenario.event.impl.element;
 
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.Dummy;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
@@ -49,6 +50,11 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
                     yield new ImageRenderer(image, layer, scenario);
                 }
             }
+            case Dummy dummy -> new ElementRenderer<>(dummy, layer) {
+                @Override
+                protected void render() {
+                }
+            };
             case Text text -> new TextRenderer(text, layer, scenario);
             case Rectangle rectangle -> new RectangleRenderer(rectangle, layer);
             case Circle circle -> new CircleRenderer(circle, layer);

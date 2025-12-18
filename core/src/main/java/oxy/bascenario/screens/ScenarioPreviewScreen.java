@@ -38,6 +38,8 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     private long sinceFinished = -1;
     private DynamicAnimation globalFade = AnimationUtils.dummy(1);
 
+    private final long start = System.currentTimeMillis();
+
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -67,6 +69,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
                 sinceFinished = System.currentTimeMillis();
             } else if (System.currentTimeMillis() - sinceFinished >= 500L) {
                 // Finished, switch to the screen responsible for main scenario rendering!
+                System.out.println(System.currentTimeMillis() - start);
                 Launcher.WINDOW.setScreen(new ScenarioScreen(this.scenario));
             }
         }

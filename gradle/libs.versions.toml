@@ -9,7 +9,7 @@ thingl = "0.1.0-SNAPSHOT"
 commons = "1.7.1"
 mocha = "3.0.1"
 configurate = "4.2.0"
-imgui = "1.89.0"
+imgui = "1.90.0"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
