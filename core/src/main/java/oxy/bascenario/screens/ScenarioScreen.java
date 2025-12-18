@@ -29,9 +29,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class ScenarioScreen extends ExtendableScreen {
+    @Getter
+    private final Scenario scenario;
+
     private final Queue<Timestamp> timestamps = new ConcurrentLinkedQueue<>();
     public ScenarioScreen(Scenario scenario) {
         this.timestamps.addAll(scenario.getTimestamps());
+        this.scenario = scenario;
+        this.dialogueRenderer = new DialogueRenderer(this.scenario);
     }
 
     private Image background, queueBackground;
@@ -63,7 +68,7 @@ public class ScenarioScreen extends ExtendableScreen {
                 color = color.withAlphaF(this.backgroundFade.getValue());
             }
 
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(this.background.file()), 0, 0, 1920, 1080, color);
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
         }
     }
 
@@ -109,7 +114,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final Map<Integer, ElementRenderer<?>> elements = new TreeMap<>();
     @Getter
-    private final BaseDialogueRenderer dialogueRenderer = new DialogueRenderer();
+    private final BaseDialogueRenderer dialogueRenderer;
     @Getter
     private final OptionsRenderer optionsRenderer = new OptionsRenderer();
 

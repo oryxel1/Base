@@ -1,4 +1,4 @@
-import oxy.bascenario.Launcher;
+import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.screens.ScenarioPreviewScreen;
 

@@ -8,7 +8,7 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
-import oxy.bascenario.Launcher;
+import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.managers.AudioManager;
@@ -27,7 +27,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     @Override
     public void show() {
         if (scenario.getPreviewSound().isPresent()) {
-            AudioManager.getInstance().play(scenario.getPreviewSound().get());
+            AudioManager.getInstance().play(scenario, scenario.getPreviewSound().get());
         }
     }
 
@@ -82,7 +82,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     private void renderBackground() {
         if (scenario.getPreviewBackground().isPresent()) {
             final Image preview = scenario.getPreviewBackground().get();
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(preview.file()), 0, 0, 1920, 1080);
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, preview.file()), 0, 0, 1920, 1080);
             ThinGLUtils.blurRectangle(0, 0, 1920, 1080, Math.round(18 * this.globalFade.getValue())); // Very nice blur thanks to ThinGL.
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
         } else {

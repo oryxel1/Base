@@ -1,8 +1,9 @@
-package oxy.bascenario;
+package oxy.bascenario.utils;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import oxy.bascenario.EngineRenderer;
 
 public class Launcher {
     public static EngineRenderer WINDOW;

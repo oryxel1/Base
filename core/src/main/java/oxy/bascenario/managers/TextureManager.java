@@ -2,6 +2,8 @@ package oxy.bascenario.managers;
 
 import lombok.Getter;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
+import oxy.bascenario.Base;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.other.TextureKey;
 
@@ -45,8 +47,12 @@ public class TextureManager {
         this.textures.put(path, new TextureKey(path, Texture2D.fromImage(Files.readAllBytes(file.toPath()))));
     }
 
-    public Texture2D getTexture(FileInfo file) {
-        return file.internal() ? getTexture(file.path()) : getTexture(new File(file.path()));
+    public Texture2D getTexture(Scenario scenario, FileInfo file) {
+        if (file.internal()) {
+            return getTexture(file.path());
+        }
+        File other = new File(Base.instance().getScenarioManager().path(scenario, file));
+        return getTexture(other);
     }
 
     public Texture2D getTexture(File file) {

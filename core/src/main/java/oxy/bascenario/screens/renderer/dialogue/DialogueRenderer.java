@@ -7,6 +7,7 @@ import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
@@ -19,8 +20,14 @@ import java.util.List;
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public final class DialogueRenderer extends BaseDialogueRenderer {
+    private final Scenario scenario;
+
     private long sinceWord;
     private final List<DialogueText> texts = new ArrayList<>();
+
+    public DialogueRenderer(Scenario scenario) {
+        this.scenario = scenario;
+    }
 
     public void add(int index, Dialogue dialogue) {
         if (index != this.currentIndex) {
@@ -33,7 +40,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
 
         for (final TextSegment segment : text.segments()) {
-            Font font = FontUtils.toFont(segment, text);
+            Font font = FontUtils.toFont(scenario, segment, text);
 
             for (char c : segment.text().toCharArray()) {
                 final String next = texts.get(texts.size() - 1).builder().toString() + c;

@@ -4,9 +4,12 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
 import net.raphimc.thingl.image.animated.impl.AwtGifImage;
+import oxy.bascenario.Base;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 
 import java.io.File;
@@ -19,13 +22,18 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> 
     private SequencedTexture texture;
     private long startTime;
 
-    public AnimatedImageRenderer(RendererImage element, RenderLayer layer) {
+    public AnimatedImageRenderer(Scenario scenario, RendererImage element, RenderLayer layer) {
         super(element, layer);
 
         final byte[] imageBytes;
         try {
-            // TODO: None direct support.
-            imageBytes = element.image().file().internal() ? Objects.requireNonNull(AnimatedImageRenderer.class.getResourceAsStream("/" + element.image().file().path())).readAllBytes() : Files.readAllBytes(new File(element.image().file().path()).toPath());
+            final FileInfo fileInfo = element.image().file();
+            if (fileInfo.internal()) {
+                imageBytes = Objects.requireNonNull(AnimatedImageRenderer.class.getResourceAsStream("/" + element.image().file().path())).readAllBytes();
+            } else {
+                File file = new File(Base.instance().getScenarioManager().path(scenario, fileInfo));
+                imageBytes = Files.readAllBytes(file.toPath());
+            }
             this.texture = new SequencedTexture(new AwtGifImage(imageBytes));
         } catch (Exception ignored) {
             this.texture = null;

@@ -1,5 +1,6 @@
 package oxy.bascenario.event.impl.element;
 
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.RendererImage;
@@ -31,24 +32,24 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = getRenderer(event.getElement(), event.getLayer());
+        final ElementRenderer<?> renderer = getRenderer(screen.getScenario(), event.getElement(), event.getLayer());
 
         renderer.resize(0, 0); // TODO: Properly do this?
         screen.getElements().put(event.getId(), renderer);
     }
 
     // It's a bunch of switch case yes, who cares anyway, not like it's a mess.
-    public static ElementRenderer<?> getRenderer(Object element, RenderLayer layer) {
+    public static ElementRenderer<?> getRenderer(Scenario scenario, Object element, RenderLayer layer) {
         return switch (element) {
-            case Sprite sprite -> new SpriteRenderer(sprite, layer);
+            case Sprite sprite -> new SpriteRenderer(sprite, layer, scenario);
             case RendererImage image -> {
                 if (image.image() instanceof AnimatedImage) {
-                    yield new AnimatedImageRenderer(image, layer);
+                    yield new AnimatedImageRenderer(scenario, image, layer);
                 } else {
-                    yield new ImageRenderer(image, layer);
+                    yield new ImageRenderer(image, layer, scenario);
                 }
             }
-            case Text text -> new TextRenderer(text, layer);
+            case Text text -> new TextRenderer(text, layer, scenario);
             case Rectangle rectangle -> new RectangleRenderer(rectangle, layer);
             case Circle circle -> new CircleRenderer(circle, layer);
             case Triangle triangle -> new TriangleRenderer(triangle, layer);

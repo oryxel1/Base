@@ -10,6 +10,7 @@ import com.esotericsoftware.spine.*;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
@@ -37,8 +38,10 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         state.setAnimation(index, animation, loop);
     }
 
-    public SpriteRenderer(Sprite element, RenderLayer layer) {
+    private final Scenario scenario;
+    public SpriteRenderer(Sprite element, RenderLayer layer, Scenario scenario) {
         super(element, layer);
+        this.scenario = scenario;
     }
 
     @Override
@@ -54,8 +57,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = new TextureAtlas(FileUtils.toHandle(this.element.atlas()));
-        SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(element.skeleton()));
+        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario, this.element.atlas()));
+        SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario, element.skeleton()));
         this.skeleton = new Skeleton(skeletonData);
 
         this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));

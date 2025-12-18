@@ -18,7 +18,7 @@ public class FunctionAttachElement extends FunctionEvent<AttachElementEvent> {
         }
 
         // It's a bunch of if else yes, who cares anyway, not like it's a mess.
-        final ElementRenderer<?> subRenderer = FunctionAddElement.getRenderer(event.getElement(), null);
+        final ElementRenderer<?> subRenderer = FunctionAddElement.getRenderer(screen.getScenario(), event.getElement(), null);
         renderer.resize(0, 0); // TODO: Properly do this?
         renderer.getSubElements().put(event.getSubId(), subRenderer);
     }

@@ -1,6 +1,5 @@
 package oxy.bascenario.managers;
 
-import lombok.Getter;
 import oxy.bascenario.api.animation.Animation;
 import oxy.bascenario.api.animation.AnimationTimeline;
 import oxy.bascenario.api.animation.AnimationValue;
@@ -9,14 +8,7 @@ import oxy.bascenario.api.effects.Easing;
 import java.util.HashMap;
 
 public class AnimationManager extends HashMap<String, Animation> {
-    @Getter
-    private static final AnimationManager instance = new AnimationManager();
-
-    private AnimationManager() {
-        if (instance != null) {
-            throw new RuntimeException("This class can only create one instance!");
-        }
-
+    public AnimationManager() {
         // Initial some test, default animations...
 
         this.put(

@@ -1,8 +1,8 @@
 package oxy.bascenario.event.impl.animation;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.event.base.FunctionEvent;
-import oxy.bascenario.managers.AnimationManager;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.AnimationTicker;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
@@ -20,7 +20,7 @@ public class FunctionPlayAnimation extends FunctionEvent<PlayAnimationEvent> {
         }
 
         try {
-            renderer.getAnimations().put(event.getName(), new AnimationTicker(screen, renderer, AnimationManager.getInstance().get(event.getName()), event.isLoop()));
+            renderer.getAnimations().put(event.getName(), new AnimationTicker(screen, renderer, Base.instance().getAnimationManager().get(event.getName()), event.isLoop()));
         } catch (Exception ignored) {
         }
     }

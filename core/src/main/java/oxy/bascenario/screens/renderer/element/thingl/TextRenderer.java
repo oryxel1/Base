@@ -7,6 +7,7 @@ import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
@@ -18,13 +19,13 @@ import java.util.ArrayList;
 public class TextRenderer extends ThinGLElementRenderer<Text> {
     private final TextLine line;
 
-    public TextRenderer(Text element, RenderLayer layer) {
+    public TextRenderer(Text element, RenderLayer layer, Scenario scenario) {
         super(element, layer);
 
         this.line = new TextLine(new ArrayList<>());
 
         for (oxy.bascenario.api.render.elements.text.TextSegment segment : element.segments()) {
-            Font font = FontUtils.toFont(segment, element);
+            Font font = FontUtils.toFont(scenario, segment, element);
             line.add(new TextRun(font, new TextSegment(segment.text(), segment.color(), segment.toFlags(), segment.outline().isPresent() ? segment.outline().get() : Color.TRANSPARENT)));
         }
     }

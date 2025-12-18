@@ -8,6 +8,8 @@ import java.util.List;
 
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
+import oxy.bascenario.Base;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
@@ -16,10 +18,10 @@ import oxy.bascenario.api.utils.FileInfo;
 public class FontUtils {
     private static final Map<String, List<Font>> NAME_TO_FONTS = new HashMap<>();
 
-    public static Font toFont(TextSegment segment, Text text) {
+    public static Font toFont(Scenario scenario, TextSegment segment, Text text) {
         Font font;
         if (segment.font().isPresent()) {
-            font = FontUtils.loadSpecificFont(segment.font().get(), text.size());
+            font = FontUtils.loadSpecificFont(scenario, segment.font().get(), text.size());
         } else {
             font = FontUtils.getFont(FontType.toName(segment.type()), text.size());
         }
@@ -54,13 +56,14 @@ public class FontUtils {
 //        }
     }
 
-    public static Font loadSpecificFont(FileInfo font, int scale) {
+    public static Font loadSpecificFont(Scenario scenario, FileInfo font, int scale) {
         try {
             final byte[] fontData;
             if (font.internal()) {
                 fontData = FontUtils.class.getResourceAsStream("/" + font.path()).readAllBytes();
             } else {
-                fontData = Files.readAllBytes(new File(font.path()).toPath());
+                File other = new File(Base.instance().getScenarioManager().path(scenario, font));
+                fontData = Files.readAllBytes(other.toPath());
             }
 
             return new FreeTypeFont(fontData, scale);

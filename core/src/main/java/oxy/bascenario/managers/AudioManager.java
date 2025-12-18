@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.utils.FileUtils;
 
@@ -25,7 +26,11 @@ public class AudioManager {
     private final Map<Integer, CachedSound> cachedSounds = new HashMap<>();
 
     public void play(Sound sound) {
-        final Music music = Gdx.audio.newMusic(FileUtils.toHandle(sound.file()));
+        play(null, sound);
+    }
+
+    public void play(Scenario scenario, Sound sound) {
+        final Music music = Gdx.audio.newMusic(FileUtils.toHandle(scenario, sound.file()));
         music.play();
 
         boolean fade = sound.fadeIn() > 0;
