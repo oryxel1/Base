@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
+    implementation(libs.gdx.base)
 }

@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
+import imgui.*;
+import net.lenni0451.commons.io.IOUtils;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
 import oxy.bascenario.Base;
@@ -33,6 +35,23 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
+        {
+            final ImGuiIO data = ImGui.getIO();
+            final ImFontAtlas fonts = data.getFonts();
+            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
+
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesDefault());
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesCyrillic());
+            rangesBuilder.addRanges(data.getFonts().getGlyphRangesJapanese());
+
+            final short[] glyphRanges = rangesBuilder.buildRanges();
+
+            try {
+                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.readAll(Objects.requireNonNull(FontUtils.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
+            } catch (Exception ignored) {
+            }
+        }
+
         // Cache these font so I can use them dynamically later.
         loadFont("NotoSansRegular", "/assets/base/fonts/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/NotoSans-SemiBold.ttf");

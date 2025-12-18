@@ -37,6 +37,10 @@ public class Vec2Animations {
         }
     }
 
+    public void add(EasingFunction function, Vec2 vec2, long duration, boolean ignoreIfPlaying) {
+        set(function, new Vec2(vec2.x() + x(), vec2.y() + y()), duration, ignoreIfPlaying);
+    }
+
     public void set(EasingFunction function, Vec2 vec2, long duration) {
         this.set(function, vec2, duration, true);
     }

@@ -10,4 +10,9 @@ import lombok.ToString;
 public class AnimationTimeline {
     private AnimationValue rotation, offset, scale, pivot;
     private String condition;
+    private Type type;
+
+    public enum Type {
+        SET, OFFSET
+    }
 }

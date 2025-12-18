@@ -9,6 +9,8 @@ import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.MochaUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.animation.math.Vec2Animations;
+import oxy.bascenario.utils.animation.math.Vec3Animations;
 import team.unnamed.mocha.runtime.Scope;
 import team.unnamed.mocha.runtime.value.MutableObjectBinding;
 import team.unnamed.mocha.runtime.value.Value;
@@ -85,10 +87,10 @@ public final class AnimationTicker {
         this.scope.set("q", query);
         this.scope.readOnly();
 
-        update(animation.getGlobalTimeline().getOffset(), Type.OFFSET, true);
-        update(animation.getGlobalTimeline().getScale(), Type.SCALE, true);
-        update(animation.getGlobalTimeline().getRotation(), Type.ROTATION, true);
-        update(animation.getGlobalTimeline().getPivot(), Type.PIVOT, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getOffset(), Type.OFFSET, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getScale(), Type.SCALE, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getRotation(), Type.ROTATION, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getPivot(), Type.PIVOT, true);
 
         final Iterator<Map.Entry<Float, AnimationTimeline>> iterator = this.timelines.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -107,10 +109,10 @@ public final class AnimationTicker {
                 }
             } catch (Exception ignored) {}
 
-            update(timeline.getOffset(), Type.OFFSET, false);
-            update(timeline.getScale(), Type.SCALE, false);
-            update(timeline.getRotation(), Type.ROTATION, false);
-            update(timeline.getPivot(), Type.PIVOT, false);
+            update(timeline.getType(), timeline.getOffset(), Type.OFFSET, false);
+            update(timeline.getType(), timeline.getScale(), Type.SCALE, false);
+            update(timeline.getType(), timeline.getRotation(), Type.ROTATION, false);
+            update(timeline.getType(), timeline.getPivot(), Type.PIVOT, false);
         }
     }
 
@@ -127,15 +129,19 @@ public final class AnimationTicker {
             return;
         }
 
-        update(this.animation.getDefaultTimeline().getOffset(), Type.OFFSET, false);
-        update(this.animation.getDefaultTimeline().getScale(), Type.SCALE, false);
-        update(this.animation.getDefaultTimeline().getRotation(), Type.ROTATION, false);
-        update(this.animation.getDefaultTimeline().getPivot(), Type.PIVOT, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getOffset(), Type.OFFSET, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getScale(), Type.SCALE, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getRotation(), Type.ROTATION, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getPivot(), Type.PIVOT, false);
     }
 
-    private void update(AnimationValue value, Type type, boolean global) {
+    private void update(AnimationTimeline.Type timelineType, AnimationValue value, Type type, boolean global) {
         if (value == null || value.duration() == null || value.value() == null || value.value().length == 0 || value.easing() == null) {
             return;
+        }
+
+        if (timelineType == null) {
+            timelineType = AnimationTimeline.Type.SET;
         }
 
         try {
@@ -144,12 +150,22 @@ public final class AnimationTicker {
             if (type == Type.ROTATION) {
                 Vec3 vec3 = AnimationUtils.evalVec3(this.scope.copy(), value, true);
                 if (vec3 != null) {
-                    renderer.getRotation().set(AnimationUtils.toFunction(value.easing()), vec3, duration);
+                    final Vec3Animations vec3Animations = renderer.getRotation();
+                    if (timelineType == AnimationTimeline.Type.SET) {
+                        vec3Animations.set(AnimationUtils.toFunction(value.easing()), vec3, duration);
+                    } else {
+                        vec3Animations.add(AnimationUtils.toFunction(value.easing()), vec3, duration);
+                    }
                 }
             } else {
                 Vec2 vec2 = AnimationUtils.evalVec2(this.scope.copy(), value, true);
                 if (vec2 != null) {
-                    ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getOffset()).set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    final Vec2Animations vec2Animations = ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getOffset());
+                    if (timelineType == AnimationTimeline.Type.SET) {
+                        vec2Animations.set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    } else {
+                        vec2Animations.add(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    }
                 }
             }
         } catch (Exception ignored) {

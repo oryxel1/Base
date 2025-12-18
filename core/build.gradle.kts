@@ -13,6 +13,12 @@ dependencies {
     implementation(libs.commons.animations)
     implementation(libs.unnamed.mocha)
 
+    implementation(libs.imgui.lwjgl3)
+    implementation(libs.imgui.binding)
+    implementation(libs.imgui.natives.windows)
+    implementation(libs.imgui.natives.linux)
+    implementation(libs.imgui.natives.macos)
+
     implementation(libs.lwjgl.base)
     implementation(libs.lwjgl.opengl)
     implementation(libs.lwjgl.stb)

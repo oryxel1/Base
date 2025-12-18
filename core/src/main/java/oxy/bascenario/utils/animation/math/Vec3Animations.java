@@ -37,6 +37,10 @@ public class Vec3Animations {
         this.z = AnimationUtils.build(duration, this.z.getValue(), vec3.z(), this.function);
     }
 
+    public void add(EasingFunction function, Vec3 vec3, long duration) {
+        set(function, new Vec3(vec3.x() + x(), vec3.y() + y(), vec3.z() + z()), duration);
+    }
+
     public float x() {
         return this.x.getValue();
     }

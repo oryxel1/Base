@@ -9,11 +9,18 @@ thingl = "0.1.0-SNAPSHOT"
 commons = "1.7.1"
 mocha = "3.0.1"
 configurate = "4.2.0"
+imgui = "1.89.0"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 configurate-yaml = {  module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+
+imgui-binding = { module = "io.github.spair:imgui-java-binding", version.ref = "imgui" }
+imgui-lwjgl3 = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
+imgui-natives-windows = { module = "io.github.spair:imgui-java-natives-windows", version.ref = "imgui" }
+imgui-natives-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref = "imgui" }
+imgui-natives-macos = { module = "io.github.spair:imgui-java-natives-macos", version.ref = "imgui" }
 
 lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }

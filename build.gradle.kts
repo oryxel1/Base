@@ -36,4 +36,6 @@ dependencies {
 
     implementation(libs.gdx.base)
     implementation(libs.commons.core)
+
+    implementation(libs.imgui.binding)
 }
