@@ -25,10 +25,12 @@ subprojects {
         annotationProcessor(rootProject.libs.projectlombok.lombok)
         implementation(rootProject.libs.projectlombok.lombok)
         implementation(rootProject.libs.google.gson)
+        implementation(rootProject.libs.configurate.yaml)
     }
 }
 
 dependencies {
+    implementation(project(":editor"))
     implementation(project(":core"))
     implementation(project(":api"))
 

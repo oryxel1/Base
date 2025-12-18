@@ -20,6 +20,9 @@ public class ScenarioManager {
         }
     }
 
+    public void shutdown() {
+    }
+
     public String path(Scenario scenario, FileInfo file) {
         if (file.direct() || file.internal()) {
             return file.path();

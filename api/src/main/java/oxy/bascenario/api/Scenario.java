@@ -16,6 +16,7 @@ import java.util.Optional;
 public class Scenario {
     private final String title, subtitle;
 
+    private final SaveType saveType;
     private final Optional<Sound> previewSound;
     private final Optional<Image> previewBackground;
 
@@ -36,10 +37,19 @@ public class Scenario {
     }
 
     public static final class Builder {
+        private SaveType saveType = SaveType.JSON;
         private String title = "", subtitle = "";
         private Optional<Image> previewBackground = Optional.empty();
         private Optional<Sound> previewSound = Optional.empty();
         private final List<Timestamp> timestamps = new ArrayList<>();
+
+        public SaveType saveType() {
+            return this.saveType;
+        }
+
+        public void saveType(SaveType saveType) {
+            this.saveType = saveType;
+        }
 
         public Builder title(String title) {
             this.title = title;
@@ -92,9 +102,13 @@ public class Scenario {
         }
 
         public Scenario build() {
-            final Scenario scenario = new Scenario(this.title, this.subtitle, this.previewSound, this.previewBackground);
+            final Scenario scenario = new Scenario(this.title, this.subtitle, this.saveType, this.previewSound, this.previewBackground);
             scenario.timestamps.addAll(this.timestamps);
             return scenario;
         }
+    }
+
+    public enum SaveType {
+        BINARY, JSON
     }
 }

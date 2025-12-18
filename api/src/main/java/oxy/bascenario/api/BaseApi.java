@@ -12,4 +12,5 @@ public abstract class BaseApi {
     }
 
     public abstract void init();
+    public abstract void shutdown();
 }

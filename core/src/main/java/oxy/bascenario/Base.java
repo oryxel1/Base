@@ -27,6 +27,14 @@ public final class Base extends BaseApi {
 
         animationManager = new AnimationManager();
         scenarioManager = new ScenarioManager();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+    }
+
+    @Override
+    public void shutdown() {
+        animationManager.shutdown();
+        scenarioManager.shutdown();
     }
 
     public static Base instance() {

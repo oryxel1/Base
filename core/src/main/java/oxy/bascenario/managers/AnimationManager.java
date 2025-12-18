@@ -1,16 +1,29 @@
 package oxy.bascenario.managers;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.api.animation.Animation;
 import oxy.bascenario.api.animation.AnimationTimeline;
 import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class AnimationManager extends HashMap<String, Animation> {
-    public AnimationManager() {
-        // Initial some test, default animations...
+    private static final File SAVE_DIR = new File(Base.SAVE_DIR, "animations");
 
+    public AnimationManager() {
+        if (!SAVE_DIR.isDirectory()) {
+            SAVE_DIR.mkdirs();
+        }
+
+        initDefaultAnimations();
+    }
+
+    public void shutdown() {
+    }
+
+    private void initDefaultAnimations() {
         this.put(
                 "bascenarioengine:default-shake",
                 Animation.builder()
@@ -66,5 +79,4 @@ public class AnimationManager extends HashMap<String, Animation> {
                         .rotation(new AnimationValue(new String[] {"0", "0", "57.29577951308232 * (math.mod(q.currentTimeMillis, 500) / 500 * math.pi * 2)"}, "0", Easing.LINEAR)).build()
         );
     }
-
 }
