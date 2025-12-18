@@ -8,10 +8,12 @@ spine = "4.2.5"
 thingl = "0.1.0-SNAPSHOT"
 commons = "1.7.1"
 mocha = "3.0.1"
+configurate = "4.2.0"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+configurate-yaml = {  module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
 
 lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
