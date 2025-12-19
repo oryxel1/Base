@@ -31,6 +31,22 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     private void renderMenuBar() {
         ImGui.beginMainMenuBar();
 
+        if (ImGui.beginMenu("Timeline")) {
+            if (ImGui.menuItem("Play")) {
+                timeline.setPlaying(true);
+                timeline.setTimestamp(0);
+            }
+            if (ImGui.menuItem("Resume", false, timeline.isPlaying())) {
+                timeline.setPlaying(false);
+            }
+
+            if (ImGui.menuItem("Stop", false, timeline.isPlaying())) {
+                timeline.setPlaying(false);
+                timeline.setTimestamp(0);
+            }
+            ImGui.endMenu();
+        }
+
         if (ImGui.beginMenu("Edit")) {
             if (ImGui.menuItem("Undo", "Ctrl+Z")) {}
             if (ImGui.menuItem("Redo", "Ctrl+Y", false, false)) {} // Disabled item

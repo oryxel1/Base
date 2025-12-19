@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.element;
 
 import imgui.*;
+import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.utils.FontUtils;
 
@@ -8,11 +9,14 @@ import oxy.bascenario.utils.FontUtils;
 public class Timeline {
     private static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
-    @Setter
-    private boolean playing = true;
+    @Setter @Getter
+    private boolean playing;
 
+    @Getter
     private float scroll = 0, scale = 1;
-    private long timestamp, since;
+    @Setter @Getter
+    private long timestamp;
+    private long since;
 
     private ImFont bigTimestampFont;
     public void init() {
@@ -28,6 +32,8 @@ public class Timeline {
             since = System.currentTimeMillis();
         }
 
+        scroll = Math.max(0, scroll);
+
         if (ImGui.getIO().getKeyCtrl()) {
             final float scroll = ImGui.getIO().getMouseWheel();
             if (scroll > 0) {
@@ -41,9 +47,9 @@ public class Timeline {
             }
         }
 
-        if (timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
+        if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
             scroll++;
-        } else if (timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
+        } else if (timestamp != 0 && timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
             scroll--;
         }
 
@@ -103,6 +109,10 @@ public class Timeline {
 
         if (vec2.x < pos.x || vec2.x > pos.x + size.x || vec2.y < pos.y || vec2.y > pos.y + size.y) {
             return;
+        }
+
+        if (vec2.x > pos.x + size.x - 20) {
+            scroll += 0.001f;
         }
 
         if (vec2.x < pos.x + size.x / 4) {
