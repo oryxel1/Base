@@ -38,7 +38,6 @@ public class Timeline {
         this.trackTypeFont = FontUtils.getImFont("NotoSansRegular", 25);
     }
 
-    private ImVec2 prevMousePos;
     public void render() {
         if (since == 0) {
             since = System.currentTimeMillis();
@@ -62,15 +61,10 @@ public class Timeline {
             }
         }
 
-        if (prevMousePos == null) {
-            prevMousePos = ImGui.getIO().getMousePos();
-        }
-
         ImGui.begin("Timeline");
         if (ImGui.getIO().getMouseDown(0)) {
             onMouseDown(ImGui.getIO().getMousePos());
         }
-        prevMousePos = ImGui.getIO().getMousePos();
 
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
