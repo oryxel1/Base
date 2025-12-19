@@ -20,10 +20,10 @@ public class AnimatedImageTest {
         final RendererImage loading = new RendererImage(new AnimatedImage(new FileInfo("loading.gif", false, true), true), Color.WHITE, 100, 100);
 
         scenario.add(0,
-                new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(0, image, RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(1, loading, RenderLayer.BEHIND_DIALOGUE),
-                new PositionElementEvent(1, 0, new Vec2(1920 / 2f - 50, 1080 / 2f - 50), Easing.LINEAR, PositionElementEvent.Type.POSITION)
+                new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(1, image, RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(2, loading, RenderLayer.BEHIND_DIALOGUE),
+                new PositionElementEvent(2, 0, new Vec2(1920 / 2f - 50, 1080 / 2f - 50), Easing.LINEAR, PositionElementEvent.Type.POSITION)
         );
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);

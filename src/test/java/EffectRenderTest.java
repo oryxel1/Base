@@ -29,25 +29,25 @@ public class EffectRenderTest {
         final Text text = new Text(List.of(TextSegment.builder().text("A really simple text.").build()), 42);
 
         scenario.add(0,
-                new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(1, text, RenderLayer.TOP),
-                new AddElementEvent(2, new RendererImage(new Image(new FileInfo("potato.jpg", false, true)), Color.WHITE, 200, 200), RenderLayer.TOP),
-                new AddElementEvent(3, sprite, RenderLayer.BEHIND_DIALOGUE)
+                new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(2, text, RenderLayer.TOP),
+                new AddElementEvent(3, new RendererImage(new Image(new FileInfo("potato.jpg", false, true)), Color.WHITE, 200, 200), RenderLayer.TOP),
+                new AddElementEvent(4, sprite, RenderLayer.BEHIND_DIALOGUE)
         );
 
         scenario.add(0,
-                new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PositionElementEvent(1, 0, new Vec2(50, 50), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PositionElementEvent(2, 0, new Vec2(50, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PositionElementEvent(3, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION)
+                new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION),
+                new PositionElementEvent(2, 0, new Vec2(50, 50), Easing.LINEAR, PositionElementEvent.Type.POSITION),
+                new PositionElementEvent(3, 0, new Vec2(50, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION),
+                new PositionElementEvent(4, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION)
         );
 
         scenario.add(0,
-                new ElementEffectEvent(0, Effect.HOLOGRAM, Axis.Y),
-                new ElementEffectEvent(1, Effect.RAINBOW, Axis.X, 1.5f),
-                new ElementEffectEvent(2, Effect.BLUR, 5),
-                new ElementEffectEvent(3, Effect.OUTLINE, 1, 1 << 1)
+                new ElementEffectEvent(1, Effect.HOLOGRAM, Axis.Y),
+                new ElementEffectEvent(2, Effect.RAINBOW, Axis.X, 1.5f),
+                new ElementEffectEvent(3, Effect.BLUR, 5),
+                new ElementEffectEvent(4, Effect.OUTLINE, 1, 1 << 1)
         );
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);

@@ -1,4 +1,5 @@
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
@@ -15,6 +16,9 @@ import oxy.bascenario.screens.ScenarioScreen;
 
 public class AttachingElementTest {
     public static void main(String[] args) {
+        new Base();
+        Base.instance().init();
+
         final Scenario.Builder scenario = new Scenario.Builder();
 
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));

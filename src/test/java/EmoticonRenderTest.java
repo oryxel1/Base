@@ -21,12 +21,12 @@ public class EmoticonRenderTest {
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
 
         scenario.add(0,
-                new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE)
+                new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE)
         );
 
-        scenario.add(0, new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
-        scenario.add(1000L, new AttachElementEvent(0, 0, new Emoticon(1000, EmoticonType.ANXIETY, true)));
+        scenario.add(0, new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(1000L, new AttachElementEvent(1, 0, new Emoticon(1000, EmoticonType.ANXIETY, true)));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), true);
     }

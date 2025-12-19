@@ -41,36 +41,36 @@ public class ElementRenderTest {
         final Text text = new Text(segments, 42);
 
         scenario.add(0,
-                new AddElementEvent(-2, new LocationInfo("The gray room", 2000, 500), RenderLayer.ABOVE_DIALOGUE),
-                new AddElementEvent(-1, new Rectangle(1920, 1080, Color.GRAY, false), RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE),
-                new AddElementEvent(1, text, RenderLayer.TOP),
-                new AddElementEvent(2, new Circle(40, Color.RED, false), RenderLayer.ABOVE_DIALOGUE)
+                new AddElementEvent(0, new LocationInfo("The gray room", 2000, 500), RenderLayer.ABOVE_DIALOGUE),
+                new AddElementEvent(1, new Rectangle(1920, 1080, Color.GRAY, false), RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(2, sprite, RenderLayer.BEHIND_DIALOGUE),
+                new AddElementEvent(3, text, RenderLayer.TOP),
+                new AddElementEvent(4, new Circle(40, Color.RED, false), RenderLayer.ABOVE_DIALOGUE)
         );
 
         scenario.add(0,
-                new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PositionElementEvent(1, 0, new Vec2(50, 50), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PositionElementEvent(2, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION)
+                new PositionElementEvent(2, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION),
+                new PositionElementEvent(3, 0, new Vec2(50, 50), Easing.LINEAR, PositionElementEvent.Type.POSITION),
+                new PositionElementEvent(4, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION)
         );
 
-        scenario.add(0, new PositionElementEvent(0, 1000, new Vec2(100, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
-        scenario.add(700, new PositionElementEvent(0, 1000, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(0, new PositionElementEvent(2, 1000, new Vec2(100, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(700, new PositionElementEvent(2, 1000, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 
         scenario.add(1000,
-                new PositionElementEvent(0, 500, new Vec2(1.5f, 1.5f), Easing.CUBIC, PositionElementEvent.Type.SCALE),
-                new PositionElementEvent(1, 0, new Vec2(2, 2), Easing.LINEAR, PositionElementEvent.Type.SCALE),
-                new PositionElementEvent(2, 0, new Vec2(2, 2), Easing.LINEAR, PositionElementEvent.Type.SCALE)
+                new PositionElementEvent(2, 500, new Vec2(1.5f, 1.5f), Easing.CUBIC, PositionElementEvent.Type.SCALE),
+                new PositionElementEvent(3, 0, new Vec2(2, 2), Easing.LINEAR, PositionElementEvent.Type.SCALE),
+                new PositionElementEvent(4, 0, new Vec2(2, 2), Easing.LINEAR, PositionElementEvent.Type.SCALE)
         );
 
         scenario.add(500,
-                new PositionElementEvent(0, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE),
-                new PositionElementEvent(1, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE),
-                new PositionElementEvent(2, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE)
+                new PositionElementEvent(2, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE),
+                new PositionElementEvent(3, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE),
+                new PositionElementEvent(4, 500, new Vec2(1, 1), Easing.CUBIC, PositionElementEvent.Type.SCALE)
         );
 
         scenario.add(500,
-                new RotateElementEvent(1, 500, new Vec3(0, 0, 50), Easing.SINE)
+                new RotateElementEvent(3, 500, new Vec3(0, 0, 50), Easing.SINE)
          );
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);

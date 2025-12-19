@@ -1,4 +1,5 @@
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
@@ -15,22 +16,25 @@ import oxy.bascenario.screens.ScenarioScreen;
 
 public class AnimationTickTest {
     public static void main(String[] args) {
+        new Base();
+        Base.instance().init();
+
         final Scenario.Builder scenario = new Scenario.Builder();
 
-        scenario.add(0, new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
+        scenario.add(0, new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
 
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
-        scenario.add(0, new AddElementEvent(0, sprite, RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(0, new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 
-        scenario.add(0, new AddElementEvent(1, new Rectangle(200, 200, Color.RED, false), RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(1, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION));
-        scenario.add(0, new PlayAnimationEvent(1, "bascenarioengine:loop-test", true));
+        scenario.add(0, new AddElementEvent(2, new Rectangle(200, 200, Color.RED, false), RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(2, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(0, new PlayAnimationEvent(2, "bascenarioengine:loop-test", true));
 
-        scenario.add(0, new SpriteAnimationEvent(0, 0, "Idle_01", 0, true), new SpriteAnimationEvent(0, 0, "06", 0));
-        scenario.add(200, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
-        scenario.add(1000, new PlayAnimationEvent(0, "bascenarioengine:test", false));
-        scenario.add(2000, new PlayAnimationEvent(0, "bascenarioengine:down-then-up", false));
-        scenario.add(500, new PlayAnimationEvent(0, "bascenarioengine:hangry", false));
-        scenario.add(1000, new PlayAnimationEvent(0, "bascenarioengine:loop-test", true));
+        scenario.add(0, new SpriteAnimationEvent(1, 0, "Idle_01", 0, true), new SpriteAnimationEvent(1, 0, "06", 0));
+        scenario.add(200, new PlayAnimationEvent(1, "bascenarioengine:default-shake", false));
+        scenario.add(1000, new PlayAnimationEvent(1, "bascenarioengine:test", false));
+        scenario.add(2000, new PlayAnimationEvent(1, "bascenarioengine:down-then-up", false));
+        scenario.add(500, new PlayAnimationEvent(1, "bascenarioengine:hangry", false));
+        scenario.add(1000, new PlayAnimationEvent(1, "bascenarioengine:loop-test", true));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
