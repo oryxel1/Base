@@ -44,6 +44,10 @@ public class Timeline {
 
         scroll = Math.max(0, scroll);
 
+        ImGui.begin("Timeline");
+        if (ImGui.getIO().getMouseDown(0)) {
+            onMouseDown(ImGui.getIO().getMousePos());
+        }
         if (playing || ImGui.getIO().getMouseDown(0)) {
             if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
                 long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
@@ -54,11 +58,6 @@ public class Timeline {
                 float ratio = (float) distance / DEFAULT_MAX_TIME;
                 scroll -= ratio + 0.2f;
             }
-        }
-
-        ImGui.begin("Timeline");
-        if (ImGui.getIO().getMouseDown(0)) {
-            onMouseDown(ImGui.getIO().getMousePos());
         }
 
 
