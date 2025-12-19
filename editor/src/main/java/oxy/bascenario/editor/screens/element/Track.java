@@ -33,6 +33,7 @@ public class Track {
             float elementX = x + ((float) k / totalTime) * width;
 
             drawList.addRectFilled(new ImVec2(elementX, y), new ImVec2(elementX + elementWidth, y + 50), ImColor.rgb(192, 192, 192), 8f);
+            drawList.addText(new ImVec2(elementX, y), ImColor.rgb(0, 0, 0), v.left().object.getClass().getSimpleName());
         });
     }
 

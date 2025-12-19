@@ -14,13 +14,15 @@ import oxy.bascenario.editor.screens.element.Timeline;
 import oxy.bascenario.editor.screens.element.Track;
 import oxy.bascenario.utils.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TrackParser {
     // TODO: Sub elements....
     public static Map<Integer, Track> parse(Timeline timeline, Scenario scenario) {
-        final Map<Integer, Pair<Long, Long>> occupies = new HashMap<>();
+        final Map<Integer, List<Pair<Long, Long>>> occupies = new HashMap<>();
         final Map<Integer, Pair<Pair<Object, RenderLayer>, Long>> elementMap = new HashMap<>(), subElementMap = new HashMap<>();
 
         final Map<Integer, Track> trackMap = new HashMap<>();
@@ -39,7 +41,7 @@ public class TrackParser {
                         long maxTime = TimeCompiler.timeFromElement(current.left().left());
                         long duration = maxTime == Long.MAX_VALUE ? elTime - current.right() : Math.min(maxTime, elTime - current.right());
                         trackMap.get(event.getId()).getElements().put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null), duration));
-                        occupies.put(event.getId(), new Pair<>(current.right(), current.right() + duration));
+                        occupy(occupies, event.getId(), current.right(), current.right() + duration);
                     }
 
                     elementMap.put(event.getId(), new Pair<>(new Pair<>(event.getElement(), event.getLayer()), elTime));
@@ -51,7 +53,7 @@ public class TrackParser {
                         }
 
                         trackMap.get(event.getId()).getElements().put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null), elTime - cache.right()));
-                        occupies.put(event.getId(), new Pair<>(cache.right(), elTime));
+                        occupy(occupies, event.getId(), cache.right(), elTime);
                     }
                 } else if (e instanceof AttachElementEvent event) {
 //                    if (trackMap.get(event.getId()) == null) {
@@ -68,6 +70,7 @@ public class TrackParser {
                         trackMap.put(id, new Track(timeline, id));
                     }
                     trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
                 } else if (e instanceof StartDialogueEvent event) {
@@ -78,27 +81,44 @@ public class TrackParser {
                         trackMap.put(id, new Track(timeline, id));
                     }
                     trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
+                }
+                // Handle elements that auto delete (self-destruct) itself....
+                for (Map.Entry<Integer, Pair<Pair<Object, RenderLayer>, Long>> entry : elementMap.entrySet()) {
+                    Pair<Pair<Object, RenderLayer>, Long> p = entry.getValue();
+                    occupy(occupies, entry.getKey(), p.right(), TimeCompiler.timeFromElement(p.left().left()));
+                    trackMap.get(entry.getKey()).getElements().put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left())));
                 }
             }
         }
 
-        // Handle elements that auto delete (self-destruct) itself....
-        elementMap.forEach((k, p) -> trackMap.get(k).getElements().put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left()))));
-
         return trackMap;
     }
 
-    private static int findNonOccupiedSlot(long time, long duration, Map<Integer, Pair<Long, Long>> occupies) {
-        int i = 0;
-        Pair<Long, Long> pair;
-        while ((pair = occupies.get(i)) != null) {
-            final long maxTime = pair.left() + pair.right(), minTime = pair.left();
+    private static void occupy(Map<Integer, List<Pair<Long, Long>>> occupies, int index, long start, long end) {
+        List<Pair<Long, Long>> list = occupies.computeIfAbsent(index, k -> new ArrayList<>());
+        list.add(new Pair<>(start, end));
+    }
 
-            if (maxTime >= time && minTime <= time + duration) { // Time intersects, increment.
-                i++;
-            } else {
+    private static int findNonOccupiedSlot(long time, long duration, Map<Integer, List<Pair<Long, Long>>> occupies) {
+        int i = 0;
+        List<Pair<Long, Long>> pairs;
+        while ((pairs = occupies.get(i)) != null) {
+            boolean intersect = false;
+            for (Pair<Long, Long> pair : pairs) {
+                final long maxTime = pair.right(), minTime = pair.left();
+                if (maxTime >= time && minTime <= time + duration) {
+                    intersect = true;
+                    i++;
+                    break;
+                } else {
+                    System.out.println(minTime + "," + maxTime + "," + time + "," + (time + duration));
+                }
+            }
+
+            if (!intersect) {
                 break;
             }
         }
