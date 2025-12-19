@@ -2,10 +2,7 @@ package oxy.bascenario.event.impl.element;
 
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.Dummy;
-import oxy.bascenario.api.render.elements.LocationInfo;
-import oxy.bascenario.api.render.elements.RendererImage;
-import oxy.bascenario.api.render.elements.Sprite;
+import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.shape.Circle;
@@ -15,11 +12,8 @@ import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.element.thingl.AnimatedImageRenderer;
-import oxy.bascenario.screens.renderer.element.thingl.ImageRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.*;
 import oxy.bascenario.screens.renderer.element.SpriteRenderer;
-import oxy.bascenario.screens.renderer.element.thingl.LocationInfoRenderer;
-import oxy.bascenario.screens.renderer.element.thingl.TextRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.EmoticonMainRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
@@ -61,6 +55,7 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
             case Triangle triangle -> new TriangleRenderer(triangle, layer);
             case LocationInfo info -> new LocationInfoRenderer(info, layer);
             case Emoticon emoticon -> new EmoticonMainRenderer(emoticon, layer);
+            case Preview preview -> new PreviewRenderer(preview, layer, scenario);
             default -> throw new RuntimeException("Can't find the renderer for the element class type: " + element.getClass());
         };
     }

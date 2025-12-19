@@ -16,7 +16,6 @@ import oxy.bascenario.screens.ScenarioScreen;
 public class AnimationTickTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.title("Animation Test.");
 
         scenario.add(0, new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
 

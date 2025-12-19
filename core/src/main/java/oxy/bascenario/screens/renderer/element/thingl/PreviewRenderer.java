@@ -1,6 +1,5 @@
-package oxy.bascenario.screens;
+package oxy.bascenario.screens.renderer.element.thingl;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -8,27 +7,23 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
-import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.render.elements.image.Image;
-import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.managers.TextureManager;
-import oxy.bascenario.utils.animation.AnimationUtils;
-import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
-@RequiredArgsConstructor
-public class ScenarioPreviewScreen extends ExtendableScreen {
+public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
     private final Scenario scenario;
 
-    @Override
-    public void show() {
-        if (scenario.getPreviewSound().isPresent()) {
-            AudioManager.getInstance().play(scenario, scenario.getPreviewSound().get());
-        }
+    public PreviewRenderer(Preview element, RenderLayer layer, Scenario scenario) {
+        super(element, layer);
+        this.scenario = scenario;
     }
 
     private DynamicAnimation borderFade = AnimationUtils.dummy(0);
@@ -38,10 +33,15 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     private long sinceFinished = -1;
     private DynamicAnimation globalFade = AnimationUtils.dummy(1);
 
-    private final long start = System.currentTimeMillis();
+    private boolean finished;
 
     @Override
-    public void render(float delta) {
+    public boolean selfDestruct() {
+        return this.finished;
+    }
+
+    @Override
+    protected void renderThinGL() {
         ThinGLUtils.start();
 
         renderBackground();
@@ -68,14 +68,12 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
             if (sinceFinished == -1) {
                 sinceFinished = System.currentTimeMillis();
             } else if (System.currentTimeMillis() - sinceFinished >= 500L) {
-                // Finished, switch to the screen responsible for main scenario rendering!
-                System.out.println(System.currentTimeMillis() - start);
-                Launcher.WINDOW.setScreen(new ScenarioScreen(this.scenario));
+                finished = true;
             }
         }
 
         // If there are no background to fade, then draw a black overlay on top of everything to fade away.
-        if (this.scenario.getPreviewBackground().isEmpty()) {
+        if (element.background() == null) {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(0, 0, 0, Math.round(255 * (1 - globalFade.getValue()))));
         }
 
@@ -83,9 +81,8 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
     }
 
     private void renderBackground() {
-        if (scenario.getPreviewBackground().isPresent()) {
-            final Image preview = scenario.getPreviewBackground().get();
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, preview.file()), 0, 0, 1920, 1080);
+        if (element.background() != null) {
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, element.background().file()), 0, 0, 1920, 1080);
             ThinGLUtils.blurRectangle(0, 0, 1920, 1080, Math.round(18 * this.globalFade.getValue())); // Very nice blur thanks to ThinGL.
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
         } else {
@@ -95,7 +92,7 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
 
     private void renderBorder() {
         // The color of the border is different depending on the background....
-        int generalColor = scenario.getPreviewBackground().isPresent() ? 255 : 227;
+        int generalColor = element.background() != null ? 255 : 227;
         Color color = Color.fromRGBA(generalColor, generalColor, generalColor, Math.round(borderFade.getValue()));
         if (isDoingExitingFade()) {
             color = color.withAlpha(Math.round(100 * globalFade.getValue()));
@@ -136,10 +133,10 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
 
         final float scale = this.titlePopup.getValue();
         {
-            final TextRun text = TextRun.fromString(TITLE, this.scenario.getTitle(), Color.fromRGBA(70, 98, 150, alpha));
+            final TextRun text = TextRun.fromString(TITLE, this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
             float textCenterX = Math.max(0, 1920 / 2F - (ThinGL.rendererText().getVisualWidth(text.shape()) * scale / 2));
             float textCenterY = Math.max(0, 1080 / 2F - (ThinGL.rendererText().getVisualHeight(text.shape()) * scale / 2)) + 5;
-            if (!scenario.getSubtitle().isEmpty()) {
+            if (!element.subtitle().isEmpty()) {
                 textCenterY += 32;
             }
 
@@ -150,12 +147,12 @@ public class ScenarioPreviewScreen extends ExtendableScreen {
             GLOBAL_RENDER_STACK.popMatrix();
         }
 
-        if (scenario.getSubtitle().isEmpty()) {
+        if (element.subtitle().isEmpty()) {
             return;
         }
 
         {
-            final TextRun text = TextRun.fromString(SUBTITLE, this.scenario.getSubtitle(), Color.fromRGBA(46, 69, 96, alpha));
+            final TextRun text = TextRun.fromString(SUBTITLE, this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
             float width = ThinGL.rendererText().getVisualWidth(text.shape());
             float height = ThinGL.rendererText().getVisualHeight(text.shape());
             float textCenterX = Math.max(0, 1920 / 2F - (width * scale / 2));

@@ -18,7 +18,6 @@ import java.util.List;
 public class DialogueRenderTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.title("Dialogue Test.");
 
         scenario.add(0, new AddElementEvent(-1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
 

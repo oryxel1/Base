@@ -16,7 +16,6 @@ import oxy.bascenario.screens.ScenarioScreen;
 public class AttachingElementTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.title("Element Attachment Test");
 
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
 

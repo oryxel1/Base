@@ -15,7 +15,6 @@ import oxy.bascenario.screens.ScenarioScreen;
 public class AnimatedImageTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.title("Animated Image Test");
 
         final RendererImage image = new RendererImage(new AnimatedImage(new FileInfo("hm-hm-hm.gif", false, true), false), Color.WHITE, 618, 640);
         final RendererImage loading = new RendererImage(new AnimatedImage(new FileInfo("loading.gif", false, true), true), Color.WHITE, 100, 100);

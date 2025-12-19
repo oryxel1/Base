@@ -14,11 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Getter
 public class Scenario {
-    private final String title, subtitle;
-
     private final SaveType saveType;
-    private final Optional<Sound> previewSound;
-    private final Optional<Image> previewBackground;
 
     private final List<Timestamp> timestamps = new ArrayList<>();
 
@@ -29,9 +25,6 @@ public class Scenario {
     public static Builder toBuilder(Scenario scenario) {
         final Builder builder = new Builder();
         builder.saveType = scenario.saveType;
-        builder.previewBackground = scenario.previewBackground;
-        builder.previewSound = scenario.previewSound;
-        builder.title = scenario.title;
         builder.timestamps.addAll(scenario.timestamps);
 
         return builder;
@@ -39,9 +32,6 @@ public class Scenario {
 
     public static final class Builder {
         private SaveType saveType = SaveType.JSON;
-        private String title = "", subtitle = "";
-        private Optional<Image> previewBackground = Optional.empty();
-        private Optional<Sound> previewSound = Optional.empty();
         private final List<Timestamp> timestamps = new ArrayList<>();
 
         public SaveType saveType() {
@@ -50,42 +40,6 @@ public class Scenario {
 
         public void saveType(SaveType saveType) {
             this.saveType = saveType;
-        }
-
-        public Builder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public String title() {
-            return this.title;
-        }
-
-        public Builder subtitle(String subtitle) {
-            this.subtitle = subtitle;
-            return this;
-        }
-
-        public String subtitle() {
-            return this.subtitle;
-        }
-
-        public Builder previewBackground(Image previewBackground) {
-            this.previewBackground = Optional.of(previewBackground);
-            return this;
-        }
-
-        public Optional<Image> previewBackground() {
-            return this.previewBackground;
-        }
-
-        public Optional<Sound> previewSound() {
-            return this.previewSound;
-        }
-
-        public Builder previewSound(Sound previewSound) {
-            this.previewSound = Optional.of(previewSound);
-            return this;
         }
 
         public Builder add(long time, Event<?>... events) {
@@ -103,7 +57,7 @@ public class Scenario {
         }
 
         public Scenario build() {
-            final Scenario scenario = new Scenario(this.title, this.subtitle, this.saveType, this.previewSound, this.previewBackground);
+            final Scenario scenario = new Scenario(this.saveType);
             scenario.timestamps.addAll(this.timestamps);
             return scenario;
         }

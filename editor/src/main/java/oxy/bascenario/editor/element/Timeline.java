@@ -6,9 +6,14 @@ import lombok.Setter;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // Shit code but whatever.
 public class Timeline {
     private static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
+
+    private final List<Track> tracks = new ArrayList<>();
 
     @Setter @Getter
     private boolean playing;
@@ -19,9 +24,11 @@ public class Timeline {
     private long timestamp;
     private long since;
 
-    private ImFont bigTimestampFont;
+    private ImFont timestampFont, elapsedTimestampFont, trackNameFont;
     public void init() {
-        this.bigTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
+        this.timestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
+        this.elapsedTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 30);
+        this.trackNameFont = FontUtils.getImFont("NotoSansRegular", 35);
     }
 
     public void render() {
@@ -65,20 +72,42 @@ public class Timeline {
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
 
-
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
-        drawTimelineCursor(size.x / 4, pos, size);
+        drawTimelineSegments(size.x / 4, pos, size);
         drawElapsedTime(size.x / 4, pos, size);
-        drawTimelineTimeSegments(size.x / 4, pos, size);
+        drawElapsedTimeSegments(size.x / 4, pos, size);
+        drawTimelineCursor(size.x / 4, pos, size);
 
         ImGui.end();
     }
 
-    private void drawTimelineTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+    private void drawTimelineSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        for (int i = 0; i <= ((size.y - 80) / 100); i++) {
+            if (tracks.size() <= i) {
+                tracks.add(new Track());
+            }
+
+            ImGui.pushFont(this.trackNameFont);
+            drawList.addText(new ImVec2(pos.x + 10, pos.y + 80 + 100 * i + 20), ImColor.rgb(255, 255, 255), "Track " + i);
+            ImGui.popFont();
+
+            drawList.addRect(new ImVec2(pos.x, pos.y + 80 + 100 * i), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(50, 50, 50));
+            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(50, 50, 50));
+
+            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 100 / 2f), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 + 100 / 2f * i + 0.5f), ImColor.rgb(50, 50, 50));
+            drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 100 / 2f), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(5, 5, 5));
+
+            tracks.get(i).render(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i);
+        }
+    }
+
+    private void drawElapsedTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
         for (int i = 0; i <= 5; i++) {
-            ImGui.pushFont(this.bigTimestampFont);
+            ImGui.pushFont(this.timestampFont);
             long time = (long) ((DEFAULT_MAX_TIME * scale * scroll) + (DEFAULT_MAX_TIME * scale * (i / 5f)));
             float segmentX = timestampToPosition(time, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
 
@@ -94,7 +123,7 @@ public class Timeline {
 
         drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80), ImColor.rgb(50, 50, 50));
         drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 80), ImColor.rgb(50, 50, 50));
-        ImGui.pushFont(FontUtils.getImFont("NotoSansSemiBold", 30));
+        ImGui.pushFont(this.elapsedTimestampFont);
         drawList.addText(pos.x + 20, pos.y + 21, ImColor.rgb(255, 255, 255), format(timestamp));
         ImGui.popFont();
 

@@ -24,7 +24,6 @@ import java.util.List;
 public class ElementRenderTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.title("Element Test.");
 
         final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
 
