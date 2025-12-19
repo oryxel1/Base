@@ -15,6 +15,10 @@ public class ImGuiUtils {
         return imInt.get();
     }
 
+    public static void inputInt4(String name, int[] value) {
+        ImGui.inputInt4(name + "##" + COUNTER++, value);
+    }
+
     public static String inputText(String name, String value) {
         final ImString imString = new ImString(value);
         ImGui.inputText(name + "##" + COUNTER++, imString, ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackResize);

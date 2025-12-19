@@ -4,6 +4,7 @@ import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.ImGuiUtils;
 
 // Shit code but whatever.
 public class Timeline {
@@ -48,9 +49,13 @@ public class Timeline {
         }
 
         if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
-            scroll++;
+            long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
+            float ratio = (float) distance / DEFAULT_MAX_TIME;
+            scroll += ratio + 0.2f;
         } else if (timestamp != 0 && timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
-            scroll--;
+            long distance = (long) (DEFAULT_MAX_TIME * scroll * scale - timestamp);
+            float ratio = (float) distance / DEFAULT_MAX_TIME;
+            scroll -= ratio + 0.2f;
         }
 
         ImGui.begin("Timeline");
@@ -59,6 +64,7 @@ public class Timeline {
         }
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
+
 
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
         drawTimelineCursor(size.x / 4, pos, size);
@@ -86,11 +92,23 @@ public class Timeline {
     private void drawElapsedTime(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
-        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + (float) 50.0), ImColor.rgb(50, 50, 50));
-        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + (float) 50.0), ImColor.rgb(50, 50, 50));
+        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80), ImColor.rgb(50, 50, 50));
+        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 80), ImColor.rgb(50, 50, 50));
         ImGui.pushFont(FontUtils.getImFont("NotoSansSemiBold", 30));
         drawList.addText(pos.x + 20, pos.y + 21, ImColor.rgb(255, 255, 255), format(timestamp));
         ImGui.popFont();
+
+        long millis = timestamp % 1000;
+        long second = (timestamp / 1000) % 60;
+        long minute = (timestamp / (1000 * 60)) % 60;
+        long hour = (timestamp / (1000 * 60 * 60)) % 24;
+        ImGui.pushItemWidth(timelineManagerWidth - 15);
+        ImGui.setCursorPos(5, 55);
+        int[] time = new int[] {Math.toIntExact(hour), Math.toIntExact(minute), Math.toIntExact(second), Math.toIntExact(millis)};
+        ImGuiUtils.inputInt4("", time);
+        ImGui.popItemWidth();
+
+        timestamp = Math.min(time[0], 99) * (long)3.6e+6 + Math.min(69, time[1]) * 60000L + Math.min(59, time[2]) * 1000L + Math.min(999, time[3]);
     }
 
     private void drawTimelineCursor(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
@@ -107,19 +125,21 @@ public class Timeline {
     private void onMouseDown(ImVec2 vec2) {
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
 
-        if (vec2.x < pos.x || vec2.x > pos.x + size.x || vec2.y < pos.y || vec2.y > pos.y + size.y) {
+        if (vec2.x < pos.x || vec2.x > pos.x + size.x || vec2.y < pos.y + 20 || vec2.y > pos.y + size.y) {
             return;
         }
 
         if (vec2.x > pos.x + size.x - 20) {
-            scroll += 0.001f;
+            scroll += 0.01f * ((pos.x + size.x - vec2.x) / 20) * scale;
         }
 
         if (vec2.x < pos.x + size.x / 4) {
-            final float distance = pos.x + size.x / 4 - vec2.x;
-            final float ratio = distance / (size.x - size.x / 4);
-            final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
-            timestamp = Math.max(0, timestamp - backtrackTime);
+            if (vec2.y > pos.y + 80) {
+                final float distance = pos.x + size.x / 4 - vec2.x;
+                final float ratio = distance / (size.x - size.x / 4);
+                final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
+                timestamp = Math.max(0, timestamp - backtrackTime);
+            }
             return;
         }
 
@@ -128,7 +148,7 @@ public class Timeline {
     }
 
     private float timestampToPosition(long timestamp, float offsetX, float size) {
-        return offsetX + ((timestamp - (Timeline.DEFAULT_MAX_TIME * scale * scroll)) / (Timeline.DEFAULT_MAX_TIME  * scale)) * size;
+        return offsetX + ((timestamp - (Timeline.DEFAULT_MAX_TIME * scale * scroll)) / (Timeline.DEFAULT_MAX_TIME * scale)) * size;
     }
 
     private static String format(long ms) {

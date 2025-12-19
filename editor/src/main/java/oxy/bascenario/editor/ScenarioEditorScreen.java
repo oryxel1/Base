@@ -34,15 +34,6 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         if (ImGui.beginMenu("Timeline")) {
             if (ImGui.menuItem("Play")) {
                 timeline.setPlaying(true);
-                timeline.setTimestamp(0);
-            }
-            if (ImGui.menuItem("Stop", false, timeline.isPlaying() || timeline.getTimestamp() > 0)) {
-                timeline.setPlaying(false);
-                timeline.setTimestamp(0);
-            }
-            ImGui.separator();
-            if (ImGui.menuItem("Resume", false, !timeline.isPlaying() && timeline.getTimestamp() > 0)) {
-                timeline.setPlaying(true);
             }
             if (ImGui.menuItem("Pause", false, timeline.isPlaying())) {
                 timeline.setPlaying(false);
