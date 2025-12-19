@@ -8,10 +8,14 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.screens.element.Timeline;
 import oxy.bascenario.utils.ExtendableScreen;
 
-@RequiredArgsConstructor
 public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
-    private final Timeline timeline = new Timeline();
+    private final Timeline timeline;
+
+    public ScenarioEditorScreen(Scenario.Builder scenario) {
+        this.scenario = scenario;
+        this.timeline = new Timeline(scenario);
+    }
 
     @Override
     public void show() {

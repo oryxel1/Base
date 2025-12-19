@@ -3,6 +3,8 @@ package oxy.bascenario.editor.screens.element;
 import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
+import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
@@ -13,7 +15,14 @@ import java.util.Map;
 public class Timeline {
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
-    private final Map<Integer, Track> tracks = new HashMap<>();
+    private final Map<Integer, Track> tracks;
+    public Timeline(Scenario.Builder scenario) {
+        if (scenario == null) {
+            tracks = new HashMap<>();
+        } else {
+            tracks = TrackParser.parse(this, scenario.build());
+        }
+    }
 
     @Setter @Getter
     private boolean playing;
@@ -31,6 +40,8 @@ public class Timeline {
         this.timestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
         this.elapsedTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 30);
         this.trackNameFont = FontUtils.getImFont("NotoSansRegular", 35);
+
+
     }
 
     public void render() {
@@ -79,9 +90,9 @@ public class Timeline {
         }
 
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
+        drawElapsedTimeSegments(size.x / 4, pos, size);
         drawTimelineSegments(size.x / 4, pos, size);
         drawElapsedTime(size.x / 4, pos, size);
-        drawElapsedTimeSegments(size.x / 4, pos, size);
         drawTimelineCursor(size.x / 4, pos, size);
 
         ImGui.end();
@@ -94,7 +105,7 @@ public class Timeline {
 
 //        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
 
-        for (int i = verticalScroll; i <= ((size.y - 50) / 30) + verticalScroll; i++) {
+        for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
             if (tracks.get(i) == null) {
                 tracks.put(i, new Track(this, i));
             }
@@ -105,7 +116,7 @@ public class Timeline {
 
             drawList.addRect(new ImVec2(pos.x, y), new ImVec2(pos.x + size.x, y + 0.5f), ImColor.rgb(50, 50, 50));
 
-            tracks.get(i).render(pos.x + timelineManagerWidth, pos.y + 50 + 100 * i);
+            tracks.get(i).render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
 
             y += 50;
         }
@@ -177,6 +188,10 @@ public class Timeline {
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
                 timestamp = Math.max(0, timestamp - backtrackTime);
             }
+            return;
+        }
+
+        if (vec2.y > pos.y + 80) {
             return;
         }
 

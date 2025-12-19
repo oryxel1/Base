@@ -62,9 +62,23 @@ public class TrackParser {
 //                    subElementMap.put(event.getSubId(), new Pair<>(new Pair<>(event.getElement(), null), elTime));
                 } else if (e instanceof AddDialogueEvent event) {
                     long duration = TimeCompiler.compileTime(event.getDialogues());
+                    int id = findNonOccupiedSlot(elTime, duration, occupies);
+
+                    if (trackMap.get(id) == null) {
+                        trackMap.put(id, new Track(timeline, id));
+                    }
+                    trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+
                     elTime += duration;
                 } else if (e instanceof StartDialogueEvent event) {
                     long duration = TimeCompiler.compileTime(event.getDialogues());
+                    int id = findNonOccupiedSlot(elTime, duration, occupies);
+
+                    if (trackMap.get(id) == null) {
+                        trackMap.put(id, new Track(timeline, id));
+                    }
+                    trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+
                     elTime += duration;
                 }
             }
@@ -74,5 +88,21 @@ public class TrackParser {
         elementMap.forEach((k, p) -> trackMap.get(k).getElements().put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left()))));
 
         return trackMap;
+    }
+
+    private static int findNonOccupiedSlot(long time, long duration, Map<Integer, Pair<Long, Long>> occupies) {
+        int i = 0;
+        Pair<Long, Long> pair;
+        while ((pair = occupies.get(i)) != null) {
+            final long maxTime = pair.left() + pair.right(), minTime = pair.left();
+
+            if (maxTime >= time && minTime <= time + duration) { // Time intersects, increment.
+                i++;
+            } else {
+                break;
+            }
+        }
+
+        return i;
     }
 }
