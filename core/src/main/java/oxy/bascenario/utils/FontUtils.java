@@ -19,6 +19,7 @@ import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
     private static final Map<String, List<Font>> NAME_TO_FONTS = new HashMap<>();
+    private static final Map<String, List<ImFont>> NAME_TO_IM_FONTS = new HashMap<>();
 
     public static Font toFont(Scenario scenario, TextSegment segment, Text text) {
         Font font;
@@ -34,45 +35,17 @@ public class FontUtils {
         return NAME_TO_FONTS.get(name).get(Math.max(0, Math.min(size - 1, 150)));
     }
 
+    public static ImFont getImFont(String name, int size) {
+        return NAME_TO_IM_FONTS.get(name).get(Math.max(0, Math.min(size - 1, 50)));
+    }
+
     public static void loadFonts() {
-        {
-            final ImGuiIO data = ImGui.getIO();
-            final ImFontAtlas fonts = data.getFonts();
-            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
-
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesDefault());
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesCyrillic());
-            rangesBuilder.addRanges(data.getFonts().getGlyphRangesJapanese());
-
-            final short[] glyphRanges = rangesBuilder.buildRanges();
-
-            try {
-                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.readAll(Objects.requireNonNull(FontUtils.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
-            } catch (Exception ignored) {
-            }
-        }
-
         // Cache these font so I can use them dynamically later.
         loadFont("NotoSansRegular", "/assets/base/fonts/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/NotoSans-SemiBold.ttf");
         loadFont("NotoSansBold", "/assets/base/fonts/NotoSans-Bold.ttf");
 
-        // Now set the default font since ImGui default font is pretty ugly :)
-//        final ImGuiIO data = ImGui.getIO();
-//        {
-//            final ImFontAtlas fonts = data.getFonts();
-//            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
-//
-//            rangesBuilder.addRanges(data.getFonts().getGlyphRangesDefault());
-//            rangesBuilder.addRanges(data.getFonts().getGlyphRangesCyrillic());
-//            rangesBuilder.addRanges(data.getFonts().getGlyphRangesJapanese());
-//
-//            final short[] glyphRanges = rangesBuilder.buildRanges();
-//
-//            try {
-//                data.setFontDefault(fonts.addFontFromMemoryTTF(IOUtils.toByteArray(Objects.requireNonNull(FontUtils.class.getResourceAsStream("/assets/base/fonts/NotoSans-Regular.ttf"))), 17.5F, new ImFontConfig(), glyphRanges));
-//            } catch (Exception ignored) {}
-//        }
+        ImGui.getIO().setFontDefault(getImFont("NotoSansRegular", 17));
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font, int scale) {
@@ -93,16 +66,25 @@ public class FontUtils {
 
     private static void loadFont(String name, String font) {
         final List<Font> fonts = new ArrayList<>();
+        final List<ImFont> imFonts = new ArrayList<>();
+
+        final ImGuiIO data = ImGui.getIO();
+        final ImFontAtlas atlas = data.getFonts();
 
         try {
             final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
             for (int i = 1; i <= 150; i++) {
                 fonts.add(new FreeTypeFont(fontData, i));
+
+                if (i <= 50) { // Loading im gui font is rather slow, and 50 is enough.
+                    imFonts.add(atlas.addFontFromMemoryTTF(fontData, i, new ImFontConfig(), data.getFonts().getGlyphRangesDefault()));
+                }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         NAME_TO_FONTS.put(name, fonts);
+        NAME_TO_IM_FONTS.put(name, imFonts);
     }
 }

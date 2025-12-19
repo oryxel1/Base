@@ -2,26 +2,28 @@ package oxy.bascenario.editor;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
-import imgui.ImVec2;
 import imgui.flag.ImGuiDockNodeFlags;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.ImGuiUtils;
 
 @RequiredArgsConstructor
 public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
+    private final Timeline timeline = new Timeline();
 
-    private int currentTime, maxTime;
+    @Override
+    public void show() {
+        this.timeline.init();
+    }
+
     @Override
     public void render(float delta) {
         ImGui.dockSpaceOverViewport(0, new ImGuiViewport(0), ImGuiDockNodeFlags.PassthruCentralNode);
         menuBar();
 
-        ImGui.begin("Timeline");
-        currentTime = ImGuiUtils.sliderInt("Time", currentTime, 0, maxTime + 10_000);
-        ImGui.end();
+        timeline.render();
     }
 
     // TODO.
