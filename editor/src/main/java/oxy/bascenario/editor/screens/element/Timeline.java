@@ -1,36 +1,44 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.screens.element;
 
+import com.badlogic.gdx.Gdx;
 import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
+import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 // Shit code but whatever.
 public class Timeline {
-    private static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
+    public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
-    private final List<Track> tracks = new ArrayList<>();
+    private final Map<Integer, Track> tracks = new HashMap<>();
 
     @Setter @Getter
     private boolean playing;
 
     @Getter
     private float scroll = 0, scale = 1;
+    @Getter
+    private int verticalScroll = 0;
     @Setter @Getter
     private long timestamp;
     private long since;
 
-    private ImFont timestampFont, elapsedTimestampFont, trackNameFont;
+    private ImFont timestampFont, elapsedTimestampFont, trackNameFont, trackTypeFont;
     public void init() {
         this.timestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
         this.elapsedTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 30);
         this.trackNameFont = FontUtils.getImFont("NotoSansRegular", 35);
+        this.trackTypeFont = FontUtils.getImFont("NotoSansRegular", 25);
     }
 
+    private ImVec2 prevMousePos;
     public void render() {
         if (since == 0) {
             since = System.currentTimeMillis();
@@ -42,35 +50,45 @@ public class Timeline {
 
         scroll = Math.max(0, scroll);
 
-        if (ImGui.getIO().getKeyCtrl()) {
-            final float scroll = ImGui.getIO().getMouseWheel();
-            if (scroll > 0) {
-                this.scale += scroll;
-            } else if (scroll < 0) {
-                if (this.scale > Math.abs(scroll)) {
-                    this.scale += scroll;
-                } else {
-                    this.scale *= (Math.abs(scroll) * 0.9f);
-                }
+        if (playing || ImGui.getIO().getMouseDown(0)) {
+            if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
+                long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
+                float ratio = (float) distance / DEFAULT_MAX_TIME;
+                scroll += ratio + 0.2f;
+            } else if (timestamp != 0 && timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
+                long distance = (long) (DEFAULT_MAX_TIME * scroll * scale - timestamp);
+                float ratio = (float) distance / DEFAULT_MAX_TIME;
+                scroll -= ratio + 0.2f;
             }
         }
 
-        if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
-            long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
-            float ratio = (float) distance / DEFAULT_MAX_TIME;
-            scroll += ratio + 0.2f;
-        } else if (timestamp != 0 && timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
-            long distance = (long) (DEFAULT_MAX_TIME * scroll * scale - timestamp);
-            float ratio = (float) distance / DEFAULT_MAX_TIME;
-            scroll -= ratio + 0.2f;
+        if (prevMousePos == null) {
+            prevMousePos = ImGui.getIO().getMousePos();
         }
 
         ImGui.begin("Timeline");
         if (ImGui.getIO().getMouseDown(0)) {
             onMouseDown(ImGui.getIO().getMousePos());
         }
+        prevMousePos = ImGui.getIO().getMousePos();
+
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
+        final ImVec2 mouse = ImGui.getMousePos();
+        if (mouse.x >= pos.x && mouse.x <= pos.x + size.x && mouse.y >= pos.y && mouse.y <= pos.y + size.y) {
+            final float scroll = ImGui.getIO().getMouseWheel();
+            if (mouse.x < pos.x + size.x / 4) {
+                this.verticalScroll += (int) scroll;
+            } else if (ImGui.getIO().getKeyCtrl()) {
+                if (scroll > 0 || this.scale > Math.abs(scroll)) {
+                    this.scale += scroll;
+                } else if (scroll < 0) {
+                    this.scale *= (Math.abs(scroll) * 0.9f);
+                }
+            } else {
+                this.scroll = Math.max(0, this.scroll + scroll);
+            }
+        }
 
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
         drawTimelineSegments(size.x / 4, pos, size);
@@ -81,25 +99,42 @@ public class Timeline {
         ImGui.end();
     }
 
+    private int extraSubElements = 0;
     private void drawTimelineSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
-        for (int i = 0; i <= ((size.y - 80) / 100); i++) {
-            if (tracks.size() <= i) {
-                tracks.add(new Track());
+        float y = pos.y + 110;
+
+//        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
+
+        ImGui.pushFont(this.trackTypeFont);
+        drawList.addText(new ImVec2(pos.x + timelineManagerWidth - 90, y + 5), ImColor.rgb(255, 255, 255), "Elements");
+        drawList.addText(new ImVec2(pos.x + timelineManagerWidth - 120, y + 3 + (100 / 3f)), ImColor.rgb(255, 255, 255), "Sub Elements");
+        drawList.addText(new ImVec2(pos.x + timelineManagerWidth - 130, (extraSubElements * 100 / 3f) + y + 3 + (100 / 3f) * 2), ImColor.rgb(255, 255, 255), "Actions/Effects");
+        ImGui.popFont();
+
+        for (int i = -verticalScroll; i <= ((size.y - 80) / 100) - verticalScroll; i++) {
+            if (tracks.get(i) == null) {
+                tracks.put(i, new Track(this, i));
             }
 
             ImGui.pushFont(this.trackNameFont);
-            drawList.addText(new ImVec2(pos.x + 10, pos.y + 80 + 100 * i + 20), ImColor.rgb(255, 255, 255), "Track " + i);
+            drawList.addText(new ImVec2(pos.x + 10, y), ImColor.rgb(255, 255, 255), "Track " + i);
             ImGui.popFont();
 
-            drawList.addRect(new ImVec2(pos.x, pos.y + 80 + 100 * i), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(50, 50, 50));
-            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(50, 50, 50));
+            drawList.addRect(new ImVec2(pos.x, y), new ImVec2(pos.x + size.x, y + 0.5f), ImColor.rgb(50, 50, 50));
+            drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, y + (100 / 3f)), new ImVec2(pos.x + timelineManagerWidth + size.x, y + (100 / 3f) * 2 + (extraSubElements * 100 / 3f)), ImColor.rgb(10, 10, 10));
 
-            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 100 / 2f), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 + 100 / 2f * i + 0.5f), ImColor.rgb(50, 50, 50));
-            drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i + 100 / 2f), new ImVec2(pos.x + timelineManagerWidth + size.x, pos.y + 80 + 100 * i + 0.5f), ImColor.rgb(5, 5, 5));
+            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, y + 100 / 3f), new ImVec2(pos.x + timelineManagerWidth + size.x, y + 100 / 3f + 0.5f), ImColor.rgb(50, 50, 50));
+            drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, (extraSubElements * 100 / 3f) + y + (100 / 3f) * 2), new ImVec2(pos.x + timelineManagerWidth + size.x, (extraSubElements * 100 / 3f) + y + (100 / 3f) * 2 + 0.5f), ImColor.rgb(50, 50, 50));
+            for (int n = 0; n < ((extraSubElements * 100 / 3f) / (100 / 3f)); n++) {
+                final float nY = y + 100 / 3f + ((n + 1) * (100 / 3f));
+                drawList.addRect(new ImVec2(pos.x + timelineManagerWidth, nY), new ImVec2(pos.x + timelineManagerWidth + size.x, nY + 0.5f), ImColor.rgb(50, 50, 50));
+            }
 
-            tracks.get(i).render(pos.x + timelineManagerWidth, pos.y + 80 + 100 * i);
+            tracks.get(i).render(pos.x + timelineManagerWidth, pos.y + 110 + 100 * i);
+
+            y += 100 + (extraSubElements * 100 / 3f);
         }
     }
 
@@ -121,8 +156,8 @@ public class Timeline {
     private void drawElapsedTime(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
-        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80), ImColor.rgb(50, 50, 50));
-        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 80), ImColor.rgb(50, 50, 50));
+        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 110), ImColor.rgb(50, 50, 50));
+        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 110), ImColor.rgb(50, 50, 50));
         ImGui.pushFont(this.elapsedTimestampFont);
         drawList.addText(pos.x + 20, pos.y + 21, ImColor.rgb(255, 255, 255), format(timestamp));
         ImGui.popFont();
@@ -138,6 +173,11 @@ public class Timeline {
         ImGui.popItemWidth();
 
         timestamp = Math.min(time[0], 99) * (long)3.6e+6 + Math.min(69, time[1]) * 60000L + Math.min(59, time[2]) * 1000L + Math.min(999, time[3]);
+
+        ImGui.pushItemWidth(180);
+        ImGui.setCursorPos(5, 85);
+        extraSubElements = Math.max(0, ImGuiUtils.inputInt("Sub Elements View", extraSubElements));
+        ImGui.popItemWidth();
     }
 
     private void drawTimelineCursor(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
@@ -163,7 +203,7 @@ public class Timeline {
         }
 
         if (vec2.x < pos.x + size.x / 4) {
-            if (vec2.y > pos.y + 80) {
+            if (vec2.y > pos.y + 110) {
                 final float distance = pos.x + size.x / 4 - vec2.x;
                 final float ratio = distance / (size.x - size.x / 4);
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));

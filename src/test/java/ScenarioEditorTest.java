@@ -1,5 +1,5 @@
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screens.ScenarioEditorScreen;
 import oxy.bascenario.utils.Launcher;
 
 public class ScenarioEditorTest {

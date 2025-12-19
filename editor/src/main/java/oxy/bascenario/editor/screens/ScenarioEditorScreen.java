@@ -1,11 +1,11 @@
-package oxy.bascenario.editor;
+package oxy.bascenario.editor.screens;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
 import imgui.flag.ImGuiDockNodeFlags;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.element.Timeline;
+import oxy.bascenario.editor.screens.element.Timeline;
 import oxy.bascenario.utils.ExtendableScreen;
 
 @RequiredArgsConstructor

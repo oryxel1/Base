@@ -63,7 +63,6 @@ public class EmoticonTwinkleRenderer extends EmoticonRenderer {
 
     @Override
     public boolean finished() {
-        System.out.println(System.currentTimeMillis() - this.since > this.duration);
         return System.currentTimeMillis() - this.since > this.duration;
     }
 }

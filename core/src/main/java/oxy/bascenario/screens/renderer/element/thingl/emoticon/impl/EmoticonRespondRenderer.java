@@ -1,6 +1,5 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;

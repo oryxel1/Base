@@ -17,7 +17,6 @@ import net.raphimc.thingl.gl.wrapper.GLStateManager;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL32;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.FontUtils;
