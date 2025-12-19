@@ -18,16 +18,17 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         this.timeline.init();
     }
 
+    // Ideally we mostly render thing on our own, but ImGui is used here since its rendering system and docking system is quite nice.
     @Override
     public void render(float delta) {
         ImGui.dockSpaceOverViewport(0, new ImGuiViewport(0), ImGuiDockNodeFlags.PassthruCentralNode);
-        menuBar();
 
+        renderMenuBar();
         timeline.render();
     }
 
     // TODO.
-    private void menuBar() {
+    private void renderMenuBar() {
         ImGui.beginMainMenuBar();
 
         if (ImGui.beginMenu("Edit")) {
