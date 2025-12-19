@@ -29,8 +29,8 @@ public class Timeline {
         }
         if (playing) {
             timestamp += System.currentTimeMillis() - since;
-            since = System.currentTimeMillis();
         }
+        since = System.currentTimeMillis();
 
         scroll = Math.max(0, scroll);
 
