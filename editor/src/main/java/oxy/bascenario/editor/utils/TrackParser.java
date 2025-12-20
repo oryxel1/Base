@@ -110,7 +110,7 @@ public class TrackParser {
             boolean intersect = false;
             for (Pair<Long, Long> pair : pairs) {
                 final long maxTime = pair.right(), minTime = pair.left();
-                if (maxTime >= time && minTime <= time + duration) {
+                if (maxTime > time && minTime < time + duration) {
                     intersect = true;
                     i++;
                     break;

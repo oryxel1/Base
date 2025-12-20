@@ -32,30 +32,28 @@ public class ElementAdder {
 
     public void render() {
         ImGui.begin("Objects");
-
-        final ImVec2 size = new ImVec2(ImGui.getWindowSize().x - 20, 50);
-
-        addDialogue("Start Dialogue", size, new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
-        addDialogue("Add Dialogue", size, new AddDialogueEvent(0, DUMMY_DIALOGUE));
+        
+        addDialogue("Start Dialogue", new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
+        addDialogue("Add Dialogue", new AddDialogueEvent(0, DUMMY_DIALOGUE));
 
         ImGui.separatorText("");
 
-        add("Preview", size, new Preview("Title", "Subtitle", null));
-        add("Emoticon", size, new Emoticon(1000L, EmoticonType.NOTE, true));
-        add("Sprite", size, new Sprite(null, null));
-        add("Image", size, new RendererImage(new Image(null), Color.WHITE, 100, 100));
-        add("Gif", size, new RendererImage(new AnimatedImage(null, true), Color.WHITE, 100, 100));
-        add("Text", size, new Text(new ArrayList<>(), 42));
-        add("Circle", size, new Circle(20, Color.WHITE, false));
-        add("Rectangle", size, new Rectangle(100, 100, Color.WHITE, false));
-//        add("Triangle", size, null);
-        add("Location Info", size, new LocationInfo("Location Name", 2500, 500));
+        add("Preview", new Preview("Title", "Subtitle", null));
+        add("Emoticon", new Emoticon(1000L, EmoticonType.NOTE, true));
+        add("Sprite", new Sprite(null, null));
+        add("Image", new RendererImage(new Image(null), Color.WHITE, 100, 100));
+        add("Gif", new RendererImage(new AnimatedImage(null, true), Color.WHITE, 100, 100));
+        add("Text", new Text(new ArrayList<>(), 42));
+        add("Circle", new Circle(20, Color.WHITE, false));
+        add("Rectangle", new Rectangle(100, 100, Color.WHITE, false));
+//        add("Triangle", null);
+        add("Location Info", new LocationInfo("Location Name", 2500, 500));
 
         ImGui.end();
     }
 
-    private void add(String label, ImVec2 size, Object element) {
-        if (!ImGui.button(label, size)) {
+    private void add(String label, Object element) {
+        if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             return;
         }
 
@@ -68,8 +66,8 @@ public class ElementAdder {
         track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, null, null), duration));
     }
 
-    private void addDialogue(String label, ImVec2 size, Event<?> e) {
-        if (!ImGui.button(label, size)) {
+    private void addDialogue(String label, Event<?> e) {
+        if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             return;
         }
 
@@ -82,7 +80,7 @@ public class ElementAdder {
         int i = 0;
         Track track;
         while ((track = timeline.getTracks().get(i)) != null) {
-            if (!track.isOccupied(time, duration)) {
+            if (!track.isOccupied(time, duration, null)) {
                 break;
             }
             i++;

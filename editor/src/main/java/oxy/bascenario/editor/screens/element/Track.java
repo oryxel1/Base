@@ -79,7 +79,7 @@ public class Track {
                 int trackId = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 final Track newTrack = track.timeline.getTracks().get(trackId);
-                if (newTrack == null || !newTrack.isOccupied(time, pair.right())) {
+                if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && trackId != track.index) {
                     track.renderers.remove(startTime);
                     track.elements.remove(startTime);
                     track.occupies.remove(startTime);
@@ -139,10 +139,10 @@ public class Track {
     public record Cache(Object object, RenderLayer layer, Integer attachedTo) {
     }
 
-    public boolean isOccupied(long time, long duration) {
+    public boolean isOccupied(long time, long duration, Pair<Long, Long> current) {
         for (Pair<Long, Long> longLongPair : occupies.values()) {
             final long maxTime = longLongPair.right(), minTime = longLongPair.left();
-            if (maxTime >= time && minTime <= time + duration) {
+            if (maxTime > time && minTime < time + duration && longLongPair != current) {
                 return true;
             }
         }
