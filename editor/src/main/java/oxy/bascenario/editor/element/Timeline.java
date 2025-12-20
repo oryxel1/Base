@@ -34,7 +34,7 @@ public class Timeline {
     }
 
     @Setter @Getter
-    private boolean playing;
+    private boolean playing, tickTime = true;
 
     @Getter
     private float scroll = 0, scale = 1;
@@ -57,7 +57,7 @@ public class Timeline {
         if (since == 0) {
             since = System.currentTimeMillis();
         }
-        if (playing) {
+        if (playing && tickTime) {
             timestamp += System.currentTimeMillis() - since;
         }
         since = System.currentTimeMillis();

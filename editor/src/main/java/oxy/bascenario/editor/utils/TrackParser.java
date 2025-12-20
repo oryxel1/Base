@@ -4,6 +4,7 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.AttachElementEvent;
@@ -14,12 +15,50 @@ import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TrackParser {
+    // TODO: Sub elements....
+    public static List<Timestamp> parse(Map<Integer, Track> tracks) {
+        final List<Timestamp> timestamps = new ArrayList<>();
+
+        final Map<Long, Pair<Integer, List<Event<?>>>> events = new TreeMap<>();
+        for (Map.Entry<Integer, Track> entry : tracks.entrySet()) {
+            Integer i = entry.getKey(); Track track = entry.getValue();
+            track.getElements().forEach((l, pair) -> {
+                final Pair<Integer, List<Event<?>>> list = events.computeIfAbsent(l, n -> new Pair<>(i, new ArrayList<>()));
+                if (pair.left().object() instanceof Event<?> event) {
+                    list.right().add(event);
+                } else {
+                    list.right().add(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
+                    events.computeIfAbsent(l + pair.right(), n -> new Pair<>(i, new ArrayList<>())).right().add(new RemoveElementEvent(i));
+                }
+            });
+        }
+
+        long last = 0;
+        boolean requireWait = false;
+        int waitIndex = 0;
+        for (Map.Entry<Long, Pair<Integer, List<Event<?>>>> entry : events.entrySet()) {
+            Long time = entry.getKey(); List<Event<?>> e = entry.getValue().right();
+            long delay = time - last;
+            last = time;
+
+            timestamps.add(new Timestamp(requireWait && waitIndex == entry.getValue().left(), delay, e));
+
+            waitIndex = entry.getValue().left();
+            for (Event<?> event : e) {
+                if (!(event instanceof AddDialogueEvent || event instanceof StartDialogueEvent || event instanceof ShowOptionsEvent)) {
+                    continue;
+                }
+
+                requireWait = true;
+            }
+        }
+
+        return timestamps;
+    }
+
     // TODO: Sub elements....
     public static Map<Integer, Track> parse(Timeline timeline, Scenario scenario) {
         final Map<Integer, List<Pair<Long, Long>>> occupies = new HashMap<>();
@@ -56,11 +95,6 @@ public class TrackParser {
                         occupy(occupies, event.getId(), cache.right(), elTime);
                     }
                 } else if (e instanceof AttachElementEvent event) {
-//                    if (trackMap.get(event.getId()) == null) {
-//                        elementMap.forEach((k, p) -> trackMap.get(k).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left()))));
-//                        continue;
-//                    }
-//
 //                    subElementMap.put(event.getSubId(), new Pair<>(new Pair<>(event.getElement(), null), elTime));
                 } else if (e instanceof AddDialogueEvent event) {
                     long duration = TimeCompiler.compileTime(event.getDialogues());
@@ -110,7 +144,7 @@ public class TrackParser {
             boolean intersect = false;
             for (Pair<Long, Long> pair : pairs) {
                 final long maxTime = pair.right(), minTime = pair.left();
-                if (maxTime > time && minTime < time + duration) {
+                if (maxTime >= time && minTime <= time + duration) {
                     intersect = true;
                     i++;
                     break;

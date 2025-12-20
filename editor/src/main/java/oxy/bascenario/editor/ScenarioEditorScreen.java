@@ -13,6 +13,8 @@ import oxy.bascenario.editor.element.ElementAdder;
 import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
+import oxy.bascenario.editor.utils.TrackParser;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
@@ -50,6 +52,9 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         eventAdder.render();
         inspector.render();
 
+//        scenario.timestamps().clear();
+//        scenario.timestamps().addAll(TrackParser.parse(timeline.getTracks()));
+
         ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
         ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
         float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
@@ -58,7 +63,9 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
         ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 20, 0);
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 20) / 1080f, ImGui.getWindowSizeX() / 1920f);
-//        screen.render(delta);
+//        if (screen != null) {
+//            screen.render(delta);
+//        }
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
         ImGui.end();
     }

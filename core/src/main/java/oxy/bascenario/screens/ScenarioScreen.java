@@ -74,7 +74,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
     private long sinceDialogue, sincePoll, sinceRender;
 
-    @Setter
+    @Setter @Getter
     private boolean busyDialogue, busyOptions;
     private void pollEvents() {
         while (!timestamps.isEmpty()) {

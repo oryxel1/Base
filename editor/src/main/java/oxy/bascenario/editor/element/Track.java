@@ -14,6 +14,7 @@ import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
@@ -24,7 +25,8 @@ public class Track {
     private final int index;
 
     // key: start time, pair: a=element, b=duration.
-    private final Map<Long, Pair<Cache, Long>> elements = new HashMap<>();
+    @Getter
+    private final Map<Long, Pair<Cache, Long>> elements = new TreeMap<>();
     private final Map<Long, ElementRenderer> renderers = new ConcurrentHashMap<>();
     private final Map<Long, Pair<Long, Long>> occupies = new HashMap<>();
 
@@ -142,7 +144,7 @@ public class Track {
     public boolean isOccupied(long time, long duration, Pair<Long, Long> current) {
         for (Pair<Long, Long> longLongPair : occupies.values()) {
             final long maxTime = longLongPair.right(), minTime = longLongPair.left();
-            if (maxTime > time && minTime < time + duration && longLongPair != current) {
+            if (maxTime >= time && minTime <= time + duration && longLongPair != current) {
                 return true;
             }
         }
