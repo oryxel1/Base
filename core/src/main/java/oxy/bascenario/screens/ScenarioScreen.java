@@ -112,7 +112,7 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Getter
-    private final Map<Integer, ElementRenderer<?>> elements = new TreeMap<>();
+    private final TreeMap<Integer, ElementRenderer<?>> elements = new TreeMap<>();
     @Getter
     private final BaseDialogueRenderer dialogueRenderer;
     @Getter
@@ -134,21 +134,22 @@ public class ScenarioScreen extends ExtendableScreen {
         pollEvents();
         renderBackground();
 
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
+        final Collection<ElementRenderer<?>> elements = this.elements.descendingMap().values();
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.dialogueRenderer.render();
 
         // TODO: Should the above dialogue render layer above the options as well?
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.optionsRenderer.render(this);
 
-        this.elements.values().stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
         ThinGLUtils.end();
 
-        this.elements.values().removeIf(ElementRenderer::selfDestruct);
-        this.elements.values().forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
+        elements.removeIf(ElementRenderer::selfDestruct);
+        elements.forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
     }
 
     @Setter

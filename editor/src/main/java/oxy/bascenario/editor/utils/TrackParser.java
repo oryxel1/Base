@@ -40,7 +40,7 @@ public class TrackParser {
                     if (current != null) {
                         long maxTime = TimeCompiler.timeFromElement(current.left().left());
                         long duration = maxTime == Long.MAX_VALUE ? elTime - current.right() : Math.min(maxTime, elTime - current.right());
-                        trackMap.get(event.getId()).getElements().put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null), duration));
+                        trackMap.get(event.getId()).put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null), duration));
                         occupy(occupies, event.getId(), current.right(), current.right() + duration);
                     }
 
@@ -52,12 +52,12 @@ public class TrackParser {
                             trackMap.put(event.getId(), new Track(timeline, event.getId()));
                         }
 
-                        trackMap.get(event.getId()).getElements().put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null), elTime - cache.right()));
+                        trackMap.get(event.getId()).put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null), elTime - cache.right()));
                         occupy(occupies, event.getId(), cache.right(), elTime);
                     }
                 } else if (e instanceof AttachElementEvent event) {
 //                    if (trackMap.get(event.getId()) == null) {
-//                        elementMap.forEach((k, p) -> trackMap.get(k).getElements().put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left()))));
+//                        elementMap.forEach((k, p) -> trackMap.get(k).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left()))));
 //                        continue;
 //                    }
 //
@@ -69,7 +69,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
@@ -80,7 +80,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).getElements().put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
@@ -89,11 +89,12 @@ public class TrackParser {
                 for (Map.Entry<Integer, Pair<Pair<Object, RenderLayer>, Long>> entry : elementMap.entrySet()) {
                     Pair<Pair<Object, RenderLayer>, Long> p = entry.getValue();
                     occupy(occupies, entry.getKey(), p.right(), TimeCompiler.timeFromElement(p.left().left()));
-                    trackMap.get(entry.getKey()).getElements().put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left())));
+                    trackMap.get(entry.getKey()).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left())));
                 }
             }
         }
 
+//        trackMap.forEach((k, v) -> System.out.println(k + ":" + v.getElements().size()));
         return trackMap;
     }
 

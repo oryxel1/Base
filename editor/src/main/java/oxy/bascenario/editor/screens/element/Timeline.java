@@ -4,6 +4,7 @@ import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.screens.ScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
@@ -13,10 +14,18 @@ import java.util.Map;
 
 // Shit code but whatever.
 public class Timeline {
+    @Getter
+    private final ScenarioEditorScreen screen;
+
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
+    @Getter
     private final Map<Integer, Track> tracks;
-    public Timeline(Scenario.Builder scenario) {
+    @Getter @Setter
+    private Object selectedElement;
+
+    public Timeline(ScenarioEditorScreen screen, Scenario.Builder scenario) {
+        this.screen = screen;
         if (scenario == null) {
             tracks = new HashMap<>();
         } else {
@@ -110,14 +119,20 @@ public class Timeline {
                 tracks.put(i, new Track(this, i));
             }
 
+            drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + 50), ImColor.rgb(33, 33, 33));
+
             ImGui.pushFont(this.trackNameFont);
             drawList.addText(new ImVec2(pos.x + 10, y), ImColor.rgb(255, 255, 255), "Track " + i);
             ImGui.popFont();
 
             drawList.addRect(new ImVec2(pos.x, y), new ImVec2(pos.x + size.x, y + 0.5f), ImColor.rgb(50, 50, 50));
 
-            tracks.get(i).render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
+            y += 50;
+        }
 
+        y = pos.y + 80;
+        for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
+            tracks.get(i).render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
             y += 50;
         }
     }
@@ -125,6 +140,7 @@ public class Timeline {
     private void drawElapsedTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
+        drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y), new ImVec2(pos.x + size.x, pos.y + size.y), ImColor.rgb(20, 19, 24));
         for (int i = 0; i <= 5; i++) {
             ImGui.pushFont(this.timestampFont);
             long time = (long) ((DEFAULT_MAX_TIME * scale * scroll) + (DEFAULT_MAX_TIME * scale * (i / 5f)));
