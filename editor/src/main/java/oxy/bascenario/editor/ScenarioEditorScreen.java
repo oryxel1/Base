@@ -13,8 +13,7 @@ import oxy.bascenario.editor.element.ElementAdder;
 import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
-import oxy.bascenario.editor.utils.TrackParser;
-import oxy.bascenario.screens.ScenarioScreen;
+
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 

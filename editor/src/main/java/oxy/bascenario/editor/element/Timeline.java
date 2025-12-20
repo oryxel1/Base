@@ -22,7 +22,7 @@ public class Timeline {
     @Getter
     private final Map<Integer, Track> tracks;
     @Getter @Setter
-    private Object selectedElement;
+    private Track.ElementRenderer selectedElement;
 
     public Timeline(ScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
@@ -49,8 +49,6 @@ public class Timeline {
         this.timestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
         this.elapsedTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 30);
         this.trackNameFont = FontUtils.getImFont("NotoSansRegular", 35);
-
-
     }
 
     public void render() {

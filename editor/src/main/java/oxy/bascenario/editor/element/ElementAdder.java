@@ -64,7 +64,7 @@ public class ElementAdder {
         }
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, null, null), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, null, null, false), duration));
     }
 
     private void addDialogue(String label, Event<?> e) {
@@ -74,7 +74,7 @@ public class ElementAdder {
 
         long duration = TimeCompiler.compileTime(e instanceof StartDialogueEvent event ? event.getDialogues() : e instanceof AddDialogueEvent event1 ? event1.getDialogues() : new Dialogue[] {});
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(e, null, null), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(e, null, null, false), duration));
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {

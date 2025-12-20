@@ -6,6 +6,7 @@ import imgui.ImDrawList;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiKey;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,11 +43,12 @@ public class Track {
     }
 
     @RequiredArgsConstructor
-    private static class ElementRenderer {
+    public static class ElementRenderer {
         private final Track track;
 
         private final Timeline timeline;
         private final long startTime;
+        @Getter
         private final Pair<Cache, Long> pair;
 
         private float x, y, width;
@@ -81,7 +84,8 @@ public class Track {
                 int trackId = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 final Track newTrack = track.timeline.getTracks().get(trackId);
-                if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && trackId != track.index) {
+                System.out.println(trackId);
+                if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && time != startTime) {
                     track.renderers.remove(startTime);
                     track.elements.remove(startTime);
                     track.occupies.remove(startTime);
@@ -138,7 +142,32 @@ public class Track {
         }
     }
 
-    public record Cache(Object object, RenderLayer layer, Integer attachedTo) {
+    @AllArgsConstructor
+    public static final class Cache {
+        private final Object object;
+        private final RenderLayer layer;
+        private final Integer attachedTo;
+        private boolean requireWait;
+
+        public Object object() {
+            return object;
+        }
+
+        public RenderLayer layer() {
+            return layer;
+        }
+
+        public Integer attachedTo() {
+            return attachedTo;
+        }
+
+        public boolean requireWait() {
+            return requireWait;
+        }
+
+        public void requireWait(boolean requireWait) {
+            this.requireWait = requireWait;
+        }
     }
 
     public boolean isOccupied(long time, long duration, Pair<Long, Long> current) {

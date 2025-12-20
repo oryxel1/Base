@@ -22,38 +22,27 @@ public class TrackParser {
     public static List<Timestamp> parse(Map<Integer, Track> tracks) {
         final List<Timestamp> timestamps = new ArrayList<>();
 
-        final Map<Long, Pair<Integer, List<Event<?>>>> events = new TreeMap<>();
+        final Map<Long, Pair<Boolean, List<Event<?>>>> events = new TreeMap<>();
         for (Map.Entry<Integer, Track> entry : tracks.entrySet()) {
             Integer i = entry.getKey(); Track track = entry.getValue();
             track.getElements().forEach((l, pair) -> {
-                final Pair<Integer, List<Event<?>>> list = events.computeIfAbsent(l, n -> new Pair<>(i, new ArrayList<>()));
+                final Pair<Boolean, List<Event<?>>> list = events.computeIfAbsent(l, n -> new Pair<>(pair.left().requireWait(), new ArrayList<>()));
                 if (pair.left().object() instanceof Event<?> event) {
                     list.right().add(event);
                 } else {
                     list.right().add(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
-                    events.computeIfAbsent(l + pair.right(), n -> new Pair<>(i, new ArrayList<>())).right().add(new RemoveElementEvent(i));
+                    events.computeIfAbsent(l + pair.right(), n -> new Pair<>(pair.left().requireWait(), new ArrayList<>())).right().add(new RemoveElementEvent(i));
                 }
             });
         }
 
         long last = 0;
-        boolean requireWait = false;
-        int waitIndex = 0;
-        for (Map.Entry<Long, Pair<Integer, List<Event<?>>>> entry : events.entrySet()) {
-            Long time = entry.getKey(); List<Event<?>> e = entry.getValue().right();
+        for (Map.Entry<Long, Pair<Boolean, List<Event<?>>>> entry : events.entrySet()) {
+            final Long time = entry.getKey();
             long delay = time - last;
             last = time;
 
-            timestamps.add(new Timestamp(requireWait && waitIndex == entry.getValue().left(), delay, e));
-
-            waitIndex = entry.getValue().left();
-            for (Event<?> event : e) {
-                if (!(event instanceof AddDialogueEvent || event instanceof StartDialogueEvent || event instanceof ShowOptionsEvent)) {
-                    continue;
-                }
-
-                requireWait = true;
-            }
+            timestamps.add(new Timestamp(entry.getValue().left(), delay, entry.getValue().right()));
         }
 
         return timestamps;
@@ -79,7 +68,7 @@ public class TrackParser {
                     if (current != null) {
                         long maxTime = TimeCompiler.timeFromElement(current.left().left());
                         long duration = maxTime == Long.MAX_VALUE ? elTime - current.right() : Math.min(maxTime, elTime - current.right());
-                        trackMap.get(event.getId()).put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null), duration));
+                        trackMap.get(event.getId()).put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null, timestamp.waitForDialogue()), duration));
                         occupy(occupies, event.getId(), current.right(), current.right() + duration);
                     }
 
@@ -91,7 +80,7 @@ public class TrackParser {
                             trackMap.put(event.getId(), new Track(timeline, event.getId()));
                         }
 
-                        trackMap.get(event.getId()).put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null), elTime - cache.right()));
+                        trackMap.get(event.getId()).put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null, timestamp.waitForDialogue()), elTime - cache.right()));
                         occupy(occupies, event.getId(), cache.right(), elTime);
                     }
                 } else if (e instanceof AttachElementEvent event) {
@@ -103,7 +92,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null, timestamp.waitForDialogue()), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
@@ -114,7 +103,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null, timestamp.waitForDialogue()), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
@@ -123,7 +112,7 @@ public class TrackParser {
                 for (Map.Entry<Integer, Pair<Pair<Object, RenderLayer>, Long>> entry : elementMap.entrySet()) {
                     Pair<Pair<Object, RenderLayer>, Long> p = entry.getValue();
                     occupy(occupies, entry.getKey(), p.right(), TimeCompiler.timeFromElement(p.left().left()));
-                    trackMap.get(entry.getKey()).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null), TimeCompiler.timeFromElement(p.left().left())));
+                    trackMap.get(entry.getKey()).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null, timestamp.waitForDialogue()), TimeCompiler.timeFromElement(p.left().left())));
                 }
             }
         }
