@@ -94,7 +94,9 @@ public class ScenarioScreen extends ExtendableScreen {
             }
             timestamps.poll();
 
-            this.sincePoll = this.sinceDialogue = 0;
+            this.sincePoll -= peek.time();
+            this.sinceDialogue -= peek.time();
+
             peek.events().forEach(event -> {
                 try {
                     final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
