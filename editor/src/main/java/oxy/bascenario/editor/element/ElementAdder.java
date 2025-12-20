@@ -1,5 +1,6 @@
-package oxy.bascenario.editor.screens.element;
+package oxy.bascenario.editor.element;
 
+import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,10 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.screens.ScenarioEditorScreen;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class ElementAdder {
@@ -32,7 +31,9 @@ public class ElementAdder {
 
     public void render() {
         ImGui.begin("Objects");
-        
+
+        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
+
         addDialogue("Start Dialogue", new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
         addDialogue("Add Dialogue", new AddDialogueEvent(0, DUMMY_DIALOGUE));
 

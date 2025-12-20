@@ -1,21 +1,27 @@
-package oxy.bascenario.editor.screens;
+package oxy.bascenario.editor;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
+import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiDockNodeFlags;
+import imgui.flag.ImGuiWindowFlags;
 import lombok.Getter;
 import lombok.Setter;
+import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.screens.element.ElementAdder;
-import oxy.bascenario.editor.screens.element.EventAdder;
-import oxy.bascenario.editor.screens.element.Timeline;
+import oxy.bascenario.editor.element.ElementAdder;
+import oxy.bascenario.editor.element.EventAdder;
+import oxy.bascenario.editor.element.Timeline;
+import oxy.bascenario.editor.inspector.Inspector;
 import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.utils.ThinGLUtils;
 
 public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
     private final Timeline timeline;
     private final ElementAdder elementAdder;
     private final EventAdder eventAdder;
+    private final Inspector inspector;
 
     @Getter @Setter
     private Object dragging;
@@ -25,6 +31,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         this.timeline = new Timeline(this, scenario);
         this.elementAdder = new ElementAdder(this, this.timeline);
         this.eventAdder = new EventAdder(this, this.timeline);
+        this.inspector = new Inspector(this, this.timeline);
     }
 
     @Override
@@ -41,6 +48,19 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         timeline.render();
         elementAdder.render();
         eventAdder.render();
+        inspector.render();
+
+        ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
+        ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
+        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+
+        ThinGLUtils.GLOBAL_RENDER_STACK.pushMatrix();
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
+        ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 20, 0);
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 20) / 1080f, ImGui.getWindowSizeX() / 1920f);
+//        screen.render(delta);
+        ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
+        ImGui.end();
     }
 
     // TODO.

@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.screens.element;
+package oxy.bascenario.editor.element;
 
 import com.badlogic.gdx.math.MathUtils;
 import imgui.ImColor;

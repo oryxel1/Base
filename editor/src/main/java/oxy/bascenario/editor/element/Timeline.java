@@ -1,10 +1,10 @@
-package oxy.bascenario.editor.screens.element;
+package oxy.bascenario.editor.element;
 
 import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.screens.ScenarioEditorScreen;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;

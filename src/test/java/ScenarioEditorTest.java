@@ -6,11 +6,10 @@ import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.Preview;
-import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.screens.ScenarioEditorScreen;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.utils.Launcher;
 
 import java.util.ArrayList;

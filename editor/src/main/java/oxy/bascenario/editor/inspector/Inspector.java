@@ -1,0 +1,26 @@
+package oxy.bascenario.editor.inspector;
+
+import imgui.ImColor;
+import imgui.ImGui;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.element.Timeline;
+
+@RequiredArgsConstructor
+public class Inspector {
+    private final ScenarioEditorScreen screen;
+    private final Timeline timeline;
+
+    public void render() {
+        ImGui.begin("Inspector");
+        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
+        final Object object = timeline.getSelectedElement();
+        if (object == null) {
+            ImGui.end();
+            return;
+        }
+
+        ImGui.end();
+    }
+}

@@ -1,5 +1,6 @@
-package oxy.bascenario.editor.screens.element;
+package oxy.bascenario.editor.element;
 
+import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +9,7 @@ import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.screens.ScenarioEditorScreen;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 
 import java.util.LinkedHashMap;
 
@@ -22,6 +21,8 @@ public class EventAdder {
     // TODO...
     public void render() {
         ImGui.begin("Actions");
+
+        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
         ImGui.separatorText("Animations");
 

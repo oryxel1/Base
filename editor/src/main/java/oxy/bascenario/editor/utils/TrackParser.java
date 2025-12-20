@@ -10,8 +10,8 @@ import oxy.bascenario.api.event.element.AttachElementEvent;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.screens.element.Timeline;
-import oxy.bascenario.editor.screens.element.Track;
+import oxy.bascenario.editor.element.Timeline;
+import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
