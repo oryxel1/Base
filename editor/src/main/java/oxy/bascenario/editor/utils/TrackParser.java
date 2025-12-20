@@ -118,7 +118,7 @@ public class TrackParser {
         }
 
 //        trackMap.forEach((k, v) -> System.out.println(k + ":" + v.getElements().size()));
-        return trackMap;
+        return Collections.synchronizedMap(trackMap);
     }
 
     private static void occupy(Map<Integer, List<Pair<Long, Long>>> occupies, int index, long start, long end) {

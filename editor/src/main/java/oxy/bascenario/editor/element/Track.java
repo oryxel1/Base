@@ -11,11 +11,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,6 +36,8 @@ public class Track {
         this.elements.put(l, p);
         this.renderers.put(l, new ElementRenderer(this, timeline, l, p));
         this.occupies.put(l, new Pair<>(l, l + p.right()));
+
+        timeline.updateScenario();
     }
 
     public void render(float x, float y, float width) {
@@ -83,15 +85,17 @@ public class Track {
             if (oldDrag) {
                 int trackId = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
-                final Track newTrack = track.timeline.getTracks().get(trackId);
-                System.out.println(trackId);
+                Track newTrack = track.timeline.getTrack(trackId);
                 if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && time != startTime) {
                     track.renderers.remove(startTime);
                     track.elements.remove(startTime);
                     track.occupies.remove(startTime);
 
-                    track.timeline.getTracks().putIfAbsent(trackId, new Track(timeline, trackId));
-                    track.timeline.getTracks().get(trackId).put(time, pair);
+                    if (newTrack == null) {
+                        newTrack = new Track(timeline, trackId);
+                        track.timeline.putTrack(trackId, newTrack);
+                    }
+                    newTrack.put(time, pair);
                 }
             }
 
@@ -105,6 +109,7 @@ public class Track {
                 track.renderers.remove(startTime);
                 track.elements.remove(startTime);
                 track.occupies.remove(startTime);
+                timeline.updateScenario();
                 return;
             }
 

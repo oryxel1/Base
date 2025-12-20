@@ -80,7 +80,7 @@ public class ElementAdder {
     private Track findNonOccupiedSlot(long time, long duration) {
         int i = 0;
         Track track;
-        while ((track = timeline.getTracks().get(i)) != null) {
+        while ((track = timeline.getTrack(i)) != null) {
             if (!track.isOccupied(time, duration, null)) {
                 break;
             }
@@ -88,7 +88,7 @@ public class ElementAdder {
         }
         if (track == null) {
             track = new Track(timeline, i);
-            timeline.getTracks().put(i, track);
+            timeline.putTrack(i, track);
         }
 
         return track;

@@ -14,10 +14,12 @@ import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
 
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
 public class ScenarioEditorScreen extends ExtendableScreen {
+    @Getter
     private final Scenario.Builder scenario;
     private final Timeline timeline;
     private final ElementAdder elementAdder;
@@ -41,6 +43,8 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     }
 
     // Ideally we mostly render thing on our own, but ImGui is used here since its rendering system and docking system is quite nice.
+
+    private long lastUpdate;
     @Override
     public void render(float delta) {
         ImGui.dockSpaceOverViewport(0, new ImGuiViewport(0), ImGuiDockNodeFlags.PassthruCentralNode);
@@ -51,8 +55,11 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         eventAdder.render();
         inspector.render();
 
-//        scenario.timestamps().clear();
-//        scenario.timestamps().addAll(TrackParser.parse(timeline.getTracks()));
+        // There are better ways to do this yes, but I'm too fucking lazy.
+        if (System.currentTimeMillis() - lastUpdate >= 1000L) {
+            new Thread(timeline::updateScenario).start();
+            lastUpdate = System.currentTimeMillis();
+        }
 
         ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
         ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);

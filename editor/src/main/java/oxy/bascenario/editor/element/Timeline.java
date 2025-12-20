@@ -9,8 +9,8 @@ import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 // Shit code but whatever.
 public class Timeline {
@@ -19,15 +19,29 @@ public class Timeline {
 
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
-    @Getter
     private final Map<Integer, Track> tracks;
+    public void putTrack(int id, Track track) {
+        this.tracks.put(id, track);
+    }
+    public Track getTrack(int id) {
+        return this.tracks.get(id);
+    }
+    public void updateScenario() {
+        if (tracks == null) {
+            return;
+        }
+
+        screen.getScenario().timestamps().clear();
+        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
+    }
+
     @Getter @Setter
     private Track.ElementRenderer selectedElement;
 
     public Timeline(ScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
         if (scenario == null) {
-            tracks = new HashMap<>();
+            tracks = new ConcurrentHashMap<>();
         } else {
             tracks = TrackParser.parse(this, scenario.build());
         }
