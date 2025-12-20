@@ -104,6 +104,10 @@ public class ScenarioScreen extends ExtendableScreen {
                 } catch (Exception ignored) {
                 }
             });
+
+            if (this.busyDialogue || this.busyOptions) {
+                this.sinceDialogue = 0;
+            }
         }
 
         if (this.sinceRender == 0) {

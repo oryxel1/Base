@@ -42,6 +42,6 @@ public class DialogueRenderTest {
 
         scenario.add(true, 1, new StartDialogueEvent(0, "Name", "Association", false, Dialogue.builder().add("Also this dialogue should play very fast.").playSpeed(3).build()));
 
-        Launcher.launch(new ScenarioScreen(scenario.build()), true);
+        Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
 }

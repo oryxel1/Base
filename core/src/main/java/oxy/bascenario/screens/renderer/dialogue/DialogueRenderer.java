@@ -67,6 +67,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
 
         this.finished = false;
+        this.sinceWord = TimeUtils.currentTimeMillis();
     }
 
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
@@ -101,29 +102,37 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         float y = SEPARATOR_Y + 64;
 
         int done = 0;
+        boolean finished = true;
         for (DialogueText text : this.texts) {
+            if (!finished) {
+                break;
+            }
+
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            boolean finished = text.length == text.allSegments.size() - 1;
+            finished = text.length == text.allSegments.size() - 1;
             if (finished) {
                 done++;
             }
 
-            if (TimeUtils.currentTimeMillis() - this.sinceWord >= msPerWord && !finished) {
+            long words = (TimeUtils.currentTimeMillis() - this.sinceWord) / msPerWord;
+            if (words > 0 && !finished) {
                 this.sinceWord = TimeUtils.currentTimeMillis();
-                text.length++;
+                for (int i = 0; i < words; i++) {
+                    text.length++;
 
-                final Pair<net.raphimc.thingl.text.TextSegment, Font> pair = text.allSegments.get(text.length);
-                final TextRun newRun = new TextRun(pair.right(), pair.left());
-                if (text.segments.isEmpty()) {
-                    text.segments.add(newRun);
-                } else {
-                    final TextRun last = text.segments.get(text.segments.size() - 1);
-                    // Probably not the best idea to do this... But who cares!
-                    boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
-                    if (same) {
-                        last.add(pair.left());
-                    } else {
+                    final Pair<net.raphimc.thingl.text.TextSegment, Font> pair = text.allSegments.get(text.length);
+                    final TextRun newRun = new TextRun(pair.right(), pair.left());
+                    if (text.segments.isEmpty()) {
                         text.segments.add(newRun);
+                    } else {
+                        final TextRun last = text.segments.get(text.segments.size() - 1);
+                        // Probably not the best idea to do this... But who cares!
+                        boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
+                        if (same) {
+                            last.add(pair.left());
+                        } else {
+                            text.segments.add(newRun);
+                        }
                     }
                 }
             }
