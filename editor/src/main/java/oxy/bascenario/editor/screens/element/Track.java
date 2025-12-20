@@ -74,7 +74,7 @@ public class Track {
             }
 
             if (oldDrag) {
-                int trackId = MathUtils.floor((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+                int trackId = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 final Track newTrack = track.timeline.getTracks().get(trackId);
                 if (newTrack == null || !newTrack.isOccupied(time, pair.right())) {
