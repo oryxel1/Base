@@ -163,7 +163,7 @@ public class Timeline {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
         final float cursorX = timestampToPosition(timestamp, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
-        if (cursorX <= timelineManagerWidth + pos.x) {
+        if (cursorX < timelineManagerWidth + pos.x) {
             return;
         }
 

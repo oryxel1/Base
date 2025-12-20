@@ -113,8 +113,6 @@ public class TrackParser {
                     intersect = true;
                     i++;
                     break;
-                } else {
-                    System.out.println(minTime + "," + maxTime + "," + time + "," + (time + duration));
                 }
             }
 

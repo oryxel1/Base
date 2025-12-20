@@ -30,7 +30,7 @@ public class ScenarioEditorTest {
         segments.add(TextSegment.builder().text("lazy ").shadow(true).build());
         segments.add(TextSegment.builder().text("dog ").underline(true).build());
 
-        scenario.add(0, new StartDialogueEvent(0, "Name", "Association", true, Dialogue.builder().add(segments).build()));
+        scenario.add(3900L, new StartDialogueEvent(0, "Name", "Association", true, Dialogue.builder().add(segments).build()));
         scenario.add(true, 400, new AddDialogueEvent(0, Dialogue.builder().add("This is a delayed dialogue, happens after the first one.").build()));
         scenario.add(true, 1, new StartDialogueEvent(0, "", "", false,
                 Dialogue.builder().add("- And this is a really long dialogue that should automatically add line breaks to itself along side with no background like in game cutscene.").build()));
