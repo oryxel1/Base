@@ -20,7 +20,7 @@ public class ScenarioEditorTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
         scenario.add(0, new AddElementEvent(0, new Preview("Scenario Preview Test", "Episode: 1", null), RenderLayer.TOP));
-        scenario.add(0, new AddElementEvent(1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
+//        scenario.add(0, new AddElementEvent(1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
 
         final List<TextSegment> segments = new ArrayList<>();
         segments.add(TextSegment.builder().text("The ").build());

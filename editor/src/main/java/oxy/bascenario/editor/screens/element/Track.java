@@ -6,6 +6,7 @@ import imgui.ImDrawList;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiKey;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import oxy.bascenario.api.render.RenderLayer;
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ToString
 public class Track {
     private final Timeline timeline;
+    @Getter
     private final int index;
 
     // key: start time, pair: a=element, b=duration.
@@ -137,7 +139,7 @@ public class Track {
     public record Cache(Object object, RenderLayer layer, Integer attachedTo) {
     }
 
-    private boolean isOccupied(long time, long duration) {
+    public boolean isOccupied(long time, long duration) {
         for (Pair<Long, Long> longLongPair : occupies.values()) {
             final long maxTime = longLongPair.right(), minTime = longLongPair.left();
             if (maxTime >= time && minTime <= time + duration) {

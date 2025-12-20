@@ -6,12 +6,14 @@ import imgui.flag.ImGuiDockNodeFlags;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.screens.element.ElementAdder;
 import oxy.bascenario.editor.screens.element.Timeline;
 import oxy.bascenario.utils.ExtendableScreen;
 
 public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
     private final Timeline timeline;
+    private final ElementAdder elementAdder;
 
     @Getter @Setter
     private Object dragging;
@@ -19,6 +21,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     public ScenarioEditorScreen(Scenario.Builder scenario) {
         this.scenario = scenario;
         this.timeline = new Timeline(this, scenario);
+        this.elementAdder = new ElementAdder(this, this.timeline);
     }
 
     @Override
@@ -33,6 +36,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
         renderMenuBar();
         timeline.render();
+        elementAdder.render();
     }
 
     // TODO.

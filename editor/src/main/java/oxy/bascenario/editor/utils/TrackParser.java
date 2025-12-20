@@ -69,7 +69,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
@@ -80,7 +80,7 @@ public class TrackParser {
                     if (trackMap.get(id) == null) {
                         trackMap.put(id, new Track(timeline, id));
                     }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event.getDialogues(), null, null), duration));
+                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null), duration));
                     occupy(occupies, id, elTime, elTime + duration);
 
                     elTime += duration;
