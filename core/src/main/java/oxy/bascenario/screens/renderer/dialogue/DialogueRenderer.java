@@ -23,7 +23,6 @@ import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 public final class DialogueRenderer extends BaseDialogueRenderer {
     private final Scenario scenario;
 
-    private long sinceWord;
     private final List<DialogueText> texts = new ArrayList<>();
 
     public DialogueRenderer(Scenario scenario) {
@@ -67,7 +66,6 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
 
         this.finished = false;
-        this.sinceWord = TimeUtils.currentTimeMillis();
     }
 
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
@@ -77,26 +75,19 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     private static final class DialogueText {
         private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
         private final float speed;
-
-        private final List<TextRun> segments = new ArrayList<>();
-        private int length = -1;
+        private long time = 0;
     }
 
     @Override
     public void stop() {
         super.stop();
         this.texts.clear();
-        this.sinceWord = 0;
     }
 
     @Override
     public void renderDialogues() {
         if (this.texts.isEmpty()) {
             return;
-        }
-
-        if (this.sinceWord == 0) {
-            this.sinceWord = TimeUtils.currentTimeMillis();
         }
 
         float y = SEPARATOR_Y + 64;
@@ -107,37 +98,42 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             if (!finished) {
                 break;
             }
+            if (text.time == 0) {
+                text.time = TimeUtils.currentTimeMillis();
+            }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            finished = text.length == text.allSegments.size() - 1;
+            long words = Math.min((TimeUtils.currentTimeMillis() - text.time) / msPerWord, text.allSegments.size() - 1);
+
+            finished = words == text.allSegments.size() - 1;
             if (finished) {
                 done++;
             }
 
-            long words = (TimeUtils.currentTimeMillis() - this.sinceWord) / msPerWord;
-            if (words > 0 && !finished) {
-                this.sinceWord = TimeUtils.currentTimeMillis();
-                for (int i = 0; i < words; i++) {
-                    text.length++;
+            final List<TextRun> segments = new ArrayList<>();
+            int length = -1;
+            for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+                if (length == words) {
+                    break;
+                }
+                length++;
 
-                    final Pair<net.raphimc.thingl.text.TextSegment, Font> pair = text.allSegments.get(text.length);
-                    final TextRun newRun = new TextRun(pair.right(), pair.left());
-                    if (text.segments.isEmpty()) {
-                        text.segments.add(newRun);
+                final TextRun newRun = new TextRun(pair.right(), pair.left());
+                if (segments.isEmpty()) {
+                    segments.add(newRun);
+                } else {
+                    final TextRun last = segments.get(segments.size() - 1);
+                    // Probably not the best idea to do this... But who cares!
+                    boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
+                    if (same) {
+                        last.add(pair.left());
                     } else {
-                        final TextRun last = text.segments.get(text.segments.size() - 1);
-                        // Probably not the best idea to do this... But who cares!
-                        boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
-                        if (same) {
-                            last.add(pair.left());
-                        } else {
-                            text.segments.add(newRun);
-                        }
+                        segments.add(newRun);
                     }
                 }
             }
 
-            final TextLine line = new TextLine(text.segments);
+            final TextLine line = new TextLine(segments);
             ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
             y += ThinGL.rendererText().getLogicalHeight(line.shape()) + 5;
         }

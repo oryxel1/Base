@@ -13,7 +13,7 @@ import java.util.List;
 // So for example, a new dialogue line could be added after 600ms for eg, you will see what I mean.
 @Getter
 public class Dialogue {
-    public static long MS_PER_WORD = 38L;
+    public static long MS_PER_WORD = 50L;
 
     private Text dialogue;
     private float playSpeed;
