@@ -1,4 +1,4 @@
-package oxy.bascenario.editor;
+package oxy.bascenario.editor.screen;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
@@ -14,22 +14,22 @@ import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
 
-import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.TimeUtils;
 
-public class ScenarioEditorScreen extends ExtendableScreen {
+public class BaseScenarioEditorScreen extends ExtendableScreen {
     @Getter
-    private final Scenario.Builder scenario;
-    private final Timeline timeline;
-    private final ElementAdder elementAdder;
-    private final EventAdder eventAdder;
-    private final Inspector inspector;
+    protected final Scenario.Builder scenario;
+    protected final Timeline timeline;
+    protected final ElementAdder elementAdder;
+    protected final EventAdder eventAdder;
+    protected final Inspector inspector;
 
     @Getter @Setter
-    private Object dragging;
+    protected Object dragging;
 
-    public ScenarioEditorScreen(Scenario.Builder scenario) {
+    public BaseScenarioEditorScreen(Scenario.Builder scenario) {
         this.scenario = scenario;
         this.timeline = new Timeline(this, scenario);
         this.elementAdder = new ElementAdder(this, this.timeline);
@@ -69,11 +69,12 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
         ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 20, 0);
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 20) / 1080f, ImGui.getWindowSizeX() / 1920f);
-//        if (screen != null) {
-//            screen.render(delta);
-//        }
+        renderScenario();
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
         ImGui.end();
+    }
+
+    public void renderScenario() {
     }
 
     // TODO.
@@ -82,10 +83,10 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
         if (ImGui.beginMenu("Timeline")) {
             if (ImGui.menuItem("Play")) {
-                timeline.setPlaying(true);
+                setPlaying(true);
             }
             if (ImGui.menuItem("Pause", false, timeline.isPlaying())) {
-                timeline.setPlaying(false);
+                setPlaying(false);
             }
             ImGui.endMenu();
         }
@@ -101,5 +102,9 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         }
 
         ImGui.endMainMenuBar();
+    }
+
+    protected void setPlaying(boolean playing) {
+        timeline.setPlaying(playing);
     }
 }

@@ -18,10 +18,7 @@ import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.managers.AudioManager;
-import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.FontUtils;
-import oxy.bascenario.utils.ImGuiUtils;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.*;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
@@ -80,6 +77,12 @@ public final class EngineRenderer extends Game {
         FontUtils.loadFonts();
 
         this.setScreen(this.initialScreen);
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        TimeUtils.fakeTimeMillis = null;
     }
 
     @Override

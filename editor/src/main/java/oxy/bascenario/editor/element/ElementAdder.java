@@ -8,6 +8,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
@@ -17,7 +18,7 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 public class ElementAdder {
     private static final Dialogue DUMMY_DIALOGUE = Dialogue.builder().add("Hello World!").build();
 
-    private final ScenarioEditorScreen screen;
+    private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
     public void render() {
@@ -64,7 +65,7 @@ public class ElementAdder {
         }
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, null, null, false), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, RenderLayer.ABOVE_DIALOGUE, null, false), duration));
     }
 
     private void addDialogue(String label, Event<?> e) {

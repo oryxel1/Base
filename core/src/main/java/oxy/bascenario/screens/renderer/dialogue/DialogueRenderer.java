@@ -13,6 +13,7 @@ import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.Pair;
+import oxy.bascenario.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
 
         if (this.sinceWord == 0) {
-            this.sinceWord = System.currentTimeMillis();
+            this.sinceWord = TimeUtils.currentTimeMillis();
         }
 
         float y = SEPARATOR_Y + 64;
@@ -107,8 +108,8 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 done++;
             }
 
-            if (System.currentTimeMillis() - this.sinceWord >= msPerWord && !finished) {
-                this.sinceWord = System.currentTimeMillis();
+            if (TimeUtils.currentTimeMillis() - this.sinceWord >= msPerWord && !finished) {
+                this.sinceWord = TimeUtils.currentTimeMillis();
                 text.length++;
 
                 final Pair<net.raphimc.thingl.text.TextSegment, Font> pair = text.allSegments.get(text.length);

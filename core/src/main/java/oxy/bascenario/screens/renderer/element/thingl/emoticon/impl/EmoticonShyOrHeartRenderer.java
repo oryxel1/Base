@@ -1,12 +1,13 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -28,15 +29,15 @@ public class EmoticonShyOrHeartRenderer extends EmoticonRenderer {
     public void init() {
         this.scale = AnimationUtils.build(200L, 0.6f, 1, EasingFunction.LINEAR);
         this.rotation = AnimationUtils.build(200, 0, 5, EasingFunction.LINEAR);
-        this.since = System.currentTimeMillis();
+        this.since = TimeUtils.currentTimeMillis();
     }
 
     @Override
     public void render() {
         if (this.since == -1) {
-            this.since = System.currentTimeMillis();
+            this.since = TimeUtils.currentTimeMillis();
         }
-        if (System.currentTimeMillis() - this.since >= this.duration && this.opacity instanceof AnimationUtils.DummyAnimation) {
+        if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity instanceof AnimationUtils.DummyAnimation) {
             this.opacity = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
             this.since = -2;
         }

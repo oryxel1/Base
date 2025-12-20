@@ -4,10 +4,11 @@ import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
+import oxy.bascenario.utils.TimeUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,10 +16,11 @@ import java.util.concurrent.ConcurrentHashMap;
 // Shit code but whatever.
 public class Timeline {
     @Getter
-    private final ScenarioEditorScreen screen;
+    private final BaseScenarioEditorScreen screen;
 
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
+    @Getter
     private final Map<Integer, Track> tracks;
     public void putTrack(int id, Track track) {
         this.tracks.put(id, track);
@@ -38,7 +40,7 @@ public class Timeline {
     @Getter @Setter
     private Track.ElementRenderer selectedElement;
 
-    public Timeline(ScenarioEditorScreen screen, Scenario.Builder scenario) {
+    public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
         if (scenario == null) {
             tracks = new ConcurrentHashMap<>();

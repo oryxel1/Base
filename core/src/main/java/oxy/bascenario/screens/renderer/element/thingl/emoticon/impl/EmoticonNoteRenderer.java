@@ -1,11 +1,12 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -31,8 +32,8 @@ public class EmoticonNoteRenderer extends EmoticonRenderer {
     public void render() {
         if (!this.offset.isRunning()) {
             if (this.since == -1) {
-                this.since = System.currentTimeMillis();
-            } else if (this.since != -2 && System.currentTimeMillis() - this.since >= duration) {
+                this.since = TimeUtils.currentTimeMillis();
+            } else if (this.since != -2 && TimeUtils.currentTimeMillis() - this.since >= duration) {
                 this.since = -2;
                 this.opacity = AnimationUtils.build(600, 1, 0, EasingFunction.LINEAR);
             }

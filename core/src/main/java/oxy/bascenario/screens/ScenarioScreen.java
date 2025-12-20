@@ -2,7 +2,7 @@ package oxy.bascenario.screens;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -19,6 +19,7 @@ import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
@@ -32,7 +33,11 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final Scenario scenario;
 
+    @Getter
     private final Queue<Timestamp> timestamps = new ConcurrentLinkedQueue<>();
+    @Setter
+    private boolean playing = true;
+
     public ScenarioScreen(Scenario scenario) {
         this.timestamps.addAll(scenario.getTimestamps());
         this.scenario = scenario;
@@ -77,7 +82,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Setter @Getter
     private boolean busyDialogue, busyOptions;
     private void pollEvents() {
-        while (!timestamps.isEmpty()) {
+        while (!timestamps.isEmpty() && playing) {
             final Timestamp peek = timestamps.peek();
             if (peek == null) {
                 break;
@@ -100,15 +105,15 @@ public class ScenarioScreen extends ExtendableScreen {
         }
 
         if (this.sinceRender == 0) {
-            this.sinceRender = System.currentTimeMillis();
+            this.sinceRender = TimeUtils.currentTimeMillis();
         }
 
-        long timeDelta = System.currentTimeMillis() - this.sinceRender;
+        long timeDelta = TimeUtils.currentTimeMillis() - this.sinceRender;
         this.sincePoll += timeDelta;
         if (!this.busyDialogue && !this.busyOptions) {
             this.sinceDialogue += timeDelta;
         }
-        this.sinceRender = System.currentTimeMillis();
+        this.sinceRender = TimeUtils.currentTimeMillis();
     }
 
     @Getter
@@ -134,7 +139,7 @@ public class ScenarioScreen extends ExtendableScreen {
         pollEvents();
         renderBackground();
 
-        final Collection<ElementRenderer<?>> elements = this.elements.descendingMap().values();
+        final Collection<ElementRenderer<?>> elements = this.elements.values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.dialogueRenderer.render();

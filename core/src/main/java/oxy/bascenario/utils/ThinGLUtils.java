@@ -27,14 +27,14 @@ public final class ThinGLUtils {
                     ThinGL.programs().getColorTweak().configureParameters(Color.GRAY.withAlphaF(0.2f));
                     if (v[0] == Axis.X) {
                         for (int x = (int) -(1920 * 20f); x < 0; x += 200) {
-                            long index = System.currentTimeMillis() + x;
+                            long index = TimeUtils.currentTimeMillis() + x;
                             index %= (long) (1920 * 20f);
 
                             ThinGL.programs().getColorTweak().render((index / 20f), 0, (index / 20f) + 4, 1080);
                         }
                     } else {
                         for (int y = (int) -(1080 * 20f); y < 0; y += 200) {
-                            long index = System.currentTimeMillis() + y;
+                            long index = TimeUtils.currentTimeMillis() + y;
                             index %= (long) (1080 * 20f);
 
                             ThinGL.programs().getColorTweak().render(0, (index / 20f), 1920, (index / 20f) + 4);

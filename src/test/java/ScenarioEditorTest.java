@@ -9,7 +9,7 @@ import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screen.ScenarioEditorScreen;
 import oxy.bascenario.utils.Launcher;
 
 import java.util.ArrayList;
@@ -42,7 +42,6 @@ public class ScenarioEditorTest {
 
         scenario.add(true, 1, new StartDialogueEvent(0, "Name", "Association", false, Dialogue.builder().add("Also this dialogue should play very fast.").playSpeed(3).build()));
 
-
-        Launcher.launch(new ScenarioEditorScreen(scenario), false);
+        Launcher.launch(new ScenarioEditorScreen(scenario.build(), scenario), false);
     }
 }

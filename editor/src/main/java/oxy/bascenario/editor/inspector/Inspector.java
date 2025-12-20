@@ -2,16 +2,15 @@ package oxy.bascenario.editor.inspector;
 
 import imgui.ImColor;
 import imgui.ImGui;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.utils.ImGuiUtils;
 
 @RequiredArgsConstructor
 public class Inspector {
-    private final ScenarioEditorScreen screen;
+    private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
     public void render() {
@@ -24,7 +23,6 @@ public class Inspector {
         }
 
         renderer.getPair().left().requireWait(ImGuiUtils.checkbox("Wait For Dialogue", renderer.getPair().left().requireWait()));
-
         ImGui.end();
     }
 }

@@ -3,12 +3,13 @@ package oxy.bascenario.managers;
 import lombok.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.utils.FileUtils;
+import oxy.bascenario.utils.animation.AnimationUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,8 +41,7 @@ public class AudioManager {
 
         final CachedSound cache = new CachedSound(music, sound);
         if (fade) {
-            cache.fadeIn = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_IN, sound.fadeIn(), 0);
-            cache.fadeIn.setTarget(sound.maxVolume());
+            cache.fadeIn = AnimationUtils.build(sound.fadeIn(), 0, sound.maxVolume(), EasingFunction.LINEAR);
         }
 
         this.cachedSounds.put(sound.id(), cache);
@@ -68,8 +68,7 @@ public class AudioManager {
         }
         boolean fade = cache.sound.fadeOut() > 0;
         if (fade) {
-            cache.fadeOut = new DynamicAnimation(EasingFunction.LINEAR, EasingMode.EASE_OUT, cache.sound.fadeOut(), cache.gdxMusic.getVolume());
-            cache.fadeOut.setTarget(0);
+            cache.fadeOut = AnimationUtils.build(cache.sound.fadeOut(), cache.gdxMusic.getVolume(), 0, EasingFunction.LINEAR);
         } else {
             cache.gdxMusic.stop();
             this.cachedSounds.remove(id);

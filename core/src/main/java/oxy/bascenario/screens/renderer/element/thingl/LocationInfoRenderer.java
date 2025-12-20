@@ -1,6 +1,6 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -12,6 +12,7 @@ import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -20,7 +21,7 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
     private static final Font FONT = FontUtils.getFont("NotoSansSemiBold", 40);
     private static final float Y = 200, HEIGH = 64.8F, SEPARATOR_Y = 216.2f, SEPARATOR_HEIGH = HEIGH / 2f;
 
-    private final long start = System.currentTimeMillis();
+    private final long start = TimeUtils.currentTimeMillis();
     private DynamicAnimation box = AnimationUtils.dummy(0), text = AnimationUtils.dummy(0);
 
     public LocationInfoRenderer(LocationInfo element, RenderLayer layer) {
@@ -32,7 +33,7 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
         if (this.box instanceof AnimationUtils.DummyAnimation) {
             this.box = AnimationUtils.build(element.fade(), 0, 0.78f, EasingFunction.LINEAR);
             this.text = AnimationUtils.build(element.fade(), 0, 1, EasingFunction.LINEAR);
-        }else if (System.currentTimeMillis() - this.start >= element.duration() && this.box.getTarget() == 0.78f) {
+        }else if (TimeUtils.currentTimeMillis() - this.start >= element.duration() && this.box.getTarget() == 0.78f) {
             this.box.setTarget(0f);
             this.text.setTarget(0f);
         }

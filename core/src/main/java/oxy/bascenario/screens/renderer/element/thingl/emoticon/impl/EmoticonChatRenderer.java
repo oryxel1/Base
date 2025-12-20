@@ -1,11 +1,12 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -24,7 +25,7 @@ public class EmoticonChatRenderer extends EmoticonRenderer {
         this.rotation = AnimationUtils.build(250, 0, 12, EasingFunction.LINEAR);
         this.opacity = AnimationUtils.build(200, 0, 1, EasingFunction.LINEAR);
         this.scale = AnimationUtils.build(200L, 0.6f, 1, EasingFunction.LINEAR);
-        this.since = System.currentTimeMillis();
+        this.since = TimeUtils.currentTimeMillis();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class EmoticonChatRenderer extends EmoticonRenderer {
             this.rotation.setTarget(this.rotation.getTarget() == 12 ? -12 : 12);
         }
 
-        if (System.currentTimeMillis() - this.since >= this.duration && this.opacity.getTarget() == 1) {
+        if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity.getTarget() == 1) {
             this.opacity = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
         }
 
@@ -49,6 +50,6 @@ public class EmoticonChatRenderer extends EmoticonRenderer {
 
     @Override
     public boolean finished() {
-        return System.currentTimeMillis() - this.since >= this.duration && !this.opacity.isRunning() && !(this.opacity instanceof AnimationUtils.DummyAnimation);
+        return TimeUtils.currentTimeMillis() - this.since >= this.duration && !this.opacity.isRunning() && !(this.opacity instanceof AnimationUtils.DummyAnimation);
     }
 }

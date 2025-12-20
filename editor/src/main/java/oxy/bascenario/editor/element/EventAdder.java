@@ -9,13 +9,13 @@ import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 
 import java.util.LinkedHashMap;
 
 @RequiredArgsConstructor
 public class EventAdder {
-    private final ScenarioEditorScreen screen;
+    private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
     // TODO...

@@ -1,11 +1,12 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -23,7 +24,7 @@ public class EmoticonTwinkleRenderer extends EmoticonRenderer {
 
     @Override
     public void init() {
-        this.since = System.currentTimeMillis();
+        this.since = TimeUtils.currentTimeMillis();
 
         this.twinkle1 = AnimationUtils.build(320, 1, 0.9f, EasingFunction.LINEAR);
         this.twinkle2 = AnimationUtils.build(520, 1, 0.9f, EasingFunction.LINEAR);
@@ -63,6 +64,6 @@ public class EmoticonTwinkleRenderer extends EmoticonRenderer {
 
     @Override
     public boolean finished() {
-        return System.currentTimeMillis() - this.since > this.duration;
+        return TimeUtils.currentTimeMillis() - this.since > this.duration;
     }
 }

@@ -1,6 +1,6 @@
 package oxy.bascenario.utils.animation.math;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.utils.animation.AnimationUtils;

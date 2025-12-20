@@ -11,6 +11,7 @@ import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
+import oxy.bascenario.utils.TimeUtils;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -40,7 +41,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> 
             return;
         }
 
-        this.startTime = System.currentTimeMillis();
+        this.startTime = TimeUtils.currentTimeMillis();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> 
             return;
         }
 
-        int time = (int) (System.currentTimeMillis() - this.startTime);
+        int time = (int) (TimeUtils.currentTimeMillis() - this.startTime);
         if (!((AnimatedImage)this.element.image()).isLoop()) {
             time = Math.min(this.texture.getDuration(), time);
         }

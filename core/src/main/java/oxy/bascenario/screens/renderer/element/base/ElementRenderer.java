@@ -7,6 +7,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.AnimationTicker;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.math.ColorAnimations;
 import oxy.bascenario.utils.animation.math.Vec2Animations;
 import oxy.bascenario.utils.animation.math.Vec3Animations;
@@ -20,7 +21,7 @@ import java.util.Map;
 public abstract class ElementRenderer<T> {
     protected final T element;
     private final RenderLayer layer;
-    private final long start = System.currentTimeMillis();
+    private final long start = TimeUtils.currentTimeMillis();
 
     protected final Map<String, AnimationTicker> animations = new HashMap<>();
 

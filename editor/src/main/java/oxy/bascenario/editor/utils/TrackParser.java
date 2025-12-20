@@ -18,8 +18,12 @@ import oxy.bascenario.utils.Pair;
 import java.util.*;
 
 public class TrackParser {
-    // TODO: Sub elements....
     public static List<Timestamp> parse(Map<Integer, Track> tracks) {
+        return parse(tracks, -1, false);
+    }
+
+    // TODO: Sub elements....
+    public static List<Timestamp> parse(Map<Integer, Track> tracks, long current, boolean clear) {
         final List<Timestamp> timestamps = new ArrayList<>();
 
         final Map<Long, Pair<Boolean, List<Event<?>>>> events = new TreeMap<>();
@@ -30,6 +34,7 @@ public class TrackParser {
                 if (pair.left().object() instanceof Event<?> event) {
                     list.right().add(event);
                 } else {
+//                    System.out.println(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
                     list.right().add(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
                     events.computeIfAbsent(l + pair.right(), n -> new Pair<>(pair.left().requireWait(), new ArrayList<>())).right().add(new RemoveElementEvent(i));
                 }
@@ -41,6 +46,12 @@ public class TrackParser {
             final Long time = entry.getKey();
             long delay = time - last;
             last = time;
+
+//            if (time != -1 && current < time && !clear) {
+//                break;
+//            } else if (time != -1 && clear && time < current) {
+//                break;
+//            }
 
             timestamps.add(new Timestamp(entry.getValue().left(), delay, entry.getValue().right()));
         }
@@ -57,7 +68,6 @@ public class TrackParser {
         long elTime = 0;
         for (Timestamp timestamp : scenario.getTimestamps()) {
             elTime += timestamp.time();
-
             for (Event<?> e : timestamp.events()) {
                 if (e instanceof AddElementEvent event) {
                     if (trackMap.get(event.getId()) == null) {
@@ -112,6 +122,10 @@ public class TrackParser {
                 for (Map.Entry<Integer, Pair<Pair<Object, RenderLayer>, Long>> entry : elementMap.entrySet()) {
                     Pair<Pair<Object, RenderLayer>, Long> p = entry.getValue();
                     occupy(occupies, entry.getKey(), p.right(), TimeCompiler.timeFromElement(p.left().left()));
+                    if (trackMap.get(entry.getKey()) == null) {
+                        trackMap.put(entry.getKey(), new Track(timeline, entry.getKey()));
+                    }
+
                     trackMap.get(entry.getKey()).put(p.right(), new Pair<>(new Track.Cache(p.left().left(), p.left().right(), null, timestamp.waitForDialogue()), TimeCompiler.timeFromElement(p.left().left())));
                 }
             }

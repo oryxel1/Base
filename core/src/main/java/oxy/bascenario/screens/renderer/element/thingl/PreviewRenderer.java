@@ -1,6 +1,6 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
-import net.lenni0451.commons.animation.DynamicAnimation;
+import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -14,6 +14,7 @@ import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -51,23 +52,27 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         // Ehmmm... It's hardcoded yes.... I know but it works!
         if (borderFade instanceof AnimationUtils.DummyAnimation) {
             borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
-        } else if (borderFade.getValue() > 20 && titleBoxPopup instanceof AnimationUtils.DummyAnimation) {
+        }
+        if (borderFade.getValue() > 20 && titleBoxPopup instanceof AnimationUtils.DummyAnimation) {
             titleBoxPopup = AnimationUtils.build(400, 0, 1, EasingFunction.QUAD);
             titleBoxFade = AnimationUtils.build(400, 0, 1, EasingFunction.LINEAR);
-        } else if (titleBoxPopup.getValue() > 0.6 && titlePopup instanceof AnimationUtils.DummyAnimation) {
+        }
+        if (titleBoxPopup.getValue() > 0.6 && titlePopup instanceof AnimationUtils.DummyAnimation) {
             titlePopup = AnimationUtils.build(400, 0.75F, 1, EasingFunction.SINE);
             titleFade = AnimationUtils.build(400, 0, 255, EasingFunction.LINEAR);
-        } else if (!titleBoxPopup.isRunning() && !(titlePopup instanceof AnimationUtils.DummyAnimation) && globalFade instanceof AnimationUtils.DummyAnimation) {
+        }
+        if (!titleBoxPopup.isRunning() && !(titlePopup instanceof AnimationUtils.DummyAnimation) && globalFade instanceof AnimationUtils.DummyAnimation) {
             if (sinceFinished == -1) {
-                sinceFinished = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - sinceFinished >= 2000L) {
+                sinceFinished = TimeUtils.currentTimeMillis();
+            } else if (TimeUtils.currentTimeMillis() - sinceFinished >= 2000L) {
                 globalFade = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
                 sinceFinished = -1;
             }
-        } else if (isDoingExitingFade() && !globalFade.isRunning()) {
+        }
+        if (isDoingExitingFade() && !globalFade.isRunning()) {
             if (sinceFinished == -1) {
-                sinceFinished = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - sinceFinished >= 500L) {
+                sinceFinished = TimeUtils.currentTimeMillis();
+            } else if (TimeUtils.currentTimeMillis() - sinceFinished >= 500L) {
                 finished = true;
             }
         }

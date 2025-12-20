@@ -8,6 +8,7 @@ import oxy.bascenario.api.utils.math.Vec3;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.MochaUtils;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.animation.math.Vec2Animations;
 import oxy.bascenario.utils.animation.math.Vec3Animations;
@@ -58,8 +59,8 @@ public final class AnimationTicker {
 
     private Scope scope;
     public void tick() {
-        if (this.loop && this.timelines.isEmpty() && System.currentTimeMillis() - this.start >= this.maxDuration) {
-            this.start = System.currentTimeMillis();
+        if (this.loop && this.timelines.isEmpty() && TimeUtils.currentTimeMillis() - this.start >= this.maxDuration) {
+            this.start = TimeUtils.currentTimeMillis();
             this.timelines.putAll(animation.getTimelines());
         }
 
@@ -73,14 +74,14 @@ public final class AnimationTicker {
         query.setFunction("rotation", (i) -> i == 0 ? this.renderer.getRotation().x() : this.renderer.getRotation().y());
 
         if (this.start == -1) {
-            this.start = System.currentTimeMillis();
+            this.start = TimeUtils.currentTimeMillis();
             query.set("startTime", Value.of(this.start));
         }
 
-        final long animTime = System.currentTimeMillis() - this.start;
+        final long animTime = TimeUtils.currentTimeMillis() - this.start;
         query.set("anim_time", Value.of(animTime));
-        query.set("alive_time", Value.of((System.currentTimeMillis() - this.renderer.getStart()) / 1000d));
-        query.set("currentTimeMillis", Value.of(System.currentTimeMillis()));
+        query.set("alive_time", Value.of((TimeUtils.currentTimeMillis() - this.renderer.getStart()) / 1000d));
+        query.set("currentTimeMillis", Value.of(TimeUtils.currentTimeMillis()));
 
         query.block();
         this.scope.set("query", query);
@@ -117,7 +118,7 @@ public final class AnimationTicker {
     }
 
     public boolean safeToRemove() {
-        boolean safe = this.timelines.isEmpty() && System.currentTimeMillis() - this.start >= this.maxDuration;
+        boolean safe = this.timelines.isEmpty() && TimeUtils.currentTimeMillis() - this.start >= this.maxDuration;
         if (safe) {
             resetWhenFinished();
         }
