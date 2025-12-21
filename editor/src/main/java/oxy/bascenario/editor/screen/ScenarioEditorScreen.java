@@ -61,7 +61,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         }
         screen.pollEvents(true);
         screen.render(0);
-        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : oldFreeze;
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : oldFreeze == null ? System.currentTimeMillis() : oldFreeze;
     }
 
     @Override
