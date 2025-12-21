@@ -55,20 +55,23 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
             }
         }
 
-        TimeUtils.fakeTimeMillis = TimeUtils.currentTimeMillis() - timeline.getTimestamp() + maxTime;
+        Long oldFreeze = TimeUtils.fakeTimeMillis;
+        if (timeline.getTimestamp() > 0) {
+            TimeUtils.fakeTimeMillis = TimeUtils.currentTimeMillis() - timeline.getTimestamp() + maxTime;
+        }
         screen.pollEvents(true);
         screen.render(0);
-        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : oldFreeze;
     }
 
     @Override
     protected void setPlaying(boolean playing) {
         this.screen.setPlaying(playing);
         if (playing) {
-            TimeUtils.fakeTimeMillis = null;
             if (!timeline.isPlaying()) {
                 update();
             }
+            TimeUtils.fakeTimeMillis = null;
         } else {
             TimeUtils.fakeTimeMillis = System.currentTimeMillis();
         }
