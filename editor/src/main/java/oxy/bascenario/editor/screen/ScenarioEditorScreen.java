@@ -39,7 +39,11 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen = new ScenarioScreen(screen.getScenario());
         screen.getTimestamps().clear();
         screen.getTimestamps().addAll(scenario.timestamps());
-        System.out.println(screen.getTimestamps().size());
+
+        screen.sinceDialogue = timeline.getTimestamp();
+        screen.sincePoll = timeline.getTimestamp();
+
+        screen.pollEvents(true);
 //
 //        TimeUtils.fakeTimeMillis = 0L;
 //        TrackParser.parse(timeline.getTracks()).forEach(timestamp -> {

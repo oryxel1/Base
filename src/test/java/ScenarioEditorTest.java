@@ -5,6 +5,7 @@ import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
@@ -32,7 +33,9 @@ public class ScenarioEditorTest {
         segments.add(TextSegment.builder().text("lazy ").shadow(true).build());
         segments.add(TextSegment.builder().text("dog ").underline(true).build());
 
-        scenario.add(4000L, new StartDialogueEvent(0, "Name", "Association", true, Dialogue.builder().add(segments).build()));
+        scenario.add(4000L, new AddElementEvent(0, new LocationInfo("The gray room", 2000, 800), RenderLayer.ABOVE_DIALOGUE));
+
+        scenario.add(2800, new StartDialogueEvent(0, "Name", "Association", true, Dialogue.builder().add(segments).build()));
         scenario.add(true, 400, new AddDialogueEvent(0, Dialogue.builder().add("This is a delayed dialogue, happens after the first one.").build()));
         scenario.add(true, 1, new StartDialogueEvent(0, "", "", false,
                 Dialogue.builder().add("- And this is a really long dialogue that should automatically add line breaks to itself along side with no background like in game cutscene.").build()));

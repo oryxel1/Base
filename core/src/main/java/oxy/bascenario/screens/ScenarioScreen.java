@@ -77,11 +77,12 @@ public class ScenarioScreen extends ExtendableScreen {
         }
     }
 
-    private long sinceDialogue, sincePoll, sinceRender;
+    public long sinceDialogue, sincePoll;
+    private long sinceRender;
 
     @Setter @Getter
     private boolean busyDialogue, busyOptions;
-    private void pollEvents() {
+    public void pollEvents(boolean skip) {
         while (!timestamps.isEmpty() && playing) {
             final Timestamp peek = timestamps.peek();
             if (peek == null) {
@@ -105,7 +106,7 @@ public class ScenarioScreen extends ExtendableScreen {
                 }
             });
 
-            if (this.busyDialogue || this.busyOptions) {
+            if ((this.busyDialogue || this.busyOptions) && !skip) {
                 this.sinceDialogue = 0;
             }
         }
@@ -142,7 +143,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
-        pollEvents();
+        pollEvents(false);
         renderBackground();
 
         final Collection<ElementRenderer<?>> elements = this.elements.values();

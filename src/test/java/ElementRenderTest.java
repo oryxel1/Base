@@ -40,8 +40,8 @@ public class ElementRenderTest {
         segments.add(TextSegment.builder().text("dog ").underline(true).build());
         final Text text = new Text(segments, 42);
 
-        scenario.add(0,
-                new AddElementEvent(0, new LocationInfo("The gray room", 2000, 500), RenderLayer.ABOVE_DIALOGUE),
+        scenario.add(1000L,
+                new AddElementEvent(0, new LocationInfo("The gray room", 2000, 800), RenderLayer.ABOVE_DIALOGUE),
                 new AddElementEvent(1, new Rectangle(1920, 1080, Color.GRAY, false), RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(2, sprite, RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(3, text, RenderLayer.TOP),
