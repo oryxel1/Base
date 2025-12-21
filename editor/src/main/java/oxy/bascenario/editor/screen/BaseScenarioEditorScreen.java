@@ -74,6 +74,9 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.end();
     }
 
+    public void update() {
+    }
+
     public void renderScenario() {
     }
 

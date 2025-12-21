@@ -111,16 +111,21 @@ public class ScenarioScreen extends ExtendableScreen {
             }
         }
 
-        if (this.sinceRender == 0) {
-            this.sinceRender = TimeUtils.currentTimeMillis();
-        }
+        if (!skip) {
+            if (this.sinceRender == 0) {
+                this.sinceRender = TimeUtils.currentTimeMillis();
+            }
 
-        long timeDelta = TimeUtils.currentTimeMillis() - this.sinceRender;
-        this.sincePoll += timeDelta;
-        if (!this.busyDialogue && !this.busyOptions) {
-            this.sinceDialogue += timeDelta;
+            long timeDelta = TimeUtils.currentTimeMillis() - this.sinceRender;
+            this.sincePoll += timeDelta;
+            if (!this.busyDialogue && !this.busyOptions) {
+                this.sinceDialogue += timeDelta;
+            }
+            this.sinceRender = TimeUtils.currentTimeMillis();
+        } else {
+            this.sincePoll = 0;
+            this.sinceDialogue = 0;
         }
-        this.sinceRender = TimeUtils.currentTimeMillis();
     }
 
     @Getter

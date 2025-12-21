@@ -35,7 +35,8 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.render(0);
     }
 
-    private void update() {
+    @Override
+    public void update() {
         screen = new ScenarioScreen(screen.getScenario());
         screen.getTimestamps().clear();
         screen.getTimestamps().addAll(scenario.timestamps());
@@ -43,67 +44,34 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.sinceDialogue = timeline.getTimestamp();
         screen.sincePoll = timeline.getTimestamp();
 
+        long maxTime = 0;
+        for (Track track : timeline.getTracks().values()) {
+            for (Map.Entry<Long, Pair<Track.Cache, Long>> entry : track.getElements().entrySet()) {
+                if (entry.getKey() > timeline.getTimestamp()) {
+                    break;
+                }
+
+                maxTime = Math.max(maxTime, entry.getKey());
+            }
+        }
+
+        TimeUtils.fakeTimeMillis = TimeUtils.currentTimeMillis() - timeline.getTimestamp() + maxTime;
         screen.pollEvents(true);
-//
-//        TimeUtils.fakeTimeMillis = 0L;
-//        TrackParser.parse(timeline.getTracks()).forEach(timestamp -> {
-//            for (Event<?> event : timestamp.events()) {
-//                try {
-//                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
-//                    function.run(screen);
-//                } catch (Exception ignored) {
-//                }
-//            }
-//        });
-//        TimeUtils.fakeTimeMillis = null;
-
-//        final Map<Integer, Track> playedParts = TrackParser.parse(timeline, scenario.build());
-
-//
-//        long minTrackTimestamp = 0, maxTrackTimestamp = 0;
-//        for (Track track : playedParts.values()) {
-//            for (Map.Entry<Long, Pair<Track.Cache, Long>> entry : track.getElements().entrySet()) {
-//                minTrackTimestamp = Math.max(minTrackTimestamp, entry.getKey());
-//                maxTrackTimestamp = Math.max(maxTrackTimestamp, entry.getKey() + entry.getValue().right());
-//            }
-//        }
-//
-//        TrackParser.parse(playedParts).forEach(timestamp -> timestamp.events().forEach(event -> {
-//            try {
-//                final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
-//                function.run(screen);
-//            } catch (Exception ignored) {
-//            }
-//        }));
-//
-//        final Map<Integer, Track> needPlay = TrackParser.parse(timeline, scenario.build(), timeline.getTimestamp(), true);
-//        screen.getTimestamps().addAll(TrackParser.parse(needPlay));
-
-//        if (timeline.getTimestamp() <= maxTrackTimestamp) {
-//            timeline.setTimestamp(minTrackTimestamp);
-//        }
-//        if (distance > 0) {
-//            long since = distance / 60L;
-//
-//            while (since > 0) {
-//                screen.render(0);
-//                System.out.println(since);
-//                since--;
-//            }
-//        }
-//
-//        TimeUtils.fakeTimeMillis = null;
+        screen.render(0);
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
     }
 
     @Override
     protected void setPlaying(boolean playing) {
-        super.setPlaying(playing);
         this.screen.setPlaying(playing);
         if (playing) {
             TimeUtils.fakeTimeMillis = null;
-            update();
+            if (!timeline.isPlaying()) {
+                update();
+            }
         } else {
             TimeUtils.fakeTimeMillis = System.currentTimeMillis();
         }
+        super.setPlaying(playing);
     }
 }
