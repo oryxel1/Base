@@ -82,8 +82,14 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Setter @Getter
     private boolean busyDialogue, busyOptions;
-    public void pollEvents(boolean skip) {
-        while (!timestamps.isEmpty() && playing) {
+    public void pollEvents(boolean bypass) {
+        if (!playing && !bypass) {
+            this.sinceRender = TimeUtils.currentTimeMillis();
+            this.sinceDialogue = this.sincePoll = 0;
+            return;
+        }
+
+        while (!timestamps.isEmpty()) {
             final Timestamp peek = timestamps.peek();
             if (peek == null) {
                 break;
@@ -95,9 +101,6 @@ public class ScenarioScreen extends ExtendableScreen {
             }
             timestamps.poll();
 
-            this.sincePoll -= peek.time();
-            this.sinceDialogue -= peek.time();
-
             peek.events().forEach(event -> {
                 try {
                     final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
@@ -106,26 +109,28 @@ public class ScenarioScreen extends ExtendableScreen {
                 }
             });
 
-            if ((this.busyDialogue || this.busyOptions) && !skip) {
+            this.sincePoll -= peek.time();
+            this.sinceDialogue -= peek.time();
+
+            if ((this.busyDialogue || this.busyOptions) && !bypass) {
                 this.sinceDialogue = 0;
             }
         }
 
-        if (!skip) {
-            if (this.sinceRender == 0) {
-                this.sinceRender = TimeUtils.currentTimeMillis();
-            }
-
-            long timeDelta = TimeUtils.currentTimeMillis() - this.sinceRender;
-            this.sincePoll += timeDelta;
-            if (!this.busyDialogue && !this.busyOptions) {
-                this.sinceDialogue += timeDelta;
-            }
-            this.sinceRender = TimeUtils.currentTimeMillis();
-        } else {
-            this.sincePoll = 0;
-            this.sinceDialogue = 0;
+        if (bypass) {
+            return;
         }
+
+        if (this.sinceRender == 0) {
+            this.sinceRender = TimeUtils.currentTimeMillis();
+        }
+
+        long timeDelta = TimeUtils.currentTimeMillis() - this.sinceRender;
+        this.sincePoll += timeDelta;
+        if (!this.busyDialogue && !this.busyOptions) {
+            this.sinceDialogue += timeDelta;
+        }
+        this.sinceRender = TimeUtils.currentTimeMillis();
     }
 
     @Getter

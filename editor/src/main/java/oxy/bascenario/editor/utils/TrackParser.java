@@ -120,7 +120,6 @@ public class TrackParser {
             }
         }
 
-//        trackMap.forEach((k, v) -> System.out.println(k + ":" + v.getElements().size()));
         return Collections.synchronizedMap(trackMap);
     }
 

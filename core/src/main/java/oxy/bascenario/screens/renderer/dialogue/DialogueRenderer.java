@@ -29,15 +29,23 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.scenario = scenario;
     }
 
+    private long time, last;
     public void add(int index, Dialogue dialogue) {
         if (index != this.currentIndex) {
             return;
+        }
+
+        if (time == 0) {
+            time = TimeUtils.currentTimeMillis();
+            last = TimeUtils.currentTimeMillis();
         }
 
         final Text text = dialogue.getDialogue();
 
         final List<TextBuilder> texts = new ArrayList<>();
         texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
+
+        final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
 
         for (final TextSegment segment : text.segments()) {
             Font font = FontUtils.toFont(scenario, segment, text);
@@ -61,10 +69,13 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
         }
 
+        long time = 0;
         for (final TextBuilder builder : texts) {
-            this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed()));
+            this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time));
+            time += msPerWord * builder.builder.length();
         }
 
+        last = TimeUtils.currentTimeMillis();
         this.finished = false;
     }
 
@@ -75,13 +86,14 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     private static final class DialogueText {
         private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
         private final float speed;
-        private long time = 0;
+        private final long distance;
     }
 
     @Override
     public void stop() {
         super.stop();
         this.texts.clear();
+        last = time = 0;
     }
 
     @Override
@@ -98,12 +110,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             if (!finished) {
                 break;
             }
-            if (text.time == 0) {
-                text.time = TimeUtils.currentTimeMillis();
-            }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            long words = Math.min((TimeUtils.currentTimeMillis() - text.time) / msPerWord, text.allSegments.size() - 1);
+            long words = Math.min((TimeUtils.currentTimeMillis() - time - text.distance) / msPerWord, text.allSegments.size() - 1);
 
             finished = words == text.allSegments.size() - 1;
             if (finished) {
