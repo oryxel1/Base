@@ -57,7 +57,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
 
         // There are better ways to do this yes, but I'm too fucking lazy.
         if (System.currentTimeMillis() - lastUpdate >= 1000L) {
-            new Thread(timeline::updateScenario).start();
+            new Thread(() -> timeline.updateScenario(false)).start();
             lastUpdate = System.currentTimeMillis();
         }
 

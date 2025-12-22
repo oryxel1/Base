@@ -37,7 +37,7 @@ public class Track {
         this.renderers.put(l, new ElementRenderer(this, timeline, l, p));
         this.occupies.put(l, new Pair<>(l, l + p.right()));
 
-        timeline.updateScenario();
+        timeline.updateScenario(true);
     }
 
     public void render(float x, float y, float width) {
@@ -109,7 +109,7 @@ public class Track {
                 track.renderers.remove(startTime);
                 track.elements.remove(startTime);
                 track.occupies.remove(startTime);
-                timeline.updateScenario();
+                timeline.updateScenario(true);
                 return;
             }
 

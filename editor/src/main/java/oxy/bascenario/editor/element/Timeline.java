@@ -28,13 +28,16 @@ public class Timeline {
     public Track getTrack(int id) {
         return this.tracks.get(id);
     }
-    public void updateScenario() {
+    public void updateScenario(boolean updateScreen) {
         if (tracks == null) {
             return;
         }
 
         screen.getScenario().timestamps().clear();
         screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
+        if (updateScreen) {
+            screen.update();
+        }
     }
 
     @Getter @Setter
