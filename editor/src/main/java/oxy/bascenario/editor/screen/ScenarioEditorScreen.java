@@ -1,5 +1,6 @@
 package oxy.bascenario.editor.screen;
 
+import com.badlogic.gdx.utils.ScreenUtils;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.event.api.Event;
@@ -11,9 +12,7 @@ import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.Pair;
 import oxy.bascenario.utils.TimeUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     private ScenarioScreen screen;
@@ -35,71 +34,62 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.render(0);
     }
 
-    private void update() {
+    @Override
+    public void update() {
         screen = new ScenarioScreen(screen.getScenario());
         screen.getTimestamps().clear();
         screen.getTimestamps().addAll(scenario.timestamps());
-        System.out.println(screen.getTimestamps().size());
-//
-//        TimeUtils.fakeTimeMillis = 0L;
-//        TrackParser.parse(timeline.getTracks()).forEach(timestamp -> {
-//            for (Event<?> event : timestamp.events()) {
-//                try {
-//                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
-//                    function.run(screen);
-//                } catch (Exception ignored) {
-//                }
-//            }
-//        });
-//        TimeUtils.fakeTimeMillis = null;
+        screen.setPlaying(false);
 
-//        final Map<Integer, Track> playedParts = TrackParser.parse(timeline, scenario.build());
+        final List<Map.Entry<Long, Pair<Track.Cache, Long>>> sorted = new ArrayList<>();
+        for (Track track : timeline.getTracks().values()) {
+            for (Map.Entry<Long, Pair<Track.Cache, Long>> entry : track.getElements().entrySet()) {
+                if (entry.getKey() > timeline.getTimestamp()) {
+                    break;
+                }
 
-//
-//        long minTrackTimestamp = 0, maxTrackTimestamp = 0;
-//        for (Track track : playedParts.values()) {
-//            for (Map.Entry<Long, Pair<Track.Cache, Long>> entry : track.getElements().entrySet()) {
-//                minTrackTimestamp = Math.max(minTrackTimestamp, entry.getKey());
-//                maxTrackTimestamp = Math.max(maxTrackTimestamp, entry.getKey() + entry.getValue().right());
-//            }
-//        }
-//
-//        TrackParser.parse(playedParts).forEach(timestamp -> timestamp.events().forEach(event -> {
-//            try {
-//                final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
-//                function.run(screen);
-//            } catch (Exception ignored) {
-//            }
-//        }));
-//
-//        final Map<Integer, Track> needPlay = TrackParser.parse(timeline, scenario.build(), timeline.getTimestamp(), true);
-//        screen.getTimestamps().addAll(TrackParser.parse(needPlay));
+                sorted.add(entry);
+            }
+        }
+        sorted.sort(Comparator.comparingLong(Map.Entry::getKey));
 
-//        if (timeline.getTimestamp() <= maxTrackTimestamp) {
-//            timeline.setTimestamp(minTrackTimestamp);
-//        }
-//        if (distance > 0) {
-//            long since = distance / 60L;
-//
-//            while (since > 0) {
-//                screen.render(0);
-//                System.out.println(since);
-//                since--;
-//            }
-//        }
-//
-//        TimeUtils.fakeTimeMillis = null;
+        long lastDuration = 0, last = 0;
+        for (Map.Entry<Long, Pair<Track.Cache, Long>> entry : sorted) {
+            long duration = entry.getValue().right();
+            long distance;
+            if (timeline.getTimestamp() > entry.getKey() + duration) {
+                distance = duration + (timeline.getTimestamp() - (entry.getKey() + duration));
+            } else {
+                distance = duration - ((entry.getKey() + duration) - timeline.getTimestamp());
+            }
+
+            screen.sinceDialogue = screen.sincePoll = lastDuration + (entry.getKey() - last);
+            TimeUtils.fakeTimeMillis = System.currentTimeMillis() - distance;
+            screen.pollEvents(true);
+            screen.render(0);
+            ScreenUtils.clear(0, 0, 0, 1, true);
+
+            lastDuration = duration;
+            last = entry.getKey() + duration;
+        }
+
+        screen.render(0);
+
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
+        screen.setPlaying(timeline.isPlaying());
     }
 
     @Override
     protected void setPlaying(boolean playing) {
-        super.setPlaying(playing);
-        this.screen.setPlaying(playing);
         if (playing) {
+            if (!timeline.isPlaying()) {
+                update();
+            }
             TimeUtils.fakeTimeMillis = null;
-            update();
         } else {
             TimeUtils.fakeTimeMillis = System.currentTimeMillis();
         }
+        super.setPlaying(playing);
+        this.screen.setPlaying(playing);
     }
 }

@@ -28,13 +28,16 @@ public class Timeline {
     public Track getTrack(int id) {
         return this.tracks.get(id);
     }
-    public void updateScenario() {
+    public void updateScenario(boolean updateScreen) {
         if (tracks == null) {
             return;
         }
 
         screen.getScenario().timestamps().clear();
         screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
+        if (updateScreen) {
+            screen.update();
+        }
     }
 
     @Getter @Setter
@@ -186,7 +189,11 @@ public class Timeline {
         ImGuiUtils.inputInt4("", time);
         ImGui.popItemWidth();
 
+        long lastTimestamp = timestamp;
         timestamp = Math.min(time[0], 99) * (long)3.6e+6 + Math.min(69, time[1]) * 60000L + Math.min(59, time[2]) * 1000L + Math.min(999, time[3]);
+        if (timestamp != lastTimestamp) {
+            screen.update();
+        }
     }
 
     private void drawTimelineCursor(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
@@ -217,6 +224,7 @@ public class Timeline {
                 final float ratio = distance / (size.x - size.x / 4);
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
                 timestamp = Math.max(0, timestamp - backtrackTime);
+                screen.update();
             }
             return;
         }
@@ -226,7 +234,11 @@ public class Timeline {
         }
 
         final float ratio = (vec2.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+        long last = timestamp;
         timestamp = (long) (DEFAULT_MAX_TIME * scale * scroll + ratio * DEFAULT_MAX_TIME * scale);
+        if (last != timestamp) {
+            screen.update();
+        }
     }
 
     private float timestampToPosition(long timestamp, float offsetX, float size) {

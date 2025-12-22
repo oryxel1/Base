@@ -15,7 +15,7 @@ import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 // I think there is extra animation to this blah blah blah but too lazy so this will be a TODO for now.
 public class EmoticonAngryRenderer extends EmoticonRenderer {
     private DynamicAnimation opacity = AnimationUtils.dummy(1), scale = AnimationUtils.dummy(0.6f);
-    private long since = -1;
+    private long since;
 
     public EmoticonAngryRenderer(long duration) {
         super(duration);
@@ -24,16 +24,15 @@ public class EmoticonAngryRenderer extends EmoticonRenderer {
     @Override
     public void init() {
         this.since = TimeUtils.currentTimeMillis();
+        this.since = TimeUtils.currentTimeMillis();
         this.scale = AnimationUtils.build(200L, 0.6f, 1, EasingFunction.LINEAR);
     }
 
     @Override
     public void render() {
-        if (this.since == -1) {
-            this.since = TimeUtils.currentTimeMillis();
-        }
         if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity instanceof AnimationUtils.DummyAnimation) {
-            this.opacity = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
+            long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+            this.opacity = AnimationUtils.build(800, distance, 1, 0, EasingFunction.LINEAR);
             this.since = -2;
         }
 

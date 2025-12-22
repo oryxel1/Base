@@ -15,21 +15,14 @@ public class DynamicAnimation {
     private final long durationPerUnit;
     private final float durationUnit;
 
-    /**
-     * -- GETTER --
-     *
-     * @return The start value of the animation
-     */
     @Getter
     private float start;
-    /**
-     * -- GETTER --
-     *
-     * @return The target value of the animation
-     */
+
     @Getter
     private float target;
+    @Getter
     private long startTime;
+    @Getter
     private long duration;
 
     public DynamicAnimation(final EasingFunction easingFunction, final EasingMode easingMode, final long duration, final float target) {
@@ -84,10 +77,14 @@ public class DynamicAnimation {
      * @return The current instance
      */
     public DynamicAnimation setTarget(final float target) {
+        return setTarget(target, TimeUtils.currentTimeMillis());
+    }
+
+    public DynamicAnimation setTarget(final float target, long start) {
         if (this.target == target) return this;
         this.start = this.getValue();
         this.target = target;
-        this.startTime = TimeUtils.currentTimeMillis();
+        this.startTime = start;
         if (this.durationUnit == 0) {
             this.duration = this.durationPerUnit;
         } else {
@@ -109,4 +106,22 @@ public class DynamicAnimation {
         return this.start + (this.target - this.start) * position;
     }
 
+    // how long has passed since animation pass an X value...
+    public long resolve(float value) {
+        if (value == this.target) {
+            return Math.max(0, (TimeUtils.currentTimeMillis() - this.getStartTime()) - this.getDuration());
+        }
+
+        return Math.max(0, (TimeUtils.currentTimeMillis() - this.getStartTime()) - this.duration(value));
+    }
+
+    // This is not entirely accurate for anything other than linear, but good enough.
+    public long duration(float value) {
+        if (this.start + (this.target - this.start) == 0) {
+            return 0;
+        }
+
+        float f = value / (this.start + (this.target - this.start));
+        return (long) (f * this.duration);
+    }
 }

@@ -77,12 +77,19 @@ public class ScenarioScreen extends ExtendableScreen {
         }
     }
 
-    private long sinceDialogue, sincePoll, sinceRender;
+    public long sinceDialogue, sincePoll;
+    private long sinceRender;
 
     @Setter @Getter
     private boolean busyDialogue, busyOptions;
-    private void pollEvents() {
-        while (!timestamps.isEmpty() && playing) {
+    public void pollEvents(boolean bypass) {
+        if (!playing && !bypass) {
+            this.sinceRender = TimeUtils.currentTimeMillis();
+            this.sinceDialogue = this.sincePoll = 0;
+            return;
+        }
+
+        while (!timestamps.isEmpty()) {
             final Timestamp peek = timestamps.peek();
             if (peek == null) {
                 break;
@@ -94,7 +101,6 @@ public class ScenarioScreen extends ExtendableScreen {
             }
             timestamps.poll();
 
-            this.sincePoll = this.sinceDialogue = 0;
             peek.events().forEach(event -> {
                 try {
                     final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
@@ -102,6 +108,17 @@ public class ScenarioScreen extends ExtendableScreen {
                 } catch (Exception ignored) {
                 }
             });
+
+            this.sincePoll -= peek.time();
+            this.sinceDialogue -= peek.time();
+
+            if ((this.busyDialogue || this.busyOptions) && !bypass) {
+                this.sinceDialogue = 0;
+            }
+        }
+
+        if (bypass) {
+            return;
         }
 
         if (this.sinceRender == 0) {
@@ -136,7 +153,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
-        pollEvents();
+        pollEvents(false);
         renderBackground();
 
         final Collection<ElementRenderer<?>> elements = this.elements.values();

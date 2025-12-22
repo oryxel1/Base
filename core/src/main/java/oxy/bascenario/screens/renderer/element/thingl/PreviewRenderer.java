@@ -54,25 +54,39 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
         }
         if (borderFade.getValue() > 20 && titleBoxPopup instanceof AnimationUtils.DummyAnimation) {
-            titleBoxPopup = AnimationUtils.build(400, 0, 1, EasingFunction.QUAD);
-            titleBoxFade = AnimationUtils.build(400, 0, 1, EasingFunction.LINEAR);
+            long distance = TimeUtils.currentTimeMillis() - borderFade.resolve(20);
+
+            titleBoxPopup = AnimationUtils.build(400, distance, 0, 1, EasingFunction.QUAD);
+            titleBoxFade = AnimationUtils.build(400, distance, 0, 1, EasingFunction.LINEAR);
         }
         if (titleBoxPopup.getValue() > 0.6 && titlePopup instanceof AnimationUtils.DummyAnimation) {
-            titlePopup = AnimationUtils.build(400, 0.75F, 1, EasingFunction.SINE);
-            titleFade = AnimationUtils.build(400, 0, 255, EasingFunction.LINEAR);
+            long distance = TimeUtils.currentTimeMillis() - titleBoxPopup.resolve(0.6f);
+
+            titlePopup = AnimationUtils.build(400, distance, 0.75F, 1, EasingFunction.SINE);
+            titleFade = AnimationUtils.build(400, distance, 0, 255, EasingFunction.LINEAR);
         }
         if (!titleBoxPopup.isRunning() && !(titlePopup instanceof AnimationUtils.DummyAnimation) && globalFade instanceof AnimationUtils.DummyAnimation) {
             if (sinceFinished == -1) {
                 sinceFinished = TimeUtils.currentTimeMillis();
-            } else if (TimeUtils.currentTimeMillis() - sinceFinished >= 2000L) {
-                globalFade = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
+                sinceFinished -= titleBoxPopup.resolve(titleBoxPopup.getTarget());
+            }
+
+            if (TimeUtils.currentTimeMillis() - this.sinceFinished >= 2000L) {
+                long finishedDis = (TimeUtils.currentTimeMillis() - this.sinceFinished) - 2000L;
+                long time = TimeUtils.currentTimeMillis() - finishedDis;
+
+                globalFade = AnimationUtils.build(800, time, 1, 0, EasingFunction.LINEAR);
                 sinceFinished = -1;
             }
         }
+
         if (isDoingExitingFade() && !globalFade.isRunning()) {
             if (sinceFinished == -1) {
                 sinceFinished = TimeUtils.currentTimeMillis();
-            } else if (TimeUtils.currentTimeMillis() - sinceFinished >= 500L) {
+                sinceFinished -= globalFade.resolve(globalFade.getTarget());
+            }
+
+            if (TimeUtils.currentTimeMillis() - sinceFinished >= 500L) {
                 finished = true;
             }
         }

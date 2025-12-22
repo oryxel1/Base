@@ -24,7 +24,6 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
         this.hesitated = hesitated;
     }
 
-    private int dotCount = 0;
     private long since = -1, sinceDotIncrement;
 
     @Override
@@ -33,18 +32,19 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
         this.sinceDotIncrement = TimeUtils.currentTimeMillis();
     }
 
+    private long dotCount;
     @Override
     public void render() {
-        if (TimeUtils.currentTimeMillis() - this.sinceDotIncrement > 600L && this.dotCount < 3) {
-            this.dotCount++;
-            this.sinceDotIncrement = TimeUtils.currentTimeMillis();
-        }
+        dotCount = Math.min((TimeUtils.currentTimeMillis() - this.sinceDotIncrement) / 600L, 3);
 
-        if (this.opacity instanceof AnimationUtils.DummyAnimation && this.dotCount == 3) {
+        if (this.opacity instanceof AnimationUtils.DummyAnimation && dotCount == 3) {
             if (this.since == -1) {
                 this.since = TimeUtils.currentTimeMillis();
-            } else if (TimeUtils.currentTimeMillis() - this.since >= this.duration) {
-                this.opacity = AnimationUtils.build(600 / 3, 1, 0 , EasingFunction.LINEAR);
+            }
+
+            if (TimeUtils.currentTimeMillis() - this.since >= this.duration) {
+                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+                this.opacity = AnimationUtils.build(600 / 3, distance, 1, 0 , EasingFunction.LINEAR);
             }
         }
 

@@ -57,7 +57,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
 
         // There are better ways to do this yes, but I'm too fucking lazy.
         if (System.currentTimeMillis() - lastUpdate >= 1000L) {
-            new Thread(timeline::updateScenario).start();
+            new Thread(() -> timeline.updateScenario(false)).start();
             lastUpdate = System.currentTimeMillis();
         }
 
@@ -72,6 +72,9 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         renderScenario();
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
         ImGui.end();
+    }
+
+    public void update() {
     }
 
     public void renderScenario() {

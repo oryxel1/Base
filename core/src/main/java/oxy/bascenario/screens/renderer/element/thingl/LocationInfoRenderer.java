@@ -33,9 +33,11 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
         if (this.box instanceof AnimationUtils.DummyAnimation) {
             this.box = AnimationUtils.build(element.fade(), 0, 0.78f, EasingFunction.LINEAR);
             this.text = AnimationUtils.build(element.fade(), 0, 1, EasingFunction.LINEAR);
-        }else if (TimeUtils.currentTimeMillis() - this.start >= element.duration() && this.box.getTarget() == 0.78f) {
-            this.box.setTarget(0f);
-            this.text.setTarget(0f);
+        }
+        if (TimeUtils.currentTimeMillis() - this.start >= element.duration()) {
+            long distance = (TimeUtils.currentTimeMillis() - this.start) - element.duration();
+            this.box.setTarget(0f, TimeUtils.currentTimeMillis() - distance);
+            this.text.setTarget(0f, TimeUtils.currentTimeMillis() - distance);
         }
 
         final TextRun text = TextRun.fromString(FONT, element.location(), Color.WHITE.withAlphaF(this.text.getValue()));

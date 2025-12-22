@@ -18,12 +18,8 @@ import oxy.bascenario.utils.Pair;
 import java.util.*;
 
 public class TrackParser {
-    public static List<Timestamp> parse(Map<Integer, Track> tracks) {
-        return parse(tracks, -1, false);
-    }
-
     // TODO: Sub elements....
-    public static List<Timestamp> parse(Map<Integer, Track> tracks, long current, boolean clear) {
+    public static List<Timestamp> parse(Map<Integer, Track> tracks) {
         final List<Timestamp> timestamps = new ArrayList<>();
 
         final Map<Long, Pair<Boolean, List<Event<?>>>> events = new TreeMap<>();
@@ -34,7 +30,6 @@ public class TrackParser {
                 if (pair.left().object() instanceof Event<?> event) {
                     list.right().add(event);
                 } else {
-//                    System.out.println(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
                     list.right().add(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
                     events.computeIfAbsent(l + pair.right(), n -> new Pair<>(pair.left().requireWait(), new ArrayList<>())).right().add(new RemoveElementEvent(i));
                 }
@@ -46,12 +41,6 @@ public class TrackParser {
             final Long time = entry.getKey();
             long delay = time - last;
             last = time;
-
-//            if (time != -1 && current < time && !clear) {
-//                break;
-//            } else if (time != -1 && clear && time < current) {
-//                break;
-//            }
 
             timestamps.add(new Timestamp(entry.getValue().left(), delay, entry.getValue().right()));
         }
@@ -131,7 +120,6 @@ public class TrackParser {
             }
         }
 
-//        trackMap.forEach((k, v) -> System.out.println(k + ":" + v.getElements().size()));
         return Collections.synchronizedMap(trackMap);
     }
 

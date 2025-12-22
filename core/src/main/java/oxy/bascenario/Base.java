@@ -10,7 +10,7 @@ import java.io.File;
 public final class Base extends BaseApi {
     public static final File SAVE_DIR = new File(new File(System.getProperty("user.home")), "Base");
 
-    public Base() {
+    private Base() {
         super();
     }
 
@@ -38,6 +38,10 @@ public final class Base extends BaseApi {
     }
 
     public static Base instance() {
+        if (instance == null) {
+            instance = new Base();
+        }
+
         return (Base) instance;
     }
 }

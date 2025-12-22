@@ -40,6 +40,11 @@ public class AnimationUtils {
         return animation.setTarget(end);
     }
 
+    public DynamicAnimation build(long duration, long time, float start, float end, EasingFunction function) {
+        final DynamicAnimation animation = new DynamicAnimation(function, EasingMode.EASE_IN_OUT, Math.max(0, duration), start);
+        return animation.setTarget(end, time);
+    }
+
     public static class DummyAnimation extends DynamicAnimation {
         public DummyAnimation(float target) {
             super(EasingFunction.LINEAR, EasingMode.EASE_IN_OUT, 1, target);
