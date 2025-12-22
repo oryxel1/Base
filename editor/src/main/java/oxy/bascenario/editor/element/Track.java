@@ -83,7 +83,15 @@ public class Track {
             }
 
             if (oldDrag) {
-                int trackId = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+                int ceil = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+                int floor = MathUtils.floor((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+                int trackId;
+                if (Math.abs(this.y - (ImGui.getWindowPosY() + 80 + (50 * ceil))) > Math.abs(this.y - (ImGui.getWindowPosY() + 80 + (50 * floor)))) {
+                    trackId = floor;
+                } else {
+                    trackId = ceil;
+                }
+
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 Track newTrack = track.timeline.getTrack(trackId);
                 if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && time != startTime) {

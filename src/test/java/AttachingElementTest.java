@@ -16,7 +16,6 @@ import oxy.bascenario.screens.ScenarioScreen;
 
 public class AttachingElementTest {
     public static void main(String[] args) {
-        new Base();
         Base.instance().init();
 
         final Scenario.Builder scenario = new Scenario.Builder();
