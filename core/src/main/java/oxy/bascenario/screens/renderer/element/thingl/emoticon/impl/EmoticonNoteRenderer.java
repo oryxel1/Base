@@ -33,9 +33,12 @@ public class EmoticonNoteRenderer extends EmoticonRenderer {
         if (!this.offset.isRunning()) {
             if (this.since == -1) {
                 this.since = TimeUtils.currentTimeMillis();
-            } else if (this.since != -2 && TimeUtils.currentTimeMillis() - this.since >= duration) {
+            }
+            if (this.since != -2 && TimeUtils.currentTimeMillis() - this.since >= duration) {
+                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+
                 this.since = -2;
-                this.opacity = AnimationUtils.build(600, 1, 0, EasingFunction.LINEAR);
+                this.opacity = AnimationUtils.build(600, distance, 1, 0, EasingFunction.LINEAR);
             }
         }
 

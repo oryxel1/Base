@@ -35,7 +35,8 @@ public class EmoticonChatRenderer extends EmoticonRenderer {
         }
 
         if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity.getTarget() == 1) {
-            this.opacity = AnimationUtils.build(800, 1, 0, EasingFunction.LINEAR);
+            long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+            this.opacity = AnimationUtils.build(800, distance, 1, 0, EasingFunction.LINEAR);
         }
 
         final Color color = Color.WHITE.withAlphaF(opacity.getValue());
