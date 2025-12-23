@@ -46,9 +46,7 @@ public class DialogueInspector {
         builder.background(ImGuiUtils.checkbox("Background", event.isBackground()));
 
         final List<Dialogue> list = new ArrayList<>();
-        if (ImGui.button("New dialogue!")) {
-            list.add(Dialogue.builder().build());
-        }
+        boolean add = ImGui.button("New dialogue!");
 
         for (Dialogue dialogue : event.getDialogues()) {
             final ImBoolean imBoolean = new ImBoolean(true);
@@ -59,6 +57,9 @@ public class DialogueInspector {
             if (imBoolean.get()) {
                 list.add(dialogue);
             }
+        }
+        if (add) {
+            list.add(Dialogue.builder().build());
         }
         builder.dialogues(list.toArray(new Dialogue[0]));
 

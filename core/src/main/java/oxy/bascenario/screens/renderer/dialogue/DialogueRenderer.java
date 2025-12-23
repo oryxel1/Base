@@ -30,7 +30,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     }
 
     private long time, last;
-    public void add(int index, Dialogue dialogue) {
+    public void add(int index, Dialogue... dialogues) {
         if (index != this.currentIndex) {
             return;
         }
@@ -40,39 +40,41 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             last = TimeUtils.currentTimeMillis();
         }
 
-        final Text text = dialogue.getDialogue();
-
-        final List<TextBuilder> texts = new ArrayList<>();
-        texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
-
-        final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
-
-        for (final TextSegment segment : text.segments()) {
-            Font font = FontUtils.toFont(scenario, segment, text);
-
-            for (char c : segment.text().toCharArray()) {
-                final String next = texts.get(texts.size() - 1).builder().toString() + c;
-                final TextRun run = new TextRun(font, new net.raphimc.thingl.text.TextSegment(next, Color.WHITE, segment.toFlags()));
-                if (ThinGL.rendererText().getVisualWidth(run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
-                    texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
-                    if (c == '\n') {
-                        continue;
-                    }
-                }
-
-                final TextBuilder builder = texts.get(texts.size() - 1);
-                builder.builder().append(c);
-
-                final Color outline = segment.outline().isPresent() ? segment.outline().get() : OUTLINE_COLOR;
-                final net.raphimc.thingl.text.TextSegment textSegment = new net.raphimc.thingl.text.TextSegment(String.valueOf(c), segment.color(), segment.toFlags(), outline);
-                builder.segments().add(new Pair<>(textSegment, font));
-            }
-        }
 
         long time = 0;
-        for (final TextBuilder builder : texts) {
-            this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time));
-            time += msPerWord * builder.builder.length();
+        for (Dialogue dialogue : dialogues) {
+            final List<TextBuilder> texts = new ArrayList<>();
+            texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
+
+            final Text text = dialogue.getDialogue();
+
+            for (final TextSegment segment : text.segments()) {
+                Font font = FontUtils.toFont(scenario, segment, text);
+
+                for (char c : segment.text().toCharArray()) {
+                    final String next = texts.get(texts.size() - 1).builder().toString() + c;
+                    final TextRun run = new TextRun(font, new net.raphimc.thingl.text.TextSegment(next, Color.WHITE, segment.toFlags()));
+                    if (ThinGL.rendererText().getVisualWidth(run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
+                        texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
+                        if (c == '\n') {
+                            continue;
+                        }
+                    }
+
+                    final TextBuilder builder = texts.get(texts.size() - 1);
+                    builder.builder().append(c);
+
+                    final Color outline = segment.outline().isPresent() ? segment.outline().get() : OUTLINE_COLOR;
+                    final net.raphimc.thingl.text.TextSegment textSegment = new net.raphimc.thingl.text.TextSegment(String.valueOf(c), segment.color(), segment.toFlags(), outline);
+                    builder.segments().add(new Pair<>(textSegment, font));
+                }
+            }
+
+            final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
+            for (final TextBuilder builder : texts) {
+                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time));
+                time += msPerWord * builder.builder.length();
+            }
         }
 
         last = TimeUtils.currentTimeMillis();
