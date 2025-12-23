@@ -20,6 +20,7 @@ import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundEvent;
+import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.utils.math.Axis;
@@ -70,7 +71,8 @@ public class EventAdder {
 
         ImGui.separatorText("Sounds");
 
-        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, -1, true)));
+        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1));
+        add("Sound Volume", new SoundVolumeEvent(0, 1000L, 1, Easing.LINEAR));
         add("Stop Sound", new StopSoundEvent(0, 100));
         add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
         add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));

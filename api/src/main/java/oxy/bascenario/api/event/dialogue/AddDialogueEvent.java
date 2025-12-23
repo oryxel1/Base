@@ -1,9 +1,11 @@
 package oxy.bascenario.api.event.dialogue;
 
+import lombok.Builder;
 import lombok.Getter;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.event.api.Event;
 
+@Builder(toBuilder = true)
 @Getter
 public class AddDialogueEvent extends Event<AddDialogueEvent> {
     private final int index;

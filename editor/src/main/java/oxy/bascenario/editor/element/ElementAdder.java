@@ -17,11 +17,13 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class ElementAdder {
@@ -45,7 +47,7 @@ public class ElementAdder {
         add("Sprite", new Sprite(null, null));
         add("Image", new RendererImage(new Image(null), Color.WHITE, 100, 100));
         add("Gif", new RendererImage(new AnimatedImage(null, true), Color.WHITE, 100, 100));
-        add("Text", new Text(new ArrayList<>(), 42));
+        add("Text", new Text(new ArrayList<>(List.of(TextSegment.builder().text("Hello World!").build())), 42));
         add("Circle", new Circle(20, Color.WHITE, false));
         add("Rectangle", new Rectangle(100, 100, Color.WHITE, false));
 //        add("Triangle", null);

@@ -16,6 +16,18 @@ public class TextSegment {
     private Optional<Color> outline = Optional.empty();
     private final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
 
+    public Builder toBuilder() {
+        Builder builder = builder();
+        builder.color = color;
+        builder.text = text;
+        builder.type = type;
+        builder.font = font;
+        builder.outline = outline;
+        builder.styles.addAll(styles);
+        builder.outline = outline;
+        return builder;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

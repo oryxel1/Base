@@ -4,10 +4,23 @@ import imgui.ImGui;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
+import net.lenni0451.commons.color.Color;
 
 // Just so the code can look cleaner!
 public class ImGuiUtils {
     public static int COUNTER = 0;
+
+    public static Color color(final String name, Color color) {
+        final float[] rgba = new float[] { color.getRedF(), color.getGreenF(), color.getBlueF(), color.getAlphaF() };
+        ImGui.colorPicker4(name + "##" + COUNTER++, rgba);
+        return Color.fromRGBAF(rgba);
+    }
+
+    public static int combo(final String label, int index, final String[] items) {
+        final ImInt currentItem = new ImInt(index);
+        ImGui.combo(label + "##" + COUNTER++, currentItem, items);
+        return currentItem.get();
+    }
 
     public static int inputInt(String name, int value) {
         final ImInt imInt = new ImInt(value);

@@ -9,6 +9,7 @@ import oxy.bascenario.api.event.api.Event;
 @Getter
 public class PlaySoundEvent extends Event<PlaySoundEvent> {
     private final Sound sound;
+    private final long duration;
 
     @Override
     public String type() {
@@ -17,6 +18,6 @@ public class PlaySoundEvent extends Event<PlaySoundEvent> {
 
     @Override
     public PlaySoundEvent empty() {
-        return new PlaySoundEvent(null);
+        return new PlaySoundEvent(null, 0);
     }
 }

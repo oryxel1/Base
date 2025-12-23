@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;
@@ -157,13 +156,17 @@ public class Track {
 
     @AllArgsConstructor
     public static final class Cache {
-        private final Object object;
+        private Object object;
         private final RenderLayer layer;
         private final Integer attachedTo;
         private boolean requireWait;
 
         public Object object() {
             return object;
+        }
+
+        public void object(Object object) {
+            this.object = object;
         }
 
         public RenderLayer layer() {
