@@ -59,7 +59,7 @@ public class ElementAdder {
             return;
         }
 
-        long duration = TimeCompiler.timeFromElement(element);
+        long duration = TimeCompiler.compileTime(element);
         if (duration == Long.MAX_VALUE) {
             duration = 1000L;
         }

@@ -6,21 +6,17 @@ import oxy.bascenario.api.event.api.Event;
 
 @RequiredArgsConstructor
 @Getter
-public class SoundEvent extends Event<SoundEvent> {
+public class StopSoundEvent extends Event<StopSoundEvent> {
     private final int id;
-    private final Event event;
+    private final int duration;
 
     @Override
     public String type() {
-        return "sound-event";
+        return "stop-sound";
     }
 
     @Override
-    public SoundEvent empty() {
-        return new SoundEvent(0, Event.PAUSE);
-    }
-
-    public enum Event {
-        PAUSE, RESUME
+    public StopSoundEvent empty() {
+        return new StopSoundEvent(0, 1000);
     }
 }

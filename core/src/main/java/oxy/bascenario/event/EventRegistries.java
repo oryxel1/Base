@@ -15,6 +15,7 @@ import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundEvent;
+import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.*;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
@@ -29,6 +30,7 @@ import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
 import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
+import oxy.bascenario.event.impl.sound.FunctionStopSoundEvent;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,6 +44,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(ColorOverlayEvent.class, FunctionColorOverlay.class);
         EVENT_TO_FUNCTION.put(SoundEvent.class, FunctionSoundEvent.class);
         EVENT_TO_FUNCTION.put(PlaySoundEvent.class, FunctionPlaySoundEvent.class);
+        EVENT_TO_FUNCTION.put(StopSoundEvent.class, FunctionStopSoundEvent.class);
 
         EVENT_TO_FUNCTION.put(AddElementEvent.class, FunctionAddElement.class);
         EVENT_TO_FUNCTION.put(AttachElementEvent.class, FunctionAttachElement.class);

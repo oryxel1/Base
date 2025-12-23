@@ -1,11 +1,30 @@
 package oxy.bascenario.editor;
 
+import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.sound.PlaySoundEvent;
+import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 
 public class TimeCompiler {
-    public static long timeFromElement(final Object object) {
+    public static long compileTime(final Event<?> object) {
+        return switch (object) {
+            case PositionElementEvent event -> Math.max(100, event.getDuration());
+            case RotateElementEvent event -> Math.max(100, event.getDuration());
+            case ShowOptionsEvent ignored -> 500L; // eh.
+            case PlaySoundEvent event -> Math.max(100, event.getSound().fadeIn());
+            case StopSoundEvent event -> Math.max(100, event.getDuration());
+            case ColorOverlayEvent event -> Math.max(100, event.getDuration());
+            default -> 100L; // has to be something for it to show up in the editor.
+        };
+    }
+
+    public static long compileTime(final Object object) {
         return switch (object) {
             case Preview ignored -> 3900;
             case LocationInfo info -> info.duration() + info.fade();

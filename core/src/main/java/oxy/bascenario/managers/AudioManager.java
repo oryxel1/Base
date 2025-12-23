@@ -61,14 +61,14 @@ public class AudioManager {
         }
     }
 
-    public void stop(int id) {
+    public void stop(int id, int fadeDuration) {
         final CachedSound cache = this.cachedSounds.get(id);
         if (cache == null) {
             return;
         }
-        boolean fade = cache.sound.fadeOut() > 0;
+        boolean fade = fadeDuration > 0;
         if (fade) {
-            cache.fadeOut = AnimationUtils.build(cache.sound.fadeOut(), cache.gdxMusic.getVolume(), 0, EasingFunction.LINEAR);
+            cache.fadeOut = AnimationUtils.build(fadeDuration, cache.gdxMusic.getVolume(), 0, EasingFunction.LINEAR);
         } else {
             cache.gdxMusic.stop();
             this.cachedSounds.remove(id);

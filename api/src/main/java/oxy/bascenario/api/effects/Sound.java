@@ -6,11 +6,11 @@ import oxy.bascenario.api.utils.FileInfo;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Builder(toBuilder = true)
-public record Sound(int id, FileInfo file, float maxVolume, int fadeIn, int fadeOut, boolean loop) {
+public record Sound(int id, FileInfo file, float maxVolume, int fadeIn, boolean loop) {
     private static final AtomicInteger SOUND_ID_COUNTER = new AtomicInteger(0);
 
     public static Sound sound(FileInfo info) {
-        return new Sound(SOUND_ID_COUNTER.decrementAndGet(), info, 1, -1, -1, false);
+        return new Sound(SOUND_ID_COUNTER.decrementAndGet(), info, 1, -1, false);
     }
 }
 
