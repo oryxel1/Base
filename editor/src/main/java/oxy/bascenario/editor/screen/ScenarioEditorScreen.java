@@ -37,6 +37,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     @Override
     public void update() {
         screen = new ScenarioScreen(screen.getScenario());
+        screen.show();
         screen.getTimestamps().clear();
         screen.getTimestamps().addAll(scenario.timestamps());
         screen.setPlaying(false);

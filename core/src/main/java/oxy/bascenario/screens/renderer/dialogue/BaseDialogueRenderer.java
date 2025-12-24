@@ -15,6 +15,10 @@ import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 public abstract class BaseDialogueRenderer {
     private static Font NAME, ASSOCIATION;
     public void create() {
+        if (NAME != null && ASSOCIATION != null) {
+            return;
+        }
+
         NAME = FontUtils.getFont("NotoSansBold", 58);
         ASSOCIATION = FontUtils.getFont("NotoSansBold", 40);
     }
