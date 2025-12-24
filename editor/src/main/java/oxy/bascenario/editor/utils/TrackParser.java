@@ -83,28 +83,6 @@ public class TrackParser {
                     }
                 } else if (e instanceof AttachElementEvent event) {
 //                    subElementMap.put(event.getSubId(), new Pair<>(new Pair<>(event.getElement(), null), elTime));
-                } else if (e instanceof AddDialogueEvent event) {
-                    long duration = TimeCompiler.compileTime(event.getDialogues());
-                    int id = findNonOccupiedSlot(elTime, duration, occupies);
-
-                    if (trackMap.get(id) == null) {
-                        trackMap.put(id, new Track(timeline, id));
-                    }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null, timestamp.waitForDialogue()), duration));
-                    occupy(occupies, id, elTime, elTime + duration);
-
-                    elTime += duration;
-                } else if (e instanceof StartDialogueEvent event) {
-                    long duration = TimeCompiler.compileTime(event.getDialogues());
-                    int id = findNonOccupiedSlot(elTime, duration, occupies);
-
-                    if (trackMap.get(id) == null) {
-                        trackMap.put(id, new Track(timeline, id));
-                    }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(event, null, null, timestamp.waitForDialogue()), duration));
-                    occupy(occupies, id, elTime, elTime + duration);
-
-                    elTime += duration;
                 } else {
                     long duration = TimeCompiler.compileTime(e);
                     int id = findNonOccupiedSlot(elTime, duration, occupies);
@@ -114,6 +92,7 @@ public class TrackParser {
                     }
                     trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(e, null, null, timestamp.waitForDialogue()), duration));
                     occupy(occupies, id, elTime, elTime + duration);
+                    elTime += duration;
                 }
 
                 // Handle elements that auto delete (self-destruct) itself....

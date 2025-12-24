@@ -5,7 +5,6 @@ import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
-import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
