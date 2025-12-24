@@ -1,5 +1,6 @@
 package oxy.bascenario.api.event.dialogue;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
@@ -7,6 +8,7 @@ import oxy.bascenario.api.event.api.Event;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
 @Getter
 public class ShowOptionsEvent extends Event<ShowOptionsEvent> {

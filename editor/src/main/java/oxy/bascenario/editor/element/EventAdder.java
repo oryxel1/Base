@@ -89,6 +89,7 @@ public class EventAdder {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             return;
         }
+        timeline.setSelectedElement(null);
 
         long duration = TimeCompiler.compileTime(event);
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);

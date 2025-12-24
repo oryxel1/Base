@@ -57,42 +57,47 @@ public class TrackParser {
         for (Timestamp timestamp : scenario.getTimestamps()) {
             elTime += timestamp.time();
             for (Event<?> e : timestamp.events()) {
-                if (e instanceof AddElementEvent event) {
-                    if (trackMap.get(event.getId()) == null) {
-                        trackMap.put(event.getId(), new Track(timeline, event.getId()));
-                    }
-
-                    final Pair<Pair<Object, RenderLayer>, Long> current = elementMap.get(event.getId());
-                    if (current != null) {
-                        long maxTime = TimeCompiler.compileTime(current.left().left());
-                        long duration = maxTime == Long.MAX_VALUE ? elTime - current.right() : Math.min(maxTime, elTime - current.right());
-                        trackMap.get(event.getId()).put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null, timestamp.waitForDialogue()), duration));
-                        occupy(occupies, event.getId(), current.right(), current.right() + duration);
-                    }
-
-                    elementMap.put(event.getId(), new Pair<>(new Pair<>(event.getElement(), event.getLayer()), elTime));
-                } else if (e instanceof RemoveElementEvent event) {
-                    final Pair<Pair<Object, RenderLayer>, Long> cache = elementMap.remove(event.getId());
-                    if (cache != null) {
+                switch (e) {
+                    case AddElementEvent event -> {
                         if (trackMap.get(event.getId()) == null) {
                             trackMap.put(event.getId(), new Track(timeline, event.getId()));
                         }
 
-                        trackMap.get(event.getId()).put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null, timestamp.waitForDialogue()), elTime - cache.right()));
-                        occupy(occupies, event.getId(), cache.right(), elTime);
-                    }
-                } else if (e instanceof AttachElementEvent event) {
-//                    subElementMap.put(event.getSubId(), new Pair<>(new Pair<>(event.getElement(), null), elTime));
-                } else {
-                    long duration = TimeCompiler.compileTime(e);
-                    int id = findNonOccupiedSlot(elTime, duration, occupies);
+                        final Pair<Pair<Object, RenderLayer>, Long> current = elementMap.get(event.getId());
+                        if (current != null) {
+                            long maxTime = TimeCompiler.compileTime(current.left().left());
+                            long duration = maxTime == Long.MAX_VALUE ? elTime - current.right() : Math.min(maxTime, elTime - current.right());
+                            trackMap.get(event.getId()).put(current.right(), new Pair<>(new Track.Cache(current.left().left(), current.left().right(), null, timestamp.waitForDialogue()), duration));
+                            occupy(occupies, event.getId(), current.right(), current.right() + duration);
+                        }
 
-                    if (trackMap.get(id) == null) {
-                        trackMap.put(id, new Track(timeline, id));
+                        elementMap.put(event.getId(), new Pair<>(new Pair<>(event.getElement(), event.getLayer()), elTime));
                     }
-                    trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(e, null, null, timestamp.waitForDialogue()), duration));
-                    occupy(occupies, id, elTime, elTime + duration);
-                    elTime += duration;
+                    case RemoveElementEvent event -> {
+                        final Pair<Pair<Object, RenderLayer>, Long> cache = elementMap.remove(event.getId());
+                        if (cache != null) {
+                            if (trackMap.get(event.getId()) == null) {
+                                trackMap.put(event.getId(), new Track(timeline, event.getId()));
+                            }
+
+                            trackMap.get(event.getId()).put(cache.right(), new Pair<>(new Track.Cache(cache.left().left(), cache.left().right(), null, timestamp.waitForDialogue()), elTime - cache.right()));
+                            occupy(occupies, event.getId(), cache.right(), elTime);
+                        }
+                    }
+                    case AttachElementEvent event -> {
+//                    subElementMap.put(event.getSubId(), new Pair<>(new Pair<>(event.getElement(), null), elTime));
+                    }
+                    default -> {
+                        long duration = TimeCompiler.compileTime(e);
+                        int id = findNonOccupiedSlot(elTime, duration, occupies);
+
+                        if (trackMap.get(id) == null) {
+                            trackMap.put(id, new Track(timeline, id));
+                        }
+                        trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(e, null, null, timestamp.waitForDialogue()), duration));
+                        occupy(occupies, id, elTime, elTime + duration);
+                        elTime += duration;
+                    }
                 }
 
                 // Handle elements that auto delete (self-destruct) itself....

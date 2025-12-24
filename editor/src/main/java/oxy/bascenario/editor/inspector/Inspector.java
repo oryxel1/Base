@@ -4,6 +4,7 @@ import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
@@ -19,7 +20,6 @@ import oxy.bascenario.utils.Pair;
 
 @RequiredArgsConstructor
 public class Inspector {
-    private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
     public void render() {
@@ -43,6 +43,7 @@ public class Inspector {
             case Text text -> TextInspector.render(text);
             case StartDialogueEvent event -> DialogueInspector.render(event);
             case AddDialogueEvent event -> DialogueInspector.render(event);
+            case ShowOptionsEvent event -> OptionsInspector.render(event);
             default -> old;
         });
         if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait()) {
@@ -58,7 +59,7 @@ public class Inspector {
                 occupy.right(occupy.left() + duration);
             }
 
-            screen.getTimeline().updateScenario(true);
+            timeline.updateScenario(true);
         }
         pair.left().requireWait(requireWait);
 

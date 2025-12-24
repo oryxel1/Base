@@ -20,7 +20,6 @@ import oxy.bascenario.utils.ThinGLUtils;
 public class BaseScenarioEditorScreen extends ExtendableScreen {
     @Getter
     protected final Scenario.Builder scenario;
-    @Getter
     protected final Timeline timeline;
     protected final ElementAdder elementAdder;
     protected final EventAdder eventAdder;
@@ -34,7 +33,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         this.timeline = new Timeline(this, scenario);
         this.elementAdder = new ElementAdder(this, this.timeline);
         this.eventAdder = new EventAdder(this, this.timeline);
-        this.inspector = new Inspector(this, this.timeline);
+        this.inspector = new Inspector(this.timeline);
     }
 
     @Override

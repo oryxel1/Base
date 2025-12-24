@@ -84,7 +84,7 @@ public class ScenarioScreen extends ExtendableScreen {
     private boolean busyDialogue, busyOptions;
     public void pollEvents(boolean bypass) {
         if (!playing && !bypass) {
-            this.sinceRender = TimeUtils.currentTimeMillis();
+            this.sinceRender = System.currentTimeMillis();
             this.sinceDialogue = this.sincePoll = 0;
             return;
         }

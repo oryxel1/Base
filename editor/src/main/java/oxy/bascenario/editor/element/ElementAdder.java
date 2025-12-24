@@ -60,6 +60,7 @@ public class ElementAdder {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             return;
         }
+        timeline.setSelectedElement(null);
 
         long duration = TimeCompiler.compileTime(element);
         if (duration == Long.MAX_VALUE) {
@@ -74,6 +75,7 @@ public class ElementAdder {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             return;
         }
+        timeline.setSelectedElement(null);
 
         long duration = TimeCompiler.compileTime(e instanceof StartDialogueEvent event ? event.getDialogues() : e instanceof AddDialogueEvent event1 ? event1.getDialogues() : new Dialogue[] {});
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
