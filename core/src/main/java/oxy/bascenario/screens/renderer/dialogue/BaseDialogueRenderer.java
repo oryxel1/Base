@@ -43,6 +43,10 @@ public abstract class BaseDialogueRenderer {
     }
 
     public final void start(int index, String name, String association, boolean background, Dialogue... dialogues) {
+        if (index != currentIndex) {
+            return;
+        }
+
         this.name = name;
         this.association = association;
 

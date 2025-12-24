@@ -16,9 +16,13 @@ public class OptionsInspector {
 
         for (Map.Entry<String, Integer> entry : event.getOptions().entrySet()) {
             final ImBoolean imBoolean = new ImBoolean(true);
-            if (ImGui.collapsingHeader("Option##" + ImGuiUtils.COUNTER++, imBoolean) && imBoolean.get()) {
-                String option = ImGuiUtils.inputText("Option", entry.getKey());
-                int redirect = ImGuiUtils.inputInt("Redirect to", entry.getValue());
+            String option = entry.getKey();
+            int redirect = entry.getValue();
+            if (ImGui.collapsingHeader("Option##" + ImGuiUtils.COUNTER++, imBoolean)) {
+                option = ImGuiUtils.inputText("Option", entry.getKey());
+                redirect = ImGuiUtils.inputInt("Redirect to", entry.getValue());
+            }
+            if (imBoolean.get()) {
                 options.put(option, redirect);
             }
         }
