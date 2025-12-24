@@ -3,6 +3,7 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
@@ -11,10 +12,11 @@ import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.inspector.elements.*;
-import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
+import oxy.bascenario.editor.inspector.elements.events.DialogueInspector;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
+import oxy.bascenario.editor.inspector.elements.events.OptionsInspector;
+import oxy.bascenario.editor.inspector.elements.objects.*;
 import oxy.bascenario.utils.ImGuiUtils;
 import oxy.bascenario.utils.Pair;
 
@@ -44,14 +46,19 @@ public class Inspector {
             case StartDialogueEvent event -> DialogueInspector.render(event);
             case AddDialogueEvent event -> DialogueInspector.render(event);
             case ShowOptionsEvent event -> OptionsInspector.render(event);
+            case ColorOverlayEvent event -> ColorOverlayInspector.render(event);
             default -> old;
         });
         if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait()) {
             long duration = TimeCompiler.compileTime(pair.left().object());
+            long oldDuration = TimeCompiler.compileTime(old);
             if (duration == Long.MAX_VALUE) {
                 duration = 0;
             }
-            duration += Math.max(0, pair.right() - duration);
+            if (oldDuration == Long.MAX_VALUE) {
+                oldDuration = 0;
+            }
+            duration += Math.max(0, pair.right() - oldDuration);
             // TODO: Fix timeline conflicts.
             pair.right(duration);
             Pair<Long, Long> occupy = renderer.getTrack().getOccupies().get(renderer.getStartTime());

@@ -32,6 +32,16 @@ public class Track {
     @Getter
     private final Map<Long, Pair<Long, Long>> occupies = new HashMap<>();
 
+    public void remove(Long l) {
+        this.elements.remove(l);
+        ElementRenderer renderer = this.renderers.remove(l);
+        this.occupies.remove(l);
+
+        if (renderer == timeline.getSelectedElement()) {
+            timeline.setSelectedElement(null);
+        }
+    }
+
     public void put(Long l, Pair<Cache, Long> p) {
         this.elements.put(l, p);
         this.renderers.put(l, new ElementRenderer(this, timeline, l, p));
@@ -97,9 +107,7 @@ public class Track {
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 Track newTrack = track.timeline.getTrack(trackId);
                 if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && time != startTime) {
-                    track.renderers.remove(startTime);
-                    track.elements.remove(startTime);
-                    track.occupies.remove(startTime);
+                    track.remove(startTime);
 
                     if (newTrack == null) {
                         newTrack = new Track(timeline, trackId);
@@ -116,9 +124,7 @@ public class Track {
 
         public void render(float x, float y, float width) {
             if (timeline.getSelectedElement() == this && ImGui.isKeyPressed(ImGuiKey.Delete)) {
-                track.renderers.remove(startTime);
-                track.elements.remove(startTime);
-                track.occupies.remove(startTime);
+                track.remove(startTime);
                 timeline.updateScenario(true);
                 return;
             }

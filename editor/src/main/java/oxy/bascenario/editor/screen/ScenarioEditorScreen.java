@@ -67,14 +67,14 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
             screen.sinceDialogue = screen.sincePoll = lastDuration + (entry.getKey() - last);
             TimeUtils.fakeTimeMillis = System.currentTimeMillis() - distance;
             screen.pollEvents(true);
-            screen.render(0);
-            ScreenUtils.clear(0, 0, 0, 1, true);
+            renderScenarioWindow();
+            ScreenUtils.clear(0, 0, 0, 0, true);
 
             lastDuration = duration;
             last = entry.getKey() + duration;
         }
 
-        screen.render(0);
+        renderScenarioWindow();
 
         TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
         screen.setPlaying(timeline.isPlaying());

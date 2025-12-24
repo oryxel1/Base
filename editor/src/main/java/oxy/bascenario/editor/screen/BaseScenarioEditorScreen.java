@@ -62,18 +62,21 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
 
         ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
         ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
-        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+        renderScenarioWindow();
+        ImGui.end();
+    }
 
+    public void update() {
+    }
+
+    protected final void renderScenarioWindow() {
+        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
         ThinGLUtils.GLOBAL_RENDER_STACK.pushMatrix();
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
         ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 20, 0);
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 20) / 1080f, ImGui.getWindowSizeX() / 1920f);
         renderScenario();
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
-        ImGui.end();
-    }
-
-    public void update() {
     }
 
     public void renderScenario() {

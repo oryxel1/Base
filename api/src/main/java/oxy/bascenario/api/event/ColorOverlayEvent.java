@@ -1,6 +1,9 @@
 package oxy.bascenario.api.event;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.render.RenderLayer;
@@ -9,6 +12,9 @@ import java.util.Optional;
 
 // If the id is present then this will try to find an element with that id, else the overlay will be on top of everything.
 @SuppressWarnings("ALL")
+@Builder(toBuilder = true)
+@RequiredArgsConstructor
+@EqualsAndHashCode
 @Getter
 public class ColorOverlayEvent extends Event<ColorOverlayEvent> {
     private final Optional<Integer> id;
@@ -19,7 +25,7 @@ public class ColorOverlayEvent extends Event<ColorOverlayEvent> {
     public ColorOverlayEvent(RenderLayer layer, int duration, Color color) {
         this.duration = duration;
         this.color = color;
-        this.renderLayer = layer;
+        this.renderLayer = layer == null ? RenderLayer.TOP : layer;
         this.id = Optional.empty();
     }
 

@@ -1,9 +1,9 @@
-package oxy.bascenario.editor.inspector.elements;
+package oxy.bascenario.editor.inspector.elements.objects;
 
 import imgui.ImGui;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.editor.inspector.elements.sub.TextSegmentInspector;
+import oxy.bascenario.editor.inspector.elements.other.TextSegmentInspector;
 import oxy.bascenario.utils.ImGuiUtils;
 
 public class TextInspector {

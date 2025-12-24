@@ -1,13 +1,11 @@
-package oxy.bascenario.editor.inspector.elements;
+package oxy.bascenario.editor.inspector.elements.events;
 
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.api.render.elements.text.Text;
-import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.editor.inspector.elements.sub.TextSegmentInspector;
+import oxy.bascenario.editor.inspector.elements.objects.TextInspector;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;

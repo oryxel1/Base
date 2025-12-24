@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements;
+package oxy.bascenario.editor.inspector.elements.objects;
 
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
