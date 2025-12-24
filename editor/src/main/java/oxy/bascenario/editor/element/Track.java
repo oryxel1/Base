@@ -29,6 +29,7 @@ public class Track {
     @Getter
     private final Map<Long, Pair<Cache, Long>> elements = new TreeMap<>();
     private final Map<Long, ElementRenderer> renderers = new ConcurrentHashMap<>();
+    @Getter
     private final Map<Long, Pair<Long, Long>> occupies = new HashMap<>();
 
     public void put(Long l, Pair<Cache, Long> p) {
@@ -45,6 +46,7 @@ public class Track {
 
     @RequiredArgsConstructor
     public static class ElementRenderer {
+        @Getter
         private final Track track;
 
         private final Timeline timeline;

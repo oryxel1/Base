@@ -9,6 +9,7 @@ import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.editor.inspector.elements.*;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.element.Timeline;
@@ -45,9 +46,19 @@ public class Inspector {
             default -> old;
         });
         if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait()) {
-            if (screen.getTimeline().getTimestamp() >= renderer.getStartTime()) {
-                screen.getTimeline().updateScenario(true);
+            long duration = TimeCompiler.compileTime(pair.left().object());
+            if (duration == Long.MAX_VALUE) {
+                duration = 0;
             }
+            duration += Math.max(0, pair.right() - duration);
+            // TODO: Fix timeline conflicts.
+            pair.right(duration);
+            Pair<Long, Long> occupy = renderer.getTrack().getOccupies().get(renderer.getStartTime());
+            if (occupy != null) {
+                occupy.right(occupy.left() + duration);
+            }
+
+            screen.getTimeline().updateScenario(true);
         }
         pair.left().requireWait(requireWait);
 
