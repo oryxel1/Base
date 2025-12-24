@@ -27,8 +27,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class ElementAdder {
-    private static final Dialogue DUMMY_DIALOGUE = Dialogue.builder().add("Hello World!").build();
-
     private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
@@ -36,11 +34,6 @@ public class ElementAdder {
         ImGui.begin("Objects");
 
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
-
-        addDialogue("Start Dialogue", new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
-        addDialogue("Add Dialogue", new AddDialogueEvent(0, DUMMY_DIALOGUE));
-
-        ImGui.separatorText("");
 
         add("Preview", new Preview("Title", "Subtitle", null));
         add("Emoticon", new Emoticon(1000L, EmoticonType.NOTE, true));
@@ -69,17 +62,6 @@ public class ElementAdder {
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
         track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, RenderLayer.ABOVE_DIALOGUE, null, false), duration));
-    }
-
-    private void addDialogue(String label, Event<?> e) {
-        if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
-            return;
-        }
-        timeline.setSelectedElement(null);
-
-        long duration = TimeCompiler.compileTime(e instanceof StartDialogueEvent event ? event.getDialogues() : e instanceof AddDialogueEvent event1 ? event1.getDialogues() : new Dialogue[] {});
-        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(e, null, null, false), duration));
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {

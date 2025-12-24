@@ -13,8 +13,10 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
@@ -23,6 +25,7 @@ import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
@@ -34,6 +37,8 @@ import java.util.LinkedHashMap;
 
 @RequiredArgsConstructor
 public class EventAdder {
+    private static final Dialogue DUMMY_DIALOGUE = Dialogue.builder().add("Hello World!").build();
+
     private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
@@ -50,6 +55,9 @@ public class EventAdder {
         add("Stop Animation", new StopAnimationEvent(0, "bascenarioengine:default-shake"));
 
         ImGui.separatorText("Dialogues");
+
+        add("Start Dialogue", new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
+        add("Add Dialogue", new AddDialogueEvent(0, DUMMY_DIALOGUE));
 
         add("Close Dialogue", new CloseDialogueEvent());
         {

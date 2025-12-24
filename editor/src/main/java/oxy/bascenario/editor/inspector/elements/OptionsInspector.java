@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.inspector.elements;
 
 import imgui.ImGui;
+import imgui.type.ImBoolean;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.utils.ImGuiUtils;
 
@@ -14,15 +15,12 @@ public class OptionsInspector {
         boolean add = ImGui.button("New option!");
 
         for (Map.Entry<String, Integer> entry : event.getOptions().entrySet()) {
-            String option = ImGuiUtils.inputText("", entry.getKey());
-            ImGui.sameLine();
-            ImGui.text("->");
-            ImGui.sameLine();
-            int redirect = ImGuiUtils.inputInt("", entry.getValue());
-            ImGui.sameLine();
-            ImGui.button("-##" + ImGuiUtils.COUNTER++);
-
-            options.put(option, redirect);
+            final ImBoolean imBoolean = new ImBoolean(true);
+            if (ImGui.collapsingHeader("Option##" + ImGuiUtils.COUNTER++, imBoolean) && imBoolean.get()) {
+                String option = ImGuiUtils.inputText("Option", entry.getKey());
+                int redirect = ImGuiUtils.inputInt("Redirect to", entry.getValue());
+                options.put(option, redirect);
+            }
         }
 
         if (add) {

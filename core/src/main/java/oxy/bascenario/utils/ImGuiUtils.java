@@ -1,6 +1,7 @@
 package oxy.bascenario.utils;
 
 import imgui.ImGui;
+import imgui.ImVec2;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
