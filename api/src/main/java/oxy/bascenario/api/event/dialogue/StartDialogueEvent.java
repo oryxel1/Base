@@ -1,10 +1,12 @@
 package oxy.bascenario.api.event.dialogue;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.event.api.Event;
 
+@EqualsAndHashCode(callSuper = false)
 @Builder(toBuilder = true)
 @Getter
 public class StartDialogueEvent extends Event<StartDialogueEvent> {

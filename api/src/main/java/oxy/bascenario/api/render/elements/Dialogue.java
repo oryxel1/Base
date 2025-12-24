@@ -1,5 +1,6 @@
 package oxy.bascenario.api.render.elements;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.elements.text.FontType;
@@ -11,6 +12,7 @@ import java.util.List;
 
 // Yep there are no name, associations, etc... I want this to be a separate thing.
 // So for example, a new dialogue line could be added after 600ms for eg, you will see what I mean.
+@EqualsAndHashCode
 @Getter
 public class Dialogue {
     public static long MS_PER_WORD = 50L;

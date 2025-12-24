@@ -4,6 +4,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.utils.FileInfo;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +16,15 @@ public class TextSegment {
     private Color color = Color.WHITE;
     private Optional<Color> outline = Optional.empty();
     private final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TextSegment that = (TextSegment) o;
+        return Objects.equals(text, that.text) && type == that.type &&
+                Objects.equals(font, that.font) && Objects.equals(color, that.color) &&
+                Objects.equals(outline, that.outline) && toFlags() == that.toFlags();
+    }
 
     public Builder toBuilder() {
         Builder builder = builder();

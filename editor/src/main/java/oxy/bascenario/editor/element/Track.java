@@ -48,6 +48,7 @@ public class Track {
         private final Track track;
 
         private final Timeline timeline;
+        @Getter
         private final long startTime;
         @Getter
         private final Pair<Cache, Long> pair;

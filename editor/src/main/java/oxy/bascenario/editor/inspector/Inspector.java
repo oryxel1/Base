@@ -33,21 +33,24 @@ public class Inspector {
 
         Pair<Track.Cache, Long> pair = renderer.getPair();
 
-        pair.left().requireWait(ImGuiUtils.checkbox("Wait For Dialogue", pair.left().requireWait()));
+        boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", pair.left().requireWait());
 
         final Object old = pair.left().object();
-        switch (pair.left().object()) {
-            case Preview preview -> pair.left().object(PreviewInspector.render(preview));
-            case Emoticon emoticon -> pair.left().object(EmoticonInspector.render(emoticon));
-            case LocationInfo info -> pair.left().object(LocationInfoInspector.render(info));
-            case Text text -> pair.left().object(TextInspector.render(text));
-            case StartDialogueEvent event -> pair.left().object(DialogueInspector.render(event));
-            case AddDialogueEvent event -> pair.left().object(DialogueInspector.render(event));
-            default -> {}
+        pair.left().object(switch (pair.left().object()) {
+            case Preview preview -> PreviewInspector.render(preview);
+            case Emoticon emoticon -> EmoticonInspector.render(emoticon);
+            case LocationInfo info -> LocationInfoInspector.render(info);
+            case Text text -> TextInspector.render(text);
+            case StartDialogueEvent event -> DialogueInspector.render(event);
+            case AddDialogueEvent event -> DialogueInspector.render(event);
+            default -> old;
+        });
+        if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait()) {
+            if (screen.getTimeline().getTimestamp() >= renderer.getStartTime()) {
+                screen.getTimeline().updateScenario(true);
+            }
         }
-        if (!old.equals(pair.left().object())) {
-//            screen.update(); not worth it.
-        }
+        pair.left().requireWait(requireWait);
 
         ImGui.end();
     }

@@ -16,11 +16,11 @@ import oxy.bascenario.editor.inspector.Inspector;
 
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
-import oxy.bascenario.utils.TimeUtils;
 
 public class BaseScenarioEditorScreen extends ExtendableScreen {
     @Getter
     protected final Scenario.Builder scenario;
+    @Getter
     protected final Timeline timeline;
     protected final ElementAdder elementAdder;
     protected final EventAdder eventAdder;
