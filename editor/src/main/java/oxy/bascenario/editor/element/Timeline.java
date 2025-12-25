@@ -3,12 +3,14 @@ package oxy.bascenario.editor.element;
 import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
+import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
-import oxy.bascenario.utils.TimeUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,6 +73,7 @@ public class Timeline {
     }
 
     public void render() {
+        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR));
         if (since == 0) {
             since = System.currentTimeMillis();
         }

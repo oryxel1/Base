@@ -15,6 +15,63 @@ import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 
 public class TimeCompiler {
+    public static Object addTime(final Object object, int duration) {
+        if (compileTime(object) == Long.MAX_VALUE) {
+            return object;
+        }
+
+        return switch (object) {
+            case LocationInfo info -> {
+                LocationInfo.LocationInfoBuilder builder = info.toBuilder();
+                builder.duration(info.duration() + duration);
+                yield builder.build();
+            }
+            case Emoticon emoticon -> {
+                Emoticon.EmoticonBuilder builder = emoticon.toBuilder();
+                builder.duration(emoticon.duration() + duration);
+                yield builder.build();
+            }
+            case PositionElementEvent event -> {
+                PositionElementEvent.PositionElementEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            case RotateElementEvent event -> {
+                RotateElementEvent.RotateElementEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            case PlaySoundEvent event -> {
+                PlaySoundEvent.PlaySoundEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            case SoundVolumeEvent event -> {
+                SoundVolumeEvent.SoundVolumeEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            case StopSoundEvent event -> {
+                StopSoundEvent.StopSoundEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            case ColorOverlayEvent event -> {
+                ColorOverlayEvent.ColorOverlayEventBuilder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
+            default -> object;
+        };
+    }
+
+    public static boolean canResize(final Object object) {
+        return compileTime(object) == Long.MAX_VALUE || object instanceof LocationInfo || object instanceof Emoticon ||
+                object instanceof PositionElementEvent || object instanceof RotateElementEvent ||
+                object instanceof PlaySoundEvent || object instanceof SoundVolumeEvent || object instanceof StopSoundEvent ||
+                object instanceof ColorOverlayEvent;
+    }
+
     public static long compileTime(final Object object) {
         return switch (object) {
             case Preview ignored -> 3900;

@@ -10,7 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
+import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;
@@ -69,7 +73,46 @@ public class Track {
         private float dragX, dragY;
         private boolean dragging;
 
+        private boolean resizing;
+        private boolean handleDurationResize() {
+            final ImVec2 mouse = ImGui.getMousePos(), size = ImGui.getWindowSize();
+            boolean yMatch = mouse.y >= y && mouse.y <= y + 50;
+            if (resizing && yMatch) {
+                float delta = mouse.x - (x + width);
+                long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * (delta / (size.x - size.x / 4)));
+                if (TimeCompiler.canResize(pair.left().object)) {
+                    pair.right(Math.max(0, pair.right() + duration));
+                    pair.left().object(TimeCompiler.addTime(pair.left().object, (int) duration));
+                    this.width = ((float) pair.right() / Timeline.DEFAULT_MAX_TIME * timeline.getScale()) * (size.x - size.x / 4);
+
+                    timeline.updateScenario(true);
+                }
+            }
+            resizing = false;
+
+            if (!yMatch) {
+                return false;
+            }
+            float xDistanceToMax = Math.abs(mouse.x - (x + width));
+            if (xDistanceToMax > 1) {
+                return true;
+            }
+
+            GLFW.glfwSetCursor(((GLFWWindowInterface)ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_HRESIZE_CURSOR));
+            if (!ImGui.isMouseDown(0)) {
+                return false;
+            }
+
+            this.dragging = false;
+            track.timeline.getScreen().setDragging(null);
+            resizing = true;
+
+            return true;
+        }
+
         public void handleDragging() {
+            boolean resize = handleDurationResize();
+
             final ImVec2 mouse = ImGui.getMousePos(), pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
             boolean mouseDown = ImGui.getIO().getMouseDown(0), mouseClicked = ImGui.getIO().getMouseClicked(0);
 
@@ -86,7 +129,7 @@ public class Track {
             boolean here = (track.timeline.getScreen().getDragging() == null || track.timeline.getScreen().getDragging() == this);
 
             boolean oldDrag = this.dragging;
-            this.dragging = mouseDown && hoveringOver && here;
+            this.dragging = mouseDown && hoveringOver && here && resize;
             if (this.dragging) {
                 this.dragX = mouse.x - x;
                 this.dragY = mouse.y - y;
