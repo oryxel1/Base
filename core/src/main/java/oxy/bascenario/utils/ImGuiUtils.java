@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class ImGuiUtils {
     public static int COUNTER = 0;
 
-    public static void pick(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name, boolean skip, String... filter) {
+    public static void pick(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name, boolean skip, String filter) {
         ImGui.text(name + ": ");
         ImGui.sameLine();
         if (!ImGui.button("Select file##" + COUNTER++) && !skip) {
