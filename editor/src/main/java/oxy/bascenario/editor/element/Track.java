@@ -166,7 +166,7 @@ public class Track {
     @AllArgsConstructor
     public static final class Cache {
         private Object object;
-        private final RenderLayer layer;
+        private RenderLayer layer;
         private final Integer attachedTo;
         private boolean requireWait;
 
@@ -176,6 +176,10 @@ public class Track {
 
         public void object(Object object) {
             this.object = object;
+        }
+
+        public void layer(RenderLayer layer) {
+            this.layer = layer;
         }
 
         public RenderLayer layer() {

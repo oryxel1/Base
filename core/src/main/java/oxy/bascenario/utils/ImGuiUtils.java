@@ -2,6 +2,7 @@ package oxy.bascenario.utils;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiInputTextFlags;
+import imgui.type.ImFloat;
 import imgui.type.ImInt;
 import imgui.type.ImString;
 import net.lenni0451.commons.color.Color;
@@ -59,6 +60,12 @@ public class ImGuiUtils {
         final ImInt imInt = new ImInt(value);
         ImGui.inputInt(name + "##" + COUNTER++, imInt);
         return imInt.get();
+    }
+
+    public static float inputFloat(String name, float value) {
+        final ImFloat imFloat = new ImFloat(value);
+        ImGui.inputFloat(name + "##" + COUNTER++, imFloat);
+        return imFloat.get();
     }
 
     public static void inputInt4(String name, int[] value) {

@@ -1,10 +1,14 @@
 package oxy.bascenario.api.event.animation;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.api.Event;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Builder(toBuilder = true)
 @Getter
 public class SpriteAnimationEvent extends Event<SpriteAnimationEvent> {
     private final int id;

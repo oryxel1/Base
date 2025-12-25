@@ -4,18 +4,28 @@ import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.animation.PlayAnimationEvent;
+import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
+import oxy.bascenario.api.event.animation.StopAnimationEvent;
+import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.element.ElementEffectEvent;
+import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.sound.PlaySoundEvent;
+import oxy.bascenario.api.event.sound.SoundVolumeEvent;
+import oxy.bascenario.api.event.sound.StopSoundEvent;
+import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.editor.TimeCompiler;
-import oxy.bascenario.editor.inspector.elements.events.DialogueInspector;
+import oxy.bascenario.editor.inspector.elements.events.*;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
-import oxy.bascenario.editor.inspector.elements.events.OptionsInspector;
 import oxy.bascenario.editor.inspector.elements.objects.*;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.utils.ImGuiUtils;
@@ -38,6 +48,10 @@ public class Inspector {
         Pair<Track.Cache, Long> pair = renderer.getPair();
 
         boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", pair.left().requireWait());
+        RenderLayer layer = null;
+        if (pair.left().layer() != null) {
+            layer = RenderLayer.values()[ImGuiUtils.combo("Render Layer", pair.left().layer().ordinal(), RenderLayer.getAlls())];
+        }
 
         final Object old = pair.left().object();
         pair.left().object(switch (pair.left().object()) {
@@ -45,13 +59,32 @@ public class Inspector {
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(screen.getScenario(), text);
+
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case ShowOptionsEvent event -> OptionsInspector.render(event);
+
             case ColorOverlayEvent event -> ColorOverlayInspector.render(event);
+
+            case PlayAnimationEvent event -> AnimationInspector.render(event);
+            case StopAnimationEvent event -> AnimationInspector.render(event);
+            case SpriteAnimationEvent event -> AnimationInspector.render(event);
+
+            case ElementEffectEvent event -> ElementEffectInspector.render(event);
+
+            case PlaySoundEvent event -> SoundInspector.render(screen.getScenario(), event);
+            case SoundVolumeEvent event -> SoundInspector.render(event);
+            case StopSoundEvent event -> SoundInspector.render(event);
+
+            case PositionElementEvent event -> PositionInspector.render(event);
+            case RotateElementEvent event -> PositionInspector.render(event);
             default -> old;
         });
-        if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait()) {
+
+        if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait() || pair.left().layer() != layer) {
+            pair.left().requireWait(requireWait);
+            pair.left().layer(layer);
+
             long duration = TimeCompiler.compileTime(pair.left().object());
             long oldDuration = TimeCompiler.compileTime(old);
             if (duration == Long.MAX_VALUE) {
@@ -69,8 +102,10 @@ public class Inspector {
             }
 
             timeline.updateScenario(true);
+        } else {
+            pair.left().requireWait(requireWait);
+            pair.left().layer(layer);
         }
-        pair.left().requireWait(requireWait);
 
         ImGui.end();
     }

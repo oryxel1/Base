@@ -5,9 +5,12 @@ import oxy.bascenario.api.animation.Animation;
 import oxy.bascenario.api.animation.AnimationTimeline;
 import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.utils.Pair;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AnimationManager extends HashMap<String, Animation> {
     private static final File SAVE_DIR = new File(Base.SAVE_DIR, "animations");
@@ -18,6 +21,25 @@ public class AnimationManager extends HashMap<String, Animation> {
         }
 
         initDefaultAnimations();
+    }
+
+    public Pair<Integer, String[]> getAllAnimations(String current) {
+        final List<String> animations = new ArrayList<>();
+
+        boolean has = this.containsKey(current);
+        if (!has) {
+            animations.add(current + " (Not available)");
+        }
+
+        int index = 0;
+        for (String key : this.keySet()) {
+            if (has && key.equals(current)) {
+                index = animations.size();
+            }
+            animations.add(key);
+        }
+
+        return new Pair<>(index, animations.toArray(new String[0]));
     }
 
     public void shutdown() {

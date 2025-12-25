@@ -1,4 +1,5 @@
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
@@ -18,6 +19,8 @@ import java.util.List;
 
 public class ScenarioEditorTest {
     public static void main(String[] args) {
+        Base.instance().init();
+
         final Scenario.Builder scenario = new Scenario.Builder();
         scenario.location("EditorTest");
         scenario.name("EditorTest");

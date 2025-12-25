@@ -76,10 +76,11 @@ public class EventAdder {
         add("Rotate Object", new RotateElementEvent(0, 1000L, new Vec3(0, 0, 0), Easing.LINEAR));
         add("Apply Effect", new ElementEffectEvent(0, Effect.HOLOGRAM, Axis.Y));
         add("Remove Effect", new ElementEffectEvent(0, Effect.HOLOGRAM, ElementEffectEvent.Type.REMOVE));
+        add("Color Overlay", new ColorOverlayEvent(0, 500, Color.WHITE));
 
         ImGui.separatorText("Sounds");
 
-        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1));
+        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1, 0));
         add("Sound Volume", new SoundVolumeEvent(0, 1000L, 1, Easing.LINEAR));
         add("Stop Sound", new StopSoundEvent(0, 100));
         add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
@@ -87,7 +88,7 @@ public class EventAdder {
 
         ImGui.separatorText("Others");
 
-        add("Color Overlay", new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
+        add("Screen Color", new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
 //        add("Change background", null);
 
         ImGui.end();

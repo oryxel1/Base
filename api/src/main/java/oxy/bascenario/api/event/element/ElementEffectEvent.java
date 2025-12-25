@@ -1,11 +1,18 @@
 package oxy.bascenario.api.event.element;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.utils.math.Axis;
 
 @SuppressWarnings("ALL")
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Builder(toBuilder = true)
 @Getter
 public class ElementEffectEvent extends Event<ElementEffectEvent> {
     private final int id;
@@ -57,6 +64,6 @@ public class ElementEffectEvent extends Event<ElementEffectEvent> {
     }
 
     public enum Type {
-        ADD, REMOVE
+        ADD, REMOVE;
     }
 }

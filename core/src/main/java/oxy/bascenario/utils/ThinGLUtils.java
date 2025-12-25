@@ -50,14 +50,18 @@ public final class ThinGLUtils {
                     runnable.run();
                     ThinGL.programs().getColorTweak().unbindInput();
 
+                    float f = (Float) v[1];
+                    if (f == 0) {
+                        f = 1.0e-10f;
+                    }
                     if (v[0] == Axis.X) {
                         for (int x = 0; x < 1920; x += 5) {
-                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(x, (Float) v[1]).getRGB()).withAlphaF(0.3f));
+                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(x, f).getRGB()).withAlphaF(0.3f));
                             ThinGL.programs().getColorTweak().render(x, 0, x + 5, 1080);
                         }
                     } else {
                         for (int y = 0; y < 1080; y += 5) {
-                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(y, (Float) v[1]).getRGB()).withAlphaF(0.3f));
+                            ThinGL.programs().getColorTweak().configureParameters(Color.fromRGB(ColorUtils.getRainbowColor(y, f).getRGB()).withAlphaF(0.3f));
                             ThinGL.programs().getColorTweak().render(0, y, 1920, y + 5);
                         }
                     }

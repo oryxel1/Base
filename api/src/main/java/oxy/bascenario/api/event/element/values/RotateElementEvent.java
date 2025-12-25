@@ -1,10 +1,16 @@
 package oxy.bascenario.api.event.element.values;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.math.Vec3;
 
+@RequiredArgsConstructor
+@Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = false)
 @Getter
 public class RotateElementEvent extends Event<RotateElementEvent> {
     private final int id;
@@ -12,14 +18,6 @@ public class RotateElementEvent extends Event<RotateElementEvent> {
     private final long duration;
     private final Vec3 rotation;
     private final Easing easing;
-
-    public RotateElementEvent(int id, Integer subId, long duration, Vec3 rotation, Easing easing) {
-        this.id = id;
-        this.subId = subId;
-        this.duration = duration;
-        this.rotation = rotation;
-        this.easing = easing;
-    }
 
     public RotateElementEvent(int id, long duration, Vec3 rotation, Easing easing) {
         this.id = id;

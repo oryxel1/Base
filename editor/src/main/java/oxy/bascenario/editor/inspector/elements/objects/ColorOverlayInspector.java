@@ -4,9 +4,15 @@ import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.utils.ImGuiUtils;
 
+import java.util.Optional;
+
 public class ColorOverlayInspector {
     public static ColorOverlayEvent render(ColorOverlayEvent event) {
         ColorOverlayEvent.ColorOverlayEventBuilder builder = event.toBuilder();
+        if (event.getId().isPresent()) {
+            builder.id(Optional.of(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId().get()))));
+        }
+
         builder.duration(ImGuiUtils.sliderInt("Fade Duration", event.getDuration(), 0, 60000));
 
         builder.color(ImGuiUtils.color("Color", event.getColor()));

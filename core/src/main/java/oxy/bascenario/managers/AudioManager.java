@@ -45,6 +45,11 @@ public class AudioManager {
             cache.fadeIn = AnimationUtils.build(fadeIn, 0, sound.maxVolume(), EasingFunction.LINEAR);
         }
 
+        CachedSound old = this.cachedSounds.get(sound.id());
+        if (old != null) {
+            old.gdxMusic.stop();
+        }
+
         this.cachedSounds.put(sound.id(), cache);
     }
 

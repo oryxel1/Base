@@ -1,5 +1,7 @@
 package oxy.bascenario.api.event.sound;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Easing;
@@ -7,6 +9,8 @@ import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.api.Event;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Builder(toBuilder = true)
 @Getter
 public class SoundVolumeEvent extends Event<SoundVolumeEvent> {
     private final int id;
