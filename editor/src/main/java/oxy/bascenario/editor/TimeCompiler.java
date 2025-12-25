@@ -63,7 +63,7 @@ public class TimeCompiler {
 
         long duration = 0;
         for (TextSegment segment : dialogue.getDialogue().segments()) {
-            duration += msPerWord * segment.text().length();
+            duration += msPerWord * segment.text().replace("\n", "").length();
         }
         return duration;
     }

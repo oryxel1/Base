@@ -44,9 +44,9 @@ public class Inspector {
             case Preview preview -> PreviewInspector.render(screen.getScenario(), preview);
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
-            case Text text -> TextInspector.render(text);
-            case StartDialogueEvent event -> DialogueInspector.render(event);
-            case AddDialogueEvent event -> DialogueInspector.render(event);
+            case Text text -> TextInspector.render(screen.getScenario(), text);
+            case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
+            case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case ShowOptionsEvent event -> OptionsInspector.render(event);
             case ColorOverlayEvent event -> ColorOverlayInspector.render(event);
             default -> old;

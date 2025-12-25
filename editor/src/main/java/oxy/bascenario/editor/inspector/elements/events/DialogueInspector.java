@@ -2,6 +2,7 @@ package oxy.bascenario.editor.inspector.elements.events;
 
 import imgui.ImGui;
 import imgui.type.ImBoolean;
+import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DialogueInspector {
-    public static AddDialogueEvent render(AddDialogueEvent event) {
+    public static AddDialogueEvent render(Scenario.Builder scenario, AddDialogueEvent event) {
         AddDialogueEvent.AddDialogueEventBuilder builder = event.toBuilder();
 
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
@@ -24,7 +25,7 @@ public class DialogueInspector {
         for (Dialogue dialogue : event.getDialogues()) {
             final ImBoolean imBoolean = new ImBoolean(true);
             if (ImGui.collapsingHeader("Dialogue##" + ImGuiUtils.COUNTER++, imBoolean)) {
-                dialogue = render(dialogue);
+                dialogue = render(scenario, dialogue);
             }
 
             if (imBoolean.get()) {
@@ -36,7 +37,7 @@ public class DialogueInspector {
         return builder.build();
     }
 
-    public static StartDialogueEvent render(StartDialogueEvent event) {
+    public static StartDialogueEvent render(Scenario.Builder scenario, StartDialogueEvent event) {
         StartDialogueEvent.StartDialogueEventBuilder builder = event.toBuilder();
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
         builder.name(ImGuiUtils.inputText("Name", event.getName()));
@@ -49,7 +50,7 @@ public class DialogueInspector {
         for (Dialogue dialogue : event.getDialogues()) {
             final ImBoolean imBoolean = new ImBoolean(true);
             if (ImGui.collapsingHeader("Dialogue##" + ImGuiUtils.COUNTER++, imBoolean)) {
-                dialogue = render(dialogue);
+                dialogue = render(scenario, dialogue);
             }
 
             if (imBoolean.get()) {
@@ -64,10 +65,10 @@ public class DialogueInspector {
         return builder.build();
     }
 
-    public static Dialogue render(Dialogue dialogue) {
+    public static Dialogue render(Scenario.Builder scenario, Dialogue dialogue) {
         Dialogue.Builder builder = dialogue.toBuilder();
         builder.playSpeed(ImGuiUtils.sliderFloat("Play Speed", builder.playSpeed(), 0.01f, 50));
-        builder.dialogue(TextInspector.render(dialogue.getDialogue()));
+        builder.dialogue(TextInspector.render(scenario, dialogue.getDialogue()));
         return builder.build();
     }
 }

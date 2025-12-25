@@ -13,7 +13,7 @@ public class PreviewInspector {
         builder.title(ImGuiUtils.inputText("Title", preview.title()));
         builder.subtitle(ImGuiUtils.inputText("Subtitle", preview.subtitle()));
 
-        ImGuiUtils.pick(fi -> builder.background(new Image(fi)), scenario, "Background", "png", "jpg");
+        ImGuiUtils.pick(fi -> builder.background(new Image(fi)), scenario, "Background", false, "png", "jpg");
 
         if (preview.background() != null) {
             ImGui.sameLine();
