@@ -1,15 +1,47 @@
 package oxy.bascenario.utils;
 
 import imgui.ImGui;
-import imgui.ImVec2;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.Base;
+import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.utils.FileInfo;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.function.Consumer;
 
 // Just so the code can look cleaner!
 public class ImGuiUtils {
     public static int COUNTER = 0;
+
+    public static void pick(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name, String... filter) {
+        ImGui.text(name + ": ");
+        ImGui.sameLine();
+        if (!ImGui.button("Select file##" + COUNTER++)) {
+            return;
+        }
+
+        final String pick = NFDUtils.pickFile(filter);
+        if (pick.isEmpty()) {
+            return;
+        }
+
+        final FileInfo fileInfo = new FileInfo(new File(pick).getName(), false, false);
+        final String path = Base.instance().getScenarioManager().path(scenario, fileInfo);
+
+        try {
+            Files.write(Path.of(path), Files.readAllBytes(Path.of(pick)));
+        } catch (IOException e) {
+            return;
+        }
+
+        consumer.accept(fileInfo);
+    }
 
     public static Color color(final String name, Color color) {
         final float[] rgba = new float[] { color.getRedF(), color.getGreenF(), color.getBlueF(), color.getAlphaF() };

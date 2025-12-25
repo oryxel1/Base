@@ -17,11 +17,13 @@ import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.editor.inspector.elements.events.OptionsInspector;
 import oxy.bascenario.editor.inspector.elements.objects.*;
+import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.utils.ImGuiUtils;
 import oxy.bascenario.utils.Pair;
 
 @RequiredArgsConstructor
 public class Inspector {
+    private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
     public void render() {
@@ -39,7 +41,7 @@ public class Inspector {
 
         final Object old = pair.left().object();
         pair.left().object(switch (pair.left().object()) {
-            case Preview preview -> PreviewInspector.render(preview);
+            case Preview preview -> PreviewInspector.render(screen.getScenario(), preview);
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(text);

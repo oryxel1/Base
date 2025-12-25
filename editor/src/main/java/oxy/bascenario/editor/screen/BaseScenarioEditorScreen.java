@@ -33,7 +33,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         this.timeline = new Timeline(this, scenario);
         this.elementAdder = new ElementAdder(this, this.timeline);
         this.eventAdder = new EventAdder(this, this.timeline);
-        this.inspector = new Inspector(this.timeline);
+        this.inspector = new Inspector(this, this.timeline);
     }
 
     @Override

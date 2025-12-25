@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.imgui.lwjgl3)
 
     implementation(libs.lwjgl.glfw)
+    implementation(libs.lwjgl.nfd)
 
     implementation(libs.raphimc.thingl)
 }

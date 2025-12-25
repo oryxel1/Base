@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.utils.FileInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Getter
 public class Scenario {
+    private final String name, location;
     private final SaveType saveType;
 
     private final List<Timestamp> timestamps = new ArrayList<>();
@@ -31,8 +34,25 @@ public class Scenario {
     }
 
     public static final class Builder {
+        private String name, location;
         private SaveType saveType = SaveType.JSON;
         private final List<Timestamp> timestamps = new ArrayList<>();
+
+        public String name() {
+            return name;
+        }
+
+        public void name(String name) {
+            this.name = name;
+        }
+
+        public String location() {
+            return location;
+        }
+
+        public void location(String location) {
+            this.location = location;
+        }
 
         public SaveType saveType() {
             return this.saveType;
@@ -57,7 +77,7 @@ public class Scenario {
         }
 
         public Scenario build() {
-            final Scenario scenario = new Scenario(this.saveType);
+            final Scenario scenario = new Scenario(this.name, this.location, this.saveType);
             scenario.timestamps.addAll(this.timestamps);
             return scenario;
         }

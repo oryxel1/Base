@@ -12,7 +12,7 @@ import java.util.Map;
 public class ScenarioManager {
     private static final File SAVE_DIR = new File(Base.SAVE_DIR, "scenarios");
 
-    private final Map<Scenario, String> scenarios = new HashMap<>();
+    private final Map<String, Scenario> scenarios = new HashMap<>();
 
     public ScenarioManager() {
         if (!SAVE_DIR.isDirectory()) {
@@ -20,19 +20,26 @@ public class ScenarioManager {
         }
     }
 
-    public void shutdown() {
+    public String path(Scenario scenario, FileInfo file) {
+        if (file.direct() || file.internal() || scenario.getLocation() == null) {
+            return file.path();
+        }
+
+        File file1 = new File(new File(SAVE_DIR, scenario.getLocation()), "files");
+        file1.mkdirs();
+        return new File(file1, file.path()).getAbsolutePath();
     }
 
-    public String path(Scenario scenario, FileInfo file) {
-        if (file.direct() || file.internal()) {
+    public String path(Scenario.Builder scenario, FileInfo file) {
+        if (file.direct() || file.internal() || scenario.location() == null) {
             return file.path();
         }
 
-        final String path = scenarios.get(scenario);
-        if (path == null) {
-            return file.path();
-        }
+        File file1 = new File(new File(SAVE_DIR, scenario.location()), "files");
+        file1.mkdirs();
+        return new File(file1, file.path()).getAbsolutePath();
+    }
 
-        return new File(SAVE_DIR, path).getAbsolutePath();
+    public void shutdown() {
     }
 }
