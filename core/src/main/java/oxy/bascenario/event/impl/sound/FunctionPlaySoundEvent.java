@@ -12,6 +12,6 @@ public class FunctionPlaySoundEvent extends FunctionEvent<PlaySoundEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        AudioManager.getInstance().play(screen.getScenario(), event.getSound(), event.getDuration());
+        AudioManager.getInstance().play(screen.getScenario(), event.getSound(), event.getStart(), event.getDuration());
     }
 }

@@ -3,6 +3,7 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -28,6 +29,8 @@ import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.editor.inspector.impl.objects.*;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
+import oxy.bascenario.editor.utils.AudioUtils;
+import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.utils.ImGuiUtils;
 import oxy.bascenario.utils.Pair;
 
@@ -73,9 +76,10 @@ public class Inspector {
 
             case ElementEffectEvent event -> ElementEffectInspector.render(event);
 
-            case PlaySoundEvent event -> SoundInspector.render(screen.getScenario(), event);
+//            case PlaySoundEvent event -> SoundInspector.render(screen.getScenario(), event);
+            case SoundAsElement sound -> SoundInspector.render(screen.getScenario(), sound);
             case SoundVolumeEvent event -> SoundInspector.render(event);
-            case StopSoundEvent event -> SoundInspector.render(event);
+//            case StopSoundEvent event -> SoundInspector.render(event);
 
             case PositionElementEvent event -> PositionInspector.render(event);
             case RotateElementEvent event -> PositionInspector.render(event);
@@ -86,8 +90,8 @@ public class Inspector {
             pair.left().requireWait(requireWait);
             pair.left().layer(layer);
 
-            long duration = TimeCompiler.compileTime(pair.left().object());
-            long oldDuration = TimeCompiler.compileTime(old);
+            long duration = pair.left().object() instanceof SoundAsElement sound ? AudioUtils.toDuration(Base.instance().getScenarioManager().file(screen.getScenario().build(), sound.sound().file())) : TimeCompiler.compileTime(pair.left().object());
+            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(Base.instance().getScenarioManager().file(screen.getScenario().build(), sound.sound().file())) : TimeCompiler.compileTime(old);
             if (duration == Long.MAX_VALUE) {
                 duration = 0;
             }

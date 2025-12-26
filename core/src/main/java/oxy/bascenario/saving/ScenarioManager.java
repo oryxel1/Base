@@ -1,10 +1,13 @@
 package oxy.bascenario.saving;
 
+import lombok.SneakyThrows;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.utils.FileInfo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +21,37 @@ public class ScenarioManager {
         if (!SAVE_DIR.isDirectory()) {
             SAVE_DIR.mkdirs();
         }
+    }
+
+    @SneakyThrows
+    public InputStream inputStream(Scenario scenario, FileInfo file) {
+        if (scenario.getLocation() == null) {
+            return null;
+        }
+
+        if (file.direct()) {
+            return new FileInputStream(new File(file.path()));
+        } else if (file.internal()) {
+            return ScenarioManager.class.getResourceAsStream("/" + file.path());
+        }
+
+        File file1 = new File(new File(SAVE_DIR, scenario.getLocation()), "files");
+        file1.mkdirs();
+        return new FileInputStream(new File(file1, file.path()));
+    }
+
+    public File file(Scenario scenario, FileInfo file) {
+        if (file == null) {
+            return null;
+        }
+
+        if (file.direct() || file.internal() || scenario.getLocation() == null) {
+            return new File(file.path());
+        }
+
+        File file1 = new File(new File(SAVE_DIR, scenario.getLocation()), "files");
+        file1.mkdirs();
+        return new File(file1, file.path());
     }
 
     public String path(Scenario scenario, FileInfo file) {

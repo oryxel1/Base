@@ -1,54 +1,97 @@
 package oxy.bascenario.managers;
 
 import lombok.*;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
+import net.raphimc.audiomixer.SourceDataLineAudioMixer;
+import net.raphimc.audiomixer.io.AudioIO;
+import net.raphimc.audiomixer.io.mp3.Mp3InputStream;
+import net.raphimc.audiomixer.io.ogg.OggVorbisInputStream;
+import net.raphimc.audiomixer.io.raw.SampleInputStream;
+import net.raphimc.audiomixer.pcmsource.impl.StereoPullPcmSource;
+import net.raphimc.audiomixer.pcmsource.impl.StereoStaticPcmSource;
+import net.raphimc.audiomixer.sound.impl.pcm.StereoSound;
+import net.raphimc.audiomixer.soundmodifier.impl.VolumeModifier;
+import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
-import net.lenni0451.commons.animation.easing.EasingMode;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.utils.FileUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 public class AudioManager {
+    private final SourceDataLineAudioMixer mixer;
+
     @Getter
     private static final AudioManager instance = new AudioManager();
     private AudioManager() {
         if (instance != null) {
             throw new RuntimeException("This class can only create one instance!");
         }
+
+        AudioFormat format = new AudioFormat(48000, 16, 2, true, false);
+        try {
+            this.mixer = new SourceDataLineAudioMixer(AudioSystem.getSourceDataLine(format));
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private final Map<Integer, CachedSound> cachedSounds = new HashMap<>();
 
     public void play(Sound sound, long fadeIn) {
-        play(null, sound, fadeIn);
+        play(null, sound, 0, fadeIn);
     }
 
     public void play(Scenario scenario, Sound sound, long fadeIn) {
-        final Music music = Gdx.audio.newMusic(FileUtils.toHandle(scenario, sound.file()));
-        music.play();
+        play(scenario, sound, 0, fadeIn);
+    }
+
+    @SneakyThrows
+    public void play(Scenario scenario, Sound sound, float start, long fadeIn) {
+        String path = sound.file().path().toLowerCase(Locale.ROOT);
+
+        final InputStream stream = FileUtils.toStream(scenario, sound.file());
+        final AudioInputStream audioInputStream;
+        if (path.endsWith(".mp3")) {
+            audioInputStream = Mp3InputStream.createAudioInputStream(stream);
+        } else if (path.endsWith(".ogg")) {
+            audioInputStream = OggVorbisInputStream.createAudioInputStream(stream);
+        } else if (path.endsWith(".wav")) {
+            audioInputStream = AudioSystem.getAudioInputStream(stream);
+        } else {
+            return;
+        }
 
         boolean fade = fadeIn > 0;
 
-        music.setVolume(fade ? 0 : sound.maxVolume());
-        music.setLooping(sound.loop());
+        float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(mixer.getAudioFormat().getSampleRate(), 2));
+        final StereoStaticPcmSource source = new StereoStaticPcmSource(samples);
+        StereoSound stereoSound = new StereoSound(source);
+        VolumeModifier modifier = new VolumeModifier(fade ? 0 : sound.maxVolume());
+        stereoSound.getSoundModifiers().append(modifier);
 
-        final CachedSound cache = new CachedSound(music, sound);
+        final CachedSound cache = new CachedSound(stereoSound, modifier, sound);
         if (fade) {
             cache.fadeIn = AnimationUtils.build(fadeIn, 0, sound.maxVolume(), EasingFunction.LINEAR);
         }
+        source.setPosition(start);
 
         CachedSound old = this.cachedSounds.get(sound.id());
         if (old != null) {
-            old.gdxMusic.stop();
+            old.stop();
         }
+        cache.resume();
 
         this.cachedSounds.put(sound.id(), cache);
     }
@@ -67,14 +110,14 @@ public class AudioManager {
     public void pause(int id) {
         final CachedSound cache = this.cachedSounds.get(id);
         if (cache != null) {
-            cache.gdxMusic.pause();
+            cache.stop();
         }
     }
 
     public void resume(int id) {
         final CachedSound cache = this.cachedSounds.get(id);
         if (cache != null) {
-            cache.gdxMusic.play();
+            cache.resume();
         }
     }
 
@@ -85,9 +128,9 @@ public class AudioManager {
         }
         boolean fade = fadeDuration > 0;
         if (fade) {
-            cache.fadeOut = AnimationUtils.build(fadeDuration, cache.gdxMusic.getVolume(), 0, EasingFunction.LINEAR);
+            cache.fadeOut = AnimationUtils.build(fadeDuration, cache.getVolume(), 0, EasingFunction.LINEAR);
         } else {
-            cache.gdxMusic.stop();
+            cache.stop();
             this.cachedSounds.remove(id);
         }
     }
@@ -102,23 +145,23 @@ public class AudioManager {
 
             if (cache.fadeOut != null) {
                 if (cache.fadeOut.isRunning()) {
-                    cache.gdxMusic.setVolume(cache.fadeOut.getValue());
+                    cache.setVolume(cache.fadeOut.getValue());
                 } else {
-                    cache.gdxMusic.stop();
+                    cache.stop();
                     iterator.remove();
                 }
             } else if (cache.fadeIn != null) {
                 if (cache.fadeIn.isRunning()) {
-                    cache.gdxMusic.setVolume(cache.fadeIn.getValue());
+                    cache.setVolume(cache.fadeIn.getValue());
                 } else {
-                    cache.gdxMusic.setVolume(cache.fadeIn.getTarget());
+                    cache.setVolume(cache.fadeIn.getTarget());
                     cache.fadeIn = null;
                 }
             } else if (cache.fade != null) {
                 if (cache.fade.isRunning()) {
-                    cache.gdxMusic.setVolume(cache.fade.getValue());
+                    cache.setVolume(cache.fade.getValue());
                 } else {
-                    cache.gdxMusic.setVolume(cache.fade.getTarget());
+                    cache.setVolume(cache.fade.getTarget());
                     cache.fade = null;
                 }
             }
@@ -127,9 +170,26 @@ public class AudioManager {
 
     @RequiredArgsConstructor
     private static class CachedSound {
-        private final Music gdxMusic;
+        private final StereoSound stereoSound;
+        private final VolumeModifier modifier;
         private final Sound sound;
         private DynamicAnimation fadeOut, fadeIn;
         private DynamicAnimation fade;
+
+        private float getVolume() {
+            return modifier.getVolume();
+        }
+
+        private void setVolume(float value) {
+            modifier.setVolume(value);
+        }
+
+        private void resume() {
+            AudioManager.getInstance().mixer.playSound(stereoSound);
+        }
+
+        private void stop() {
+            AudioManager.getInstance().mixer.stopSound(stereoSound);
+        }
     }
 }

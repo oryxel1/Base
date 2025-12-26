@@ -35,6 +35,11 @@ dependencies {
     implementation(libs.gdx.box2d)
     implementation(libs.gdx.spine)
 
+    implementation(libs.raphimc.audiomixer)
+
+    implementation(libs.jcraft.jorbis)
+    implementation(libs.javazoom.jlayer)
+
     listOf("natives-windows", "natives-windows-arm64", "natives-linux", "natives-linux-arm64").forEach {
         implementation("org.lwjgl:lwjgl:$lwjgl:$it")
         implementation("org.lwjgl:lwjgl-glfw:$lwjgl:$it")

@@ -10,6 +10,10 @@ commons = "1.7.1"
 mocha = "3.0.1"
 configurate = "4.2.0"
 imgui = "1.90.0"
+jaudiotagger = "3.0.1"
+audiomixer = "2.3.0-SNAPSHOT"
+jorbis = "0.0.17"
+jlayer = "1.0.1"
 
 [libraries]
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -40,7 +44,13 @@ gdx-box2d = { module = "com.badlogicgames.gdx:gdx-box2d", version.ref = "libgdx"
 gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = "spine" }
 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
+raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiomixer" }
+
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }
 
 unnamed-mocha = { module = "team.unnamed:mocha", version.ref = "mocha" }
+
+jcraft-jorbis = { module = "org.jcraft:jorbis", version.ref = "jorbis" }
+javazoom-jlayer = { module = "javazoom:jlayer", version.ref = "jlayer" }
+jthink-jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }

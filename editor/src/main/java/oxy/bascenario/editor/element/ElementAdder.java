@@ -5,6 +5,7 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
@@ -17,6 +18,7 @@ import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
+import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class ElementAdder {
         add("Rectangle", new Rectangle(100, 100, Color.WHITE, false));
 //        add("Triangle", null);
         add("Location Info", new LocationInfo("Location Name", 2500, 500));
+        add("Sound", new SoundAsElement(new Sound(0, null, 1, false), 0, 0, 0, 0));
 
         ImGui.end();
     }
@@ -58,7 +61,7 @@ public class ElementAdder {
         }
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, RenderLayer.ABOVE_DIALOGUE, null, false), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, null, false), duration));
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {

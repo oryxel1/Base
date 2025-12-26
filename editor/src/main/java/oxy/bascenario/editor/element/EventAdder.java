@@ -80,11 +80,11 @@ public class EventAdder {
 
         ImGui.separatorText("Sounds");
 
-        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1, 0));
+//        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1, 0));
+//        add("Stop Sound", new StopSoundEvent(0, 100));
         add("Sound Volume", new SoundVolumeEvent(0, 1000L, 1, Easing.LINEAR));
-        add("Stop Sound", new StopSoundEvent(0, 100));
-        add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
-        add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));
+//        add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
+//        add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));
 
         ImGui.separatorText("Others");
 

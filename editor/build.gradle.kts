@@ -14,4 +14,10 @@ dependencies {
     implementation(libs.lwjgl.nfd)
 
     implementation(libs.raphimc.thingl)
+    implementation(libs.raphimc.audiomixer)
+
+    implementation(libs.jcraft.jorbis)
+    implementation(libs.javazoom.jlayer)
+
+    implementation(libs.jthink.jaudiotagger)
 }
