@@ -57,7 +57,7 @@ public class AssetsManager implements AssetsManagerApi {
                     for (File file : files) {
                         final FileInfo info = new FileInfo(file.getName(), false, false);
                         final InputStream inputStream = FileUtils.toStream(scenario.getName(), info);
-                        loadAudio(inputStream, info);
+                        loadAudio(scenario.getName(), inputStream, info);
                     }
                 } catch (IOException ignored) {
                 }
@@ -111,20 +111,20 @@ public class AssetsManager implements AssetsManagerApi {
 
         this.currentlyLoadingAssets.add(info.hashCode());
         final InputStream stream = FileUtils.toStream(scenario, info);
-        loadAudio(stream, info);
+        loadAudio(scenario, stream, info);
 
         final String path = info.path().toLowerCase(Locale.ROOT);
         if (path.endsWith(".gif")) {
-            this.assets.put(info.hashCode(), new Asset<>(info, new AwtGifImage(stream)));
+            this.assets.put(info.hashCode(), new Asset<>(scenario, info, new AwtGifImage(stream)));
         } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
-            this.assets.put(info.hashCode(), new Asset<>(info, Texture2D.fromImage(stream.readAllBytes())));
+            this.assets.put(info.hashCode(), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
         } else if (path.endsWith(".ttf")) {
-            this.assets.put(info.hashCode(), new Asset<>(info, stream.readAllBytes()));
+            this.assets.put(info.hashCode(), new Asset<>(scenario, info, stream.readAllBytes()));
         }
         this.currentlyLoadingAssets.remove(info.hashCode());
     }
 
-    private void loadAudio(InputStream stream, FileInfo info) {
+    private void loadAudio(String scenario, InputStream stream, FileInfo info) {
         this.currentlyLoadingAssets.add(info.hashCode());
         try {
             final AudioInputStream audioInputStream;
@@ -140,7 +140,7 @@ public class AssetsManager implements AssetsManagerApi {
             }
 
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
-            this.assets.put(info.hashCode(), new Asset<>(info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
+            this.assets.put(info.hashCode(), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
             this.currentlyLoadingAssets.remove(info.hashCode());
         } catch (Exception ignored) {
         }

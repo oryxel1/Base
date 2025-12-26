@@ -13,6 +13,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class AssetsUI {
@@ -72,7 +73,7 @@ public class AssetsUI {
             ImGui.tableHeadersRow();
 
             for (Asset<?> asset : Base.instance().assetsManager().assets()) {
-                if (asset.file().internal()) {
+                if (asset.file().internal() || !Objects.equals(asset.scenario(), scenario.name())) {
                     continue;
                 }
                 if (filter != null) {
