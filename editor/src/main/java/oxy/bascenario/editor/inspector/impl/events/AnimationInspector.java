@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.events;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import oxy.bascenario.Base;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
@@ -9,7 +9,7 @@ import oxy.bascenario.utils.Pair;
 
 public class AnimationInspector {
     public static PlayAnimationEvent render(PlayAnimationEvent event) {
-        PlayAnimationEvent.PlayAnimationEventBuilder builder = event.toBuilder();
+        PlayAnimationEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
 
         final Pair<Integer, String[]> alls = Base.instance().getAnimationManager().getAllAnimations(event.getName());
@@ -20,7 +20,7 @@ public class AnimationInspector {
     }
 
     public static StopAnimationEvent render(StopAnimationEvent event) {
-        StopAnimationEvent.StopAnimationEventBuilder builder = event.toBuilder();
+        StopAnimationEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
 
         final Pair<Integer, String[]> alls = Base.instance().getAnimationManager().getAllAnimations(event.getName());
@@ -29,7 +29,7 @@ public class AnimationInspector {
     }
 
     public static SpriteAnimationEvent render(SpriteAnimationEvent event) {
-        SpriteAnimationEvent.SpriteAnimationEventBuilder builder = event.toBuilder();
+        SpriteAnimationEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
         builder.trackIndex(Math.abs(ImGuiUtils.inputInt("Layer", event.getTrackIndex())));
         builder.mixTime(Math.abs(ImGuiUtils.sliderFloat("Mix/Lerp Time", event.getMixTime(), 0, 20)));

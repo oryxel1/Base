@@ -2,15 +2,10 @@ package oxy.bascenario.api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.event.api.Event;
-import oxy.bascenario.api.utils.FileInfo;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor

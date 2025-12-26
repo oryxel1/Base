@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.events;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import imgui.ImGui;
 import imgui.type.ImBoolean;

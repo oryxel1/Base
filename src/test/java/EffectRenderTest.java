@@ -9,7 +9,6 @@ import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.Sprite;
-import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
@@ -32,7 +31,7 @@ public class EffectRenderTest {
                 new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(2, text, RenderLayer.TOP),
-                new AddElementEvent(3, new RendererImage(new Image(new FileInfo("potato.jpg", false, true)), Color.WHITE, 200, 200), RenderLayer.TOP),
+                new AddElementEvent(3, new RendererImage<>(new FileInfo("potato.jpg", false, true), Color.WHITE, 200, 200), RenderLayer.TOP),
                 new AddElementEvent(4, sprite, RenderLayer.BEHIND_DIALOGUE)
         );
 

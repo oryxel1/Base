@@ -22,42 +22,42 @@ public class TimeCompiler {
 
         return switch (object) {
             case LocationInfo info -> {
-                LocationInfo.LocationInfoBuilder builder = info.toBuilder();
+                LocationInfo.Builder builder = info.toBuilder();
                 builder.duration(info.duration() + duration);
                 yield builder.build();
             }
             case Emoticon emoticon -> {
-                Emoticon.EmoticonBuilder builder = emoticon.toBuilder();
+                Emoticon.Builder builder = emoticon.toBuilder();
                 builder.duration(emoticon.duration() + duration);
                 yield builder.build();
             }
             case PositionElementEvent event -> {
-                PositionElementEvent.PositionElementEventBuilder builder = event.toBuilder();
+                PositionElementEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
             case RotateElementEvent event -> {
-                RotateElementEvent.RotateElementEventBuilder builder = event.toBuilder();
+                RotateElementEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
             case PlaySoundEvent event -> {
-                PlaySoundEvent.PlaySoundEventBuilder builder = event.toBuilder();
+                PlaySoundEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
             case SoundVolumeEvent event -> {
-                SoundVolumeEvent.SoundVolumeEventBuilder builder = event.toBuilder();
+                SoundVolumeEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
             case StopSoundEvent event -> {
-                StopSoundEvent.StopSoundEventBuilder builder = event.toBuilder();
+                StopSoundEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
             case ColorOverlayEvent event -> {
-                ColorOverlayEvent.ColorOverlayEventBuilder builder = event.toBuilder();
+                ColorOverlayEvent.Builder builder = event.toBuilder();
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }

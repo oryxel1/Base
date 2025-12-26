@@ -19,11 +19,11 @@ import java.util.Objects;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
-public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> {
+public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage<AnimatedImage>> {
     private SequencedTexture texture;
     private long startTime;
 
-    public AnimatedImageRenderer(Scenario scenario, RendererImage element, RenderLayer layer) {
+    public AnimatedImageRenderer(Scenario scenario, RendererImage<AnimatedImage> element, RenderLayer layer) {
         super(element, layer);
 
         final byte[] imageBytes;
@@ -41,7 +41,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> 
             return;
         }
 
-        this.startTime = TimeUtils.currentTimeMillis();
+        this.startTime = TimeUtils.currentTimeMillis() - element.image().start();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage> 
         }
 
         int time = (int) (TimeUtils.currentTimeMillis() - this.startTime);
-        if (!((AnimatedImage)this.element.image()).isLoop()) {
+        if (!this.element.image().loop()) {
             time = Math.min(this.texture.getDuration(), time);
         }
 

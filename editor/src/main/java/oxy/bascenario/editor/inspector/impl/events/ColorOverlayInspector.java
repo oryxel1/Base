@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.objects;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class ColorOverlayInspector {
     public static ColorOverlayEvent render(ColorOverlayEvent event) {
-        ColorOverlayEvent.ColorOverlayEventBuilder builder = event.toBuilder();
+        ColorOverlayEvent.Builder builder = event.toBuilder();
         if (event.getId().isPresent()) {
             builder.id(Optional.of(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId().get()))));
         }

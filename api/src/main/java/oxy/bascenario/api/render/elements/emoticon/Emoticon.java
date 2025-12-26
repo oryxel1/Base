@@ -2,6 +2,6 @@ package oxy.bascenario.api.render.elements.emoticon;
 
 import lombok.Builder;
 
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 public record Emoticon(long duration, EmoticonType type, boolean sound) {
 }

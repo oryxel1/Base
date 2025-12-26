@@ -16,8 +16,8 @@ public class AnimatedImageTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
 
-        final RendererImage image = new RendererImage(new AnimatedImage(new FileInfo("hm-hm-hm.gif", false, true), false), Color.WHITE, 618, 640);
-        final RendererImage loading = new RendererImage(new AnimatedImage(new FileInfo("loading.gif", false, true), true), Color.WHITE, 100, 100);
+        final RendererImage image = new RendererImage(new AnimatedImage(new FileInfo("hm-hm-hm.gif", false, true), 0, false), Color.WHITE, 618, 640);
+        final RendererImage loading = new RendererImage(new AnimatedImage(new FileInfo("loading.gif", false, true), 0, true), Color.WHITE, 100, 100);
 
         scenario.add(0,
                 new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),

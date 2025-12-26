@@ -8,8 +8,6 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
-import oxy.bascenario.api.render.elements.image.FadeImage;
-import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
@@ -44,38 +42,38 @@ public class ScenarioScreen extends ExtendableScreen {
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
     }
 
-    private Image background, queueBackground;
-    private DynamicAnimation backgroundFade = AnimationUtils.dummy(1);
+//    private Image background, queueBackground;
+//    private DynamicAnimation backgroundFade = AnimationUtils.dummy(1);
 
-    public void setBackground(Image background) {
-        this.queueBackground = null;
-        if (this.background != null && this.background instanceof FadeImage fade && fade.fadeOut() > 0) {
-            this.backgroundFade = AnimationUtils.build(fade.fadeOut(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 1, 0, EasingFunction.LINEAR);
-            this.queueBackground = background;
-            return;
-        }
-
-        this.background = background;
-        if (this.background != null && background instanceof FadeImage fade && fade.fadeOut() > 0) {
-            this.backgroundFade = AnimationUtils.build(fade.fadeIn(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 0, 1, EasingFunction.LINEAR);
-        }
-    }
-
-    private void renderBackground() {
-        if (!this.backgroundFade.isRunning() && this.queueBackground != null) {
-            this.background = null;
-            setBackground(this.queueBackground);
-        }
-
-        if (this.background != null) {
-            Color color = Color.WHITE;
-            if (this.backgroundFade.isRunning()) {
-                color = color.withAlphaF(this.backgroundFade.getValue());
-            }
-
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
-        }
-    }
+//    public void setBackground(Image background) {
+//        this.queueBackground = null;
+//        if (this.background != null && this.background instanceof FadeImage fade && fade.fadeOut() > 0) {
+//            this.backgroundFade = AnimationUtils.build(fade.fadeOut(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 1, 0, EasingFunction.LINEAR);
+//            this.queueBackground = background;
+//            return;
+//        }
+//
+//        this.background = background;
+//        if (this.background != null && background instanceof FadeImage fade && fade.fadeOut() > 0) {
+//            this.backgroundFade = AnimationUtils.build(fade.fadeIn(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 0, 1, EasingFunction.LINEAR);
+//        }
+//    }
+//
+//    private void renderBackground() {
+//        if (!this.backgroundFade.isRunning() && this.queueBackground != null) {
+//            this.background = null;
+//            setBackground(this.queueBackground);
+//        }
+//
+//        if (this.background != null) {
+//            Color color = Color.WHITE;
+//            if (this.backgroundFade.isRunning()) {
+//                color = color.withAlphaF(this.backgroundFade.getValue());
+//            }
+//
+//            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
+//        }
+//    }
 
     public long sinceDialogue, sincePoll;
     private long sinceRender;
@@ -157,7 +155,7 @@ public class ScenarioScreen extends ExtendableScreen {
     public void render(float delta) {
         ThinGLUtils.start();
         pollEvents(false);
-        renderBackground();
+//        renderBackground();
 
         final Collection<ElementRenderer<?>> elements = this.elements.values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);

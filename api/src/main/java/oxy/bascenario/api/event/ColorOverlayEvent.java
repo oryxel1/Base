@@ -12,7 +12,7 @@ import java.util.Optional;
 
 // If the id is present then this will try to find an element with that id, else the overlay will be on top of everything.
 @SuppressWarnings("ALL")
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @Getter

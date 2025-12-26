@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.other;
+package oxy.bascenario.editor.inspector.impl.other;
 
 import imgui.ImGui;
 import imgui.type.ImBoolean;

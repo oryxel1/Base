@@ -1,14 +1,8 @@
 package oxy.bascenario.api.render.elements.image;
 
-import lombok.Getter;
+import lombok.Builder;
 import oxy.bascenario.api.utils.FileInfo;
 
-@Getter
-public class AnimatedImage extends Image {
-    private final boolean loop;
-
-    public AnimatedImage(FileInfo file, boolean loop) {
-        super(file);
-        this.loop = loop;
-    }
+@Builder(toBuilder = true, builderClassName = "Builder")
+public record AnimatedImage(FileInfo file, long start, boolean loop) {
 }

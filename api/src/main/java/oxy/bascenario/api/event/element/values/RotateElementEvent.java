@@ -9,7 +9,7 @@ import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.math.Vec3;
 
 @RequiredArgsConstructor
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @EqualsAndHashCode(callSuper = false)
 @Getter
 public class RotateElementEvent extends Event<RotateElementEvent> {

@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.events;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
@@ -9,7 +9,7 @@ import oxy.bascenario.utils.ImGuiUtils;
 
 public class PositionInspector {
     public static RotateElementEvent render(RotateElementEvent event) {
-        RotateElementEvent.RotateElementEventBuilder builder = event.toBuilder();
+        RotateElementEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
         builder.duration(Math.abs(ImGuiUtils.sliderInt("Duration (ms)", (int) event.getDuration(), 0, 50000)));
 
@@ -23,7 +23,7 @@ public class PositionInspector {
     }
 
     public static PositionElementEvent render(PositionElementEvent event) {
-        PositionElementEvent.PositionElementEventBuilder builder = event.toBuilder();
+        PositionElementEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
         builder.duration(Math.abs(ImGuiUtils.sliderInt("Duration (ms)", (int) event.getDuration(), 0, 50000)));
 

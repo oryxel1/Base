@@ -1,7 +1,8 @@
 package oxy.bascenario.api.render.elements;
 
+import lombok.Builder;
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.render.elements.image.Image;
 
-public record RendererImage(Image image, Color color, int width, int height) {
+@Builder(toBuilder = true, builderClassName = "Builder")
+public record RendererImage<T>(T image, Color color, int width, int height) {
 }

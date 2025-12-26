@@ -10,7 +10,7 @@ import oxy.bascenario.api.utils.math.Vec2;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @Getter
 public class PositionElementEvent extends Event<PositionElementEvent> {
     private final int id;

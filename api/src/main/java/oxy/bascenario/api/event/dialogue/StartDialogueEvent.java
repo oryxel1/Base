@@ -7,7 +7,7 @@ import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.event.api.Event;
 
 @EqualsAndHashCode(callSuper = false)
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @Getter
 public class StartDialogueEvent extends Event<StartDialogueEvent> {
     private final int index;

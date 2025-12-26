@@ -26,8 +26,8 @@ public class Animation {
     public static class Builder {
         private String name;
 
-        private final AnimationTimeline.AnimationTimelineBuilder global = new AnimationTimeline.AnimationTimelineBuilder();
-        private final AnimationTimeline.AnimationTimelineBuilder defaultTimeline = new AnimationTimeline.AnimationTimelineBuilder();
+        private final AnimationTimeline.Builder global = new AnimationTimeline.Builder();
+        private final AnimationTimeline.Builder defaultTimeline = new AnimationTimeline.Builder();
 
         private float maxDuration;
         private final Map<Float, AnimationTimeline> timelines = new HashMap<>();

@@ -1,10 +1,10 @@
-package oxy.bascenario.editor.inspector.elements.objects;
+package oxy.bascenario.editor.inspector.impl.objects;
 
 import imgui.ImGui;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.editor.inspector.elements.other.TextSegmentInspector;
+import oxy.bascenario.editor.inspector.impl.other.TextSegmentInspector;
 import oxy.bascenario.utils.ImGuiUtils;
 
 public class TextInspector {
@@ -13,7 +13,7 @@ public class TextInspector {
             text.segments().add(new TextSegment());
         }
 
-        Text.TextBuilder builder = text.toBuilder();
+        Text.Builder builder = text.toBuilder();
         builder.size(ImGuiUtils.sliderInt("Font Size", text.size(), 1, 150));
         builder.segments(TextSegmentInspector.render(scenario, text.segments()));
         return builder.build();

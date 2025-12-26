@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 @ToString
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @Getter
 public class AnimationTimeline {
     private AnimationValue rotation, offset, scale, pivot;

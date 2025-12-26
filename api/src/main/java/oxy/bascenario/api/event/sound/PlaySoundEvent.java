@@ -9,7 +9,7 @@ import oxy.bascenario.api.event.api.Event;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @Getter
 public class PlaySoundEvent extends Event<PlaySoundEvent> {
     private final Sound sound;

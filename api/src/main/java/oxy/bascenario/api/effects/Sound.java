@@ -5,7 +5,7 @@ import oxy.bascenario.api.utils.FileInfo;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 public record Sound(int id, FileInfo file, float maxVolume, boolean loop) {
     private static final AtomicInteger SOUND_ID_COUNTER = new AtomicInteger(0);
 

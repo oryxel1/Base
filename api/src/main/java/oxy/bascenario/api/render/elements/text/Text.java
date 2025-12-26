@@ -4,7 +4,7 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 public record Text(List<TextSegment> segments, int size) {
     @Override
     public boolean equals(Object o) {

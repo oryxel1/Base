@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.events;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import imgui.ImGui;
 import imgui.type.ImBoolean;
@@ -6,7 +6,7 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.editor.inspector.elements.objects.TextInspector;
+import oxy.bascenario.editor.inspector.impl.objects.TextInspector;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DialogueInspector {
     public static AddDialogueEvent render(Scenario.Builder scenario, AddDialogueEvent event) {
-        AddDialogueEvent.AddDialogueEventBuilder builder = event.toBuilder();
+        AddDialogueEvent.Builder builder = event.toBuilder();
 
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
         final List<Dialogue> list = new ArrayList<>();
@@ -38,7 +38,7 @@ public class DialogueInspector {
     }
 
     public static StartDialogueEvent render(Scenario.Builder scenario, StartDialogueEvent event) {
-        StartDialogueEvent.StartDialogueEventBuilder builder = event.toBuilder();
+        StartDialogueEvent.Builder builder = event.toBuilder();
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
         builder.name(ImGuiUtils.inputText("Name", event.getName()));
         builder.association(ImGuiUtils.inputText("Association", event.getAssociation()));

@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.inspector.elements.events;
+package oxy.bascenario.editor.inspector.impl.events;
 
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
@@ -7,7 +7,7 @@ import oxy.bascenario.utils.ImGuiUtils;
 
 public class ElementEffectInspector {
     public static ElementEffectEvent render(ElementEffectEvent event) {
-        ElementEffectEvent.ElementEffectEventBuilder builder = event.toBuilder();
+        ElementEffectEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
         Effect effect = Effect.values()[ImGuiUtils.combo("Effect Type", event.getEffect().ordinal(), Effect.getAlls())];
         builder.effect(effect);

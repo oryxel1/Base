@@ -12,7 +12,7 @@ import oxy.bascenario.api.utils.math.Axis;
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Builder(toBuilder = true)
+@Builder(toBuilder = true, builderClassName = "Builder")
 @Getter
 public class ElementEffectEvent extends Event<ElementEffectEvent> {
     private final int id;
