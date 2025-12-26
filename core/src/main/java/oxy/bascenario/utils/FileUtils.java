@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import lombok.SneakyThrows;
 import oxy.bascenario.Base;
-import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.saving.ScenarioManager;
+import oxy.bascenario.managers.ScenarioManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,9 +13,9 @@ import java.io.InputStream;
 
 public class FileUtils {
     @SneakyThrows
-    public static InputStream toStream(Scenario scenario, FileInfo info) {
+    public static InputStream toStream(String scenario, FileInfo info) {
         if (scenario != null) {
-            final InputStream stream = Base.instance().getScenarioManager().inputStream(scenario, info);
+            final InputStream stream = Base.instance().scenarioManager().inputStream(scenario, info);
             if (stream != null) {
                 return stream;
             }
@@ -25,9 +24,9 @@ public class FileUtils {
         return info.internal() ? ScenarioManager.class.getResourceAsStream("/" + info.path()) : new FileInputStream(info.path());
     }
 
-    public static FileHandle toHandle(Scenario scenario, FileInfo info) {
+    public static FileHandle toHandle(String scenario, FileInfo info) {
         if (!info.direct() && !info.internal() && scenario != null) {
-            File file = new File(Base.instance().getScenarioManager().path(scenario, info));
+            File file = new File(Base.instance().scenarioManager().path(scenario, info));
             return new FileHandle(file.getAbsolutePath());
         }
 

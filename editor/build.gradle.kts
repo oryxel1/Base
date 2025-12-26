@@ -19,5 +19,5 @@ dependencies {
     implementation(libs.jcraft.jorbis)
     implementation(libs.javazoom.jlayer)
 
-    implementation(libs.jthink.jaudiotagger)
+//    implementation(libs.jthink.jaudiotagger)
 }

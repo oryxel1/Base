@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -9,7 +10,6 @@ import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.TimeUtils;
@@ -46,7 +46,7 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
         Color color = Color.WHITE.withAlphaF(this.box.getValue());
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, Y, width, Y + HEIGH, Color.fromRGB(85, 91, 124).withAlphaF(this.box.getValue()));
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 30, SEPARATOR_Y, 35, SEPARATOR_Y + SEPARATOR_HEIGH, Color.fromRGB(182, 182, 182).withAlphaF(this.box.getValue()));
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/other/location_info.png"), width, Y,  30,  HEIGH, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/other/location_info.png"), width, Y,  30,  HEIGH, color);
         ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 56, Y + SEPARATOR_HEIGH + (ThinGL.rendererText().getLogicalHeight(text.shape()) / 2), RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 

@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -10,7 +11,6 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Preview;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
@@ -101,7 +101,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
     private void renderBackground() {
         if (element.background() != null) {
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, element.background()), 0, 0, 1920, 1080);
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture(scenario.getName(), element.background()), 0, 0, 1920, 1080);
             ThinGLUtils.blurRectangle(0, 0, 1920, 1080, Math.round(18 * this.globalFade.getValue())); // Very nice blur thanks to ThinGL.
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
         } else {
@@ -117,7 +117,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             color = color.withAlpha(Math.round(100 * globalFade.getValue()));
         }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/preview/border.png"), 0, 0, 1920, 1080, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/preview/border.png"), 0, 0, 1920, 1080, color);
     }
 
     private void renderTitleBox() {
@@ -131,7 +131,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             color = color.withAlpha(Math.round(255 * globalFade.getValue()));
         }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
     }
 
     private static Font TITLE, SUBTITLE;

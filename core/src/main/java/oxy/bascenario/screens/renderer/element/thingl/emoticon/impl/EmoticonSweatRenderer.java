@@ -1,11 +1,11 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
@@ -43,8 +43,8 @@ public class EmoticonSweatRenderer extends EmoticonRenderer {
 
         final Color color = Color.WHITE.withAlphaF(this.opacity.getValue());
 
-        final Texture2D emoticonSweat1 = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Sweat_1.png");
-        final Texture2D emoticonSweat2 = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Sweat_2.png");
+        final Texture2D emoticonSweat1 = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Sweat_1.png");
+        final Texture2D emoticonSweat2 = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Sweat_2.png");
 
         float sweat1Y = 70 * 0.7f * this.firstSweat.getValue();
         float sweat2Y = 120 * 0.7f * this.secondSweat.getValue();

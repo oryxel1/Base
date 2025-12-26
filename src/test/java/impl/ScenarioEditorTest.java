@@ -1,28 +1,13 @@
-import net.lenni0451.commons.color.Color;
+package impl;
+
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
-import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.api.render.elements.LocationInfo;
-import oxy.bascenario.api.render.elements.Preview;
-import oxy.bascenario.api.render.elements.text.FontType;
-import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.screen.ScenarioEditorScreen;
 import oxy.bascenario.utils.Launcher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ScenarioEditorTest {
     public static void main(String[] args) {
-        Base.instance().init();
-
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.location("EditorTest");
         scenario.name("EditorTest");
 
 //        scenario.add(0, new AddElementEvent(0, new Preview("Scenario Preview Test", "Episode: 1", null), RenderLayer.TOP));

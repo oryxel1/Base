@@ -1,3 +1,5 @@
+package impl;
+
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.Base;
 import oxy.bascenario.utils.Launcher;
@@ -16,8 +18,6 @@ import oxy.bascenario.screens.ScenarioScreen;
 
 public class AnimationTickTest {
     public static void main(String[] args) {
-        Base.instance().init();
-
         final Scenario.Builder scenario = new Scenario.Builder();
 
         scenario.add(0, new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));

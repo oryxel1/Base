@@ -1,11 +1,11 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.text.TextRun;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.FontUtils;
@@ -67,7 +67,7 @@ public class OptionsRenderer {
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(buttonX, buttonY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/buttons/button.png"), 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Color.WHITE.withAlphaF(alpha));
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/button.png"), 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Color.WHITE.withAlphaF(alpha));
             GLOBAL_RENDER_STACK.popMatrix();
 
             float textScale = 1;

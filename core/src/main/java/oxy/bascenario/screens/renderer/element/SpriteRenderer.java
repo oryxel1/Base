@@ -57,8 +57,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario, this.element.atlas()));
-        SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario, element.skeleton()));
+        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario.getName(), this.element.atlas()));
+        SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
         this.skeleton = new Skeleton(skeletonData);
 
         this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));

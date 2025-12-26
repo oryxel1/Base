@@ -6,6 +6,7 @@ import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
 import net.raphimc.thingl.image.animated.impl.AwtGifImage;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
@@ -26,16 +27,9 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage<A
     public AnimatedImageRenderer(Scenario scenario, RendererImage<AnimatedImage> element, RenderLayer layer) {
         super(element, layer);
 
-        final byte[] imageBytes;
         try {
-            final FileInfo fileInfo = element.image().file();
-            if (fileInfo.internal()) {
-                imageBytes = Objects.requireNonNull(AnimatedImageRenderer.class.getResourceAsStream("/" + element.image().file().path())).readAllBytes();
-            } else {
-                File file = new File(Base.instance().getScenarioManager().path(scenario, fileInfo));
-                imageBytes = Files.readAllBytes(file.toPath());
-            }
-            this.texture = new SequencedTexture(new AwtGifImage(imageBytes));
+            Asset<AwtGifImage> asset = Base.instance().assetsManager().assets(scenario.getName(), element.image().file());
+            this.texture = new SequencedTexture(asset.asset());
         } catch (Exception ignored) {
             this.texture = null;
             return;

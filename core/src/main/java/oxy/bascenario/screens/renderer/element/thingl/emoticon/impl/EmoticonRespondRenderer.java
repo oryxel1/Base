@@ -1,11 +1,11 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
@@ -36,7 +36,7 @@ public class EmoticonRespondRenderer extends EmoticonRenderer {
 
         final Color color = Color.WHITE.withAlphaF(this.opacity.getValue());
 
-        final Texture2D action = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Action.png");
+        final Texture2D action = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Action.png");
 
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, action, 0, 0, 90, 36, color);
 

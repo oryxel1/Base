@@ -5,6 +5,7 @@ import oxy.bascenario.api.animation.Animation;
 import oxy.bascenario.api.animation.AnimationTimeline;
 import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.api.managers.AnimationManagerApi;
 import oxy.bascenario.utils.Pair;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AnimationManager extends HashMap<String, Animation> {
+public class AnimationManager extends HashMap<String, Animation> implements AnimationManagerApi {
     private static final File SAVE_DIR = new File(Base.SAVE_DIR, "animations");
 
     public AnimationManager() {
@@ -40,6 +41,11 @@ public class AnimationManager extends HashMap<String, Animation> {
         }
 
         return new Pair<>(index, animations.toArray(new String[0]));
+    }
+
+    @Override
+    public Animation find(String name) {
+        return get(name);
     }
 
     public void shutdown() {

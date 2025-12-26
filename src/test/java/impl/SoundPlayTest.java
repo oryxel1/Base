@@ -1,3 +1,5 @@
+package impl;
+
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;

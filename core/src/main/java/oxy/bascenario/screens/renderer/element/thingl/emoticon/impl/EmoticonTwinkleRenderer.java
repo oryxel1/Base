@@ -1,10 +1,10 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
@@ -33,7 +33,7 @@ public class EmoticonTwinkleRenderer extends EmoticonRenderer {
 
     @Override
     public void render() {
-        final Texture2D twinkle = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Twinkle.png");
+        final Texture2D twinkle = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Twinkle.png");
 
         if (!this.twinkle1.isRunning()) {
             this.twinkle1.setTarget(this.twinkle1.getTarget() == 1 ? 0.9F : 1);

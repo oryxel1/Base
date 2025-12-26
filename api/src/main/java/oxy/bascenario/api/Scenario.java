@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 public class Scenario {
-    private final String name, location;
+    private final String name;
     private final SaveType saveType;
 
     private final List<Timestamp> timestamps = new ArrayList<>();
@@ -29,7 +29,7 @@ public class Scenario {
     }
 
     public static final class Builder {
-        private String name, location;
+        private String name;
         private SaveType saveType = SaveType.JSON;
         private final List<Timestamp> timestamps = new ArrayList<>();
 
@@ -39,14 +39,6 @@ public class Scenario {
 
         public void name(String name) {
             this.name = name;
-        }
-
-        public String location() {
-            return location;
-        }
-
-        public void location(String location) {
-            this.location = location;
         }
 
         public SaveType saveType() {
@@ -72,7 +64,7 @@ public class Scenario {
         }
 
         public Scenario build() {
-            final Scenario scenario = new Scenario(this.name, this.location, this.saveType);
+            final Scenario scenario = new Scenario(this.name, this.saveType);
             scenario.timestamps.addAll(this.timestamps);
             return scenario;
         }

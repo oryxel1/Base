@@ -20,7 +20,7 @@ public class FunctionPlayAnimation extends FunctionEvent<PlayAnimationEvent> {
         }
 
         try {
-            renderer.getAnimations().put(event.getName(), new AnimationTicker(screen, renderer, Base.instance().getAnimationManager().get(event.getName()), event.isLoop()));
+            renderer.getAnimations().put(event.getName(), new AnimationTicker(screen, renderer, Base.instance().animationManager().get(event.getName()), event.isLoop()));
         } catch (Exception ignored) {
         }
     }

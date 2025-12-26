@@ -1,5 +1,6 @@
+package impl;
+
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;

@@ -33,7 +33,7 @@ public class ImGuiUtils {
         }
 
         final FileInfo fileInfo = new FileInfo(new File(pick).getName(), false, false);
-        final String path = Base.instance().getScenarioManager().path(scenario, fileInfo);
+        final String path = Base.instance().scenarioManager().path(scenario.name(), fileInfo);
 
         try {
             Files.write(Path.of(path), Files.readAllBytes(Path.of(pick)));

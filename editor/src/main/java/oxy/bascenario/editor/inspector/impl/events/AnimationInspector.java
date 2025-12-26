@@ -12,7 +12,7 @@ public class AnimationInspector {
         PlayAnimationEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
 
-        final Pair<Integer, String[]> alls = Base.instance().getAnimationManager().getAllAnimations(event.getName());
+        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.getName());
         builder.name(alls.right()[ImGuiUtils.combo("Animation Name", alls.left(), alls.right())]);
 
         builder.loop(ImGuiUtils.checkbox("Loop", event.isLoop()));
@@ -23,7 +23,7 @@ public class AnimationInspector {
         StopAnimationEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
 
-        final Pair<Integer, String[]> alls = Base.instance().getAnimationManager().getAllAnimations(event.getName());
+        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.getName());
         builder.name(alls.right()[ImGuiUtils.combo("Animation Name", alls.left(), alls.right())]);
         return builder.build();
     }

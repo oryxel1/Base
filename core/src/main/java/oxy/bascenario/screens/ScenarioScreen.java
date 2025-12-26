@@ -2,30 +2,22 @@ package oxy.bascenario.screens;
 
 import lombok.Getter;
 import lombok.Setter;
-import oxy.bascenario.utils.DynamicAnimation;
-import net.lenni0451.commons.animation.easing.EasingFunction;
-import net.lenni0451.commons.color.Color;
-import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.utils.TimeUtils;
-import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class ScenarioScreen extends ExtendableScreen {
     @Getter
@@ -71,7 +63,7 @@ public class ScenarioScreen extends ExtendableScreen {
 //                color = color.withAlphaF(this.backgroundFade.getValue());
 //            }
 //
-//            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
+//            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
 //        }
 //    }
 

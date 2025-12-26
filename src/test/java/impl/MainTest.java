@@ -1,4 +1,5 @@
-import oxy.bascenario.Base;
+package impl;
+
 import oxy.bascenario.api.BaseApi;
 
 public class MainTest {

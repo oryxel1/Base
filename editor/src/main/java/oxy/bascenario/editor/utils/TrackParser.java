@@ -98,7 +98,7 @@ public class TrackParser {
                         final Sound sound = event.getSound();
                         final Pair<PlaySoundEvent, Long> current = soundMap.get(sound.id());
                         if (current != null) {
-                            long duration = AudioUtils.toDuration(Base.instance().getScenarioManager().file(scenario, sound.file()));
+                            long duration = AudioUtils.toDuration(Base.instance().scenarioManager().file(scenario.getName(), sound.file()));
                             int id = findNonOccupiedSlot(elTime, duration, occupies);
                             if (trackMap.get(id) == null) {
                                 trackMap.put(id, new Track(timeline, id));
@@ -150,7 +150,7 @@ public class TrackParser {
                 for (Map.Entry<Integer, Pair<PlaySoundEvent, Long>> entry : soundMap.entrySet()) {
                     Pair<PlaySoundEvent, Long> p = entry.getValue();
                     final Sound sound = p.left().getSound();
-                    long duration = AudioUtils.toDuration(Base.instance().getScenarioManager().file(scenario, sound.file()));
+                    long duration = AudioUtils.toDuration(Base.instance().scenarioManager().file(scenario.getName(), sound.file()));
 
                     occupy(occupies, entry.getKey(), p.right(), duration);
                     if (trackMap.get(entry.getKey()) == null) {

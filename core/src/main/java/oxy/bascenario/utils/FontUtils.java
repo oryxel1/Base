@@ -1,13 +1,9 @@
 package oxy.bascenario.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 
 import imgui.*;
-import net.lenni0451.commons.io.IOUtils;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
 import oxy.bascenario.Base;
@@ -49,19 +45,8 @@ public class FontUtils {
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font, int scale) {
-        try {
-            final byte[] fontData;
-            if (font.internal()) {
-                fontData = FontUtils.class.getResourceAsStream("/" + font.path()).readAllBytes();
-            } else {
-                File other = new File(Base.instance().getScenarioManager().path(scenario, font));
-                fontData = Files.readAllBytes(other.toPath());
-            }
-
-            return new FreeTypeFont(fontData, scale);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        final byte[] fontData = (byte[]) Base.instance().assetsManager().assets(scenario.getName(), font).asset();
+        return new FreeTypeFont(fontData, scale);
     }
 
     private static void loadFont(String name, String font) {

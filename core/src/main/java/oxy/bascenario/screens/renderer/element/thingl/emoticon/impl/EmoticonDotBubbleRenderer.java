@@ -1,11 +1,11 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
@@ -48,8 +48,8 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
             }
         }
 
-        final Texture2D bubble = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Balloon_" + (hesitated ? "N.png" : "T.png"));
-        final Texture2D dot = TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Idea.png");
+        final Texture2D bubble = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Balloon_" + (hesitated ? "N.png" : "T.png"));
+        final Texture2D dot = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Idea.png");
 
         GLOBAL_RENDER_STACK.popMatrix();
         GLOBAL_RENDER_STACK.scale(this.scale.getValue());

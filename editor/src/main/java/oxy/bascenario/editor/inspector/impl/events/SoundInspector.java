@@ -22,7 +22,7 @@ public class SoundInspector {
         builder.out(ImGuiUtils.sliderInt("Fade Out (ms)", sound.out(), 0, (int) Math.min(10000, sound.max())));
         builder.start(ImGuiUtils.sliderFloat("Start Position (seconds)", sound.start(), 0, (float) sound.max() / 1000L));
         if ((old == null || !old.equals(newSound.file())) && newSound.file() != null) {
-            builder.max(AudioUtils.toDuration(Base.instance().getScenarioManager().file(scenario.build(), newSound.file())));
+            builder.max(AudioUtils.toDuration(Base.instance().scenarioManager().file(scenario.name(), newSound.file())));
         }
         return builder.build();
     }

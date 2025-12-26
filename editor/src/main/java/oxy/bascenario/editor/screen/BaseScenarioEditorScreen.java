@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.element.AssetsUI;
 import oxy.bascenario.editor.element.ElementAdder;
 import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
@@ -53,6 +54,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         elementAdder.render();
         eventAdder.render();
         inspector.render();
+        AssetsUI.render();
 
         // There are better ways to do this yes, but I'm too fucking lazy.
         if (System.currentTimeMillis() - lastUpdate >= 1000L) {

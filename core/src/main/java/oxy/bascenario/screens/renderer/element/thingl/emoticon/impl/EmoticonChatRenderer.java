@@ -1,10 +1,10 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRenderer;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
@@ -45,7 +45,7 @@ public class EmoticonChatRenderer extends EmoticonRenderer {
         GLOBAL_RENDER_STACK.scale(this.scale.getValue());
         GLOBAL_RENDER_STACK.rotateZ((float) Math.toRadians(this.rotation.getValue()));
         GLOBAL_RENDER_STACK.translate(-102.9f / 2F, -102.9f / 2F, 0);
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, TextureManager.getInstance().getTexture("assets/base/uis/emoticons/Emoticon_Chat.png"), 0, 0, 102.9f, 143.5f, color);
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Chat.png"), 0, 0, 102.9f, 143.5f, color);
         GLOBAL_RENDER_STACK.popMatrix();
     }
 

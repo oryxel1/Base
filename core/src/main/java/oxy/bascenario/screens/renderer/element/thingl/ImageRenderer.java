@@ -3,11 +3,11 @@ package oxy.bascenario.screens.renderer.element.thingl;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.managers.TextureManager;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -16,7 +16,7 @@ public class ImageRenderer extends ThinGLElementRenderer<RendererImage<FileInfo>
     private final Texture2D texture2D;
     public ImageRenderer(RendererImage<FileInfo> element, RenderLayer layer, Scenario scenario) {
         super(element, layer);
-        this.texture2D = TextureManager.getInstance().getTexture(scenario, element.image());
+        this.texture2D = Base.instance().assetsManager().texture(scenario.getName(), element.image());
     }
 
     @Override

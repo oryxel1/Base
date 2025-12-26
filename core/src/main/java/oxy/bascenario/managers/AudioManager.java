@@ -11,7 +11,10 @@ import net.raphimc.audiomixer.pcmsource.impl.StereoStaticPcmSource;
 import net.raphimc.audiomixer.sound.impl.pcm.StereoSound;
 import net.raphimc.audiomixer.soundmodifier.impl.VolumeModifier;
 import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.api.managers.other.Asset;
+import oxy.bascenario.managers.other.AudioAsset;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import oxy.bascenario.api.Scenario;
@@ -53,30 +56,16 @@ public class AudioManager {
         play(null, sound, 0, fadeIn);
     }
 
-    public void play(Scenario scenario, Sound sound, long fadeIn) {
+    public void play(String scenario, Sound sound, long fadeIn) {
         play(scenario, sound, 0, fadeIn);
     }
 
     @SneakyThrows
-    public void play(Scenario scenario, Sound sound, float start, long fadeIn) {
-        String path = sound.file().path().toLowerCase(Locale.ROOT);
-
-        final InputStream stream = FileUtils.toStream(scenario, sound.file());
-        final AudioInputStream audioInputStream;
-        if (path.endsWith(".mp3")) {
-            audioInputStream = Mp3InputStream.createAudioInputStream(stream);
-        } else if (path.endsWith(".ogg")) {
-            audioInputStream = OggVorbisInputStream.createAudioInputStream(stream);
-        } else if (path.endsWith(".wav")) {
-            audioInputStream = AudioSystem.getAudioInputStream(stream);
-        } else {
-            return;
-        }
-
+    public void play(String scenario, Sound sound, float start, long fadeIn) {
+        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
         boolean fade = fadeIn > 0;
 
-        float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(mixer.getAudioFormat().getSampleRate(), 2));
-        final StereoStaticPcmSource source = new StereoStaticPcmSource(samples);
+        final StereoStaticPcmSource source = new StereoStaticPcmSource(asset.asset().samples());
         StereoSound stereoSound = new StereoSound(source);
         VolumeModifier modifier = new VolumeModifier(fade ? 0 : sound.maxVolume());
         stereoSound.getSoundModifiers().append(modifier);
