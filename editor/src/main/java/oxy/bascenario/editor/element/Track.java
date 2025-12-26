@@ -149,7 +149,8 @@ public class Track {
 
                 long time = (long) ((this.x - pos.x - size.x / 4) / (size.x - size.x / 4) * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                 Track newTrack = track.timeline.getTrack(trackId);
-                if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.remove(startTime)) && time != startTime) {
+                if (newTrack == null || !newTrack.isOccupied(time, pair.right(), track.occupies.get(startTime)) && time != startTime) {
+                    track.occupies.remove(startTime);
                     track.remove(startTime);
 
                     if (newTrack == null) {

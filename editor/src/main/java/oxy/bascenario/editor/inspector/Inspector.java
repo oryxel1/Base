@@ -22,7 +22,9 @@ import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
+import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.editor.inspector.impl.events.*;
 import oxy.bascenario.editor.element.Timeline;
@@ -39,6 +41,7 @@ public class Inspector {
     private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
+    @SuppressWarnings("ALL")
     public void render() {
         ImGui.begin("Inspector");
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
@@ -58,11 +61,19 @@ public class Inspector {
 
         final Object old = pair.left().object();
         pair.left().object(switch (pair.left().object()) {
-            case Preview preview -> PreviewInspector.render(screen.getScenario(), preview);
+            case Preview preview -> PreviewInspector.render(preview);
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(screen.getScenario(), text);
-//            case RendererImage image -> ImageInspector.render(screen.getScenario(), image);
+//            case RendererImage<?> image -> {
+//                if (image.image() instanceof FileInfo) {
+//                    yield ImageInspector.render(screen.getScenario(), (RendererImage<FileInfo>) image);
+//                } else if (image.image() instanceof AnimatedImage) {
+//                    yield ImageInspector.renderAnimated(screen.getScenario(), (RendererImage<AnimatedImage>) image);
+//                } else {
+//                    yield image;
+//                }
+//            }
 
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);

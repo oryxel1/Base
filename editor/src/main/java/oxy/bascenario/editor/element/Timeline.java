@@ -85,10 +85,10 @@ public class Timeline {
         scroll = Math.max(0, scroll);
 
         ImGui.begin("Timeline");
-        if (ImGui.getIO().getMouseDown(0)) {
+        if (ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused()) {
             onMouseDown(ImGui.getIO().getMousePos());
         }
-        if (playing || ImGui.getIO().getMouseDown(0)) {
+        if (playing || ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused()) {
             if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
                 long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
                 float ratio = (float) distance / DEFAULT_MAX_TIME;
@@ -103,7 +103,7 @@ public class Timeline {
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
         final ImVec2 mouse = ImGui.getMousePos();
-        if (mouse.x >= pos.x && mouse.x <= pos.x + size.x && mouse.y >= pos.y && mouse.y <= pos.y + size.y) {
+        if (mouse.x >= pos.x && mouse.x <= pos.x + size.x && mouse.y >= pos.y && mouse.y <= pos.y + size.y && ImGui.isWindowFocused()) {
             final float scroll = ImGui.getIO().getMouseWheel();
             if (mouse.x < pos.x + size.x / 4) {
                 this.verticalScroll = Math.max(0, this.verticalScroll - (int)scroll);

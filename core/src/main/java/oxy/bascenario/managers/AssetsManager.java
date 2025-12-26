@@ -18,6 +18,7 @@ import oxy.bascenario.utils.FileUtils;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +32,10 @@ public class AssetsManager implements AssetsManagerApi {
     private static int INVALID_TEXTURE_KEY = Integer.MIN_VALUE;
 
     private final Map<Integer, Asset<?>> assets;
+    public Collection<Asset<?>> assets() {
+        return this.assets.values();
+    }
+    
     private final Set<Integer> currentlyLoadingAssets;
 
     public AssetsManager() {
@@ -129,13 +134,13 @@ public class AssetsManager implements AssetsManagerApi {
             } else if (path.endsWith(".ogg")) {
                 audioInputStream = OggVorbisInputStream.createAudioInputStream(stream);
             } else if (path.endsWith(".wav")) {
-                audioInputStream = AudioSystem.getAudioInputStream(stream);
+                audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(stream));
             } else {
                 return;
             }
 
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
-            assets.put(info.hashCode(), new Asset<>(info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
+            this.assets.put(info.hashCode(), new Asset<>(info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
             this.currentlyLoadingAssets.remove(info.hashCode());
         } catch (Exception ignored) {
         }

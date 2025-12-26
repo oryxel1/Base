@@ -21,11 +21,13 @@ public class NFDUtils {
             int result = NativeFileDialog.NFD_OpenDialog(outPath, filters, (ByteBuffer) null);
             if (result == NFD_OKAY) {
                 String filePath = outPath.getStringUTF8(0).toLowerCase(Locale.ROOT);
-                boolean valid = false;
-                for (String ext : extensions.replace(" ", "").split(",")) {
-                    if (filePath.endsWith("." + ext)) {
-                        valid = true;
-                        break;
+                boolean valid = extensions.equals("*");
+                if (!valid) {
+                    for (String ext : extensions.replace(" ", "").split(",")) {
+                        if (filePath.endsWith("." + ext)) {
+                            valid = true;
+                            break;
+                        }
                     }
                 }
 

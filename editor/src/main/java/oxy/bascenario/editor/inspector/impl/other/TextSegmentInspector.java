@@ -7,6 +7,8 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.TextStyle;
+import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.editor.element.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
@@ -31,14 +33,28 @@ public class TextSegmentInspector {
         return list;
     }
 
+    private static FileInfo last;
     public static TextSegment render(Scenario.Builder scenario, TextSegment segment) {
         TextSegment.Builder builder = segment.toBuilder();
         builder.text(ImGuiUtils.inputMultiLineText("Text", segment.text()));
 
         if (ImGuiUtils.checkbox("Custom Font", segment.font().isPresent())) {
-            ImGuiUtils.pick(builder::font, scenario, "Font", segment.font().isEmpty(), "ttf");
+            if (segment.font().isEmpty()) {
+                // We kinda need to set this to something first.
+                builder.font(new FileInfo("assets/base/fonts/NotoSans-Regular.ttf", false, true));
+            }
+
+            AssetsUI.pick("Pick Font!", file -> last = file, "ttf");
+            ImGui.sameLine();
+            ImGui.textUnformatted(segment.font().isEmpty() ? "" : segment.font().get().path());
         } else {
+            builder.font(null);
             builder.type(FontType.values()[ImGuiUtils.combo("Font Type", segment.type().ordinal(), FontType.getAlls())]);
+        }
+
+        if (last != null) {
+            builder.font(last);
+            last = null;
         }
 
         ImGui.separatorText("");

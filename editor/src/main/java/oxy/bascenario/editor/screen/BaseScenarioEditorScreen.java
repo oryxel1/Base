@@ -54,7 +54,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         elementAdder.render();
         eventAdder.render();
         inspector.render();
-        AssetsUI.render();
+        AssetsUI.render(timeline, scenario);
 
         // There are better ways to do this yes, but I'm too fucking lazy.
         if (System.currentTimeMillis() - lastUpdate >= 1000L) {

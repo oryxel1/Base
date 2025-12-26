@@ -7,6 +7,7 @@ import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.editor.element.AssetsUI;
 import oxy.bascenario.editor.utils.AudioUtils;
 import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.utils.ImGuiUtils;
@@ -15,7 +16,7 @@ public class SoundInspector {
     public static SoundAsElement render(Scenario.Builder scenario, SoundAsElement sound) {
         SoundAsElement.Builder builder = sound.toBuilder();
         final FileInfo old =  sound.sound().file();
-        Sound newSound = render(scenario, sound.sound());
+        Sound newSound = render(sound.sound());
         builder.sound(newSound);
         ImGui.separatorText("");
         builder.in(ImGuiUtils.sliderInt("Fade In (ms)", sound.in(), 0, (int) Math.min(10000, sound.max())));
@@ -52,12 +53,19 @@ public class SoundInspector {
 //        return builder.build();
 //    }
 
-    public static Sound render(Scenario.Builder scenario, Sound sound) {
+    private static FileInfo last;
+
+    public static Sound render(Sound sound) {
         final Sound.Builder builder = sound.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Sound ID", 0)));
-        ImGuiUtils.pick(builder::file, scenario, "File", false, "mp3,wav,ogg");
+        AssetsUI.pick("Pick Sound!", file -> last = file,  "mp3,wav,ogg");
         builder.maxVolume(Math.abs(ImGuiUtils.sliderFloat("Max Volume", sound.maxVolume(), 0, 1)));
 //        builder.loop(ImGuiUtils.checkbox("Loop", sound.loop()));
+
+        if (last != null) {
+            builder.file(last);
+            last = null;
+        }
         return builder.build();
     }
 }
