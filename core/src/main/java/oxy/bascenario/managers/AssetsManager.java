@@ -79,7 +79,7 @@ public class AssetsManager implements AssetsManagerApi {
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);
-                INVALID_TEXTURE_KEY = invalidTexture.hashCode();
+                INVALID_TEXTURE_KEY = invalidTexture.hashCode(null);
                 load(null, invalidTexture);
             }
 
@@ -89,10 +89,10 @@ public class AssetsManager implements AssetsManagerApi {
 
     @Override
     public <T> Asset<T> assets(String scenario, FileInfo info) {
-        Asset<?> asset = this.assets.get(info.hashCode());
+        Asset<?> asset = this.assets.get(info.hashCode(scenario));
         if (asset == null) {
             load(scenario, info);
-            asset = this.assets.get(info.hashCode());
+            asset = this.assets.get(info.hashCode(scenario));
         }
 
         return (Asset<T>) asset;
@@ -105,27 +105,27 @@ public class AssetsManager implements AssetsManagerApi {
 
     @SneakyThrows
     public void load(String scenario, FileInfo info) {
-        if (this.currentlyLoadingAssets.contains(info.hashCode())) {
+        if (this.currentlyLoadingAssets.contains(info.hashCode(scenario))) {
             return;
         }
 
-        this.currentlyLoadingAssets.add(info.hashCode());
+        this.currentlyLoadingAssets.add(info.hashCode(scenario));
         final InputStream stream = FileUtils.toStream(scenario, info);
         loadAudio(scenario, stream, info);
 
         final String path = info.path().toLowerCase(Locale.ROOT);
         if (path.endsWith(".gif")) {
-            this.assets.put(info.hashCode(), new Asset<>(scenario, info, new AwtGifImage(stream)));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AwtGifImage(stream)));
         } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
-            this.assets.put(info.hashCode(), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
         } else if (path.endsWith(".ttf")) {
-            this.assets.put(info.hashCode(), new Asset<>(scenario, info, stream.readAllBytes()));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
         }
-        this.currentlyLoadingAssets.remove(info.hashCode());
+        this.currentlyLoadingAssets.remove(info.hashCode(scenario));
     }
 
     private void loadAudio(String scenario, InputStream stream, FileInfo info) {
-        this.currentlyLoadingAssets.add(info.hashCode());
+        this.currentlyLoadingAssets.add(info.hashCode(scenario));
         try {
             final AudioInputStream audioInputStream;
             final String path = info.path().toLowerCase(Locale.ROOT);
@@ -140,8 +140,8 @@ public class AssetsManager implements AssetsManagerApi {
             }
 
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
-            this.assets.put(info.hashCode(), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
-            this.currentlyLoadingAssets.remove(info.hashCode());
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
+            this.currentlyLoadingAssets.remove(info.hashCode(scenario));
         } catch (Exception ignored) {
         }
     }

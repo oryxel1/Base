@@ -8,8 +8,7 @@ public record FileInfo(String path, boolean direct, boolean internal) {
         return new FileInfo(file, false, false);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(path, direct, internal);
+    public int hashCode(String scenario) {
+        return Objects.hash(scenario, path, direct, internal);
     }
 }

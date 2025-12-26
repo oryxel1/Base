@@ -101,8 +101,8 @@ public class Inspector {
             pair.left().requireWait(requireWait);
             pair.left().layer(layer);
 
-            long duration = pair.left().object() instanceof SoundAsElement sound ? AudioUtils.toDuration(Base.instance().scenarioManager().file(screen.getScenario().name(), sound.sound().file())) : TimeCompiler.compileTime(pair.left().object());
-            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(Base.instance().scenarioManager().file(screen.getScenario().name(), sound.sound().file())) : TimeCompiler.compileTime(old);
+            long duration = pair.left().object() instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound.sound().file()) : TimeCompiler.compileTime(pair.left().object());
+            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound.sound().file()) : TimeCompiler.compileTime(old);
             if (duration == Long.MAX_VALUE) {
                 duration = 0;
             }
