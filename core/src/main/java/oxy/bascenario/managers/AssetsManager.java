@@ -12,6 +12,7 @@ import net.raphimc.thingl.image.animated.impl.AwtGifImage;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.managers.AssetsManagerApi;
+import oxy.bascenario.api.render.elements.Dummy;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
@@ -121,6 +122,10 @@ public class AssetsManager implements AssetsManagerApi {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
         } else if (path.endsWith(".ttf")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
+        } else if (path.endsWith(".ttf")) {
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
+        } else {
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
         }
         this.currentlyLoadingAssets.remove(info.hashCode(scenario));
     }

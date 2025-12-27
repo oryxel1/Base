@@ -11,6 +11,19 @@ import java.util.Locale;
 import static org.lwjgl.util.nfd.NativeFileDialog.NFD_OKAY;
 
 public class NFDUtils {
+    public static String pickFolder() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            PointerBuffer outPath = stack.mallocPointer(1);
+
+            int result = NativeFileDialog.NFD_PickFolder(outPath, stack.UTF8(System.getProperty("user.home")));
+            if (result == NFD_OKAY) {
+                return outPath.getStringUTF8(0).toLowerCase(Locale.ROOT);
+            }
+        }
+
+        return "";
+    }
+
     public static String pickFile(String extensions) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             PointerBuffer outPath = stack.mallocPointer(1);

@@ -18,6 +18,7 @@ import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
+import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.image.Image;
@@ -68,6 +69,7 @@ public class Inspector {
             case Image image -> ImageInspector.render(image);
             case Circle circle -> ShapeInspector.render(circle);
             case Rectangle rectangle -> ShapeInspector.render(rectangle);
+            case Sprite sprite -> SpriteInspector.render(sprite);
 
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);

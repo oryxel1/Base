@@ -14,14 +14,46 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 // Just so the code can look cleaner!
 public class ImGuiUtils {
     public static int COUNTER = 0;
 
-    public static void pick(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name, boolean skip, String filter) {
-        if (!ImGui.button(name + "##" + COUNTER++) && !skip) {
+    public static void pickFolder(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name) {
+        if (!ImGui.button(name + "##" + COUNTER++)) {
+            return;
+        }
+
+        final String pick = NFDUtils.pickFolder();
+        if (pick.isEmpty()) {
+            return;
+        }
+
+        File folder = new File(pick);
+        try (final Stream<Path> stream = Files.walk(folder.toPath())) {
+            List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
+
+            for (final File file : files) {
+                String strip = file.getAbsolutePath().replace(folder.getAbsolutePath() + "\\", "");
+                FileInfo info = new FileInfo(folder.getName() + "\\" + strip, false, false);
+
+                File save = Base.instance().scenarioManager().file(scenario.name(), info);
+                if (save.isDirectory() && !save.delete()) {
+                    continue;
+                }
+
+                Files.write(save.toPath(), Files.readAllBytes(file.toPath()));
+                consumer.accept(info);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void pick(Consumer<FileInfo> consumer, Scenario.Builder scenario, final String name, String filter) {
+        if (!ImGui.button(name + "##" + COUNTER++)) {
             return;
         }
 
@@ -31,10 +63,14 @@ public class ImGuiUtils {
         }
 
         final FileInfo fileInfo = new FileInfo(new File(pick).getName(), false, false);
-        final String path = Base.instance().scenarioManager().path(scenario.name(), fileInfo);
+        final File file = Base.instance().scenarioManager().file(scenario.name(), fileInfo);
 
         try {
-            Files.write(Path.of(path), Files.readAllBytes(Path.of(pick)));
+            if (file.isDirectory() && !file.delete()) {
+                return;
+            }
+
+            Files.write(file.toPath(), Files.readAllBytes(Path.of(pick)));
         } catch (IOException e) {
             return;
         }

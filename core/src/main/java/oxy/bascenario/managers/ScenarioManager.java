@@ -30,7 +30,7 @@ public class ScenarioManager implements ScenarioManagerApi {
 
     @SneakyThrows
     public InputStream inputStream(String location, FileInfo file) {
-        if (location == null) {
+        if (location == null || file == null) {
             return null;
         }
 
@@ -40,9 +40,7 @@ public class ScenarioManager implements ScenarioManagerApi {
             return ScenarioManager.class.getResourceAsStream("/" + file.path());
         }
 
-        File file1 = new File(new File(SAVE_DIR, location), "files");
-        file1.mkdirs();
-        return new FileInputStream(new File(file1, file.path()));
+        return new FileInputStream(file(location, file));
     }
 
     public File file(String location, FileInfo file) {
@@ -55,18 +53,17 @@ public class ScenarioManager implements ScenarioManagerApi {
         }
 
         File file1 = new File(new File(SAVE_DIR, location), "files");
-        file1.mkdirs();
-        return new File(file1, file.path());
+        File result = new File(file1, file.path());
+        result.mkdirs();
+        return result;
     }
 
     public String path(String location, FileInfo file) {
-        if (file.direct() || file.internal() || location == null) {
+        if (file == null || file.direct() || file.internal() || location == null) {
             return file.path();
         }
 
-        File file1 = new File(new File(SAVE_DIR, location), "files");
-        file1.mkdirs();
-        return new File(file1, file.path()).getAbsolutePath();
+        return file(location, file).getAbsolutePath();
     }
 
     public void shutdown() {
