@@ -3,10 +3,8 @@ package oxy.bascenario.screens.renderer.element.thingl;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
-import net.raphimc.thingl.image.animated.impl.AwtGifImage;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
@@ -29,6 +27,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> 
         }
 
         this.startTime = TimeUtils.currentTimeMillis() - element.start();
+        color.set(element.color(), 0);
     }
 
     @Override
@@ -42,10 +41,14 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> 
             time = Math.min(this.texture.getDuration(), time);
         }
 
+        ThinGL.globalUniforms().setColorModifier(color.color());
         ThinGL.renderer2D().textureArrayLayer(GLOBAL_RENDER_STACK, texture, this.texture.getFrameIndex(time), 0, 0, element.width(), element.height()/*, element.color()*/);
+        ThinGL.globalUniforms().setColorModifier(Color.WHITE);
 
-        if (color.color().toRGBA() != Color.WHITE.toRGBA()) {
+        if (overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+            ThinGL.globalUniforms().setColorModifier(overlayColor.color());
             ThinGL.renderer2D().textureArrayLayer(GLOBAL_RENDER_STACK, texture, this.texture.getFrameIndex(time), 0, 0, element.width(), element.height()/*, element.color()*/);
+            ThinGL.globalUniforms().setColorModifier(Color.WHITE);
         }
     }
 }

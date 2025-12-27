@@ -34,13 +34,13 @@ public class TextRenderer extends ThinGLElementRenderer<Text> {
     protected void renderThinGL() {
         ThinGL.rendererText().textLine(ThinGLUtils.GLOBAL_RENDER_STACK, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
 
-        if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
+        if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
             ThinGL.programs().getColorTweak().bindInput();
 
             ThinGL.rendererText().textLine(ThinGLUtils.GLOBAL_RENDER_STACK, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
 
             ThinGL.programs().getColorTweak().unbindInput();
-            ThinGL.programs().getColorTweak().configureParameters(this.color.color());
+            ThinGL.programs().getColorTweak().configureParameters(this.overlayColor.color());
             ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
             ThinGL.programs().getColorTweak().clearInput();
         }

@@ -1,6 +1,6 @@
 package oxy.bascenario.editor.utils;
 
-import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;

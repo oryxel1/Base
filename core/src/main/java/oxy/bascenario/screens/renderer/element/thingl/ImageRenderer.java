@@ -16,14 +16,15 @@ public class ImageRenderer extends ThinGLElementRenderer<Image> {
     public ImageRenderer(Image element, RenderLayer layer, Scenario scenario) {
         super(element, layer);
         this.texture2D = Base.instance().assetsManager().texture(scenario.getName(), element.file());
+        color.set(element.color(), 0);
     }
 
     @Override
     protected void renderThinGL() {
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), element.color());
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), color.color());
 
-        if (color.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), color.color());
+        if (overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), overlayColor.color());
         }
     }
 }

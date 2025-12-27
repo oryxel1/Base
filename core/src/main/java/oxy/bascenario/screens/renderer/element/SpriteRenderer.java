@@ -1,11 +1,9 @@
 package oxy.bascenario.screens.renderer.element;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.spine.*;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -86,7 +84,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             this.renderer.draw(this.batch, this.skeleton);
             this.batch.end();
 
-            if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
+            if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
                 final int width = ThinGL.windowInterface().getFramebufferWidth();
                 final int height = ThinGL.windowInterface().getFramebufferHeight();
                 ThinGL.programs().getColorTweak().bindInput();
@@ -96,7 +94,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
                 this.batch.end();
 
                 ThinGL.programs().getColorTweak().unbindInput();
-                ThinGL.programs().getColorTweak().configureParameters(this.color.color());
+                ThinGL.programs().getColorTweak().configureParameters(this.overlayColor.color());
                 ThinGL.programs().getColorTweak().render(-width, -height, width, height);
                 ThinGL.programs().getColorTweak().clearInput();
             }

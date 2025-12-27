@@ -1,4 +1,4 @@
-package oxy.bascenario.api.event;
+package oxy.bascenario.api.event.color;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

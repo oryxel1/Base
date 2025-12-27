@@ -1,6 +1,6 @@
 package oxy.bascenario.editor.inspector.impl.events;
 
-import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.utils.ImGuiUtils;
 

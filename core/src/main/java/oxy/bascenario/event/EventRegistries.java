@@ -3,9 +3,10 @@ package oxy.bascenario.event;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
-import oxy.bascenario.api.event.ColorOverlayEvent;
+import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
+import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
@@ -22,11 +23,12 @@ import oxy.bascenario.event.impl.*;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
 import oxy.bascenario.event.impl.animation.FunctionSpriteAnimation;
 import oxy.bascenario.event.impl.animation.FunctionStopAnimation;
+import oxy.bascenario.event.impl.color.FunctionSetColor;
 import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionStartDialogue;
 import oxy.bascenario.event.impl.element.*;
-import oxy.bascenario.event.impl.FunctionColorOverlay;
+import oxy.bascenario.event.impl.color.FunctionColorOverlay;
 import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
 import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
@@ -44,6 +46,8 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(SetBackgroundEvent.class, FunctionSetBackground.class);
 
         EVENT_TO_FUNCTION.put(ColorOverlayEvent.class, FunctionColorOverlay.class);
+        EVENT_TO_FUNCTION.put(SetColorEvent.class, FunctionSetColor.class);
+
         EVENT_TO_FUNCTION.put(SoundEvent.class, FunctionSoundEvent.class);
         EVENT_TO_FUNCTION.put(PlaySoundEvent.class, FunctionPlaySoundEvent.class);
         EVENT_TO_FUNCTION.put(StopSoundEvent.class, FunctionStopSoundEvent.class);
