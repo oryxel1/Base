@@ -3,7 +3,6 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.Base;
 import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -14,18 +13,15 @@ import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
-import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
-import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
-import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.text.Text;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.TimeCompiler;
+import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.inspector.impl.events.*;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
@@ -65,15 +61,8 @@ public class Inspector {
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(screen.getScenario(), text);
-//            case RendererImage<?> image -> {
-//                if (image.image() instanceof FileInfo) {
-//                    yield ImageInspector.render(screen.getScenario(), (RendererImage<FileInfo>) image);
-//                } else if (image.image() instanceof AnimatedImage) {
-//                    yield ImageInspector.renderAnimated(screen.getScenario(), (RendererImage<AnimatedImage>) image);
-//                } else {
-//                    yield image;
-//                }
-//            }
+            case AnimatedImage image -> ImageInspector.render(image);
+            case Image image -> ImageInspector.render(image);
 
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);

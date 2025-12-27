@@ -5,12 +5,6 @@ import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.other.AudioAsset;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import java.io.File;
-import java.io.InputStream;
-import java.util.Locale;
-
 public class AudioUtils {
     public static long toDuration(String scenario, FileInfo info) {
         try {

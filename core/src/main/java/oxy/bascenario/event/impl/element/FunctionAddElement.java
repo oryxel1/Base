@@ -5,6 +5,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
@@ -37,18 +38,8 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     public static ElementRenderer<?> getRenderer(Scenario scenario, Object element, RenderLayer layer) {
         return switch (element) {
             case Sprite sprite -> new SpriteRenderer(sprite, layer, scenario);
-            case RendererImage image -> {
-                if (image.image() instanceof AnimatedImage) {
-                    yield new AnimatedImageRenderer(scenario, image, layer);
-                } else {
-                    yield new ImageRenderer(image, layer, scenario);
-                }
-            }
-            case Dummy dummy -> new ElementRenderer<>(dummy, layer) {
-                @Override
-                protected void render() {
-                }
-            };
+            case AnimatedImage image -> new AnimatedImageRenderer(scenario, image, layer);
+            case Image image -> new ImageRenderer(image, layer, scenario);
             case Text text -> new TextRenderer(text, layer, scenario);
             case Rectangle rectangle -> new RectangleRenderer(rectangle, layer);
             case Circle circle -> new CircleRenderer(circle, layer);

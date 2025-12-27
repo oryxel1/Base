@@ -1,6 +1,5 @@
-package oxy.bascenario.editor;
+package oxy.bascenario.editor.utils;
 
-import oxy.bascenario.Base;
 import oxy.bascenario.api.event.ColorOverlayEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
@@ -14,8 +13,6 @@ import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.elements.*;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.editor.utils.AudioUtils;
-import oxy.bascenario.editor.utils.SoundAsElement;
 
 public class TimeCompiler {
     public static Object addTime(final Object object, int duration) {

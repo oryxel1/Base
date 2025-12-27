@@ -7,7 +7,6 @@ import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.utils.FileInfo;
@@ -18,8 +17,8 @@ public class AnimatedImageTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
 
-        final RendererImage image = new RendererImage(new AnimatedImage(new FileInfo("hm-hm-hm.gif", false, true), 0, false), Color.WHITE, 618, 640);
-        final RendererImage loading = new RendererImage(new AnimatedImage(new FileInfo("loading.gif", false, true), 0, true), Color.WHITE, 100, 100);
+        final AnimatedImage image = new AnimatedImage(new FileInfo("hm-hm-hm.gif", false, true), 0, false, Color.WHITE, 618, 640);
+        final AnimatedImage loading = new AnimatedImage(new FileInfo("loading.gif", false, true), 0, true, Color.WHITE, 100, 100);
 
         scenario.add(0,
                 new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE),

@@ -14,7 +14,7 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.editor.TimeCompiler;
+import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.utils.Pair;
 
 import java.util.HashMap;

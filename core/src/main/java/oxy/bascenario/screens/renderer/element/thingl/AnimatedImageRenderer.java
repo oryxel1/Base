@@ -8,34 +8,27 @@ import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.RendererImage;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
-import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.TimeUtils;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Objects;
-
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
-public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage<AnimatedImage>> {
+public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> {
     private SequencedTexture texture;
     private long startTime;
 
-    public AnimatedImageRenderer(Scenario scenario, RendererImage<AnimatedImage> element, RenderLayer layer) {
+    public AnimatedImageRenderer(Scenario scenario, AnimatedImage element, RenderLayer layer) {
         super(element, layer);
 
         try {
-            Asset<AwtGifImage> asset = Base.instance().assetsManager().assets(scenario.getName(), element.image().file());
-            this.texture = new SequencedTexture(asset.asset());
+            this.texture = (SequencedTexture) Base.instance().assetsManager().assets(scenario.getName(), element.file()).asset();
         } catch (Exception ignored) {
             this.texture = null;
             return;
         }
 
-        this.startTime = TimeUtils.currentTimeMillis() - element.image().start();
+        this.startTime = TimeUtils.currentTimeMillis() - element.start();
     }
 
     @Override
@@ -45,7 +38,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<RendererImage<A
         }
 
         int time = (int) (TimeUtils.currentTimeMillis() - this.startTime);
-        if (!this.element.image().loop()) {
+        if (!this.element.loop()) {
             time = Math.min(this.texture.getDuration(), time);
         }
 

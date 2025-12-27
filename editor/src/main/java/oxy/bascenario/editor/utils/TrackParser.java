@@ -1,6 +1,5 @@
 package oxy.bascenario.editor.utils;
 
-import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.event.api.Event;
@@ -10,7 +9,6 @@ import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.editor.TimeCompiler;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.utils.Pair;

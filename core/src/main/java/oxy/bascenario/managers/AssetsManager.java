@@ -7,6 +7,7 @@ import net.raphimc.audiomixer.io.ogg.OggVorbisInputStream;
 import net.raphimc.audiomixer.util.MathUtil;
 import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
+import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
 import net.raphimc.thingl.image.animated.impl.AwtGifImage;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
@@ -75,7 +76,7 @@ public class AssetsManager implements AssetsManagerApi {
 
     public Texture2D texture(String scenario, FileInfo info) {
         try {
-            return (Texture2D) assets(info).asset();
+            return (Texture2D) assets(scenario, info).asset();
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);
@@ -115,7 +116,7 @@ public class AssetsManager implements AssetsManagerApi {
 
         final String path = info.path().toLowerCase(Locale.ROOT);
         if (path.endsWith(".gif")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AwtGifImage(stream)));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new SequencedTexture(new AwtGifImage(stream))));
         } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
         } else if (path.endsWith(".ttf")) {
