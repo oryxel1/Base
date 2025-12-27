@@ -106,7 +106,7 @@ public class AssetsUI {
 
             folders.computeIfAbsent(split[0], p -> new ArrayList<>()).add(asset);
         }
-//
+
         if (ImGui.beginTable("2ways", 2, ImGuiTableFlags.BordersV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.Resizable | ImGuiTableFlags.RowBg | ImGuiTableFlags.NoBordersInBody)) {
             ImGui.tableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
             ImGui.tableSetupColumn("Type");
