@@ -12,6 +12,7 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
@@ -73,6 +74,7 @@ public class EventAdder {
         add("Apply Effect", new ElementEffectEvent(0, Effect.HOLOGRAM, Axis.Y));
         add("Remove Effect", new ElementEffectEvent(0, Effect.HOLOGRAM, ElementEffectEvent.Type.REMOVE));
         add("Color Overlay", new ColorOverlayEvent(0, 500, Color.WHITE));
+        add("Set Color", new SetColorEvent(0, 500, Color.WHITE));
 
         ImGui.separatorText("Sounds");
 

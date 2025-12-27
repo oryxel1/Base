@@ -7,6 +7,7 @@ import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
+import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
@@ -68,7 +69,8 @@ public class Inspector {
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case ShowOptionsEvent event -> OptionsInspector.render(event);
 
-            case ColorOverlayEvent event -> ColorOverlayInspector.render(event);
+            case ColorOverlayEvent event -> ColorInspector.render(event);
+            case SetColorEvent event -> ColorInspector.render(event);
 
             case PlayAnimationEvent event -> AnimationInspector.render(event);
             case StopAnimationEvent event -> AnimationInspector.render(event);
