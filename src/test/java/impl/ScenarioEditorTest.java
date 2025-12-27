@@ -21,7 +21,7 @@ public class ScenarioEditorTest {
 
 //        scenario.add(0, new AddElementEvent(0, new Preview("Scenario Preview Test", "Episode: 1", null), RenderLayer.TOP));
         scenario.add(0, new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE));
-        scenario.add(0, new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+        scenario.add(1, new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 //
 //        final List<TextSegment> segments = new ArrayList<>();
 //        segments.add(TextSegment.builder().text("The ").build());

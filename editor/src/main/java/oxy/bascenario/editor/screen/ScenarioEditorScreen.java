@@ -30,6 +30,18 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     }
 
     @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        screen.resize(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        screen.dispose();
+    }
+
+    @Override
     public void renderScenario() {
         screen.render(0);
     }

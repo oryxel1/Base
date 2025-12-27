@@ -70,7 +70,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.state.update(Gdx.graphics.getDeltaTime());
         updateSkeleton(this.skeleton);
 
-        this.camera.position.set(0, 0, 0);
+        this.camera.position.set(Gdx.graphics.getWidth() / 2f, 0, 0);
 
         this.camera.up.set(0, 1, 0);
         this.camera.direction.set(0, 0, -1);
@@ -136,10 +136,15 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         float x = this.position.x() + this.offset.x(), y = this.position.y() + this.offset.y();
         
-        float posX = ((x - 960) / 1920) * width, posY = (y / 1080) * -height;
+        float posX = (x / 1920) * width, posY = (y / 1080) * -height;
         if (RENDER_WITHIN_IMGUI) {
             posX += ImGui.getWindowPosX();
-            posY -= ImGui.getWindowPosY() - 23;
+
+            float ratio = (0.00064814813f * height) / (0.00064814813f * window.getFramebufferHeight());
+            posY /= ratio;
+
+            posY += window.getFramebufferHeight() - height;
+            posY -= ImGui.getWindowPosY() + 23;
         }
 
         skeleton.setPosition(posX, posY);
