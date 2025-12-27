@@ -2,6 +2,13 @@ package impl;
 
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.api.event.element.AddElementEvent;
+import oxy.bascenario.api.event.element.values.PositionElementEvent;
+import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.Sprite;
+import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.screen.ScenarioEditorScreen;
 import oxy.bascenario.utils.Launcher;
 
@@ -10,8 +17,11 @@ public class ScenarioEditorTest {
         final Scenario.Builder scenario = new Scenario.Builder();
         scenario.name("EditorTest");
 
+        final Sprite sprite = new Sprite(new FileInfo("CH0326_spr.skel", false, true), new FileInfo("CH0326_spr.atlas", false, true));
+
 //        scenario.add(0, new AddElementEvent(0, new Preview("Scenario Preview Test", "Episode: 1", null), RenderLayer.TOP));
-////        scenario.add(0, new AddElementEvent(1, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
+        scenario.add(0, new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE));
+        scenario.add(0, new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 //
 //        final List<TextSegment> segments = new ArrayList<>();
 //        segments.add(TextSegment.builder().text("The ").build());

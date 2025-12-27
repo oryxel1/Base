@@ -18,6 +18,8 @@ import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screens.ScenarioScreen;
+import oxy.bascenario.screens.renderer.element.SpriteRenderer;
 import oxy.bascenario.utils.*;
 
 @RequiredArgsConstructor
@@ -83,6 +85,7 @@ public final class EngineRenderer extends Game {
     public void setScreen(Screen screen) {
         super.setScreen(screen);
         TimeUtils.fakeTimeMillis = null;
+        SpriteRenderer.RENDER_WITHIN_IMGUI = !(screen instanceof ScenarioScreen);
     }
 
     @Override

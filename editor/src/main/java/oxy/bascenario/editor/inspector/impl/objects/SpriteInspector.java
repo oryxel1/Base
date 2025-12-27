@@ -20,15 +20,15 @@ public class SpriteInspector {
             atlas = null;
         }
 
+        AssetsUI.pick("Pick Skeleton", file -> skeleton = file, "*");
+        AssetsUI.pick("Pick Atlas", file -> atlas = file, "*");
+
         if (sprite.skeleton() != null) {
             ImGui.textUnformatted("Skeleton: " + sprite.skeleton());
         }
         if (sprite.atlas() != null) {
             ImGui.textUnformatted("Atlas: " + sprite.atlas());
         }
-
-        AssetsUI.pick("Pick Skeleton", file -> skeleton = file, "*");
-        AssetsUI.pick("Pick Atlas", file -> atlas = file, "*");
 
         return builder.build();
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.*;
+import imgui.ImGui;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
@@ -128,20 +129,25 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         GLOBAL_RENDER_STACK.popMatrix();
     }
 
+    public static boolean RENDER_WITHIN_IMGUI = false;
     private void updateSkeleton(Skeleton skeleton) {
         final WindowInterface window = ThinGL.windowInterface();
-        int width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
+        float width = RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 23) : window.getFramebufferHeight();
 
         float x = this.position.x() + this.offset.x(), y = this.position.y() + this.offset.y();
         
-        final float posX = ((x - 960) / 1920) * width, posY = (y / 1080) * -height;
+        float posX = ((x - 960) / 1920) * width, posY = (y / 1080) * -height;
+        if (RENDER_WITHIN_IMGUI) {
+            posX += ImGui.getWindowPosX();
+            posY -= ImGui.getWindowPosY() - 23;
+        }
+
         skeleton.setPosition(posX, posY);
 
         this.state.apply(skeleton);
 
         // Shitty way to scale and stuff? Well it has already been a problem since the legacy engine model of BASE so.....
-        float scale = 0.00046666666F * ((width + height) / 2f);
-        skeleton.setScale(scale * this.scale.x(), scale * this.scale.y());
+        skeleton.setScale(0.00036458332f * width * this.scale.x(), 0.00064814813f * height * this.scale.y());
         skeleton.update(Gdx.graphics.getDeltaTime());
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }
