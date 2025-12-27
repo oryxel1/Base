@@ -3,6 +3,7 @@ package oxy.bascenario.editor.element;
 import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
+import imgui.flag.ImGuiHoveredFlags;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Sound;
@@ -35,25 +36,61 @@ public class ElementAdder {
 
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
-        add("Preview", new Preview("Title", "Subtitle", null));
-        add("Emoticon", new Emoticon(1000L, EmoticonType.NOTE, true));
-        add("Sprite", new Sprite(null, null));
-        add("Image", new Image(null, Color.WHITE, 100, 100));
-        add("Gif", new AnimatedImage(null, 0, true, Color.WHITE, 100, 100));
-        add("Text", new Text(new ArrayList<>(List.of(TextSegment.builder().text("Hello World!").build())), 42));
-        add("Circle", new Circle(20, Color.WHITE, false));
-        add("Rectangle", new Rectangle(100, 100, Color.WHITE, false));
+        add("Preview",
+                "Show up the \"preview\" of the scenario like when you first play the story like in the game.\nWith title and (optional) subtitle and optional background.",
+                new Preview("Title", "Subtitle", null));
+
+        add("Emoticon",
+                "Popup an emoji that show emotions like in game, eg: Angry, Thinking, etc.",
+                new Emoticon(1000L, EmoticonType.NOTE, true));
+
+        add("Sprite",
+                "A character sprite (spine), in binary format (.skel), that allows for dynamic animations and other niche stuff.",
+                new Sprite(null, null));
+
+        add("Image",
+                "An image... It's an image.",
+                new Image(null, Color.WHITE, 100, 100));
+
+        add("Gif",
+                "A GIF... It's a GIF.",
+                new AnimatedImage(null, 0, true, Color.WHITE, 100, 100));
+
+        add("Text",
+                "A text with defined size with multiple segments, each segments with customizable font, color, etc.",
+                new Text(new ArrayList<>(List.of(TextSegment.builder().text("Hello World!").build())), 42));
+
+        add("Circle",
+                "round round we go.",
+                new Circle(20, Color.WHITE, false));
+
+        add("Rectangle",
+                """
+                        Why was the rectangle in love with a triangle?
+                        She has acute angle.
+                        """,
+                new Rectangle(100, 100, Color.WHITE, false));
+
 //        add("Triangle", null);
-        add("Location Info", new LocationInfo("Location Name", 2500, 500));
-        add("Sound", new SoundAsElement(new Sound(0, null, 1, false), 0, 0, 0, 0));
+        add("Location Info",
+                "Popup a box that show the current location name like in game.",
+                new LocationInfo("Location Name", 2500, 500));
+
+        add("Sound",
+                "It's a sound, this will play a sound.",
+                new SoundAsElement(new Sound(0, null, 1, false), 0, 0, 0, 0));
 
         ImGui.end();
     }
 
-    private void add(String label, Object element) {
+    private void add(String label, String tooltip, Object element) {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
+            if (ImGui.isItemHovered(ImGuiHoveredFlags.DelayNormal)) {
+                ImGui.setTooltip(tooltip);
+            }
             return;
         }
+
         timeline.setSelectedElement(null);
 
         long duration = TimeCompiler.compileTime(element);

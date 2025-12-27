@@ -21,6 +21,8 @@ import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.image.Image;
+import oxy.bascenario.api.render.elements.shape.Circle;
+import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.inspector.impl.events.*;
@@ -64,6 +66,8 @@ public class Inspector {
             case Text text -> TextInspector.render(screen.getScenario(), text);
             case AnimatedImage image -> ImageInspector.render(image);
             case Image image -> ImageInspector.render(image);
+            case Circle circle -> ShapeInspector.render(circle);
+            case Rectangle rectangle -> ShapeInspector.render(rectangle);
 
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
