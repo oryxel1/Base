@@ -2,6 +2,7 @@ package oxy.bascenario.editor.utils;
 
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
@@ -61,6 +62,11 @@ public class TimeCompiler {
                 builder.duration(event.getDuration() + duration);
                 yield builder.build();
             }
+            case SetColorEvent event -> {
+                SetColorEvent.Builder builder = event.toBuilder();
+                builder.duration(event.getDuration() + duration);
+                yield builder.build();
+            }
             default -> object;
         };
     }
@@ -69,7 +75,7 @@ public class TimeCompiler {
         return compileTime(object) == Long.MAX_VALUE || object instanceof LocationInfo || object instanceof Emoticon ||
                 object instanceof PositionElementEvent || object instanceof RotateElementEvent ||
                 object instanceof PlaySoundEvent || object instanceof SoundVolumeEvent || object instanceof StopSoundEvent ||
-                object instanceof ColorOverlayEvent;
+                object instanceof ColorOverlayEvent || object instanceof SetColorEvent;
     }
 
     public static long compileTime(final Object object) {
@@ -102,6 +108,7 @@ public class TimeCompiler {
             case SoundVolumeEvent event -> Math.max(100, event.getDuration());
             case StopSoundEvent event -> Math.max(100, event.getDuration());
             case ColorOverlayEvent event -> Math.max(100, event.getDuration());
+            case SetColorEvent event -> Math.max(100, event.getDuration());
 
             default -> 100L; // has to be something for it to show up in the editor.
         };
