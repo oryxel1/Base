@@ -45,10 +45,6 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
     protected void renderThinGL() {
         ThinGLUtils.start();
 
-        renderBackground();
-        renderBorder();
-        renderTitle();
-
         // Ehmmm... It's hardcoded yes.... I know but it works!
         if (borderFade instanceof AnimationUtils.DummyAnimation) {
             borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
@@ -90,6 +86,10 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
                 finished = true;
             }
         }
+
+        renderBackground();
+        renderBorder();
+        renderTitle();
 
         // If there are no background to fade, then draw a black overlay on top of everything to fade away.
         if (element.background() == null) {
