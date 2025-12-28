@@ -51,7 +51,6 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen = new ScenarioScreen(screen.getScenario());
         screen.show();
         screen.getTimestamps().clear();
-        screen.getEvents().clear();
         screen.getTimestamps().addAll(scenario.timestamps());
         screen.setPlaying(false);
 
