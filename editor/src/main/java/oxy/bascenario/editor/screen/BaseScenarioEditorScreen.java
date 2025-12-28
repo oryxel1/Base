@@ -75,7 +75,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ThinGLUtils.GLOBAL_RENDER_STACK.pushMatrix();
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
         ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 23, 0);
-        ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() + 23) / 1080f, ImGui.getWindowSizeX() / 1920f);
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 23) / 1080f, ImGui.getWindowSizeX() / 1920f);
         renderScenario();
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
     }
