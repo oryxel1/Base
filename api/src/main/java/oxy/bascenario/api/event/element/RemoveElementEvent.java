@@ -2,8 +2,10 @@ package oxy.bascenario.api.event.element;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import oxy.bascenario.api.event.api.Event;
 
+@ToString
 @Getter
 public class RemoveElementEvent extends Event<RemoveElementEvent> {
     private final int id;

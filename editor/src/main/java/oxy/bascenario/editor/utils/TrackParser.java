@@ -33,7 +33,7 @@ public class TrackParser {
                     if (out != Integer.MIN_VALUE && sound != null) {
                         events.computeIfAbsent(l + pair.right(), n -> new Pair<>(pair.left().requireWait(), new ArrayList<>())).right().add(new StopSoundEvent(sound.id(), out));
                     }
-                }else {
+                } else {
                     list.right().add(new AddElementEvent(i, pair.left().object(), pair.left().layer()));
                     events.computeIfAbsent(l + pair.right(), n -> new Pair<>(pair.left().requireWait(), new ArrayList<>())).right().add(new RemoveElementEvent(i));
                 }

@@ -1,9 +1,11 @@
 package oxy.bascenario.api;
 
+import lombok.ToString;
 import oxy.bascenario.api.event.api.Event;
 
 import java.util.List;
 
+@ToString
 public class Timestamp {
     private boolean waitForDialogue;
     private long time;
