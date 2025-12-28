@@ -84,6 +84,10 @@ public class Track {
                     pair.right(Math.max(0, pair.right() + duration));
                     pair.left().object(TimeCompiler.addTime(pair.left().object, (int) duration));
                     this.width = ((float) pair.right() / Timeline.DEFAULT_MAX_TIME * timeline.getScale()) * (size.x - size.x / 4);
+                    final Pair<Long, Long> pair1 = track.occupies.get(startTime);
+                    if (pair1 != null) {
+                        pair1.right(pair1.left() + pair.right());
+                    }
 
                     timeline.updateScenario(true);
                 }
