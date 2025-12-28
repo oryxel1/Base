@@ -50,7 +50,7 @@ public final class Base extends BaseApi {
 
     public static Base instance() {
         if (instance == null) {
-            instance = new Base();
+            new Base();
         }
 
         return (Base) instance;

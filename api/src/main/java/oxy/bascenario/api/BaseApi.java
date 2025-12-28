@@ -7,8 +7,8 @@ import oxy.bascenario.api.managers.ScenarioManagerApi;
 public abstract class BaseApi {
     protected static BaseApi instance;
     public BaseApi() {
-        init();
         instance = this;
+        init();
     }
 
     protected ScenarioManagerApi scenarioManager;

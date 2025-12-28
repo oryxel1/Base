@@ -65,6 +65,19 @@ public class AssetsManager implements AssetsManagerApi {
                 }
             }
         }).start();
+
+        for (Scenario scenario : Base.instance().scenarioManager().scenarios()) {
+            final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.getName()), "files").toPath();
+
+            try (final Stream<Path> stream = Files.walk(path)) {
+                List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
+
+                for (File file : files) {
+                    load(scenario.getName(), new FileInfo(file.getName(), false, false), false);
+                }
+            } catch (IOException ignored) {
+            }
+        }
     }
 
     public Texture2D texture(String path) {
@@ -105,15 +118,21 @@ public class AssetsManager implements AssetsManagerApi {
         return (T) assets(info).asset();
     }
 
-    @SneakyThrows
     public void load(String scenario, FileInfo info) {
+        load(scenario, info, true);
+    }
+
+    @SneakyThrows
+    private void load(String scenario, FileInfo info, boolean audio) {
         if (this.currentlyLoadingAssets.contains(info.hashCode(scenario))) {
             return;
         }
 
         this.currentlyLoadingAssets.add(info.hashCode(scenario));
         final InputStream stream = FileUtils.toStream(scenario, info);
-        loadAudio(scenario, stream, info);
+        if (audio && loadAudio(scenario, stream, info)) {
+            return;
+        }
 
         final String path = info.path().toLowerCase(Locale.ROOT);
         if (path.endsWith(".gif")) {
@@ -125,12 +144,14 @@ public class AssetsManager implements AssetsManagerApi {
         } else if (path.endsWith(".ttf")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
         } else {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
+            if (!path.endsWith(".mp3") && !path.endsWith(".ogg") && !path.endsWith(".wav")) {
+                this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
+            }
         }
         this.currentlyLoadingAssets.remove(info.hashCode(scenario));
     }
 
-    private void loadAudio(String scenario, InputStream stream, FileInfo info) {
+    private boolean loadAudio(String scenario, InputStream stream, FileInfo info) {
         this.currentlyLoadingAssets.add(info.hashCode(scenario));
         try {
             final AudioInputStream audioInputStream;
@@ -142,13 +163,15 @@ public class AssetsManager implements AssetsManagerApi {
             } else if (path.endsWith(".wav")) {
                 audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(stream));
             } else {
-                return;
+                return false;
             }
 
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
             this.currentlyLoadingAssets.remove(info.hashCode(scenario));
+            return true;
         } catch (Exception ignored) {
         }
+        return false;
     }
 }
