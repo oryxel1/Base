@@ -90,6 +90,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
 
         TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
         screen.setPlaying(timeline.isPlaying());
+        screen.sinceDialogue = screen.sincePoll = timeline.getTimestamp() - (last - lastDuration);
     }
 
     @Override
