@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.event.QueueEventEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
@@ -27,6 +28,11 @@ public class ScenarioScreen extends ExtendableScreen {
     private final Queue<Timestamp> timestamps = new ConcurrentLinkedQueue<>();
     @Setter
     private boolean playing = true;
+
+    private record QueuedEvent(long start, QueueEventEvent event) {
+    }
+    @Getter
+    private final List<QueuedEvent> events = new ArrayList<>();
 
     public static boolean RENDER_WITHIN_IMGUI = false;
     public ScenarioScreen(Scenario scenario) {
@@ -80,6 +86,18 @@ public class ScenarioScreen extends ExtendableScreen {
             return;
         }
 
+        this.events.removeIf(event -> {
+            if (TimeUtils.currentTimeMillis() - event.start() >= event.event().getDuration()) {
+                try {
+                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                    function.run(this);
+                } catch (Exception ignored) {
+                }
+                return true;
+            }
+            return false;
+        });
+
         while (!timestamps.isEmpty()) {
             final Timestamp peek = timestamps.peek();
             if (peek == null) {
@@ -96,6 +114,16 @@ public class ScenarioScreen extends ExtendableScreen {
             }
 
             peek.events().forEach(event -> {
+                // Special case.
+                if (event instanceof QueueEventEvent queueEvent) {
+                    if (queueEvent.getEvent() == null) {
+                        return;
+                    }
+
+                    this.events.add(new QueuedEvent(TimeUtils.currentTimeMillis(), queueEvent));
+                    return;
+                }
+
                 try {
                     final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
                     function.run(this);

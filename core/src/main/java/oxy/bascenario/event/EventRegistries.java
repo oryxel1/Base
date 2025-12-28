@@ -26,6 +26,7 @@ import oxy.bascenario.event.impl.animation.FunctionStopAnimation;
 import oxy.bascenario.event.impl.color.FunctionSetColor;
 import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
+import oxy.bascenario.event.impl.dialogue.FunctionShowOptions;
 import oxy.bascenario.event.impl.dialogue.FunctionStartDialogue;
 import oxy.bascenario.event.impl.element.*;
 import oxy.bascenario.event.impl.color.FunctionColorOverlay;

@@ -1,4 +1,4 @@
-package oxy.bascenario.event.impl;
+package oxy.bascenario.event.impl.dialogue;
 
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.event.base.FunctionEvent;
