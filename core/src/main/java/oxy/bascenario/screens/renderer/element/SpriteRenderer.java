@@ -13,6 +13,7 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.FileUtils;
 import oxy.bascenario.utils.ThinGLUtils;
@@ -129,15 +130,14 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         GLOBAL_RENDER_STACK.popMatrix();
     }
 
-    public static boolean RENDER_WITHIN_IMGUI = false;
     private void updateSkeleton(Skeleton skeleton) {
         final WindowInterface window = ThinGL.windowInterface();
-        float width = RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 23) : window.getFramebufferHeight();
+        float width = ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = ScenarioScreen.RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 23) : window.getFramebufferHeight();
 
         float x = this.position.x() + this.offset.x(), y = this.position.y() + this.offset.y();
         
         float posX = (x / 1920) * width, posY = (y / 1080) * -height;
-        if (RENDER_WITHIN_IMGUI) {
+        if (ScenarioScreen.RENDER_WITHIN_IMGUI) {
             posX += ImGui.getWindowPosX();
 
             float ratio = (0.00064814813f * height) / (0.00064814813f * window.getFramebufferHeight());

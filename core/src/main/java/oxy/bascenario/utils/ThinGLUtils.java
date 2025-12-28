@@ -3,8 +3,11 @@ package oxy.bascenario.utils;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.commons.color.ColorUtils;
 import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.gl.util.DefaultGLStates;
 import org.joml.Matrix4fStack;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11C;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.utils.math.Axis;
@@ -13,6 +16,11 @@ import java.util.Map;
 
 public final class ThinGLUtils {
     public static Matrix4fStack GLOBAL_RENDER_STACK;
+
+    public static void renderBackground(final Matrix4fStack positionMatrix, Texture2D texture2D, Color color) {
+        Vector4f vec = MathUtils.findBackgroundRender(new Vector2f(1920, 1080), new Vector2f(texture2D.getWidth(), texture2D.getHeight()));
+        ThinGL.renderer2D().coloredTexture(positionMatrix, texture2D, vec.x, vec.y, vec.z, vec.w, color);
+    }
 
     public static void renderEffect(final Runnable runnable, final Map<Effect, Object[]> effects) {
         effects.forEach((k, v) -> {

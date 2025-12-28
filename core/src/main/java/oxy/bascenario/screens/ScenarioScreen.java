@@ -28,6 +28,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Setter
     private boolean playing = true;
 
+    public static boolean RENDER_WITHIN_IMGUI = false;
     public ScenarioScreen(Scenario scenario) {
         this.timestamps.addAll(scenario.getTimestamps());
         this.scenario = scenario;
