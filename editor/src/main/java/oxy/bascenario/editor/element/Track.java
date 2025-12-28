@@ -32,6 +32,7 @@ public class Track {
     // key: start time, pair: a=element, b=duration.
     @Getter
     private final Map<Long, Pair<Cache, Long>> elements = new TreeMap<>();
+    @Getter
     private final Map<Long, ElementRenderer> renderers = new ConcurrentHashMap<>();
     @Getter
     private final Map<Long, Pair<Long, Long>> occupies = new HashMap<>();

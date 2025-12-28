@@ -107,11 +107,19 @@ public class Inspector {
                 oldDuration = 0;
             }
             duration += Math.max(0, pair.right() - oldDuration);
-            // TODO: Fix timeline conflicts.
             pair.right(duration);
-            Pair<Long, Long> occupy = renderer.getTrack().getOccupies().get(renderer.getStartTime());
-            if (occupy != null) {
-                occupy.right(occupy.left() + duration);
+
+            final Track track = findNonOccupiedSlot(renderer.getTrack().getIndex(), renderer.getStartTime(), pair.right(), renderer.getTrack().getOccupies().get(renderer.getStartTime()));
+            if (track == renderer.getTrack()) {
+                Pair<Long, Long> occupy = renderer.getTrack().getOccupies().get(renderer.getStartTime());
+                if (occupy != null) {
+                    occupy.right(occupy.left() + duration);
+                }
+            } else {
+                renderer.getTrack().remove(renderer.getStartTime());
+                track.put(renderer.getStartTime(), pair);
+
+                timeline.setSelectedElement(track.getRenderers().get(renderer.getStartTime()));
             }
 
             timeline.updateScenario(true);
@@ -121,5 +129,22 @@ public class Inspector {
         }
 
         ImGui.end();
+    }
+
+    private Track findNonOccupiedSlot(int initId, long time, long duration, Pair<Long, Long> ignore) {
+        int i = initId;
+        Track track;
+        while ((track = timeline.getTrack(i)) != null) {
+            if (!track.isOccupied(time, duration, ignore)) {
+                break;
+            }
+            i++;
+        }
+        if (track == null) {
+            track = new Track(timeline, i);
+            timeline.putTrack(i, track);
+        }
+
+        return track;
     }
 }
