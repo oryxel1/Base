@@ -130,7 +130,7 @@ public class TrackParser {
                         }
                         trackMap.get(id).put(elTime, new Pair<>(new Track.Cache(e, null, null, timestamp.waitForDialogue()), duration));
                         occupy(occupies, id, elTime, elTime + duration);
-                        elTime += duration;
+//                        elTime += duration;
                     }
                 }
 
