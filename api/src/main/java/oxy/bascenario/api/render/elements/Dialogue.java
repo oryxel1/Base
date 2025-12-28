@@ -15,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Getter
 public class Dialogue {
+    private static final Color DEFAULT_OUTLINE_COLOR = Color.fromRGB(50, 70, 90);
     public static long MS_PER_WORD = 50L;
 
     private Text dialogue;
@@ -49,22 +50,22 @@ public class Dialogue {
         }
 
         public Builder add(String dialogue) {
-            this.add(TextSegment.builder().text(dialogue).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).build());
             return this;
         }
 
         public Builder add(String dialogue, FontType type) {
-            this.add(TextSegment.builder().text(dialogue).type(type).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).build());
             return this;
         }
 
         public Builder add(String dialogue, FontType type, Color color) {
-            this.add(TextSegment.builder().text(dialogue).type(type).color(color).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).color(color).build());
             return this;
         }
 
         public Builder add(String dialogue, Color color) {
-            this.add(TextSegment.builder().text(dialogue).color(color).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).color(color).build());
             return this;
         }
 

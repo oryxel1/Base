@@ -6,7 +6,9 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.inspector.impl.objects.TextInspector;
+import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class DialogueInspector {
             }
         }
         if (add) {
-            list.add(Dialogue.builder().build());
+            list.add(Dialogue.builder().add("This is a dialogue text!").build());
         }
         builder.dialogues(list.toArray(new Dialogue[0]));
 
