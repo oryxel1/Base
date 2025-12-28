@@ -81,6 +81,20 @@ public class Track {
             if (resizing && yMatch) {
                 float delta = mouse.x - (x + width);
                 long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * (delta / (size.x - size.x / 4)));
+
+                long next = -1;
+                for (Long occupy : track.getOccupies().keySet()) {
+                    if (occupy <= startTime) {
+                        continue;
+                    }
+
+                    next = occupy;
+                }
+                if (next != -1) {
+                    long max = next - (startTime + pair.right());
+                    duration = Math.min(duration, max);
+                }
+
                 if (TimeCompiler.canResize(pair.left().object)) {
                     pair.right(Math.max(0, pair.right() + duration));
                     pair.left().object(TimeCompiler.addTime(pair.left().object, (int) duration));
@@ -200,7 +214,13 @@ public class Track {
                 }
             }
 
-            handleDragging();
+            if (ImGui.isWindowFocused()) {
+                handleDragging();
+            } else {
+                dragging = false;
+                track.timeline.getScreen().setDragging(null);
+            }
+
             if (this.width <= 0) {
                 return;
             }
