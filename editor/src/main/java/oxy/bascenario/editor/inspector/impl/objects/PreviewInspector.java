@@ -15,7 +15,7 @@ public class PreviewInspector {
         builder.title(ImGuiUtils.inputText("Title", preview.title()));
         builder.subtitle(ImGuiUtils.inputText("Subtitle", preview.subtitle()));
 
-        AssetsUI.pick("Pick Image!", file -> last = file, "png, jpg");
+        AssetsUI.pick("Pick Image!", file -> last = file, "png,jpg");
 
         if (preview.background() != null) {
             ImGui.sameLine();
