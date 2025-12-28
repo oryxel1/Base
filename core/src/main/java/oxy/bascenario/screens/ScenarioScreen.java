@@ -149,7 +149,7 @@ public class ScenarioScreen extends ExtendableScreen {
         pollEvents(false);
 //        renderBackground();
 
-        final Collection<ElementRenderer<?>> elements = this.elements.values();
+        final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.dialogueRenderer.render();
