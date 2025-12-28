@@ -228,6 +228,7 @@ public class Timeline {
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
                 timestamp = Math.max(0, timestamp - backtrackTime);
                 screen.update();
+                this.selectedElement = null;
             }
             return;
         }
@@ -239,6 +240,7 @@ public class Timeline {
         final float ratio = (vec2.x - pos.x - size.x / 4) / (size.x - size.x / 4);
         long last = timestamp;
         timestamp = (long) (DEFAULT_MAX_TIME * scale * scroll + ratio * DEFAULT_MAX_TIME * scale);
+        this.selectedElement = null;
         if (last != timestamp) {
             screen.update();
         }
