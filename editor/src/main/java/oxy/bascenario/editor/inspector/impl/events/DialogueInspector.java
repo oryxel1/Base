@@ -6,9 +6,7 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.inspector.impl.objects.TextInspector;
-import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
@@ -18,13 +16,13 @@ public class DialogueInspector {
     public static AddDialogueEvent render(Scenario.Builder scenario, AddDialogueEvent event) {
         AddDialogueEvent.Builder builder = event.toBuilder();
 
-        builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
+        builder.index(ImGuiUtils.inputInt("Dialogue Index", event.index()));
         final List<Dialogue> list = new ArrayList<>();
         if (ImGui.button("New dialogue!##" + ImGuiUtils.COUNTER++)) {
             list.add(Dialogue.builder().build());
         }
 
-        for (Dialogue dialogue : event.getDialogues()) {
+        for (Dialogue dialogue : event.dialogues()) {
             final ImBoolean imBoolean = new ImBoolean(true);
             if (ImGui.collapsingHeader("Dialogue##" + ImGuiUtils.COUNTER++, imBoolean)) {
                 dialogue = render(scenario, dialogue);
@@ -41,15 +39,15 @@ public class DialogueInspector {
 
     public static StartDialogueEvent render(Scenario.Builder scenario, StartDialogueEvent event) {
         StartDialogueEvent.Builder builder = event.toBuilder();
-        builder.index(ImGuiUtils.inputInt("Dialogue Index", event.getIndex()));
-        builder.name(ImGuiUtils.inputText("Name", event.getName()));
-        builder.association(ImGuiUtils.inputText("Association", event.getAssociation()));
-        builder.background(ImGuiUtils.checkbox("Background", event.isBackground()));
+        builder.index(ImGuiUtils.inputInt("Dialogue Index", event.index()));
+        builder.name(ImGuiUtils.inputText("Name", event.name()));
+        builder.association(ImGuiUtils.inputText("Association", event.association()));
+        builder.background(ImGuiUtils.checkbox("Background", event.background()));
 
         final List<Dialogue> list = new ArrayList<>();
         boolean add = ImGui.button("New dialogue!##" + ImGuiUtils.COUNTER++);
 
-        for (Dialogue dialogue : event.getDialogues()) {
+        for (Dialogue dialogue : event.dialogues()) {
             final ImBoolean imBoolean = new ImBoolean(true);
             if (ImGui.collapsingHeader("Dialogue##" + ImGuiUtils.COUNTER++, imBoolean)) {
                 dialogue = render(scenario, dialogue);

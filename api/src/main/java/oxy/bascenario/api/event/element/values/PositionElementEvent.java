@@ -1,42 +1,14 @@
 package oxy.bascenario.api.event.element.values;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.math.Vec2;
 
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Builder(toBuilder = true, builderClassName = "Builder")
-@Getter
-public class PositionElementEvent extends Event<PositionElementEvent> {
-    private final int id;
-    private final Integer subId;
-    private final long duration;
-    private final Vec2 vec;
-    private final Easing easing;
-    private final Type type;
-
+public record PositionElementEvent(int id, Integer subId, long duration, Vec2 vec, Easing easing, Type type) implements Event {
     public PositionElementEvent(int id, long duration, Vec2 vec, Easing easing, Type type) {
-        this.id = id;
-        this.subId = null;
-        this.duration = duration;
-        this.vec = vec;
-        this.easing = easing;
-        this.type = type;
-    }
-
-    @Override
-    public String type() {
-        return "position-element";
-    }
-
-    @Override
-    public PositionElementEvent empty() {
-        return new PositionElementEvent(0, 0, new Vec2(0, 0), Easing.LINEAR, Type.POSITION);
+        this(id, null, duration, vec, easing, type);
     }
 
     public enum Type {

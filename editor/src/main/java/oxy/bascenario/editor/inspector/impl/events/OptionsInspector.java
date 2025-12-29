@@ -14,7 +14,7 @@ public class OptionsInspector {
 
         boolean add = ImGui.button("New option!");
 
-        for (Map.Entry<String, Integer> entry : event.getOptions().entrySet()) {
+        for (Map.Entry<String, Integer> entry : event.options().entrySet()) {
             final ImBoolean imBoolean = new ImBoolean(true);
             String option = entry.getKey();
             int redirect = entry.getValue();

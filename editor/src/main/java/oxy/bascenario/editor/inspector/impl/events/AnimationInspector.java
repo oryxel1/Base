@@ -10,31 +10,31 @@ import oxy.bascenario.utils.Pair;
 public class AnimationInspector {
     public static PlayAnimationEvent render(PlayAnimationEvent event) {
         PlayAnimationEvent.Builder builder = event.toBuilder();
-        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
+        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.id())));
 
-        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.getName());
+        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.name());
         builder.name(alls.right()[ImGuiUtils.combo("Animation Name", alls.left(), alls.right())]);
 
-        builder.loop(ImGuiUtils.checkbox("Loop", event.isLoop()));
+        builder.loop(ImGuiUtils.checkbox("Loop", event.loop()));
         return builder.build();
     }
 
     public static StopAnimationEvent render(StopAnimationEvent event) {
         StopAnimationEvent.Builder builder = event.toBuilder();
-        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
+        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.id())));
 
-        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.getName());
+        final Pair<Integer, String[]> alls = Base.instance().animationManager().getAllAnimations(event.name());
         builder.name(alls.right()[ImGuiUtils.combo("Animation Name", alls.left(), alls.right())]);
         return builder.build();
     }
 
     public static SpriteAnimationEvent render(SpriteAnimationEvent event) {
         SpriteAnimationEvent.Builder builder = event.toBuilder();
-        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
-        builder.trackIndex(Math.abs(ImGuiUtils.inputInt("Layer", event.getTrackIndex())));
-        builder.mixTime(Math.abs(ImGuiUtils.sliderFloat("Mix/Lerp Time", event.getMixTime(), 0, 20)));
-        builder.animationName(ImGuiUtils.inputText("Animation Name", event.getAnimationName()));
-        builder.loop(ImGuiUtils.checkbox("Loop", event.isLoop()));
+        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.id())));
+        builder.trackIndex(Math.abs(ImGuiUtils.inputInt("Layer", event.trackIndex())));
+        builder.mixTime(Math.abs(ImGuiUtils.sliderFloat("Mix/Lerp Time", event.mixTime(), 0, 20)));
+        builder.animationName(ImGuiUtils.inputText("Animation Name", event.animationName()));
+        builder.loop(ImGuiUtils.checkbox("Loop", event.loop()));
         return builder.build();
     }
 }

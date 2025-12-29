@@ -10,25 +10,25 @@ import java.util.Optional;
 public class ColorInspector {
     public static SetColorEvent render(SetColorEvent event) {
         SetColorEvent.Builder builder = event.toBuilder();
-        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId())));
-        builder.duration(ImGuiUtils.sliderInt("Fade Duration", event.getDuration(), 0, 60000));
+        builder.id(Math.abs(ImGuiUtils.inputInt("Target Track", event.id())));
+        builder.duration(ImGuiUtils.sliderInt("Fade Duration", event.duration(), 0, 60000));
 
-        builder.color(ImGuiUtils.color("Color", event.getColor()));
+        builder.color(ImGuiUtils.color("Color", event.color()));
         return builder.build();
     }
 
     public static ColorOverlayEvent render(ColorOverlayEvent event) {
         ColorOverlayEvent.Builder builder = event.toBuilder();
-        if (event.getId().isPresent()) {
-            builder.id(Optional.of(Math.abs(ImGuiUtils.inputInt("Target Track", event.getId().get()))));
+        if (event.id().isPresent()) {
+            builder.id(Optional.of(Math.abs(ImGuiUtils.inputInt("Target Track", event.id().get()))));
         }
 
-        builder.duration(ImGuiUtils.sliderInt("Fade Duration", event.getDuration(), 0, 60000));
+        builder.duration(ImGuiUtils.sliderInt("Fade Duration", event.duration(), 0, 60000));
 
-        builder.color(ImGuiUtils.color("Color", event.getColor()));
+        builder.color(ImGuiUtils.color("Color", event.color()));
 
-        if (event.getId().isEmpty()) {
-            builder.renderLayer(RenderLayer.values()[ImGuiUtils.combo("Render Layer", event.getRenderLayer().ordinal(), RenderLayer.getAlls())]);
+        if (event.id().isEmpty()) {
+            builder.renderLayer(RenderLayer.values()[ImGuiUtils.combo("Render Layer", event.renderLayer().ordinal(), RenderLayer.getAlls())]);
         }
 
         return builder.build();

@@ -13,18 +13,18 @@ public class FunctionRotateElement extends FunctionEvent<RotateElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(this.event.id());
         if (renderer == null) {
             return;
         }
 
-        if (event.getSubId() != null) {
-            renderer = renderer.getSubElements().get(this.event.getSubId());
+        if (event.subId() != null) {
+            renderer = renderer.getSubElements().get(this.event.subId());
             if (renderer == null) {
                 return;
             }
         }
 
-        renderer.getRotation().set(AnimationUtils.toFunction(event.getEasing()), event.getRotation(), event.getDuration());
+        renderer.getRotation().set(AnimationUtils.toFunction(event.easing()), event.rotation(), event.duration());
     }
 }

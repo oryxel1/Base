@@ -9,9 +9,9 @@ import java.util.List;
 public class Timestamp {
     private boolean waitForDialogue;
     private long time;
-    private final List<Event<?>> events;
+    private final List<Event> events;
 
-    public Timestamp(boolean waitForDialogue, long time, List<Event<?>> events) {
+    public Timestamp(boolean waitForDialogue, long time, List<Event> events) {
         this.waitForDialogue = waitForDialogue;
         this.time = time;
         this.events = events;
@@ -33,7 +33,7 @@ public class Timestamp {
         this.time = time;
     }
 
-    public List<Event<?>> events() {
+    public List<Event> events() {
         return events;
     }
 }

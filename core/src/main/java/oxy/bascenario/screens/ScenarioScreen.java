@@ -97,7 +97,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
             peek.events().forEach(event -> {
                 try {
-                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                    final FunctionEvent function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
                     function.run(this);
                 } catch (Exception ignored) {
                 }

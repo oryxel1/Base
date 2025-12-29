@@ -12,6 +12,6 @@ public class FunctionSoundVolumeEvent extends FunctionEvent<SoundVolumeEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        AudioManager.getInstance().fade(event.getId(), event.getDuration(), event.getVolume(), event.getEasing());
+        AudioManager.getInstance().fade(event.id(), event.duration(), event.volume(), event.easing());
     }
 }

@@ -49,12 +49,12 @@ public class Scenario {
             this.saveType = saveType;
         }
 
-        public Builder add(long time, Event<?>... events) {
+        public Builder add(long time, Event... events) {
             this.add(false, time, events);
             return this;
         }
 
-        public Builder add(boolean waitForDialogue, long time, Event<?>... events) {
+        public Builder add(boolean waitForDialogue, long time, Event... events) {
             this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(List.of(events))));
             return this;
         }

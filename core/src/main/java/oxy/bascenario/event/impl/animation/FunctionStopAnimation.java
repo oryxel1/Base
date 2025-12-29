@@ -12,11 +12,11 @@ public class FunctionStopAnimation extends FunctionEvent<StopAnimationEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(event.getId());
+        final ElementRenderer<?> renderer = screen.getElements().get(event.id());
         if (renderer == null) {
             return;
         }
 
-        renderer.getAnimations().remove(event.getName());
+        renderer.getAnimations().remove(event.name());
     }
 }

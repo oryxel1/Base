@@ -13,11 +13,11 @@ public class FunctionSpriteAnimation extends FunctionEvent<SpriteAnimationEvent>
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(event.getId());
+        final ElementRenderer<?> renderer = screen.getElements().get(event.id());
         if (!(renderer instanceof SpriteRenderer spriteRenderer)) {
             return;
         }
 
-        spriteRenderer.play(event.getAnimationName(), event.getTrackIndex(), event.getMixTime(), event.isLoop());
+        spriteRenderer.play(event.animationName(), event.trackIndex(), event.mixTime(), event.loop());
     }
 }

@@ -12,9 +12,9 @@ public class FunctionSetColor extends FunctionEvent<SetColorEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        ElementRenderer<?> renderer = screen.getElements().get(event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(event.id());
         if (renderer != null) {
-            renderer.getColor().set(event.getColor(), Math.max(0, event.getDuration()));
+            renderer.getColor().set(event.color(), Math.max(0, event.duration()));
         }
     }
 }

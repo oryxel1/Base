@@ -1,7 +1,6 @@
 package oxy.bascenario.editor.inspector.impl.events;
 
 import imgui.ImGui;
-import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Sound;
@@ -38,9 +37,9 @@ public class SoundInspector {
     public static SoundVolumeEvent render(SoundVolumeEvent event) {
         SoundVolumeEvent.Builder builder = event.toBuilder();
         builder.id(Math.abs(ImGuiUtils.inputInt("Sound ID", 0)));
-        builder.duration(ImGuiUtils.sliderInt("Fade Duration (ms)", (int) event.getDuration(), 0, 10000));
-        builder.volume(Math.abs(ImGuiUtils.sliderFloat("Volume", event.getVolume(), 0, 1)));
-        builder.easing(Easing.values()[ImGuiUtils.combo("Easing Mode", event.getEasing().ordinal(), Easing.getAlls())]);
+        builder.duration(ImGuiUtils.sliderInt("Fade Duration (ms)", (int) event.duration(), 0, 10000));
+        builder.volume(Math.abs(ImGuiUtils.sliderFloat("Volume", event.volume(), 0, 1)));
+        builder.easing(Easing.values()[ImGuiUtils.combo("Easing Mode", event.easing().ordinal(), Easing.getAlls())]);
         return builder.build();
     }
 //

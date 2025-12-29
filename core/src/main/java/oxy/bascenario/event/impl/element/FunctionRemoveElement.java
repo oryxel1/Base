@@ -12,15 +12,15 @@ public class FunctionRemoveElement extends FunctionEvent<RemoveElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = event.getSubId() != null ? screen.getElements().get(Math.abs(event.getId())) : screen.getElements().remove(Math.abs(event.getId()));
+        final ElementRenderer<?> renderer = event.subId() != null ? screen.getElements().get(Math.abs(event.id())) : screen.getElements().remove(Math.abs(event.id()));
         if (renderer == null) {
             return;
         }
 
-        if (event.getSubId() == null) {
+        if (event.subId() == null) {
             renderer.dispose();
         } else {
-            final ElementRenderer<?> subRenderer = renderer.getSubElements().remove(Math.abs(event.getSubId()));
+            final ElementRenderer<?> subRenderer = renderer.getSubElements().remove(Math.abs(event.subId()));
             subRenderer.dispose();
         }
     }

@@ -12,35 +12,35 @@ public class FunctionElementIndex extends FunctionEvent<ElementIndexEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        if (event.getSubIndex() != null) {
-            final ElementRenderer<?> renderer = screen.getElements().get(this.event.getMainIndex());
+        if (event.subIndex() != null) {
+            final ElementRenderer<?> renderer = screen.getElements().get(this.event.mainIndex());
             if (renderer == null) {
                 return;
             }
 
-            final ElementRenderer<?> subRenderer = renderer.getSubElements().remove(this.event.getSubIndex());
-            if (event.isSwap()) {
-                final ElementRenderer<?> swap = renderer.getSubElements().get(this.event.getNewIndex());
+            final ElementRenderer<?> subRenderer = renderer.getSubElements().remove(this.event.subIndex());
+            if (event.swap()) {
+                final ElementRenderer<?> swap = renderer.getSubElements().get(this.event.newIndex());
                 if (swap != null) {
-                    renderer.getSubElements().put(this.event.getSubIndex(), swap);
+                    renderer.getSubElements().put(this.event.subIndex(), swap);
                 }
             }
 
-            renderer.getSubElements().put(this.event.getNewIndex(), subRenderer);
+            renderer.getSubElements().put(this.event.newIndex(), subRenderer);
         } else {
-            final ElementRenderer<?> renderer = screen.getElements().remove(this.event.getMainIndex());
+            final ElementRenderer<?> renderer = screen.getElements().remove(this.event.mainIndex());
             if (renderer == null) {
                 return;
             }
 
-            if (event.isSwap()) {
-                final ElementRenderer<?> swap = screen.getElements().get(this.event.getNewIndex());
+            if (event.swap()) {
+                final ElementRenderer<?> swap = screen.getElements().get(this.event.newIndex());
                 if (swap != null) {
-                    screen.getElements().put(this.event.getSubIndex(), swap);
+                    screen.getElements().put(this.event.subIndex(), swap);
                 }
             }
 
-            screen.getElements().put(this.event.getNewIndex(), renderer);
+            screen.getElements().put(this.event.newIndex(), renderer);
         }
     }
 }

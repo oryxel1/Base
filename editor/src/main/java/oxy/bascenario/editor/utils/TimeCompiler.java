@@ -34,37 +34,37 @@ public class TimeCompiler {
             }
             case PositionElementEvent event -> {
                 PositionElementEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case RotateElementEvent event -> {
                 RotateElementEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case PlaySoundEvent event -> {
                 PlaySoundEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case SoundVolumeEvent event -> {
                 SoundVolumeEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case StopSoundEvent event -> {
                 StopSoundEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case ColorOverlayEvent event -> {
                 ColorOverlayEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             case SetColorEvent event -> {
                 SetColorEvent.Builder builder = event.toBuilder();
-                builder.duration(event.getDuration() + duration);
+                builder.duration(event.duration() + duration);
                 yield builder.build();
             }
             default -> object;
@@ -89,26 +89,26 @@ public class TimeCompiler {
                 case THINKING, HESITATED -> 600L * 3 + (600L / 3);
             };
 
-            case StartDialogueEvent event -> compileTime(event.getDialogues());
-            case AddDialogueEvent event -> compileTime(event.getDialogues());
+            case StartDialogueEvent event -> compileTime(event.dialogues());
+            case AddDialogueEvent event -> compileTime(event.dialogues());
 
             case Dialogue[] dialogues -> compileTime(dialogues);
             case Dialogue dialogue -> compileTime(dialogue);
-            case Event<?> event -> compileTime(event);
+            case Event event -> compileTime(event);
             default -> Long.MAX_VALUE;
         };
     }
 
-    private static long compileTime(final Event<?> object) {
+    private static long compileTime(final Event object) {
         return switch (object) {
-            case PositionElementEvent event -> Math.max(100, event.getDuration());
-            case RotateElementEvent event -> Math.max(100, event.getDuration());
+            case PositionElementEvent event -> Math.max(100, event.duration());
+            case RotateElementEvent event -> Math.max(100, event.duration());
             case ShowOptionsEvent ignored -> 500L; // eh.
-            case PlaySoundEvent event -> Math.max(100, event.getDuration());
-            case SoundVolumeEvent event -> Math.max(100, event.getDuration());
-            case StopSoundEvent event -> Math.max(100, event.getDuration());
-            case ColorOverlayEvent event -> Math.max(100, event.getDuration());
-            case SetColorEvent event -> Math.max(100, event.getDuration());
+            case PlaySoundEvent event -> Math.max(100, event.duration());
+            case SoundVolumeEvent event -> Math.max(100, event.duration());
+            case StopSoundEvent event -> Math.max(100, event.duration());
+            case ColorOverlayEvent event -> Math.max(100, event.duration());
+            case SetColorEvent event -> Math.max(100, event.duration());
 
             default -> 100L; // has to be something for it to show up in the editor.
         };

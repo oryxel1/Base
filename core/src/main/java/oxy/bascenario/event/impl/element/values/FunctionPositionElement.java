@@ -14,24 +14,24 @@ public class FunctionPositionElement extends FunctionEvent<PositionElementEvent>
 
     @Override
     public void run(ScenarioScreen screen) {
-        ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(this.event.id());
         if (renderer == null) {
             return;
         }
 
-        if (event.getSubId() != null) {
-            renderer = renderer.getSubElements().get(this.event.getSubId());
+        if (event.subId() != null) {
+            renderer = renderer.getSubElements().get(this.event.subId());
             if (renderer == null) {
                 return;
             }
         }
 
-        final EasingFunction function = AnimationUtils.toFunction(event.getEasing());
-        switch (event.getType()) {
-            case SCALE -> renderer.getScale().set(function, event.getVec(), event.getDuration());
-            case POSITION -> renderer.getPosition().set(function, event.getVec(), event.getDuration());
-            case OFFSET -> renderer.getOffset().set(function, event.getVec(), event.getDuration());
-            case PIVOT -> renderer.getPivot().set(function, event.getVec(), event.getDuration());
+        final EasingFunction function = AnimationUtils.toFunction(event.easing());
+        switch (event.type()) {
+            case SCALE -> renderer.getScale().set(function, event.vec(), event.duration());
+            case POSITION -> renderer.getPosition().set(function, event.vec(), event.duration());
+            case OFFSET -> renderer.getOffset().set(function, event.vec(), event.duration());
+            case PIVOT -> renderer.getPivot().set(function, event.vec(), event.duration());
         }
     }
 }

@@ -12,13 +12,13 @@ public class FunctionAttachElement extends FunctionEvent<AttachElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(Math.abs(this.event.getId()));
+        final ElementRenderer<?> renderer = screen.getElements().get(Math.abs(this.event.id()));
         if (renderer == null) {
             return;
         }
 
-        final ElementRenderer<?> subRenderer = FunctionAddElement.getRenderer(screen.getScenario(), event.getElement(), null);
+        final ElementRenderer<?> subRenderer = FunctionAddElement.getRenderer(screen.getScenario(), event.element(), null);
         renderer.resize(0, 0); // TODO: Properly do this?
-        renderer.getSubElements().put(Math.abs(event.getSubId()), subRenderer);
+        renderer.getSubElements().put(Math.abs(event.subId()), subRenderer);
     }
 }

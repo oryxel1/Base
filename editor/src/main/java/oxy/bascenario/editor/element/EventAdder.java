@@ -139,7 +139,7 @@ public class EventAdder {
         ImGui.end();
     }
 
-    private void add(String label, String tooltip, Event<?> event) {
+    private void add(String label, String tooltip, Event event) {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             if (ImGui.isItemHovered(ImGuiHoveredFlags.DelayNormal)) {
                 ImGui.setTooltip(tooltip);

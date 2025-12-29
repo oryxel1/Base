@@ -12,6 +12,6 @@ public class FunctionStopSoundEvent extends FunctionEvent<StopSoundEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        AudioManager.getInstance().stop(event.getId(), event.getDuration());
+        AudioManager.getInstance().stop(event.id(), event.duration());
     }
 }

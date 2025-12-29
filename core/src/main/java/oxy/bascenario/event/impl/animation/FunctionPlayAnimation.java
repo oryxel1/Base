@@ -14,13 +14,13 @@ public class FunctionPlayAnimation extends FunctionEvent<PlayAnimationEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = screen.getElements().get(event.getId());
+        final ElementRenderer<?> renderer = screen.getElements().get(event.id());
         if (renderer == null) {
             return;
         }
 
         try {
-            renderer.getAnimations().put(event.getName(), new AnimationTicker(screen, renderer, Base.instance().animationManager().get(event.getName()), event.isLoop()));
+            renderer.getAnimations().put(event.name(), new AnimationTicker(screen, renderer, Base.instance().animationManager().get(event.name()), event.loop()));
         } catch (Exception ignored) {
         }
     }

@@ -12,22 +12,22 @@ public class FunctionElementEffect extends FunctionEvent<ElementEffectEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        ElementRenderer<?> renderer = screen.getElements().get(this.event.getId());
+        ElementRenderer<?> renderer = screen.getElements().get(this.event.id());
         if (renderer == null) {
             return;
         }
 
-        if (event.getSubId() != null) {
-            renderer = renderer.getSubElements().get(this.event.getSubId());
+        if (event.subId() != null) {
+            renderer = renderer.getSubElements().get(this.event.subId());
             if (renderer == null) {
                 return;
             }
         }
 
-        if (event.getType() == ElementEffectEvent.Type.REMOVE) {
-            renderer.getEffects().remove(event.getEffect());
+        if (event.type() == ElementEffectEvent.Type.REMOVE) {
+            renderer.getEffects().remove(event.effect());
         } else {
-            renderer.getEffects().put(event.getEffect(), event.getValues());
+            renderer.getEffects().put(event.effect(), event.values());
         }
     }
 }

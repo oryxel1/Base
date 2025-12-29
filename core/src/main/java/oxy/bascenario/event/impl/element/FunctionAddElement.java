@@ -28,10 +28,10 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        final ElementRenderer<?> renderer = getRenderer(screen.getScenario(), event.getElement(), event.getLayer());
+        final ElementRenderer<?> renderer = getRenderer(screen.getScenario(), event.element(), event.layer());
 
         renderer.resize(0, 0); // TODO: Properly do this?
-        screen.getElements().put(Math.abs(event.getId()), renderer);
+        screen.getElements().put(Math.abs(event.id()), renderer);
     }
 
     // It's a bunch of switch case yes, who cares anyway, not like it's a mess.
