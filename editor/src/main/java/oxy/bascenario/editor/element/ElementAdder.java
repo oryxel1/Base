@@ -42,7 +42,7 @@ public class ElementAdder {
 
         add("Emoticon",
                 "Popup an emoji that show emotions like in game, eg: Angry, Thinking, etc.",
-                new Emoticon(1000L, EmoticonType.NOTE, true));
+                new Emoticon(1000, EmoticonType.NOTE, true));
 
         add("Sprite",
                 "A character sprite (spine), in binary format (.skel), that allows for dynamic animations and other niche stuff.",

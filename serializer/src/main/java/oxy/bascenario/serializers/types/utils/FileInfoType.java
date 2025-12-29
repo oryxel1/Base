@@ -26,12 +26,12 @@ public class FileInfoType implements Type<FileInfo> {
     @Override
     public void write(FileInfo fileInfo, ByteBuf buf) {
         Types.STRING_TYPE.write(fileInfo.path(), buf);
-        Types.BOOLEAN_TYPE.write(fileInfo.direct(), buf);
-        Types.BOOLEAN_TYPE.write(fileInfo.internal(), buf);
+        buf.writeBoolean(fileInfo.direct());
+        buf.writeBoolean(fileInfo.internal());
     }
 
     @Override
     public FileInfo read(ByteBuf buf) {
-        return new FileInfo(Types.STRING_TYPE.read(buf), Types.BOOLEAN_TYPE.read(buf), Types.BOOLEAN_TYPE.read(buf));
+        return new FileInfo(Types.STRING_TYPE.read(buf), buf.readBoolean(), buf.readBoolean());
     }
 }

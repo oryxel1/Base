@@ -24,8 +24,8 @@ public class Vec2Type implements Type<Vec2> {
 
     @Override
     public void write(Vec2 vec2, ByteBuf buf) {
-        Types.FLOAT_TYPE.write(vec2.x(), buf);
-        Types.FLOAT_TYPE.write(vec2.y(), buf);
+        buf.writeFloat(vec2.x());
+        buf.writeFloat(vec2.y());
     }
 
     @Override

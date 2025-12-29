@@ -25,9 +25,9 @@ public class Vec3Type implements Type<Vec3> {
 
     @Override
     public void write(Vec3 vec3, ByteBuf buf) {
-        Types.FLOAT_TYPE.write(vec3.x(), buf);
-        Types.FLOAT_TYPE.write(vec3.y(), buf);
-        Types.FLOAT_TYPE.write(vec3.z(), buf);
+        buf.writeFloat(vec3.x());
+        buf.writeFloat(vec3.y());
+        buf.writeFloat(vec3.z());
     }
 
     @Override

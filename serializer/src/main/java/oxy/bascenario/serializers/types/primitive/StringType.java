@@ -20,7 +20,7 @@ public final class StringType implements Type<String> {
     @Override
     public void write(String s, ByteBuf buf) {
         final byte[] bytes = s.getBytes();
-        Types.INT_TYPE.write(bytes.length, buf);
+        buf.writeInt(bytes.length);
         buf.writeBytes(bytes);
     }
 
