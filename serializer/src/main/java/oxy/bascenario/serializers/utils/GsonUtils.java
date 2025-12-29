@@ -1,4 +1,4 @@
-package oxy.bascenario.serializers.gson.utils;
+package oxy.bascenario.serializers.utils;
 
 import com.google.gson.*;
 import lombok.Getter;
