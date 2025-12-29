@@ -8,6 +8,7 @@ import oxy.bascenario.api.effects.*;
 import oxy.bascenario.api.utils.math.*;
 import oxy.bascenario.serializers.types.ColorType;
 import oxy.bascenario.serializers.types.effects.SoundType;
+import oxy.bascenario.serializers.types.element.ElementTypes;
 import oxy.bascenario.serializers.types.element.impl.DialogueType;
 import oxy.bascenario.serializers.types.primitive.*;
 import oxy.bascenario.serializers.types.utils.FileInfoType;
@@ -34,4 +35,6 @@ public class Types {
     public static final Type<Color> NULLABLE_COLOR_TYPE = new NullableType<>(COLOR_TYPE);
 
     public static final Type<Dialogue> DIALOGUE_TYPE = new DialogueType();
+
+    public static final Type<Object> ELEMENT_TYPE = new ElementTypes();
 }
