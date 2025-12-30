@@ -8,6 +8,7 @@ import imgui.flag.ImGuiWindowFlags;
 import lombok.Getter;
 import lombok.Setter;
 import net.raphimc.thingl.ThinGL;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.element.AssetsUI;
 import oxy.bascenario.editor.element.ElementAdder;
@@ -15,7 +16,6 @@ import oxy.bascenario.editor.element.EventAdder;
 import oxy.bascenario.editor.element.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
 
-import oxy.bascenario.screens.renderer.element.SpriteRenderer;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
@@ -97,15 +97,32 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
             ImGui.endMenu();
         }
 
-        if (ImGui.beginMenu("Edit")) {
-            if (ImGui.menuItem("Undo", "Ctrl+Z")) {}
-            if (ImGui.menuItem("Redo", "Ctrl+Y", false, false)) {} // Disabled item
-            ImGui.separator();
-            if (ImGui.menuItem("Cut", "Ctrl+X")) {}
-            if (ImGui.menuItem("Copy", "Ctrl+C")) {}
-            if (ImGui.menuItem("Paste", "Ctrl+V")) {}
+        if (ImGui.beginMenu("Save")) {
+            boolean asJson;
+            if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
+                timeline.updateScenario(false);
+                scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
+
+                Base.instance().scenarioManager().put(scenario.name(), scenario.build());
+                try {
+                    Base.instance().scenarioManager().saveToPath(scenario.build());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
             ImGui.endMenu();
         }
+
+
+//        if (ImGui.beginMenu("Edit")) {
+//            if (ImGui.menuItem("Undo", "Ctrl+Z")) {}
+//            if (ImGui.menuItem("Redo", "Ctrl+Y", false, false)) {} // Disabled item
+//            ImGui.separator();
+//            if (ImGui.menuItem("Cut", "Ctrl+X")) {}
+//            if (ImGui.menuItem("Copy", "Ctrl+C")) {}
+//            if (ImGui.menuItem("Paste", "Ctrl+V")) {}
+//            ImGui.endMenu();
+//        }
 
         ImGui.endMainMenuBar();
     }

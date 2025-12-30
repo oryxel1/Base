@@ -17,7 +17,7 @@ public record NullableType<T>(Type<T> type) implements Type<T> {
 
     @Override
     public T read(JsonElement element) {
-        if (element.isJsonNull()) {
+        if (element == null || element.isJsonNull()) {
             return null;
         }
 

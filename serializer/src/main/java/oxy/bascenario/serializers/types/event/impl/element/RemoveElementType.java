@@ -23,7 +23,7 @@ public class RemoveElementType implements TypeWithName<RemoveElementEvent> {
 
     @Override
     public RemoveElementEvent read(JsonElement element) {
-        final JsonObject object = new JsonObject();
+        final JsonObject object = element.getAsJsonObject();
         return new RemoveElementEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")));
     }
 
