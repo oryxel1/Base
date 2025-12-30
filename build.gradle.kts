@@ -28,14 +28,14 @@ subprojects {
         implementation(rootProject.libs.configurate.yaml)
     }
 }
-
-dependencies {
-    implementation(project(":editor"))
-    implementation(project(":core"))
-    implementation(project(":api"))
-
-    implementation(libs.gdx.base)
-    implementation(libs.commons.core)
-
-    implementation(libs.imgui.binding)
-}
+//
+//dependencies {
+//    implementation(project(":editor"))
+//    implementation(project(":core"))
+//    implementation(project(":api"))
+//
+//    implementation(libs.gdx.base)
+//    implementation(libs.commons.core)
+//
+//    implementation(libs.imgui.binding)
+//}

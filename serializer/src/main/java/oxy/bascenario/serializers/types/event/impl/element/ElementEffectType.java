@@ -28,40 +28,46 @@ public class ElementEffectType implements TypeWithName<ElementEffectEvent> {
         object.add("effect", Types.EFFECT_TYPE.write(event.effect()));
         object.addProperty("type", event.type().name());
 
-        final JsonArray array = new JsonArray();
-        for (Object o : event.values()) {
-            if (o instanceof Number number) {
-                array.add(number);
-            } else if (o instanceof Axis axis) {
-                array.add(Types.AXIS_TYPE.write(axis));
+        if (event.values() != null) {
+            final JsonArray array = new JsonArray();
+            for (Object o : event.values()) {
+                if (o instanceof Number number) {
+                    array.add(number);
+                } else if (o instanceof Axis axis) {
+                    array.add(Types.AXIS_TYPE.write(axis));
+                }
             }
+            object.add("values", array);
         }
-        object.add("values", array);
         return object;
     }
 
     @Override
     public ElementEffectEvent read(JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
-        final JsonArray array = element.getAsJsonArray();
         final List<Object> values = new ArrayList<>();
-        for (JsonElement el : array) {
-            final JsonPrimitive primitive = el.getAsJsonPrimitive();
-            if (primitive.isNumber()) {
-                final Number number = el.getAsJsonPrimitive().getAsNumber();
-                if (number instanceof Float) {
-                    values.add(number.floatValue());
-                } else if (number instanceof Double) {
-                    values.add(number.doubleValue());
-                } else if (number instanceof Integer) {
-                    values.add(number.intValue());
+        final JsonArray array = object.getAsJsonArray("values");
+        if (array != null) {
+            for (JsonElement el : array) {
+                final JsonPrimitive primitive = el.getAsJsonPrimitive();
+                if (primitive.isNumber()) {
+                    final Number number = el.getAsJsonPrimitive().getAsNumber();
+                    if (number instanceof Float) {
+                        values.add(number.floatValue());
+                    } else if (number instanceof Double) {
+                        values.add(number.doubleValue());
+                    } else if (number instanceof Integer) {
+                        values.add(number.intValue());
+                    }
+                } else if (primitive.isString()) {
+                    values.add(primitive.getAsString());
                 }
-            } else if (primitive.isString()) {
-                values.add(primitive.getAsString());
             }
         }
 
-        return new ElementEffectEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), Types.EFFECT_TYPE.read(object.get("effect")), ElementEffectEvent.Type.valueOf(object.get("type").getAsString()), values);
+        ElementEffectEvent.Type type = ElementEffectEvent.Type.valueOf(object.get("type").getAsString());
+        return new ElementEffectEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), Types.EFFECT_TYPE.read(object.get("effect")),
+                type, values.isEmpty() ? null : values.toArray());
     }
 
     @Override
@@ -71,6 +77,9 @@ public class ElementEffectType implements TypeWithName<ElementEffectEvent> {
         Types.EFFECT_TYPE.write(event.effect(), buf);
         buf.writeByte(event.type().ordinal());
 
+        if (event.type() == ElementEffectEvent.Type.REMOVE) {
+            return;
+        }
         switch (event.effect()) {
             case BLUR -> buf.writeInt((Integer) event.values()[0]);
             case HOLOGRAM -> Types.AXIS_TYPE.write((Axis) event.values()[0], buf);
@@ -91,16 +100,21 @@ public class ElementEffectType implements TypeWithName<ElementEffectEvent> {
         Integer subId = Types.NULLABLE_INT.read(buf);
         Effect effect = Types.EFFECT_TYPE.read(buf);
         ElementEffectEvent.Type type = ElementEffectEvent.Type.values()[buf.readByte()];
-        final Object[] values = switch (effect) {
-            case BLUR -> new Object[] {buf.readInt()};
-            case HOLOGRAM -> new Object[] {Types.AXIS_TYPE.read(buf)};
-            case RAINBOW -> {
-                final Axis axis = Types.AXIS_TYPE.read(buf);
-                final float distance = buf.readFloat();
-                yield new Object[] {axis, distance};
-            }
-            case OUTLINE -> new Object[] {buf.readInt(), (int) buf.readByte()};
-        };
+        final Object[] values;
+        if (type == ElementEffectEvent.Type.REMOVE) {
+            values = null;
+        } else {
+            values = switch (effect) {
+                case BLUR -> new Object[] {buf.readInt()};
+                case HOLOGRAM -> new Object[] {Types.AXIS_TYPE.read(buf)};
+                case RAINBOW -> {
+                    final Axis axis = Types.AXIS_TYPE.read(buf);
+                    final float distance = buf.readFloat();
+                    yield new Object[] {axis, distance};
+                }
+                case OUTLINE -> new Object[] {buf.readInt(), (int) buf.readByte()};
+            };
+        }
 
         return new ElementEffectEvent(id, subId, effect, type, values);
     }

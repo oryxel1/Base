@@ -21,7 +21,7 @@ public record NullableType<T>(Type<T> type) implements Type<T> {
             return null;
         }
 
-        return type.read(element.getAsJsonObject().get("value"));
+        return type.read(element);
     }
 
     @Override

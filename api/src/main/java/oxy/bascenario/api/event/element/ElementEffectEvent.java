@@ -22,10 +22,6 @@ public record ElementEffectEvent(int id, Integer subId, Effect effect, Type type
         this(id, subId, effect, Type.ADD, values);
     }
 
-    public ElementEffectEvent(int id, int subId, Effect effect, Type type) {
-        this(id, subId, effect, type, type == Type.ADD ? new Object[] {} : null);
-    }
-
     public enum Type {
         ADD, REMOVE;
     }

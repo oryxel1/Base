@@ -87,7 +87,7 @@ public class ElementTypes implements Type<Object> {
             throw new RuntimeException("Invalid element with id: " + id + "!");
         }
 
-        return type.read(element);
+        return type.read(object.get("element"));
     }
 
     @Override

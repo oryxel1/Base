@@ -6,6 +6,7 @@ import oxy.bascenario.api.event.api.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
@@ -15,6 +16,29 @@ public class Scenario {
     private final SaveType saveType;
 
     private final List<Timestamp> timestamps;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Scenario scenario = (Scenario) o;
+        if (!Objects.equals(name, scenario.name) || saveType != scenario.saveType || timestamps.size() != scenario.getTimestamps().size()) {
+            return false;
+        }
+        int i = 0;
+        for (final Timestamp timestamp : scenario.getTimestamps()) {
+            if (!timestamps.get(i).equals(timestamp)) {
+                return false;
+            }
+            i++;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, saveType, timestamps);
+    }
 
     public static Builder builder() {
         return new Builder(new ArrayList<>());

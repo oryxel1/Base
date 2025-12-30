@@ -81,7 +81,7 @@ public class EventTypes implements Type<Event> {
 
         final JsonObject object = new JsonObject();
         object.addProperty("type", type.type());
-        object.add("element", type.writeElement(o));
+        object.add("event", type.writeElement(o));
         return object;
     }
 
@@ -94,7 +94,7 @@ public class EventTypes implements Type<Event> {
             throw new RuntimeException("Invalid event with id: " + id + "!");
         }
 
-        return (Event) type.read(element);
+        return (Event) type.read(object.get("event"));
     }
 
     @Override
