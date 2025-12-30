@@ -1,11 +1,10 @@
-package oxy.bascenario.serializers.types.element;
+package oxy.bascenario.serializers.base;
 
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.serializers.Type;
 
 @SuppressWarnings("ALL")
-public interface ElementType<T> extends Type<T> {
+public interface TypeWithName<T> extends Type<T> {
     String type();
 
     default JsonElement writeElement(Object o) {

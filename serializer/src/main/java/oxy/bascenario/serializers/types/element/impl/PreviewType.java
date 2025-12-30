@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 
-public class PreviewType implements ElementType<Preview> {
+public class PreviewType implements TypeWithName<Preview> {
     @Override
     public String type() {
         return "preview";

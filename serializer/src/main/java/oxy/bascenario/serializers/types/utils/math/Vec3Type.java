@@ -4,8 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.utils.math.Vec3;
-import oxy.bascenario.serializers.Type;
-import oxy.bascenario.serializers.Types;
+import oxy.bascenario.serializers.base.Type;
 
 public class Vec3Type implements Type<Vec3> {
     @Override

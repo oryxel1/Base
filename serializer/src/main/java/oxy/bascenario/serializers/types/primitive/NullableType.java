@@ -1,29 +1,27 @@
 package oxy.bascenario.serializers.types.primitive;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonNull;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 
 public record NullableType<T>(Type<T> type) implements Type<T> {
     @Override
     public JsonElement write(T t) {
-        final JsonObject object = new JsonObject();
-        object.addProperty("present", t != null);
-        if (t != null) {
-            object.add("value", type.write(t));
+        if (t == null) {
+            return JsonNull.INSTANCE;
         }
-        return object;
+
+        return type.write(t);
     }
 
     @Override
     public T read(JsonElement element) {
-        final JsonObject object = element.getAsJsonObject();
-        if (!object.get("present").getAsBoolean()) {
+        if (element.isJsonNull()) {
             return null;
         }
 
-        return type.read(object.get("value"));
+        return type.read(element.getAsJsonObject().get("value"));
     }
 
     @Override

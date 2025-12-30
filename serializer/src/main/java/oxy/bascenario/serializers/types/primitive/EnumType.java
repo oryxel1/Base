@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.primitive;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 
 public record EnumType<T extends Enum<T>>(Class<T> enumClass, T[] values) implements Type<T> {
     @Override

@@ -16,7 +16,8 @@ import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.TextStyle;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.TypeWithName;
+import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.types.element.impl.LocationInfoType;
 import oxy.bascenario.serializers.types.element.impl.PreviewType;
 import oxy.bascenario.serializers.types.element.impl.SpriteType;
@@ -29,7 +30,6 @@ import oxy.bascenario.serializers.types.element.impl.shapes.TriangleType;
 import oxy.bascenario.serializers.types.element.impl.text.*;
 import oxy.bascenario.serializers.types.primitive.EnumType;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +41,7 @@ public class ElementTypes implements Type<Object> {
     public static final Type<Set<TextStyle>> TEXT_STYLES_TYPE = new TextStylesType();
     public static final Type<TextSegment> TEXT_SEGMENT_TYPE = new TextSegmentType();
 
-    public static final ElementType<Text> TEXT_TYPE = new TextType();
+    public static final TypeWithName<Text> TEXT_TYPE = new TextType();
 //    public static final ElementType<Sprite> SPRITE_TYPE = new SpriteType();
 //    public static final ElementType<Preview> PREVIEW_TYPE = new PreviewType();
 //    public static final ElementType<LocationInfo> LOCATION_INFO_TYPE = new LocationInfoType();
@@ -52,9 +52,9 @@ public class ElementTypes implements Type<Object> {
 //    public static final ElementType<AnimatedImage> ANIMATED_IMAGE_TYPE = new AnimatedImageType();
 //    public static final ElementType<Emoticon> EMOTICON_TYPE = new EmoticonType();
 
-    private static final Map<Class<?>, ElementType<?>> CLASS_TO_TYPE = new HashMap<>();
-    private static final Map<Integer, ElementType<?>> ID_TO_TYPE = new HashMap<>();
-    private static void put(Class<?> klass, ElementType<?> type) {
+    private static final Map<Class<?>, TypeWithName<?>> CLASS_TO_TYPE = new HashMap<>();
+    private static final Map<Integer, TypeWithName<?>> ID_TO_TYPE = new HashMap<>();
+    private static void put(Class<?> klass, TypeWithName<?> type) {
         CLASS_TO_TYPE.put(klass, type);
         ID_TO_TYPE.put(type.type().hashCode(), type);
     }
@@ -77,7 +77,7 @@ public class ElementTypes implements Type<Object> {
 
     @Override
     public JsonElement write(Object o) {
-        final ElementType<?> type = CLASS_TO_TYPE.get(o.getClass());
+        final TypeWithName<?> type = CLASS_TO_TYPE.get(o.getClass());
         if (type == null) {
             throw new RuntimeException("Invalid element class type: " + o.getClass() + "!");
         }
@@ -92,7 +92,7 @@ public class ElementTypes implements Type<Object> {
     public Object read(JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
         final int id = object.get("type").getAsString().hashCode();
-        final ElementType<?> type = ID_TO_TYPE.get(id);
+        final TypeWithName<?> type = ID_TO_TYPE.get(id);
         if (type == null) {
             throw new RuntimeException("Invalid element with id: " + id + "!");
         }
@@ -102,7 +102,7 @@ public class ElementTypes implements Type<Object> {
 
     @Override
     public void write(Object o, ByteBuf buf) {
-        final ElementType<?> type = CLASS_TO_TYPE.get(o.getClass());
+        final TypeWithName<?> type = CLASS_TO_TYPE.get(o.getClass());
         if (type == null) {
             throw new RuntimeException("Invalid element class type: " + o.getClass() + "!");
         }
@@ -114,7 +114,7 @@ public class ElementTypes implements Type<Object> {
     @Override
     public Object read(ByteBuf buf) {
         final int id = buf.readInt();
-        final ElementType<?> type = ID_TO_TYPE.get(id);
+        final TypeWithName<?> type = ID_TO_TYPE.get(id);
         if (type == null) {
             throw new RuntimeException("Invalid element with id: " + id + "!");
         }

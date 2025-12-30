@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 
-public class LocationInfoType implements ElementType<LocationInfo> {
+public class LocationInfoType implements TypeWithName<LocationInfo> {
     @Override
     public JsonElement write(LocationInfo locationInfo) {
         final JsonObject object = new JsonObject();

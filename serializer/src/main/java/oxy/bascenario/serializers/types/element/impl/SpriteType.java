@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 
-public class SpriteType implements ElementType<Sprite> {
+public class SpriteType implements TypeWithName<Sprite> {
     @Override
     public JsonElement write(Sprite sprite) {
         final JsonObject object = new JsonObject();

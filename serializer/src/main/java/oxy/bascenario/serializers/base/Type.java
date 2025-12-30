@@ -1,4 +1,4 @@
-package oxy.bascenario.serializers;
+package oxy.bascenario.serializers.base;
 
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;

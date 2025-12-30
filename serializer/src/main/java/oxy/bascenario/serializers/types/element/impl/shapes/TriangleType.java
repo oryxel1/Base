@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.shape.Triangle;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 
-public class TriangleType implements ElementType<Triangle> {
+public class TriangleType implements TypeWithName<Triangle> {
     @Override
     public JsonElement write(Triangle triangle) {
         final JsonArray array = new JsonArray();

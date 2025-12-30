@@ -22,4 +22,8 @@ public record ColorOverlayEvent(Optional<Integer> id, int duration, Color color,
     public ColorOverlayEvent(Integer id, int duration, Color color) {
         this(id == null ? Optional.empty() : Optional.of(id), duration, color, null);
     }
+
+    public ColorOverlayEvent(Integer id, int duration, Color color, RenderLayer layer) {
+        this(id == null ? Optional.empty() : Optional.of(id), duration, color, layer);
+    }
 }

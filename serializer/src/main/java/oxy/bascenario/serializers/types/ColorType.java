@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 
 public class ColorType implements Type<Color> {
     @Override

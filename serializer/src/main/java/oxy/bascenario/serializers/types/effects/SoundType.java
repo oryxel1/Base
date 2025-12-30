@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.Types;
 
 public class SoundType implements Type<Sound> {

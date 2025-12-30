@@ -6,13 +6,13 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.element.ElementTypes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextType implements ElementType<Text> {
+public class TextType implements TypeWithName<Text> {
     @Override
     public String type() {
         return "text";

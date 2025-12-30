@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.text.TextStyle;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 
 import java.util.EnumSet;
 import java.util.Set;

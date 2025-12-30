@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.types.element.ElementType;
+import oxy.bascenario.serializers.base.TypeWithName;
 
-public class ImageType implements ElementType<Image> {
+public class ImageType implements TypeWithName<Image> {
     @Override
     public String type() {
         return "image";

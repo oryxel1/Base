@@ -6,8 +6,8 @@ import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.math.Vec2;
 
 @Builder(toBuilder = true, builderClassName = "Builder")
-public record PositionElementEvent(int id, Integer subId, long duration, Vec2 vec, Easing easing, Type type) implements Event {
-    public PositionElementEvent(int id, long duration, Vec2 vec, Easing easing, Type type) {
+public record PositionElementEvent(int id, Integer subId, int duration, Vec2 vec, Easing easing, Type type) implements Event {
+    public PositionElementEvent(int id, int duration, Vec2 vec, Easing easing, Type type) {
         this(id, null, duration, vec, easing, type);
     }
 

@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.serializers.Type;
+import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.types.element.ElementTypes;
 
