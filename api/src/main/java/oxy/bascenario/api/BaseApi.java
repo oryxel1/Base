@@ -8,7 +8,6 @@ public abstract class BaseApi {
     protected static BaseApi instance;
     public BaseApi() {
         instance = this;
-        init();
     }
 
     protected ScenarioManagerApi scenarioManager;

@@ -1,7 +1,7 @@
-import oxy.bascenario.api.BaseApi;
+import oxy.bascenario.Base;
 
 public class MainTest {
     public static void main(String[] args) {
-        BaseApi.instance().init();
+        Base.instance().init();
     }
 }

@@ -8,6 +8,7 @@ var libGdx = "1.13.1"
 
 dependencies {
     implementation(project(":api"))
+    implementation(project(":serializer"))
 
     implementation(libs.raphimc.thingl)
     implementation(libs.commons.animations)
@@ -55,4 +56,6 @@ dependencies {
     }
 
     implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
+
+    implementation(libs.netty.buffer)
 }

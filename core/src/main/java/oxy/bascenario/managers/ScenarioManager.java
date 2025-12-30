@@ -1,14 +1,22 @@
 package oxy.bascenario.managers;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.SneakyThrows;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.managers.ScenarioManagerApi;
 import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.serializers.Types;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +30,34 @@ public class ScenarioManager implements ScenarioManagerApi {
         return scenarios.values();
     }
 
+    @SneakyThrows
     public ScenarioManager() {
         if (!SAVE_DIR.isDirectory()) {
             SAVE_DIR.mkdirs();
+        }
+
+        final DirectoryStream<Path> stream = Files.newDirectoryStream(SAVE_DIR.toPath(), Files::isDirectory);
+        for (Path entry : stream) {
+            final File file = new File(entry.getFileName().toFile(), "scenario.base");
+            if (file.isDirectory() || !file.exists()) {
+                continue;
+            }
+
+            final byte[] bytes = Files.readAllBytes(file.toPath());
+            try {
+                JsonObject object = JsonParser.parseString(new String(bytes)).getAsJsonObject();
+                final Scenario scenario = Types.SCENARIO_TYPE.read(object);
+                scenarios.put(scenario.getName(), scenario);
+            } catch (Exception ignored) {
+                ByteBuf buf = Unpooled.buffer().writeBytes(bytes);
+                try {
+                    final Scenario scenario = Types.SCENARIO_TYPE.read(buf);
+                    scenarios.put(scenario.getName(), scenario);
+                } catch (Exception ignored1) {
+                } finally {
+                    buf.release();
+                }
+            }
         }
     }
 
