@@ -25,7 +25,7 @@ public class LocationInfoType implements TypeWithName<LocationInfo> {
 
     @Override
     public void write(LocationInfo locationInfo, ByteBuf buf) {
-        Types.STRING_TYPE.write(locationInfo.location());
+        Types.STRING_TYPE.write(locationInfo.location(), buf);
         buf.writeInt(locationInfo.duration());
         buf.writeInt(locationInfo.fade());
     }

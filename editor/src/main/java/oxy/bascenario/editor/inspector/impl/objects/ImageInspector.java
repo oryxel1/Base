@@ -34,7 +34,6 @@ public class ImageInspector {
         Image.Builder builder = image.toBuilder();
         AssetsUI.pick("Pick Image!", file -> last = file, "png,jpg");
         if (last != null) {
-            System.out.println(last);
             builder.file(last);
             last = null;
         }

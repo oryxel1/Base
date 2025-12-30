@@ -4,6 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.utils.FileInfo;
@@ -14,7 +17,10 @@ import oxy.bascenario.serializers.types.ColorType;
 import oxy.bascenario.serializers.types.effects.SoundType;
 import oxy.bascenario.serializers.types.element.ElementTypes;
 import oxy.bascenario.serializers.types.element.impl.DialogueType;
+import oxy.bascenario.serializers.types.event.EventTypes;
 import oxy.bascenario.serializers.types.primitive.*;
+import oxy.bascenario.serializers.types.scenario.ScenarioType;
+import oxy.bascenario.serializers.types.scenario.TimestampType;
 import oxy.bascenario.serializers.types.utils.FileInfoType;
 import oxy.bascenario.serializers.types.utils.math.*;
 
@@ -63,4 +69,8 @@ public class Types {
     public static final Type<Dialogue> DIALOGUE_TYPE = new DialogueType();
 
     public static final Type<Object> ELEMENT_TYPE = new ElementTypes();
+    public static final Type<Event> EVENT_TYPE = new EventTypes();
+
+    public static final Type<Timestamp> TIMESTAMP_TYPE = new TimestampType();
+    public static final Type<Scenario> SCENARIO_TYPE = new ScenarioType();
 }

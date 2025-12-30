@@ -14,24 +14,27 @@ public class Scenario {
     private final String name;
     private final SaveType saveType;
 
-    private final List<Timestamp> timestamps = new ArrayList<>();
+    private final List<Timestamp> timestamps;
 
     public static Builder builder() {
-        return new Builder();
+        return new Builder(new ArrayList<>());
     }
 
-    public static Builder toBuilder(Scenario scenario) {
-        final Builder builder = new Builder();
-        builder.saveType = scenario.saveType;
-        builder.timestamps.addAll(scenario.timestamps);
-
+    public Builder toBuilder() {
+        final Builder builder = new Builder(timestamps);
+        builder.saveType = saveType;
         return builder;
     }
 
+    @RequiredArgsConstructor
     public static final class Builder {
-        private String name;
+        private String name = "";
         private SaveType saveType = SaveType.JSON;
-        private final List<Timestamp> timestamps = new ArrayList<>();
+        private final List<Timestamp> timestamps;
+
+        public Builder() {
+            this.timestamps = new ArrayList<>();
+        }
 
         public String name() {
             return name;
@@ -49,12 +52,12 @@ public class Scenario {
             this.saveType = saveType;
         }
 
-        public Builder add(long time, Event... events) {
+        public Builder add(int time, Event... events) {
             this.add(false, time, events);
             return this;
         }
 
-        public Builder add(boolean waitForDialogue, long time, Event... events) {
+        public Builder add(boolean waitForDialogue, int time, Event... events) {
             this.timestamps.add(new Timestamp(waitForDialogue, time, new ArrayList<>(List.of(events))));
             return this;
         }
@@ -64,9 +67,7 @@ public class Scenario {
         }
 
         public Scenario build() {
-            final Scenario scenario = new Scenario(this.name, this.saveType);
-            scenario.timestamps.addAll(this.timestamps);
-            return scenario;
+            return new Scenario(this.name, this.saveType, this.timestamps);
         }
     }
 

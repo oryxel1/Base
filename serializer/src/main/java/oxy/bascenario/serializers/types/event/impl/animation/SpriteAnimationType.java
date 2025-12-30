@@ -3,7 +3,6 @@ package oxy.bascenario.serializers.types.event.impl.animation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;
@@ -36,7 +35,7 @@ public class SpriteAnimationType implements TypeWithName<SpriteAnimationEvent> {
     public void write(SpriteAnimationEvent stopAnimationEvent, ByteBuf buf) {
         buf.writeInt(stopAnimationEvent.id());
         buf.writeFloat(stopAnimationEvent.mixTime());
-        Types.STRING_TYPE.write(stopAnimationEvent.animationName());
+        Types.STRING_TYPE.write(stopAnimationEvent.animationName(), buf);
         buf.writeInt(stopAnimationEvent.trackIndex());
         buf.writeBoolean(stopAnimationEvent.loop());
     }

@@ -36,7 +36,7 @@ public class RotateElementType implements TypeWithName<RotateElementEvent> {
     @Override
     public void write(RotateElementEvent event, ByteBuf buf) {
         buf.writeInt(event.id());
-        Types.NULLABLE_INT.write(event.subId());
+        Types.NULLABLE_INT.write(event.subId(), buf);
         buf.writeInt(event.duration());
         Types.VECTOR_3F_TYPE.write(event.rotation(), buf);
         Types.EASING_TYPE.write(event.easing(), buf);

@@ -66,7 +66,8 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
         boolean background = buf.readBoolean();
 
         final List<Dialogue> dialogues = new ArrayList<>();
-        for (int i = 0; i < buf.readInt(); i++) {
+        int length = buf.readInt();
+        for (int i = 0; i < length; i++) {
             dialogues.add(Types.DIALOGUE_TYPE.read(buf));
         }
 

@@ -31,8 +31,8 @@ public class AddElementType implements TypeWithName<AddElementEvent> {
     @Override
     public void write(AddElementEvent addElementEvent, ByteBuf buf) {
         buf.writeInt(addElementEvent.id());
-        Types.RENDER_LAYER_TYPE.write(addElementEvent.layer(), buf);
         Types.ELEMENT_TYPE.write(addElementEvent.element(), buf);
+        Types.RENDER_LAYER_TYPE.write(addElementEvent.layer(), buf);
     }
 
     @Override

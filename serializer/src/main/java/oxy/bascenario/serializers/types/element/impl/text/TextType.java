@@ -53,7 +53,8 @@ public class TextType implements TypeWithName<Text> {
     @Override
     public Text read(ByteBuf buf) {
         final List<TextSegment> segments = new ArrayList<>();
-        for (int i = 0; i < buf.readInt(); i++) {
+        int length = buf.readInt();
+        for (int i = 0; i < length; i++) {
             segments.add(ElementTypes.TEXT_SEGMENT_TYPE.read(buf));
         }
 

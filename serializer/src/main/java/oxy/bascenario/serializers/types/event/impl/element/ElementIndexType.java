@@ -32,7 +32,7 @@ public class ElementIndexType implements TypeWithName<ElementIndexEvent> {
     @Override
     public void write(ElementIndexEvent elementIndexEvent, ByteBuf buf) {
         buf.writeInt(elementIndexEvent.mainIndex());
-        Types.NULLABLE_INT.write(elementIndexEvent.subIndex());
+        Types.NULLABLE_INT.write(elementIndexEvent.subIndex(), buf);
         buf.writeInt(elementIndexEvent.newIndex());
         buf.writeBoolean(elementIndexEvent.swap());
     }

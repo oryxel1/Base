@@ -37,7 +37,7 @@ public class PositionElementType implements TypeWithName<PositionElementEvent> {
     @Override
     public void write(PositionElementEvent event, ByteBuf buf) {
         buf.writeInt(event.id());
-        Types.NULLABLE_INT.write(event.subId());
+        Types.NULLABLE_INT.write(event.subId(), buf);
         buf.writeInt(event.duration());
         Types.VECTOR_2F_TYPE.write(event.vec(), buf);
         Types.EASING_TYPE.write(event.easing(), buf);

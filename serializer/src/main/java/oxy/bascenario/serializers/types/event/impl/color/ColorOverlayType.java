@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
-import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;
@@ -47,7 +46,7 @@ public class ColorOverlayType implements TypeWithName<ColorOverlayEvent> {
     public void write(ColorOverlayEvent event, ByteBuf buf) {
         Types.NULLABLE_INT.write(event.id().orElse(null), buf);
         buf.writeInt(event.duration());
-        Types.COLOR_TYPE.write(event.color());
+        Types.COLOR_TYPE.write(event.color(), buf);
         if (event.id().isEmpty()) {
             Types.RENDER_LAYER_TYPE.write(event.renderLayer(), buf);
         }

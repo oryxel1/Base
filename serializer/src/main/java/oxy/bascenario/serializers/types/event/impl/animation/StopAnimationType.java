@@ -30,7 +30,7 @@ public class StopAnimationType implements TypeWithName<StopAnimationEvent> {
     @Override
     public void write(StopAnimationEvent stopAnimationEvent, ByteBuf buf) {
         buf.writeInt(stopAnimationEvent.id());
-        Types.STRING_TYPE.write(stopAnimationEvent.name());
+        Types.STRING_TYPE.write(stopAnimationEvent.name(), buf);
     }
 
     @Override

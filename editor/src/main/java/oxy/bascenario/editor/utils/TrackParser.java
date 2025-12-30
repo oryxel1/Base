@@ -46,7 +46,7 @@ public class TrackParser {
             long delay = time - last;
             last = time;
 
-            timestamps.add(new Timestamp(entry.getValue().left(), delay, entry.getValue().right()));
+            timestamps.add(new Timestamp(entry.getValue().left(), (int) delay, entry.getValue().right()));
         }
 
         return timestamps;

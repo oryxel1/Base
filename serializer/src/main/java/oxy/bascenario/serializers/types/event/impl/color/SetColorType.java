@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.serializers.Types;
-import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
 
 public class SetColorType implements TypeWithName<SetColorEvent> {

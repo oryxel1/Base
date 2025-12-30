@@ -85,23 +85,23 @@ public class EventAdder {
 
         add("Move Object",
                 "This move an object.",
-                new PositionElementEvent(0, 1000L, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.POSITION));
+                new PositionElementEvent(0, 1000, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 
         add("Offset Object",
                 "Offset an object by a certain value, so that no matter where the object is the position will always be offset by that value.",
-                new PositionElementEvent(0, 1000L, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.OFFSET));
+                new PositionElementEvent(0, 1000, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.OFFSET));
 
         add("Scale Object",
                 "This scale an object.",
-                new PositionElementEvent(0, 1000L, new Vec2(1, 1), Easing.LINEAR, PositionElementEvent.Type.SCALE));
+                new PositionElementEvent(0, 1000, new Vec2(1, 1), Easing.LINEAR, PositionElementEvent.Type.SCALE));
 
         add("Pivot Object",
                 "Define a \"pivot\" point, this will be the point used when rotating and the object will be rotate around this point.",
-                new PositionElementEvent(0, 1000L, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.PIVOT));
+                new PositionElementEvent(0, 1000, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.PIVOT));
 
         add("Rotate Object",
                 "This rotate an object.",
-                new RotateElementEvent(0, 1000L, new Vec3(0, 0, 0), Easing.LINEAR));
+                new RotateElementEvent(0, 1000, new Vec3(0, 0, 0), Easing.LINEAR));
 
         add("Apply Effect",
                 "Apply an effect on top of any element on the selected track, eg: hologram, blur, rainbow.",
@@ -125,7 +125,7 @@ public class EventAdder {
 //        add("Stop Sound", new StopSoundEvent(0, 100));
         add("Sound Volume",
                 "Change a playing sound volume.",
-                new SoundVolumeEvent(0, 1000L, 1, Easing.LINEAR));
+                new SoundVolumeEvent(0, 1000, 1, Easing.LINEAR));
 //        add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
 //        add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));
 

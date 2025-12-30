@@ -37,20 +37,10 @@ import java.util.Set;
 public class ElementTypes implements Type<Object> {
     public static final Type<FontType> FONT_TYPE_TYPE = new EnumType<>(FontType.class, FontType.values());
 
-//    public static final Type<TextStyle> TEXT_STYLE_TYPE = new EnumType<>(TextStyle.class, TextStyle.values());
     public static final Type<Set<TextStyle>> TEXT_STYLES_TYPE = new TextStylesType();
     public static final Type<TextSegment> TEXT_SEGMENT_TYPE = new TextSegmentType();
 
     public static final TypeWithName<Text> TEXT_TYPE = new TextType();
-//    public static final ElementType<Sprite> SPRITE_TYPE = new SpriteType();
-//    public static final ElementType<Preview> PREVIEW_TYPE = new PreviewType();
-//    public static final ElementType<LocationInfo> LOCATION_INFO_TYPE = new LocationInfoType();
-//    public static final ElementType<Circle> CIRCLE_TYPE = new CircleType();
-//    public static final ElementType<Rectangle> RECTANGLE_TYPE = new RectangleType();
-//    public static final ElementType<Triangle> TRIANGLE_TYPE = new TriangleType();
-//    public static final ElementType<Image> IMAGE_TYPE = new ImageType();
-//    public static final ElementType<AnimatedImage> ANIMATED_IMAGE_TYPE = new AnimatedImageType();
-//    public static final ElementType<Emoticon> EMOTICON_TYPE = new EmoticonType();
 
     private static final Map<Class<?>, TypeWithName<?>> CLASS_TO_TYPE = new HashMap<>();
     private static final Map<Integer, TypeWithName<?>> ID_TO_TYPE = new HashMap<>();

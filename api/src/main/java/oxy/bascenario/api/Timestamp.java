@@ -8,10 +8,10 @@ import java.util.List;
 @ToString
 public class Timestamp {
     private boolean waitForDialogue;
-    private long time;
+    private int time;
     private final List<Event> events;
 
-    public Timestamp(boolean waitForDialogue, long time, List<Event> events) {
+    public Timestamp(boolean waitForDialogue, int time, List<Event> events) {
         this.waitForDialogue = waitForDialogue;
         this.time = time;
         this.events = events;
@@ -25,11 +25,11 @@ public class Timestamp {
         this.waitForDialogue = waitForDialogue;
     }
 
-    public long time() {
+    public int time() {
         return this.time;
     }
 
-    public void time(long time) {
+    public void time(int time) {
         this.time = time;
     }
 

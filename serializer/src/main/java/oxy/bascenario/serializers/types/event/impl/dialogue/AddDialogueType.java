@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;
@@ -55,7 +54,8 @@ public class AddDialogueType implements TypeWithName<AddDialogueEvent> {
     public AddDialogueEvent read(ByteBuf buf) {
         int index = buf.readInt();
         final List<Dialogue> dialogues = new ArrayList<>();
-        for (int i = 0; i < buf.readInt(); i++) {
+        int length = buf.readInt();
+        for (int i = 0; i < length; i++) {
             dialogues.add(Types.DIALOGUE_TYPE.read(buf));
         }
 
