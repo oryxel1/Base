@@ -25,7 +25,7 @@ public class TextType implements TypeWithName<Text> {
         for (TextSegment segment : text.segments()) {
             array.add(ElementTypes.TEXT_SEGMENT_TYPE.write(segment));
         }
-        object.add("segments", object);
+        object.add("segments", array);
         object.addProperty("size", text.size());
         return object;
     }
