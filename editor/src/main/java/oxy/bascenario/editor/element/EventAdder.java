@@ -150,14 +150,14 @@ public class EventAdder {
 
         long duration = TimeCompiler.compileTime(event);
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(event, null, null, false), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.ObjectOrEvent(event, null, null, false), duration));
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {
         int i = 0;
         Track track;
         while ((track = timeline.getTrack(i)) != null) {
-            if (!track.isOccupied(time, duration, null)) {
+            if (track.isNotOccupied(time, duration, null)) {
                 break;
             }
             i++;

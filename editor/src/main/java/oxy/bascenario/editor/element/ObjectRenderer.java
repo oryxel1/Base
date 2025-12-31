@@ -1,0 +1,172 @@
+package oxy.bascenario.editor.element;
+
+import com.badlogic.gdx.math.MathUtils;
+import imgui.ImColor;
+import imgui.ImDrawList;
+import imgui.ImGui;
+import imgui.ImVec2;
+import imgui.flag.ImGuiKey;
+import lombok.RequiredArgsConstructor;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
+import org.lwjgl.glfw.GLFW;
+import oxy.bascenario.editor.utils.TimeCompiler;
+
+@RequiredArgsConstructor
+public class ObjectRenderer {
+    private final Track track;
+    private final Timeline timeline;
+    private final Track.ObjectOrEvent object;
+
+    private float x, y, width;
+    private float dragX, dragY;
+    private boolean dragging;
+
+    private boolean resizing;
+
+    public void render(float x, float y, float width, Track.ObjectOrEvent next) {
+        if (timeline.getSelectedElement() == this && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+            track.remove(object.start);
+            timeline.updateScenario(true);
+            return;
+        }
+
+        final float maxTime = Timeline.DEFAULT_MAX_TIME * timeline.getScale();
+        final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        this.width = (object.duration / maxTime) * width;
+        if (!this.dragging) {
+            this.x = x + (object.start / maxTime) * width;
+            this.y = y;
+
+            if (timeline.getScroll() > 0) {
+                final float ratio = (Timeline.DEFAULT_MAX_TIME * timeline.getScroll() * timeline.getScale()) / (Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+                this.x -= ratio * (size.x - size.x / 4);
+            }
+            float distance = this.x - (pos.x + size.x / 4);
+            this.x = Math.max(this.x, pos.x + size.x / 4);
+            if (distance < 0) {
+                this.width = Math.max(0, distance + this.width);
+            }
+        }
+
+        if (ImGui.isWindowFocused()) {
+            handleDragging(next);
+        } else {
+            dragging = false;
+            track.timeline.getScreen().setDragging(null);
+        }
+
+        if (this.width <= 0) {
+            return;
+        }
+
+        drawList.addRectFilled(new ImVec2(this.x, this.y), new ImVec2(this.x + this.width, this.y + 50), ImColor.rgb(75, 114, 180), 5f);
+        if (timeline.getSelectedElement() == this) {
+            drawList.addRect(new ImVec2(this.x, this.y), new ImVec2(this.x + this.width, this.y + 50), ImColor.rgb(255, 255, 255), 5f);
+        }
+
+        drawList.addText(new ImVec2(this.x, this.y), ImColor.rgb(0, 0, 0), object.object.getClass().getSimpleName());
+    }
+
+    public void handleDragging(Track.ObjectOrEvent next) {
+        boolean resize = handleDurationResize(next);
+
+        final ImVec2 mouse = ImGui.getMousePos(), pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
+        boolean mouseDown = ImGui.getIO().getMouseDown(0), mouseClicked = ImGui.getIO().getMouseClicked(0);
+
+        if (this.dragging) {
+            this.x = Math.max(mouse.x - dragX, pos.x + size.x / 4);
+            this.y = Math.max(mouse.y - dragY, pos.y + 80);
+        }
+
+        final boolean hoveringOver = mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + 50;
+        if (mouseClicked && hoveringOver) {
+            timeline.setSelectedElement(this);
+        }
+
+        boolean here = (track.timeline.getScreen().getDragging() == null || track.timeline.getScreen().getDragging() == this);
+
+        boolean oldDrag = this.dragging;
+        this.dragging = mouseDown && hoveringOver && here && resize;
+        if (this.dragging) {
+            this.dragX = mouse.x - x;
+            this.dragY = mouse.y - y;
+            track.timeline.getScreen().setDragging(this);
+            return;
+        }
+
+        if (oldDrag) {
+            int ceil = MathUtils.ceil((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+            int floor = MathUtils.floor((this.y - (ImGui.getWindowPosY() + 80)) / 50f);
+            int trackId;
+            if (Math.abs(this.y - (ImGui.getWindowPosY() + 80 + (50 * ceil))) > Math.abs(this.y - (ImGui.getWindowPosY() + 80 + (50 * floor)))) {
+                trackId = floor;
+            } else {
+                trackId = ceil;
+            }
+
+            final float ratio = (this.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+            long time = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+
+            Track newTrack = track.timeline.getTrack(trackId);
+            if ((newTrack == null || newTrack.isNotOccupied(time, object.duration, object)) && newTrack != track) {
+                track.remove(object.start);
+
+                if (newTrack == null) {
+                    newTrack = new Track(timeline, trackId);
+                    track.timeline.putTrack(trackId, newTrack);
+                }
+                newTrack.put(time, object);
+            }
+        }
+
+        if (track.timeline.getScreen().getDragging() == this) {
+            track.timeline.getScreen().setDragging(null);
+        }
+    }
+
+    private boolean handleDurationResize(Track.ObjectOrEvent nextObject) {
+        final ImVec2 mouse = ImGui.getMousePos(), size = ImGui.getWindowSize();
+        boolean yMatch = mouse.y >= y && mouse.y <= y + 50;
+        if (resizing && yMatch) {
+            float delta = mouse.x - (x + width);
+            long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * (delta / (size.x - size.x / 4)));
+
+            long next = nextObject != null ? nextObject.start : -1;
+            if (next != -1) {
+                long max = next - (object.start + object.duration);
+                duration = Math.min(duration, max);
+            }
+
+            if (TimeCompiler.canResize(object.object)) {
+                object.duration = Math.max(0, object.duration + duration);
+                object.object = TimeCompiler.addTime(object.object, (int) duration);
+
+                this.width = ((float) object.duration / Timeline.DEFAULT_MAX_TIME * timeline.getScale()) * (size.x - size.x / 4);
+                timeline.updateScenario(true);
+            }
+        }
+        resizing = false;
+
+        if (!yMatch) {
+            return false;
+        }
+        float xDistanceToMax = Math.abs(mouse.x - (x + width));
+        if (xDistanceToMax > 1) {
+            return true;
+        }
+
+        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_HRESIZE_CURSOR));
+        if (!ImGui.isMouseDown(0)) {
+            return false;
+        }
+
+        this.dragging = false;
+        track.timeline.getScreen().setDragging(null);
+        resizing = true;
+
+        return true;
+    }
+}

@@ -17,7 +17,6 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.SoundAsElement;
@@ -99,14 +98,14 @@ public class ElementAdder {
         }
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, null, false), duration));
+        track.put(timeline.getTimestamp(), new Pair<>(new Track.ObjectOrEvent(element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, null, false), duration));
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {
         int i = 0;
         Track track;
         while ((track = timeline.getTrack(i)) != null) {
-            if (!track.isOccupied(time, duration, null)) {
+            if (track.isNotOccupied(time, duration, null)) {
                 break;
             }
             i++;

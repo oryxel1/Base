@@ -40,7 +40,7 @@ public class Timeline {
     }
 
     @Getter @Setter
-    private Track.ElementRenderer selectedElement;
+    private ObjectRenderer selectedElement;
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
