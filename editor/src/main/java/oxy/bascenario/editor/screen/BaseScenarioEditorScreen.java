@@ -38,11 +38,6 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         this.inspector = new Inspector(this, this.timeline);
     }
 
-    @Override
-    public void show() {
-        this.timeline.init();
-    }
-
     private long lastUpdate;
     @Override
     public void render(float delta) {

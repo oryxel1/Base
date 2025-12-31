@@ -12,10 +12,11 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
-import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
@@ -134,16 +135,8 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
     }
 
-    private static Font TITLE, SUBTITLE;
     private void renderTitle() {
         renderTitleBox();
-
-        if (TITLE == null) {
-            TITLE = FontUtils.getFont("NotoSansSemiBold", 76);
-        }
-        if (SUBTITLE == null) {
-            SUBTITLE = FontUtils.getFont("NotoSansSemiBold", 42);
-        }
 
         int alpha = Math.round(titleFade.getValue());
         if (isDoingExitingFade()) {
@@ -152,9 +145,9 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
         final float scale = this.titlePopup.getValue();
         {
-            final TextRun text = TextRun.fromString(TITLE, this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
-            float textCenterX = Math.max(0, 1920 / 2F - (ThinGL.rendererText().getVisualWidth(text.shape()) * scale / 2));
-            float textCenterY = Math.max(0, 1080 / 2F - (ThinGL.rendererText().getVisualHeight(text.shape()) * scale / 2)) + 5;
+            final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
+            float textCenterX = Math.max(0, 1920 / 2F - (TextUtils.getVisualWidth(76, text.shape()) * scale / 2));
+            float textCenterY = Math.max(0, 1080 / 2F - (TextUtils.getVisualHeight(76, text.shape()) * scale / 2)) + 5;
             if (!element.subtitle().isEmpty()) {
                 textCenterY += 32;
             }
@@ -162,7 +155,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textCenterX, textCenterY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 0, 0);
+            TextUtils.textRun(76, text, 0, 0);
             GLOBAL_RENDER_STACK.popMatrix();
         }
 
@@ -171,9 +164,9 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         }
 
         {
-            final TextRun text = TextRun.fromString(SUBTITLE, this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
-            float width = ThinGL.rendererText().getVisualWidth(text.shape());
-            float height = ThinGL.rendererText().getVisualHeight(text.shape());
+            final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
+            float width = TextUtils.getVisualWidth(42, text.shape());
+            float height = TextUtils.getVisualHeight(42, text.shape());
             float textCenterX = Math.max(0, 1920 / 2F - (width * scale / 2));
             float textCenterY = Math.max(0, 1080 / 2F - (height * scale / 2)) - 60;
 
@@ -181,7 +174,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             GLOBAL_RENDER_STACK.translate(textCenterX, textCenterY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, -10, 20, width + 15, 28, Color.fromRGBA(250, 238, 129, Math.round(255 * globalFade.getValue())));
-            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 0, 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
+            TextUtils.textRun(42, text, 0, 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
         }
     }

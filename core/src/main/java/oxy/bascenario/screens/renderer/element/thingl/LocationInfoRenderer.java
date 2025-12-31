@@ -6,19 +6,18 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
-import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
-import oxy.bascenario.utils.FontUtils;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.font.FontUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
-    private static final Font FONT = FontUtils.getFont("NotoSansSemiBold", 40);
     private static final float Y = 200, HEIGH = 64.8F, SEPARATOR_Y = 216.2f, SEPARATOR_HEIGH = HEIGH / 2f;
 
     private final long start = TimeUtils.currentTimeMillis();
@@ -40,14 +39,14 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
             this.text.setTarget(0f, TimeUtils.currentTimeMillis() - distance);
         }
 
-        final TextRun text = TextRun.fromString(FONT, element.location(), Color.WHITE.withAlphaF(this.text.getValue()));
-        float width = ThinGL.rendererText().getVisualWidth(text.shape()) + 85;
+        final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, element.location(), Color.WHITE.withAlphaF(this.text.getValue()));
+        float width = TextUtils.getVisualWidth(40, text.shape()) + 85;
 
         Color color = Color.WHITE.withAlphaF(this.box.getValue());
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, Y, width, Y + HEIGH, Color.fromRGB(85, 91, 124).withAlphaF(this.box.getValue()));
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 30, SEPARATOR_Y, 35, SEPARATOR_Y + SEPARATOR_HEIGH, Color.fromRGB(182, 182, 182).withAlphaF(this.box.getValue()));
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/other/location_info.png"), width, Y,  30,  HEIGH, color);
-        ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, text, 56, Y + SEPARATOR_HEIGH + (ThinGL.rendererText().getLogicalHeight(text.shape()) / 2), RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        TextUtils.textRun(40, text, 56, Y + SEPARATOR_HEIGH + (TextUtils.getLogicalHeight(40, text.shape()) / 2), RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 
     @Override

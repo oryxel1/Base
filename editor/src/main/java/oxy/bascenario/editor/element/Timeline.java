@@ -3,13 +3,10 @@ package oxy.bascenario.editor.element;
 import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
-import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
-import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.Map;
@@ -64,13 +61,6 @@ public class Timeline {
     @Setter @Getter
     private long timestamp;
     private long since;
-
-    private ImFont timestampFont, elapsedTimestampFont, trackNameFont;
-    public void init() {
-        this.timestampFont = FontUtils.getImFont("NotoSansSemiBold", 20);
-        this.elapsedTimestampFont = FontUtils.getImFont("NotoSansSemiBold", 30);
-        this.trackNameFont = FontUtils.getImFont("NotoSansRegular", 35);
-    }
 
     public void render() {
 //        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR));
@@ -141,7 +131,7 @@ public class Timeline {
 
             drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + 50), ImColor.rgb(33, 33, 33));
 
-            ImGui.pushFont(this.trackNameFont);
+            ImGui.pushFont(FontUtils.IM_FONT_REGULAR_35);
             drawList.addText(new ImVec2(pos.x + 10, y), ImColor.rgb(255, 255, 255), "Track " + i);
             ImGui.popFont();
 
@@ -162,7 +152,7 @@ public class Timeline {
 
         drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y), new ImVec2(pos.x + size.x, pos.y + size.y), ImColor.rgb(20, 19, 24));
         for (int i = 0; i <= 5; i++) {
-            ImGui.pushFont(this.timestampFont);
+            ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD_20);
             long time = (long) ((DEFAULT_MAX_TIME * scale * scroll) + (DEFAULT_MAX_TIME * scale * (i / 5f)));
             float segmentX = timestampToPosition(time, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
 
@@ -178,7 +168,7 @@ public class Timeline {
 
         drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80), ImColor.rgb(50, 50, 50));
         drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 80), ImColor.rgb(50, 50, 50));
-        ImGui.pushFont(this.elapsedTimestampFont);
+        ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD_30);
         drawList.addText(pos.x + 20, pos.y + 21, ImColor.rgb(255, 255, 255), format(timestamp));
         ImGui.popFont();
 

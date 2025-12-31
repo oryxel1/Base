@@ -11,9 +11,10 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.Pair;
 import oxy.bascenario.utils.TimeUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +50,12 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             final Text text = dialogue.getDialogue();
 
             for (final TextSegment segment : text.segments()) {
-                Font font = FontUtils.toFont(scenario, segment, text);
+                Font font = FontUtils.toFont(scenario, segment);
 
                 for (char c : segment.text().toCharArray()) {
                     final String next = texts.get(texts.size() - 1).builder().toString() + c;
                     final TextRun run = new TextRun(font, new net.raphimc.thingl.text.TextSegment(next, Color.WHITE, segment.toFlags()));
-                    if (ThinGL.rendererText().getVisualWidth(run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
+                    if (TextUtils.getVisualWidth(text.size(), run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
                         texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
                         if (c == '\n') {
                             continue;
@@ -72,7 +73,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
             for (final TextBuilder builder : texts) {
-                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time));
+                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time, text.size()));
                 time += msPerWord * builder.builder.length();
             }
         }
@@ -83,12 +84,8 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
-
-    @RequiredArgsConstructor
-    private static final class DialogueText {
-        private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
-        private final float speed;
-        private final long distance;
+    private record DialogueText(List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
+                                long distance, int size) {
     }
 
     @Override
@@ -145,8 +142,8 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final TextLine line = new TextLine(segments);
-            ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
-            y += ThinGL.rendererText().getLogicalHeight(line.shape()) + 5;
+            TextUtils.textLine(text.size(), line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+            y += TextUtils.getLogicalHeight(text.size(), line.shape()) + 5;
         }
 
         this.finished = done == this.texts.size();

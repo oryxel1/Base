@@ -140,8 +140,6 @@ public class ScenarioScreen extends ExtendableScreen {
         for (RenderLayer layer : RenderLayer.values()) {
             this.elements.put(start++, new ColorOverlayRenderer(layer));
         }
-
-        this.dialogueRenderer.create();
     }
 
     @Override

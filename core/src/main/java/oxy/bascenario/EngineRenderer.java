@@ -20,6 +20,7 @@ import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.*;
+import oxy.bascenario.utils.font.FontUtils;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {

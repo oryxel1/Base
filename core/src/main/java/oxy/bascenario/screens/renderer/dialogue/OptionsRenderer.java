@@ -8,7 +8,8 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.animation.AnimationUtils;
-import oxy.bascenario.utils.FontUtils;
+import oxy.bascenario.utils.font.FontUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.Map;
 
@@ -72,18 +73,18 @@ public class OptionsRenderer {
 
             float textScale = 1;
             // For fuck’s sake, I don't fucking know what the actual font is, It's slightly thinner than noto sans regular that for sure.
-            TextRun textRun = TextRun.fromString(FontUtils.getFont("NotoSansRegular", 44), text, TEXT_COLOR.withAlphaF(alpha));
-            if (ThinGL.rendererText().getVisualWidth(textRun.shape()) > buttonWidth - 100) {
-                textScale = ThinGL.rendererText().getVisualWidth(textRun.shape()) / (buttonWidth - 100);
+            TextRun textRun = TextRun.fromString(FontUtils.DEFAULT, text, TEXT_COLOR.withAlphaF(alpha));
+            if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
+                textScale = TextUtils.getVisualWidth(44, textRun.shape()) / (buttonWidth - 100);
             }
 
-            float textX = buttonX + (buttonWidth / 2) - (ThinGL.rendererText().getVisualWidth(textRun.shape()) * textScale * scale) / 2;
-            float textY = buttonY + (buttonHeight / 2) - (ThinGL.rendererText().getVisualHeight(textRun.shape()) * textScale * scale) / 2;
+            float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
+            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getVisualHeight(44, textRun.shape()) * textScale * scale) / 2;
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textX + 7, textY + 1, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, textRun, 0, 0);
+            TextUtils.textRun(44, textRun, 0, 0);
             GLOBAL_RENDER_STACK.popMatrix();
 
             i++;
