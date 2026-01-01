@@ -4,6 +4,8 @@ import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -96,25 +98,33 @@ public class Inspector {
 
             case PositionElementEvent event -> PositionInspector.render(event);
             case RotateElementEvent event -> PositionInspector.render(event);
+
+            case SetBackgroundEvent event -> BackgroundInspector.render(event);
+            case ClearBackgroundEvent event -> BackgroundInspector.render(event);
+
             default -> old;
         };
 
-        if (!old.equals(object.object) || requireWait != object.requireWait || object.layer != layer) {
+        boolean objectEquals = !old.equals(object.object);
+        if (objectEquals || requireWait != object.requireWait || object.layer != layer) {
             object.requireWait = requireWait;
             object.layer = layer;
 
-            long duration = object.object instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(object.object);
-            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
-            if (duration == Long.MAX_VALUE) {
-                duration = 0;
-            }
-            if (oldDuration == Long.MAX_VALUE) {
-                oldDuration = 0;
-            }
-            duration += Math.max(0, object.duration - oldDuration);
-            object.duration = duration;
+            if (objectEquals) {
+                long duration = object.object instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(object.object);
+                long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
+                if (duration == Long.MAX_VALUE) {
+                    duration = 0;
+                }
+                if (oldDuration == Long.MAX_VALUE) {
+                    oldDuration = 0;
+                }
+                duration += Math.max(0, object.duration - oldDuration);
+                object.duration = duration;
 
-            object.track = findNonOccupiedSlot(object.track, object.start, object.duration, object);
+                object.track = findNonOccupiedSlot(object.track, object.start, object.duration, object);
+            }
+
             timeline.queueUpdate = true;
         }
 

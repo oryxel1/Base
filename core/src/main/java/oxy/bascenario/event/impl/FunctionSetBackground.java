@@ -11,6 +11,6 @@ public class FunctionSetBackground extends FunctionEvent<SetBackgroundEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-//        screen.setBackground(event.getBackground());
+        screen.background(event.background(), event.duration());
     }
 }

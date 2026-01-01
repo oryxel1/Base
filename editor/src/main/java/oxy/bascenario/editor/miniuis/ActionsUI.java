@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -24,6 +26,7 @@ import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
@@ -119,6 +122,16 @@ public class ActionsUI {
         add("Set Color",
                 "Like color overlay, but instead of overlaying color it change the object color itself.",
                 new SetColorEvent(0, 500, Color.WHITE));
+
+        ImGui.separatorText("Background");
+
+        add("Set Background",
+                "A simple way to change the background with fade duration.",
+                new SetBackgroundEvent(new FileInfo("assets/base/black.png", false, true), 500));
+
+        add("Clear Background",
+                "Clear the current background and fade it to black!",
+                new ClearBackgroundEvent(500));
 
         ImGui.separatorText("Sounds");
 

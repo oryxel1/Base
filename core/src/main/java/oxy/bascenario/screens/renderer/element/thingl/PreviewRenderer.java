@@ -102,7 +102,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
     private void renderBackground() {
         if (element.background() != null) {
-            ThinGLUtils.renderBackground(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture(scenario.getName(), element.background()), Color.WHITE);
+            ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), element.background()), Color.WHITE);
             ThinGLUtils.blurRectangle(0, 0, 1920, 1080, Math.round(18 * this.globalFade.getValue())); // Very nice blur thanks to ThinGL.
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
         } else {

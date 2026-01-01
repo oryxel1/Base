@@ -5,5 +5,5 @@ import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.utils.FileInfo;
 
 @Builder(toBuilder = true, builderClassName = "Builder")
-public record SetBackgroundEvent(FileInfo background, int duration) implements Event {
+public record ClearBackgroundEvent(int duration) implements Event {
 }

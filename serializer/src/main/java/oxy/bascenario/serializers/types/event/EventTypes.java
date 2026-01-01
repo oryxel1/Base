@@ -3,6 +3,8 @@ package oxy.bascenario.serializers.types.event;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
+import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -22,6 +24,8 @@ import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.event.impl.animation.PlayAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.SpriteAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.StopAnimationType;
+import oxy.bascenario.serializers.types.event.impl.background.ClearBackgroundType;
+import oxy.bascenario.serializers.types.event.impl.background.SetBackgroundType;
 import oxy.bascenario.serializers.types.event.impl.color.ColorOverlayType;
 import oxy.bascenario.serializers.types.event.impl.color.SetColorType;
 import oxy.bascenario.serializers.types.event.impl.dialogue.AddDialogueType;
@@ -70,6 +74,9 @@ public class EventTypes implements Type<Event> {
         put(StopAnimationEvent.class, new StopAnimationType());
         put(SpriteAnimationEvent.class, new SpriteAnimationType());
         put(PlayAnimationEvent.class, new PlayAnimationType());
+
+        put(SetBackgroundEvent.class, new SetBackgroundType());
+        put(ClearBackgroundEvent.class, new ClearBackgroundType());
     }
 
     @Override

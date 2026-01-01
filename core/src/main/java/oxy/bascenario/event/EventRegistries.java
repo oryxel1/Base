@@ -1,5 +1,6 @@
 package oxy.bascenario.event;
 
+import oxy.bascenario.api.event.ClearBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
@@ -42,9 +43,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EventRegistries {
-    public static Map<Class<? extends Event>, Class<? extends FunctionEvent>> EVENT_TO_FUNCTION = new HashMap<>();
+    public static Map<Class<? extends Event>, Class<? extends FunctionEvent<?>>> EVENT_TO_FUNCTION = new HashMap<>();
     static {
         EVENT_TO_FUNCTION.put(SetBackgroundEvent.class, FunctionSetBackground.class);
+        EVENT_TO_FUNCTION.put(ClearBackgroundEvent.class, FunctionClearBackground.class);
 
         EVENT_TO_FUNCTION.put(ColorOverlayEvent.class, FunctionColorOverlay.class);
         EVENT_TO_FUNCTION.put(SetColorEvent.class, FunctionSetColor.class);
