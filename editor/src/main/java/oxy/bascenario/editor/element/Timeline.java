@@ -125,10 +125,6 @@ public class Timeline {
 //        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
 
         for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            if (tracks.get(i) == null) {
-                tracks.put(i, new Track(this, i));
-            }
-
             drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + 50), ImColor.rgb(33, 33, 33));
 
             ImGui.pushFont(FontUtils.IM_FONT_REGULAR_35);
@@ -142,7 +138,11 @@ public class Timeline {
 
         y = pos.y + 80;
         for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            tracks.get(i).render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
+            final Track track = tracks.get(i);
+            if (track != null) {
+                track.render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
+            }
+
             y += 50;
         }
     }
