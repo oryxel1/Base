@@ -133,6 +133,8 @@ public class ObjectRenderer {
                         object.start = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
                     }
                     object.track = trackFromY(timeline, object.renderer.y);
+
+                    timeline.queueUpdate = true;
                 }
             });
 
@@ -174,6 +176,7 @@ public class ObjectRenderer {
                 object.object = TimeCompiler.addTime(object.object, (int) duration);
 
                 this.width = ((float) object.duration / Timeline.DEFAULT_MAX_TIME * timeline.getScale()) * (size.x - size.x / 4);
+                timeline.queueUpdate = true;
             }
 
             resizing = ImGui.isMouseDown(0);

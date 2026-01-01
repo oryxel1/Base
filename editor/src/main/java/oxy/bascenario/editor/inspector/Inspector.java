@@ -3,6 +3,7 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 
@@ -15,11 +16,11 @@ public class Inspector {
     public void render() {
         ImGui.begin("Inspector");
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
-//        final Track.ElementRenderer renderer = timeline.getSelectedElement();
-//        if (renderer == null) {
-//            ImGui.end();
-//            return;
-//        }
+        final ObjectOrEvent renderer = timeline.getSelectedObject();
+        if (renderer == null) {
+            ImGui.end();
+            return;
+        }
 
 //        Pair<Track.ObjectOrEvent, Long> pair = renderer.getPair();
 

@@ -28,15 +28,10 @@ public class Timeline {
         final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
         this.objects.add(objectOrEvent);
         this.objects.sort(Comparator.comparingLong(o -> o.start));
+
+        this.queueUpdate = true;
     }
 
-//    public void updateScenario(boolean updateScreen) {
-//        screen.getScenario().timestamps().clear();
-//        screen.getScenario().timestamps().addAll(TrackParser.parse(this.objects));
-//        if (updateScreen) {
-//            screen.update();
-//        }
-//    }
 
     @Getter @Setter
     private ObjectOrEvent selectedObject;
@@ -49,6 +44,8 @@ public class Timeline {
     public boolean isDragging(ObjectOrEvent object) {
         return this.draggingObject != null && object == this.draggingObject.object;
     }
+
+    public boolean queueUpdate;
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
@@ -117,6 +114,12 @@ public class Timeline {
             }
         }
 
+        if (this.queueUpdate) {
+            this.objects.sort(Comparator.comparingLong(o -> o.start));
+            this.screen.update();
+            this.queueUpdate = false;
+        }
+
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
         drawElapsedTimeSegments(size.x / 4, pos, size);
         drawTimelineSegments(size.x / 4, pos, size);
@@ -126,6 +129,7 @@ public class Timeline {
         if (this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
             this.objects.remove(this.selectedObject);
             this.selectedObject = null;
+            this.queueUpdate = true;
         }
 
         if (!this.isDragging()) {
