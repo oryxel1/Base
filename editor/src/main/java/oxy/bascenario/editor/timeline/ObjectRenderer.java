@@ -89,10 +89,6 @@ public class ObjectRenderer {
     private float draggingX, draggingY;
     private void handleMouse() {
         final boolean over = ImGui.isMouseHoveringRect(new ImVec2(x, y), new ImVec2(x + width, y + 50));
-        if (!over) {
-            return;
-        }
-
         final ImVec2 mouse = ImGui.getMousePos(), pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
 
         boolean dragging = timeline.isDragging(this.object);
@@ -103,7 +99,7 @@ public class ObjectRenderer {
 
         if (ImGui.isMouseDoubleClicked(0) && over) {
             timeline.setSelectedElement(this); // Selected an element.
-        } else if (ImGui.isMouseDown(0) && !timeline.isDragging()) {
+        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over) {
             // Start dragging an object if we can!
             timeline.setDraggingObject(new ObjectDragDrop(this.object) {
                 @Override
