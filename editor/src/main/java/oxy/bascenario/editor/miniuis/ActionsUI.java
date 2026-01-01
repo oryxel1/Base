@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.miniuis;
 
 import imgui.ImColor;
 import imgui.ImGui;
@@ -27,14 +27,14 @@ import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
-import oxy.bascenario.utils.Pair;
 
 import java.util.LinkedHashMap;
 
 @RequiredArgsConstructor
-public class EventAdder {
+public class ActionsUI {
     private static final Dialogue DUMMY_DIALOGUE = Dialogue.builder().add("Hello World!").build();
 
     private final BaseScenarioEditorScreen screen;
@@ -151,22 +151,23 @@ public class EventAdder {
         long duration = TimeCompiler.compileTime(event);
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
         track.put(timeline.getTimestamp(), duration, event, null, false);
+        if (ImGui.isAnyItemHovered())
     }
-
-    private Track findNonOccupiedSlot(long time, long duration) {
-        int i = 0;
-        Track track;
-        while ((track = timeline.getTrack(i)) != null) {
-            if (track.isNotOccupied(time, duration, null)) {
-                break;
-            }
-            i++;
-        }
-        if (track == null) {
-            track = new Track(timeline, i);
-            timeline.putTrack(i, track);
-        }
-
-        return track;
-    }
+//
+//    private Track findNonOccupiedSlot(long time, long duration) {
+//        int i = 0;
+//        Track track;
+//        while ((track = timeline.getTrack(i)) != null) {
+//            if (track.isNotOccupied(time, duration, null)) {
+//                break;
+//            }
+//            i++;
+//        }
+//        if (track == null) {
+//            track = new Track(timeline, i);
+//            timeline.putTrack(i, track);
+//        }
+//
+//        return track;
+//    }
 }

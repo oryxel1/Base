@@ -4,13 +4,10 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.event.element.AttachElementEvent;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
-import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.editor.element.Timeline;
-import oxy.bascenario.editor.element.Track;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.utils.Pair;
 import oxy.bascenario.api.effects.Sound;
 
@@ -116,17 +113,17 @@ public class TrackParser {
         return result;
     }
 
-    private static Track findNonOccupiedSlot(Timeline timeline, long time, long duration, Map<Integer, Track> tracks) {
-        int i = 0;
-        Track track;
-        while ((track = tracks.get(i)) != null) {
-            if (track.isNotOccupied(time, duration, null)) {
-                return track;
-            }
-            i++;
-        }
-        track = new Track(timeline, i);
-        tracks.put(i, track);
-        return track;
-    }
+//    private static Track findNonOccupiedSlot(Timeline timeline, long time, long duration, Map<Integer, Track> tracks) {
+//        int i = 0;
+//        Track track;
+//        while ((track = tracks.get(i)) != null) {
+//            if (track.isNotOccupied(time, duration, null)) {
+//                return track;
+//            }
+//            i++;
+//        }
+//        track = new Track(timeline, i);
+//        tracks.put(i, track);
+//        return track;
+//    }
 }

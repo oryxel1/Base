@@ -6,7 +6,7 @@ import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.element.AssetsUI;
+import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.editor.utils.AudioUtils;
 import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.utils.ImGuiUtils;

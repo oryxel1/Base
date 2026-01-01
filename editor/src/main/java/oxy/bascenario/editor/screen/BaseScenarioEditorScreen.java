@@ -10,10 +10,10 @@ import lombok.Setter;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.element.AssetsUI;
-import oxy.bascenario.editor.element.ElementAdder;
-import oxy.bascenario.editor.element.EventAdder;
-import oxy.bascenario.editor.element.Timeline;
+import oxy.bascenario.editor.miniuis.AssetsUI;
+import oxy.bascenario.editor.miniuis.ObjectsUI;
+import oxy.bascenario.editor.miniuis.ActionsUI;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
 
 import oxy.bascenario.utils.ExtendableScreen;
@@ -23,8 +23,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
     @Getter
     protected final Scenario.Builder scenario;
     protected final Timeline timeline;
-    protected final ElementAdder elementAdder;
-    protected final EventAdder eventAdder;
+    protected final ObjectsUI objectsUI;
+    protected final ActionsUI eventAdder;
     protected final Inspector inspector;
 
     @Getter @Setter
@@ -33,8 +33,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
     public BaseScenarioEditorScreen(Scenario.Builder scenario) {
         this.scenario = scenario;
         this.timeline = new Timeline(this, scenario);
-        this.elementAdder = new ElementAdder(this, this.timeline);
-        this.eventAdder = new EventAdder(this, this.timeline);
+        this.objectsUI = new ObjectsUI(this, this.timeline);
+        this.eventAdder = new ActionsUI(this, this.timeline);
         this.inspector = new Inspector(this, this.timeline);
     }
 
@@ -45,7 +45,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
 
         renderMenuBar();
         timeline.render();
-        elementAdder.render();
+        objectsUI.render();
         eventAdder.render();
         inspector.render();
         AssetsUI.render(timeline, scenario);

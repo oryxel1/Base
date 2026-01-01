@@ -1,19 +1,17 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.miniuis;
 
 import imgui.ImColor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTableColumnFlags;
 import imgui.flag.ImGuiTableFlags;
 import imgui.flag.ImGuiTreeNodeFlags;
-import imgui.flag.ImGuiWindowFlags;
-import imgui.type.ImBoolean;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 

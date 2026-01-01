@@ -3,10 +3,8 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.editor.element.Timeline;
-import oxy.bascenario.editor.element.Track;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
-import oxy.bascenario.utils.Pair;
 
 @RequiredArgsConstructor
 public class Inspector {

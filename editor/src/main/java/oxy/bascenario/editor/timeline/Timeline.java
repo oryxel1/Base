@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.timeline;
 
 import imgui.*;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 // Shit code but whatever.
@@ -20,35 +21,26 @@ public class Timeline {
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
     @Getter
-    private final Map<Integer, Track> tracks;
-    public void putTrack(int id, Track track) {
-        this.tracks.put(id, track);
-    }
-    public Track getTrack(int id) {
-        return this.tracks.get(id);
-    }
+    private final List<ObjectOrEvent> objects = new ArrayList<>();
     public void updateScenario(boolean updateScreen) {
-        if (tracks == null) {
-            return;
-        }
-
-        screen.getScenario().timestamps().clear();
-        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
-        if (updateScreen) {
-            screen.update();
-        }
+//        screen.getScenario().timestamps().clear();
+//        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
+//        if (updateScreen) {
+//            screen.update();
+//        }
     }
 
     @Getter @Setter
     private ObjectRenderer selectedElement;
+    public ObjectDragDrop dragAndDrop;
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
-        if (scenario == null) {
-            tracks = new ConcurrentHashMap<>();
-        } else {
-            tracks = TrackParser.parse(this, scenario.build());
-        }
+//        if (scenario == null) {
+//            tracks = new ConcurrentHashMap<>();
+//        } else {
+//            tracks = TrackParser.parse(this, scenario.build());
+//        }
     }
 
     @Setter @Getter
@@ -138,10 +130,10 @@ public class Timeline {
 
         y = pos.y + 80;
         for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            final Track track = tracks.get(i);
-            if (track != null) {
-                track.render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
-            }
+//            final Track track = tracks.get(i);
+//            if (track != null) {
+//                track.render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
+//            }
 
             y += 50;
         }

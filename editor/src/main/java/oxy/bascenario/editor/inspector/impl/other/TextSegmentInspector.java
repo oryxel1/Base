@@ -8,7 +8,7 @@ import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.TextStyle;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.element.AssetsUI;
+import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;

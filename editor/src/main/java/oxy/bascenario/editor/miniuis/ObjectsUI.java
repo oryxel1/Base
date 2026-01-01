@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.miniuis;
 
 import imgui.ImColor;
 import imgui.ImGui;
@@ -17,16 +17,16 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.SoundAsElement;
-import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ElementAdder {
+public class ObjectsUI {
     private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
@@ -101,20 +101,20 @@ public class ElementAdder {
         track.put(timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
-    private Track findNonOccupiedSlot(long time, long duration) {
-        int i = 0;
-        Track track;
-        while ((track = timeline.getTrack(i)) != null) {
-            if (track.isNotOccupied(time, duration, null)) {
-                break;
-            }
-            i++;
-        }
-        if (track == null) {
-            track = new Track(timeline, i);
-            timeline.putTrack(i, track);
-        }
-
-        return track;
-    }
+//    private Track findNonOccupiedSlot(long time, long duration) {
+//        int i = 0;
+//        Track track;
+//        while ((track = timeline.getTrack(i)) != null) {
+//            if (track.isNotOccupied(time, duration, null)) {
+//                break;
+//            }
+//            i++;
+//        }
+//        if (track == null) {
+//            track = new Track(timeline, i);
+//            timeline.putTrack(i, track);
+//        }
+//
+//        return track;
+//    }
 }

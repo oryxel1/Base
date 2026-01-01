@@ -2,9 +2,7 @@ package oxy.bascenario.editor.screen;
 
 import com.badlogic.gdx.utils.ScreenUtils;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.utils.Pair;
 import oxy.bascenario.utils.TimeUtils;
 
 import java.util.*;
