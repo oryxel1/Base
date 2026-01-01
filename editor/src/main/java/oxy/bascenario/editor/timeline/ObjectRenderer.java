@@ -164,11 +164,14 @@ public class ObjectRenderer {
             float delta = mouse.x - (x + width);
             long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * (delta / (size.x - size.x / 4)));
 
-//            long next = nextObject != null ? nextObject.start : -1;
-//            if (next != -1) {
-//                long max = next - (object.start + object.duration);
-//                duration = Math.min(duration, max);
-//            }
+            // I wonder how fast this is....
+            int next = timeline.getObjects().indexOf(this.object);
+            if (next != -1 && next + 1 != timeline.getObjects().size()) {
+                ObjectOrEvent nextObject = timeline.getObjects().get(next + 1);
+                if (nextObject.track == this.object.track) {
+                    duration = Math.min(duration, nextObject.start - (object.start + object.duration));
+                }
+            }
 
             if (TimeCompiler.canResize(object.object)) {
                 object.duration = Math.max(0, object.duration + duration);
