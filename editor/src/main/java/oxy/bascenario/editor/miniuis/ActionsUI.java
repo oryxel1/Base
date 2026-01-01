@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
-import oxy.bascenario.api.event.ClearBackgroundEvent;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -148,7 +149,10 @@ public class ActionsUI {
         add("Screen Color",
                 "This will cover the entire screen with a color you choose on a render layer that you also choose.",
                 new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
-//        add("Change background", null);
+
+        add("Lock Click",
+                "This lock or unlock the mouse click button to interact with the options or dialogue.",
+                new LockClickEvent(false));
 
         ImGui.end();
     }

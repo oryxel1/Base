@@ -3,24 +3,23 @@ package oxy.bascenario.serializers.types.event;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.api.event.ClearBackgroundEvent;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
-import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.*;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.*;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
+import oxy.bascenario.serializers.types.event.impl.LockClickType;
 import oxy.bascenario.serializers.types.event.impl.animation.PlayAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.SpriteAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.StopAnimationType;
@@ -28,10 +27,7 @@ import oxy.bascenario.serializers.types.event.impl.background.ClearBackgroundTyp
 import oxy.bascenario.serializers.types.event.impl.background.SetBackgroundType;
 import oxy.bascenario.serializers.types.event.impl.color.ColorOverlayType;
 import oxy.bascenario.serializers.types.event.impl.color.SetColorType;
-import oxy.bascenario.serializers.types.event.impl.dialogue.AddDialogueType;
-import oxy.bascenario.serializers.types.event.impl.dialogue.CloseDialogueType;
-import oxy.bascenario.serializers.types.event.impl.dialogue.ShowOptionsType;
-import oxy.bascenario.serializers.types.event.impl.dialogue.StartDialogueType;
+import oxy.bascenario.serializers.types.event.impl.dialogue.*;
 import oxy.bascenario.serializers.types.event.impl.element.*;
 import oxy.bascenario.serializers.types.event.impl.element.values.PositionElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
@@ -65,6 +61,7 @@ public class EventTypes implements Type<Event> {
 
         put(StartDialogueEvent.class, new StartDialogueType());
         put(ShowOptionsEvent.class, new ShowOptionsType());
+        put(CloseOptionsEvent.class, new CloseOptionsType());
         put(CloseDialogueEvent.class, new CloseDialogueType());
         put(AddDialogueEvent.class, new AddDialogueType());
 
@@ -77,6 +74,8 @@ public class EventTypes implements Type<Event> {
 
         put(SetBackgroundEvent.class, new SetBackgroundType());
         put(ClearBackgroundEvent.class, new ClearBackgroundType());
+
+        put(LockClickEvent.class, new LockClickType());
     }
 
     @Override

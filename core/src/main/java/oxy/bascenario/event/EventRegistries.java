@@ -1,17 +1,15 @@
 package oxy.bascenario.event;
 
-import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
-import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.*;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
@@ -20,10 +18,12 @@ import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
-import oxy.bascenario.event.impl.*;
+import oxy.bascenario.event.impl.FunctionLockClick;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
 import oxy.bascenario.event.impl.animation.FunctionSpriteAnimation;
 import oxy.bascenario.event.impl.animation.FunctionStopAnimation;
+import oxy.bascenario.event.impl.background.FunctionClearBackground;
+import oxy.bascenario.event.impl.background.FunctionSetBackground;
 import oxy.bascenario.event.impl.color.FunctionSetColor;
 import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
 import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
@@ -74,8 +74,11 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(CloseDialogueEvent.class, FunctionCloseDialogue.class);
 
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
+        EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseDialogue.class);
 
         EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
+
+        EVENT_TO_FUNCTION.put(LockClickEvent.class, FunctionLockClick.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }

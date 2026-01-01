@@ -1,7 +1,7 @@
 package oxy.bascenario.editor.inspector.impl.events;
 
-import oxy.bascenario.api.event.ClearBackgroundEvent;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;

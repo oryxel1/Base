@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.event.impl.background;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;
 

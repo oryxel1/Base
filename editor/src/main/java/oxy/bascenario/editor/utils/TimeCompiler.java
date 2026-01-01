@@ -1,7 +1,7 @@
 package oxy.bascenario.editor.utils;
 
-import oxy.bascenario.api.event.ClearBackgroundEvent;
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;

@@ -1,6 +1,6 @@
-package oxy.bascenario.event.impl;
+package oxy.bascenario.event.impl.background;
 
-import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 

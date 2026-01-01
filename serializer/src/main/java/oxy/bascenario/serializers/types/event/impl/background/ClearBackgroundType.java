@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.event.impl.background;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
-import oxy.bascenario.api.event.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.serializers.base.TypeWithName;
 
 public class ClearBackgroundType implements TypeWithName<ClearBackgroundEvent> {
