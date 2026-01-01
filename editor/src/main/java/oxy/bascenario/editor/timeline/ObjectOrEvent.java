@@ -5,7 +5,7 @@ import oxy.bascenario.api.render.RenderLayer;
 
 @AllArgsConstructor
 public class ObjectOrEvent {
-    public int trackId;
+    public int track;
     public long start, duration;
     public ObjectRenderer renderer;
 

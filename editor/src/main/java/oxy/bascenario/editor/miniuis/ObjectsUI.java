@@ -17,6 +17,7 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
@@ -97,8 +98,7 @@ public class ObjectsUI {
             duration = 1000L;
         }
 
-        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
+        timeline.put(0, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
 //    private Track findNonOccupiedSlot(long time, long duration) {

@@ -27,9 +27,6 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
     protected final ActionsUI eventAdder;
     protected final Inspector inspector;
 
-    @Getter @Setter
-    protected Object dragging;
-
     public BaseScenarioEditorScreen(Scenario.Builder scenario) {
         this.scenario = scenario;
         this.timeline = new Timeline(this, scenario);

@@ -4,6 +4,7 @@ import imgui.*;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
@@ -22,6 +23,12 @@ public class Timeline {
 
     @Getter
     private final List<ObjectOrEvent> objects = new ArrayList<>();
+    public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
+        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(track, start, duration, null, object, layer, wait);
+        objectOrEvent.renderer = new ObjectRenderer(this, objectOrEvent);
+        this.objects.add(objectOrEvent);
+    }
+
     public void updateScenario(boolean updateScreen) {
 //        screen.getScenario().timestamps().clear();
 //        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
@@ -32,7 +39,15 @@ public class Timeline {
 
     @Getter @Setter
     private ObjectRenderer selectedElement;
-    public ObjectDragDrop dragAndDrop;
+
+    @Setter @Getter
+    private ObjectDragDrop draggingObject;
+    public boolean isDragging() {
+        return draggingObject != null;
+    }
+    public boolean isDragging(ObjectOrEvent object) {
+        return this.draggingObject != null && object == this.draggingObject.object;
+    }
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
@@ -106,6 +121,26 @@ public class Timeline {
         drawElapsedTime(size.x / 4, pos, size);
         drawTimelineCursor(size.x / 4, pos, size);
 
+        if (!this.isDragging()) {
+            ImGui.end();
+            return;
+        }
+
+        // Render dragging separately on top of everything...
+        this.draggingObject.object.renderer.render();
+
+        if (this.draggingObject.loop) {
+            if (!this.draggingObject.isRejected()) {
+                this.draggingObject.accept(); // Accept the result of dragging if not rejected...
+            }
+
+            this.draggingObject = null; // Done!
+        }
+
+        if (this.draggingObject != null && this.draggingObject.isWaiting()) {
+            this.draggingObject.loop = true;
+        }
+
         ImGui.end();
     }
 
@@ -128,15 +163,11 @@ public class Timeline {
             y += 50;
         }
 
-        y = pos.y + 80;
-        for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-//            final Track track = tracks.get(i);
-//            if (track != null) {
-//                track.render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
-//            }
-
-            y += 50;
-        }
+        this.objects.forEach(object -> {
+            if (!this.isDragging(object)) {
+                object.renderer.render();
+            }
+        });
     }
 
     private void drawElapsedTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {

@@ -148,10 +148,9 @@ public class ActionsUI {
         }
         timeline.setSelectedElement(null);
 
-        long duration = TimeCompiler.compileTime(event);
-        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), duration, event, null, false);
-        if (ImGui.isAnyItemHovered())
+//        long duration = TimeCompiler.compileTime(event);
+//        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
+//        track.put(timeline.getTimestamp(), duration, event, null, false);
     }
 //
 //    private Track findNonOccupiedSlot(long time, long duration) {
