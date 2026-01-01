@@ -17,10 +17,7 @@ import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
-import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
@@ -85,6 +82,7 @@ public class ActionsUI {
                     "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
                     new ShowOptionsEvent(map));
         }
+        add("Close Options", "Close any currently present options", new CloseOptionsEvent());
 
         ImGui.separatorText("Objects");
 

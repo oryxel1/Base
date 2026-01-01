@@ -8,8 +8,12 @@ import imgui.ImVec2;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
+import net.raphimc.thingl.text.TextRun;
 import org.lwjgl.glfw.GLFW;
+import oxy.bascenario.editor.utils.NameUtils;
 import oxy.bascenario.editor.utils.TimeCompiler;
+import oxy.bascenario.utils.font.FontUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 @RequiredArgsConstructor
 public class ObjectRenderer {
@@ -64,7 +68,14 @@ public class ObjectRenderer {
             drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(255, 255, 255), 5f);
         }
 
-        drawList.addText(new ImVec2(x, y), ImColor.rgb(0, 0, 0), object.object.getClass().getSimpleName());
+        String s = NameUtils.name(object.object);
+        float width = TextUtils.getVisualWidth(17, TextRun.fromString(FontUtils.DEFAULT, s).shape());
+        if (width == 0) {
+            return;
+        }
+        s = s.substring(0, MathUtils.floor(Math.min((this.width / width) * s.length(), s.length())));
+
+        drawList.addText(new ImVec2(x + 5, y + 5), ImColor.rgb(255, 255, 255), s);
     }
 
     private void handleDraggingResult() {

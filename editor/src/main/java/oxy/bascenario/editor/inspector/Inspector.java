@@ -33,6 +33,7 @@ import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.AudioUtils;
+import oxy.bascenario.editor.utils.NameUtils;
 import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.utils.ImGuiUtils;
@@ -57,7 +58,8 @@ public class Inspector {
             return;
         }
 
-//        Pair<Track.ObjectOrEvent, Long> pair = renderer.getPair();
+        ImGui.text(NameUtils.name(object.object));
+        ImGui.separator();
 
         boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", object.requireWait);
         RenderLayer layer = null;

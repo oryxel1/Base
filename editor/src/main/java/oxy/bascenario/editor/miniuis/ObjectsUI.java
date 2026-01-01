@@ -85,7 +85,6 @@ public class ObjectsUI {
         ImGui.end();
     }
 
-    private int index;
     private void add(String label, String tooltip, Object element) {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             if (ImGui.isItemHovered(ImGuiHoveredFlags.DelayNormal)) {
