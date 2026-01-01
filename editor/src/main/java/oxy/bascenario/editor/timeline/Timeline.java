@@ -24,8 +24,7 @@ public class Timeline {
     @Getter
     private final List<ObjectOrEvent> objects = new ArrayList<>();
     public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
-        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(track, start, duration, null, object, layer, wait);
-        objectOrEvent.renderer = new ObjectRenderer(this, objectOrEvent);
+        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
         this.objects.add(objectOrEvent);
     }
 
