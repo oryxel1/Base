@@ -19,12 +19,16 @@ public class ObjectRenderer {
 //    private boolean resizing;
 
     public void render() {
+        if (object.track < timeline.getVerticalScroll()) {
+            return;
+        }
+
         // This part determine render position and allat.
         final float maxTime = Timeline.DEFAULT_MAX_TIME * timeline.getScale();
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
         float trackX = pos.x + size.x / 4, trackWidth = size.x - (size.x / 4);
-        float trackY = pos.y + 80 + (object.track * 50);
+        float trackY = pos.y + 80 + ((object.track - timeline.getVerticalScroll()) * 50);
 
         this.width = (object.duration / maxTime) * trackWidth;
         if (!timeline.isDragging(this.object)) { // Fixed the position if not dragging....

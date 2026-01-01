@@ -32,13 +32,13 @@ public class Timeline {
         this.objects.sort(Comparator.comparingLong(o -> o.start));
     }
 
-    public void updateScenario(boolean updateScreen) {
-        screen.getScenario().timestamps().clear();
-        screen.getScenario().timestamps().addAll(TrackParser.parse(this.objects));
-        if (updateScreen) {
-            screen.update();
-        }
-    }
+//    public void updateScenario(boolean updateScreen) {
+//        screen.getScenario().timestamps().clear();
+//        screen.getScenario().timestamps().addAll(TrackParser.parse(this.objects));
+//        if (updateScreen) {
+//            screen.update();
+//        }
+//    }
 
     @Getter @Setter
     private ObjectRenderer selectedElement;

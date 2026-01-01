@@ -83,6 +83,7 @@ public class ObjectsUI {
         ImGui.end();
     }
 
+    private int index;
     private void add(String label, String tooltip, Object element) {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             if (ImGui.isItemHovered(ImGuiHoveredFlags.DelayNormal)) {
@@ -98,7 +99,7 @@ public class ObjectsUI {
             duration = 1000L;
         }
 
-        timeline.put(0, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
+        timeline.put(index++, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
 //    private Track findNonOccupiedSlot(long time, long duration) {

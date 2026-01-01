@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.TimeUtils;
 
@@ -46,7 +47,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen = new ScenarioScreen(screen.getScenario());
         screen.show();
         screen.getTimestamps().clear();
-        screen.getTimestamps().addAll(scenario.timestamps());
+        screen.getTimestamps().addAll(TrackParser.parse(timeline.getObjects()));
         screen.setPlaying(false);
 
         long lastDuration = 0, last = 0;

@@ -35,7 +35,6 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         this.inspector = new Inspector(this, this.timeline);
     }
 
-    private long lastUpdate;
     @Override
     public void render(float delta) {
         ImGui.dockSpaceOverViewport(0, new ImGuiViewport(0), ImGuiDockNodeFlags.PassthruCentralNode);
@@ -46,12 +45,6 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         eventAdder.render();
         inspector.render();
         AssetsUI.render(timeline, scenario);
-
-        // There are better ways to do this yes, but I'm too fucking lazy.
-        if (System.currentTimeMillis() - lastUpdate >= 1000L) {
-            new Thread(() -> timeline.updateScenario(false)).start();
-            lastUpdate = System.currentTimeMillis();
-        }
 
         ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
         ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
@@ -92,7 +85,6 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         if (ImGui.beginMenu("Save")) {
             boolean asJson;
             if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
-                timeline.updateScenario(false);
                 scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
 
                 Base.instance().scenarioManager().put(scenario.name(), scenario.build());
