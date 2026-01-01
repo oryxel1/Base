@@ -17,7 +17,6 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
@@ -92,7 +91,7 @@ public class ObjectsUI {
             return;
         }
 
-        timeline.setSelectedElement(null);
+        timeline.setSelectedObject(null);
 
         long duration = TimeCompiler.compileTime(element);
         if (duration == Long.MAX_VALUE) {

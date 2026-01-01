@@ -1,21 +1,18 @@
 package oxy.bascenario.editor.timeline;
 
 import imgui.*;
-import it.unimi.dsi.fastutil.longs.LongComparator;
+import imgui.flag.ImGuiKey;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
-import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 // Shit code but whatever.
 public class Timeline {
@@ -41,7 +38,7 @@ public class Timeline {
 //    }
 
     @Getter @Setter
-    private ObjectRenderer selectedElement;
+    private ObjectOrEvent selectedObject;
 
     @Setter @Getter
     private ObjectDragDrop draggingObject;
@@ -123,6 +120,11 @@ public class Timeline {
         drawTimelineSegments(size.x / 4, pos, size);
         drawElapsedTime(size.x / 4, pos, size);
         drawTimelineCursor(size.x / 4, pos, size);
+
+        if (this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+            this.objects.remove(this.selectedObject);
+            this.selectedObject = null;
+        }
 
         if (!this.isDragging()) {
             ImGui.end();
@@ -244,7 +246,7 @@ public class Timeline {
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
                 timestamp = Math.max(0, timestamp - backtrackTime);
                 screen.update();
-                this.selectedElement = null;
+                this.selectedObject = null;
             }
             return;
         }
@@ -256,7 +258,7 @@ public class Timeline {
         final float ratio = (vec2.x - pos.x - size.x / 4) / (size.x - size.x / 4);
         long last = timestamp;
         timestamp = (long) (DEFAULT_MAX_TIME * scale * scroll + ratio * DEFAULT_MAX_TIME * scale);
-        this.selectedElement = null;
+        this.selectedObject = null;
         if (last != timestamp) {
             screen.update();
         }

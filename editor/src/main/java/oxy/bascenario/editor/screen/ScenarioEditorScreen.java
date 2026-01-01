@@ -1,7 +1,5 @@
 package oxy.bascenario.editor.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.ScreenUtils;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.utils.TrackParser;

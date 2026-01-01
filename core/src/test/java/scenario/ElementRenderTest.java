@@ -23,7 +23,7 @@ import oxy.bascenario.screens.ScenarioScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElementRenderTest {
+public class  ElementRenderTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
 

@@ -54,7 +54,7 @@ public class AssetsUI {
 
     public static void render(Timeline timeline, Scenario.Builder scenario, Consumer<FileInfo> consumer) {
         if (object == null) {
-            object = timeline.getSelectedElement();
+            object = timeline.getSelectedObject();
         }
 
         final Consumer<FileInfo> PICK_CONSUMER = file -> {
@@ -135,7 +135,7 @@ public class AssetsUI {
             ImGui.tableNextColumn();
             if (ImGui.selectable(split ? asset.file().path().split("\\\\")[1] : asset.file().path())) {
                 if (consumer != null) {
-                    if (object == timeline.getSelectedElement()) {
+                    if (object == timeline.getSelectedObject()) {
                         consumer.accept(asset.file());
                     }
                     AssetsUI.consumer = null;

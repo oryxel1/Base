@@ -60,7 +60,7 @@ public class ObjectRenderer {
         // This part actually draw the object, nothing crazy here...
         final ImDrawList drawList = ImGui.getWindowDrawList();
         drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(75, 114, 180), 5f);
-        if (timeline.getSelectedElement() == this) {
+        if (timeline.getSelectedObject() == this.object) {
             drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(255, 255, 255), 5f);
         }
 
@@ -79,7 +79,7 @@ public class ObjectRenderer {
         float x = Math.max(ImGui.getMousePosX() - dragging.renderer.draggingX, pos.x + size.x / 4);
         float y = Math.max(ImGui.getMousePosY() - dragging.renderer.draggingY, pos.y + 80);
         float width = (object.duration / (Timeline.DEFAULT_MAX_TIME * timeline.getScale())) * (size.x - (size.x / 4));
-        int track = trackFromY(y);
+        int track = trackFromY(timeline, y);
         if (track != this.object.track) {
             return; // Not the same track, skip!
         }
@@ -101,8 +101,8 @@ public class ObjectRenderer {
             this.y = Math.max(mouse.y - this.draggingY, pos.y + 80);
         }
 
-        if (ImGui.isMouseDoubleClicked(0) && over) {
-            timeline.setSelectedElement(this); // Selected an element.
+        if (ImGui.isMouseClicked(0) && over) {
+            timeline.setSelectedObject(this.object); // Selected an element.
         } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over) {
             // Start dragging an object if we can!
             timeline.setDraggingObject(new ObjectDragDrop(this.object) {
@@ -112,7 +112,7 @@ public class ObjectRenderer {
 
                     final float ratio = (object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
                     object.start = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
-                    object.track = trackFromY(object.renderer.y);
+                    object.track = trackFromY(timeline, object.renderer.y);
                 }
             });
 
@@ -127,7 +127,7 @@ public class ObjectRenderer {
         }
     }
 
-    private static int trackFromY(float y) {
+    private static int trackFromY(Timeline timeline, float y) {
         float approximateTrack = (y - (ImGui.getWindowPosY() + 80)) / 50f;
         int ceil = MathUtils.ceil(approximateTrack), floor = MathUtils.floor(approximateTrack);
         // See if floor or ceil is closer...
@@ -138,7 +138,7 @@ public class ObjectRenderer {
             trackId = ceil;
         }
 
-        return trackId;
+        return trackId + timeline.getVerticalScroll();
     }
 
 //    private boolean handleDurationResize() {

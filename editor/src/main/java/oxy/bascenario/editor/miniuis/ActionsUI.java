@@ -28,7 +28,6 @@ import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
 import oxy.bascenario.editor.timeline.Timeline;
-import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 
 import java.util.LinkedHashMap;
@@ -146,7 +145,7 @@ public class ActionsUI {
             }
             return;
         }
-        timeline.setSelectedElement(null);
+        timeline.setSelectedObject(null);
 
 //        long duration = TimeCompiler.compileTime(event);
 //        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
