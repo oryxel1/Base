@@ -12,7 +12,7 @@ public class ObjectRenderer {
     private final Timeline timeline;
     private final ObjectOrEvent object;
 
-    private float x, y, width;
+    public float x, y, width;
 //    private float dragX, dragY;
 //    private boolean dragging;
 //
@@ -84,6 +84,18 @@ public class ObjectRenderer {
             return; // Not the same track, skip!
         }
 
+        if (!timeline.getDraggingObject().second) {
+            final float ratio = (object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+            long time = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+            timeline.getDraggingObject().time(time, object.start + object.duration);
+        } else {
+            long min = timeline.getDraggingObject().nearestTime + 1, max = min + object.duration;
+            if (max >= object.start && min < object.start + object.duration) {
+                timeline.getDraggingObject().reject();
+            }
+            return;
+        }
+
         // Overlap! This result should not be valid.
         if (x + width >= this.x && x <= this.x + width) {
             timeline.getDraggingObject().reject();
@@ -110,8 +122,12 @@ public class ObjectRenderer {
                 public void accept() {
                     final ImVec2 pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
 
-                    final float ratio = (object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
-                    object.start = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+                    if (second) {
+                        object.start = nearestTime + 1;
+                    } else {
+                        final float ratio = (object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+                        object.start = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+                    }
                     object.track = trackFromY(timeline, object.renderer.y);
                 }
             });
@@ -125,6 +141,10 @@ public class ObjectRenderer {
         if (dragging && !ImGui.isMouseDown(0)) {
             timeline.getDraggingObject().waitForResult();
         }
+    }
+
+    private void handleDurationResize() {
+
     }
 
     private static int trackFromY(Timeline timeline, float y) {

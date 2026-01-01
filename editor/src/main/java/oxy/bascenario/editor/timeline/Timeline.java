@@ -137,9 +137,18 @@ public class Timeline {
         if (this.draggingObject.loop) {
             if (!this.draggingObject.isRejected()) {
                 this.draggingObject.accept(); // Accept the result of dragging if not rejected...
-            }
+                this.draggingObject = null;
+            } else {
+                final float ratio = (this.draggingObject.object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+                long time = (long) (Timeline.DEFAULT_MAX_TIME * scale * scroll + ratio * Timeline.DEFAULT_MAX_TIME * scale);
 
-            this.draggingObject = null; // Done!
+                if (this.draggingObject.second || this.draggingObject.nearestTime - time > 350L) {
+                    this.draggingObject = null; // Done!
+                } else {
+                    this.draggingObject.reset();
+                    this.draggingObject.second = true;
+                }
+            }
         }
 
         if (this.draggingObject != null && this.draggingObject.isWaiting()) {
