@@ -9,7 +9,7 @@ public class ObjectOrEvent {
 
     public Object object;
     public RenderLayer layer;
-    public final boolean requireWait;
+    public boolean requireWait;
 
     public ObjectOrEvent(Timeline timeline, int track, long start, long duration, Object object, RenderLayer layer, boolean requireWait) {
         this.track = track;

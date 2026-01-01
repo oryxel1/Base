@@ -17,13 +17,16 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.SoundAsElement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class ObjectsUI {
@@ -98,23 +101,32 @@ public class ObjectsUI {
             duration = 1000L;
         }
 
-        timeline.put(index++, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
+        final int track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
+        timeline.put(track, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
-//    private Track findNonOccupiedSlot(long time, long duration) {
-//        int i = 0;
-//        Track track;
-//        while ((track = timeline.getTrack(i)) != null) {
-//            if (track.isNotOccupied(time, duration, null)) {
-//                break;
-//            }
-//            i++;
-//        }
-//        if (track == null) {
-//            track = new Track(timeline, i);
-//            timeline.putTrack(i, track);
-//        }
-//
-//        return track;
-//    }
+    private int findNonOccupiedSlot(long time, long duration) {
+        final Map<Integer, List<ObjectOrEvent>> map = new HashMap<>();
+        timeline.getObjects().forEach(object -> map.computeIfAbsent(object.track, n -> new ArrayList<>()).add(object));
+
+        int i = 0;
+        List<ObjectOrEvent> track;
+        while ((track = map.get(i)) != null) {
+            boolean occupied = false;
+            for (ObjectOrEvent object : track) {
+                final long maxTime = object.start + object.duration, minTime = object.start;
+                if (maxTime >= time && minTime <= time + duration) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied) {
+                return i;
+            }
+            i++;
+        }
+
+        return i;
+    }
 }
