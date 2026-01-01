@@ -98,7 +98,7 @@ public class ElementAdder {
         }
 
         final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.ObjectOrEvent(element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, null, false), duration));
+        track.put(timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
     private Track findNonOccupiedSlot(long time, long duration) {

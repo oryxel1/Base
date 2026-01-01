@@ -26,7 +26,7 @@ public class ObjectRenderer {
 
     public void render(float x, float y, float width, Track.ObjectOrEvent next) {
         if (timeline.getSelectedElement() == this && ImGui.isKeyPressed(ImGuiKey.Delete)) {
-            track.remove(object.start);
+            track.remove(object.start, true);
             timeline.updateScenario(true);
             return;
         }
@@ -111,14 +111,15 @@ public class ObjectRenderer {
             long time = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
 
             Track newTrack = track.timeline.getTrack(trackId);
-            if ((newTrack == null || newTrack.isNotOccupied(time, object.duration, object)) && newTrack != track) {
-                track.remove(object.start);
+            if (newTrack == null || newTrack.isNotOccupied(time, object.duration, object)) {
+                track.remove(object.start, false);
 
                 if (newTrack == null) {
                     newTrack = new Track(timeline, trackId);
                     track.timeline.putTrack(trackId, newTrack);
                 }
                 newTrack.put(time, object);
+                object.start = time;
             }
         }
 

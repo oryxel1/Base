@@ -49,9 +49,9 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.getTimestamps().addAll(scenario.timestamps());
         screen.setPlaying(false);
 
-        final List<Map.Entry<Long, Pair<Track.ObjectOrEvent, Long>>> sorted = new ArrayList<>();
+        final List<Map.Entry<Long, Track.ObjectOrEvent>> sorted = new ArrayList<>();
         for (Track track : timeline.getTracks().values()) {
-            for (Map.Entry<Long, Pair<Track.ObjectOrEvent, Long>> entry : track.getElements().entrySet()) {
+            for (Map.Entry<Long, Track.ObjectOrEvent> entry : track.getObjects().entrySet()) {
                 if (entry.getKey() > timeline.getTimestamp()) {
                     break;
                 }
@@ -62,8 +62,8 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         sorted.sort(Comparator.comparingLong(Map.Entry::getKey));
 
         long lastDuration = 0, last = 0;
-        for (Map.Entry<Long, Pair<Track.ObjectOrEvent, Long>> entry : sorted) {
-            long duration = entry.getValue().right();
+        for (Map.Entry<Long, Track.ObjectOrEvent> entry : sorted) {
+            long duration = entry.getValue().duration;
             long distance;
             if (timeline.getTimestamp() > entry.getKey() + duration) {
                 distance = duration + (timeline.getTimestamp() - (entry.getKey() + duration));

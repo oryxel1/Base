@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import oxy.bascenario.api.render.RenderLayer;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @RequiredArgsConstructor
 @ToString
@@ -19,14 +21,18 @@ public class Track {
 
     // key: start time, pair: a=element, b=duration.
     @Getter
-    private final Map<Long, ObjectOrEvent> objects = new TreeMap<>();
+    private final Map<Long, ObjectOrEvent> objects = new ConcurrentSkipListMap<>();
 
     public long prevObjectStart; // meant for when parsing....
 
-    public void remove(long l) {
+    public void remove(long l, boolean stopSelecting) {
         ObjectOrEvent object = this.objects.remove(l);
+        if (object == null) {
+            System.out.println("Xd");
+            return;
+        }
 
-        if (object.renderer == timeline.getSelectedElement()) {
+        if (object.renderer == timeline.getSelectedElement() && stopSelecting) {
             timeline.setSelectedElement(null);
         }
     }
@@ -44,6 +50,10 @@ public class Track {
 
     public void render(float x, float y, float width) {
         final Iterator<ObjectOrEvent> iterator = objects.values().iterator();
+
+        if (!iterator.hasNext()) {
+            return;
+        }
 
         ObjectOrEvent current, next = null;
         boolean first = true;
