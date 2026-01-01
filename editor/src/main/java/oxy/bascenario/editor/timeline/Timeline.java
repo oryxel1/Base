@@ -133,28 +133,29 @@ public class Timeline {
 
         // Render dragging separately on top of everything...
         this.draggingObject.object.renderer.render();
+        if (this.draggingObject == null || !this.draggingObject.isWaiting()) {
+            ImGui.end();
+            return;
+        } else if (!this.draggingObject.loop) {
+            ImGui.end();
+            this.draggingObject.loop = true;
+            return;
+        }
 
-        if (this.draggingObject.loop) {
-            if (!this.draggingObject.isRejected()) {
-                this.draggingObject.accept(); // Accept the result of dragging if not rejected...
-                this.draggingObject = null;
+        if (!this.draggingObject.isRejected()) {
+            this.draggingObject.accept(); // Accept the result of dragging if not rejected...
+            this.draggingObject = null;
+        } else {
+            final float ratio = (this.draggingObject.object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+            long time = (long) (Timeline.DEFAULT_MAX_TIME * scale * scroll + ratio * Timeline.DEFAULT_MAX_TIME * scale);
+
+            if (this.draggingObject.second || this.draggingObject.nearestTime - time > 350L) {
+                this.draggingObject = null; // Done!
             } else {
-                final float ratio = (this.draggingObject.object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
-                long time = (long) (Timeline.DEFAULT_MAX_TIME * scale * scroll + ratio * Timeline.DEFAULT_MAX_TIME * scale);
-
-                if (this.draggingObject.second || this.draggingObject.nearestTime - time > 350L) {
-                    this.draggingObject = null; // Done!
-                } else {
-                    this.draggingObject.reset();
-                    this.draggingObject.second = true;
-                }
+                this.draggingObject.reset();
+                this.draggingObject.second = true;
             }
         }
-
-        if (this.draggingObject != null && this.draggingObject.isWaiting()) {
-            this.draggingObject.loop = true;
-        }
-
         ImGui.end();
     }
 
