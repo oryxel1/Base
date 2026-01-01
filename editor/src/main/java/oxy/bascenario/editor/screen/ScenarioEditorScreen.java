@@ -1,7 +1,9 @@
 package oxy.bascenario.editor.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.TimeUtils;
 
@@ -41,49 +43,39 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
 
     @Override
     public void update() {
-//        screen = new ScenarioScreen(screen.getScenario());
-//        screen.show();
-//        screen.getTimestamps().clear();
-//        screen.getTimestamps().addAll(scenario.timestamps());
-//        screen.setPlaying(false);
-//
-//        final List<Map.Entry<Long, Track.ObjectOrEvent>> sorted = new ArrayList<>();
-//        for (Track track : timeline.getTracks().values()) {
-//            for (Map.Entry<Long, Track.ObjectOrEvent> entry : track.getObjects().entrySet()) {
-//                if (entry.getKey() > timeline.getTimestamp()) {
-//                    break;
-//                }
-//
-//                sorted.add(entry);
-//            }
-//        }
-//        sorted.sort(Comparator.comparingLong(Map.Entry::getKey));
-//
-//        long lastDuration = 0, last = 0;
-//        for (Map.Entry<Long, Track.ObjectOrEvent> entry : sorted) {
-//            long duration = entry.getValue().duration;
-//            long distance;
-//            if (timeline.getTimestamp() > entry.getKey() + duration) {
-//                distance = duration + (timeline.getTimestamp() - (entry.getKey() + duration));
-//            } else {
-//                distance = duration - ((entry.getKey() + duration) - timeline.getTimestamp());
-//            }
-//
-//            screen.sinceDialogue = screen.sincePoll = lastDuration + (entry.getKey() - last);
-//            TimeUtils.fakeTimeMillis = System.currentTimeMillis() - distance;
-//            screen.pollEvents(true);
-//            renderScenarioWindow();
-//            ScreenUtils.clear(0, 0, 0, 0, true);
-//
-//            lastDuration = duration;
-//            last = entry.getKey() + duration;
-//        }
-//
-//        renderScenarioWindow();
-//
-//        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
-//        screen.setPlaying(timeline.isPlaying());
-//        screen.sinceDialogue = screen.sincePoll = timeline.getTimestamp() - (last - lastDuration);
+        screen = new ScenarioScreen(screen.getScenario());
+        screen.show();
+        screen.getTimestamps().clear();
+        screen.getTimestamps().addAll(scenario.timestamps());
+        screen.setPlaying(false);
+
+        long lastDuration = 0, last = 0;
+        for (ObjectOrEvent object : this.timeline.getObjects()) {
+            if (object.start > timeline.getTimestamp()) {
+                break;
+            }
+
+            long duration = object.duration;
+            long distance;
+            if (timeline.getTimestamp() > object.start + duration) {
+                distance = duration + (timeline.getTimestamp() - (object.start + duration));
+            } else {
+                distance = duration - ((object.start + duration) - timeline.getTimestamp());
+            }
+
+            screen.sinceDialogue = screen.sincePoll = lastDuration + (object.start - last);
+            TimeUtils.fakeTimeMillis = System.currentTimeMillis() - distance;
+            screen.pollEvents(true);
+
+            lastDuration = duration;
+            last = object.start + duration;
+        }
+
+        renderScenarioWindow();
+
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
+        screen.setPlaying(timeline.isPlaying());
+        screen.sinceDialogue = screen.sincePoll = timeline.getTimestamp() - (last - lastDuration);
     }
 
     @Override

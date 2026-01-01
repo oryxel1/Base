@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.timeline;
 
 import imgui.*;
+import it.unimi.dsi.fastutil.longs.LongComparator;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
@@ -11,6 +12,8 @@ import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,14 +29,15 @@ public class Timeline {
     public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
         final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
         this.objects.add(objectOrEvent);
+        this.objects.sort(Comparator.comparingLong(o -> o.start));
     }
 
     public void updateScenario(boolean updateScreen) {
-//        screen.getScenario().timestamps().clear();
-//        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
-//        if (updateScreen) {
-//            screen.update();
-//        }
+        screen.getScenario().timestamps().clear();
+        screen.getScenario().timestamps().addAll(TrackParser.parse(this.objects));
+        if (updateScreen) {
+            screen.update();
+        }
     }
 
     @Getter @Setter

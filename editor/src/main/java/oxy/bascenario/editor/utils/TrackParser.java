@@ -2,80 +2,75 @@ package oxy.bascenario.editor.utils;
 
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.utils.Pair;
-import oxy.bascenario.api.effects.Sound;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TrackParser {
     // TODO: Sub elements....
-//    public static List<Timestamp> parse(Map<Integer, Track> tracks) {
-//        final List<Timestamp> timestamps = new ArrayList<>();
+    public static List<Timestamp> parse(List<ObjectOrEvent> objects) {
+        final List<Timestamp> timestamps = new ArrayList<>();
+
+        final Map<Long, Pair<Boolean, List<Event>>> events = new TreeMap<>();
+
+        objects.forEach((object) -> {
+            final Pair<Boolean, List<Event>> list = events.computeIfAbsent(object.start, n -> new Pair<>(object.requireWait, new ArrayList<>()));
+            if (object.object instanceof Event event) {
+                list.right().add(event);
+            } else if (object.object instanceof SoundAsElement(Sound sound, int in, int out, float start, long max)) {
+                list.right().add(new PlaySoundEvent(sound, in, start));
+                if (out != Integer.MIN_VALUE && sound != null) {
+                    events.computeIfAbsent(object.start + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new StopSoundEvent(sound.id(), out));
+                }
+            } else {
+                list.right().add(new AddElementEvent(object.track, object.object, object.layer));
+                events.computeIfAbsent(object.start + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new RemoveElementEvent(object.track));
+            }
+        });
+
+        long last = 0;
+        for (Map.Entry<Long, Pair<Boolean, List<Event>>> entry : events.entrySet()) {
+            final Long time = entry.getKey();
+            long delay = time - last;
+            last = time;
+
+            timestamps.add(new Timestamp(entry.getValue().left(), (int) delay, entry.getValue().right()));
+        }
+
+        return timestamps;
+    }
+////
+//    public static List<ObjectOrEvent> parse(Timeline timeline, Scenario scenario) {
+//        final List<ObjectOrEvent> result = new ArrayList<>();
 //
-//        final Map<Long, Pair<Boolean, List<Event>>> events = new TreeMap<>();
-//        for (Map.Entry<Integer, Track> entry : tracks.entrySet()) {
-//            Integer i = entry.getKey(); Track track = entry.getValue();
-//            track.getObjects().forEach((l, object) -> {
-//                final Pair<Boolean, List<Event>> list = events.computeIfAbsent(l, n -> new Pair<>(object.requireWait, new ArrayList<>()));
-//                if (object.object instanceof Event event) {
-//                    list.right().add(event);
-//                } else if (object.object instanceof SoundAsElement(Sound sound, int in, int out, float start, long max)) {
-//                    list.right().add(new PlaySoundEvent(sound, in, start));
-//                    if (out != Integer.MIN_VALUE && sound != null) {
-//                        events.computeIfAbsent(l + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new StopSoundEvent(sound.id(), out));
-//                    }
-//                } else {
-//                    list.right().add(new AddElementEvent(i, object.object, object.layer));
-//                    events.computeIfAbsent(l + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new RemoveElementEvent(i));
-//                }
-//            });
-//        }
-//
-//        long last = 0;
-//        for (Map.Entry<Long, Pair<Boolean, List<Event>>> entry : events.entrySet()) {
-//            final Long time = entry.getKey();
-//            long delay = time - last;
-//            last = time;
-//
-//            timestamps.add(new Timestamp(entry.getValue().left(), (int) delay, entry.getValue().right()));
-//        }
-//
-//        return timestamps;
-//    }
-//
-//    public static Map<Integer, Track> parse(Timeline timeline, Scenario scenario) {
-//        final Map<Integer, Track> result = new ConcurrentHashMap<>();
-//
+//        final Map<Integer, Object> previous = new HashMap<>();
 //        long time = 0;
 //        for (Timestamp timestamp : scenario.getTimestamps()) {
 //            time += timestamp.time();
 //
 //            for (Event other : timestamp.events()) { switch (other) {
 //                case AddElementEvent event -> {
-//                    Track track = result.computeIfAbsent(event.id(), id -> new Track(timeline, id));
-//                    long maxTime = TimeCompiler.compileTime(event.element());
-//                    track.put(time, maxTime, event.element(), event.layer(), timestamp.waitForDialogue());
-//                    track.prevObjectStart = time;
+//                    long duration = TimeCompiler.compileTime(event.element());
+//
+//                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, event.id(), time, duration, event.element(), event.layer(), timestamp.waitForDialogue());
+//                    previous.put(event.id(), objectOrEvent);
+//                    result.add(objectOrEvent);
 //                }
 //                case RemoveElementEvent event -> {
-//                    Track track = result.get(event.id());
-//                    if (track == null) {
+//                    Object object = previous.get(event.id());
+//                    if (!(object instanceof ObjectOrEvent oOE)) {
 //                        continue;
 //                    }
 //
-//                    final Track.ObjectOrEvent objectOrEvent = track.getObjects().get(track.prevObjectStart);
-//                    if (objectOrEvent == null) {
-//                        continue;
-//                    }
-//
-//                    objectOrEvent.duration = Math.min(time - track.prevObjectStart, objectOrEvent.duration);
+//                    oOE.duration = Math.min(time - oOE.start, oOE.duration);
 //                }
 //                case PlaySoundEvent event -> {
 //                    long duration = AudioUtils.toDuration(scenario.getName(), event.sound().file());
@@ -112,10 +107,9 @@ public class TrackParser {
 //
 //        return result;
 //    }
-
-//    private static Track findNonOccupiedSlot(Timeline timeline, long time, long duration, Map<Integer, Track> tracks) {
+//
+//    private static int findNonOccupiedSlot(Timeline timeline, long time, long duration, Map<Integer, Track> tracks) {
 //        int i = 0;
-//        Track track;
 //        while ((track = tracks.get(i)) != null) {
 //            if (track.isNotOccupied(time, duration, null)) {
 //                return track;
