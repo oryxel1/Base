@@ -7,6 +7,7 @@ import lombok.Setter;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
@@ -22,7 +23,7 @@ public class Timeline {
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
     @Getter
-    private final List<ObjectOrEvent> objects = new ArrayList<>();
+    private final List<ObjectOrEvent> objects;
     public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
         final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
         this.objects.add(objectOrEvent);
@@ -51,11 +52,12 @@ public class Timeline {
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
-//        if (scenario == null) {
-//            tracks = new ConcurrentHashMap<>();
-//        } else {
-//            tracks = TrackParser.parse(this, scenario.build());
-//        }
+
+        if (scenario == null) {
+            this.objects = new ArrayList<>();
+        } else {
+            this.objects = TrackParser.parse(this, scenario.build());
+        }
     }
 
     @Setter @Getter

@@ -12,6 +12,7 @@ import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.utils.Pair;
 
+import javax.sound.midi.Track;
 import java.util.*;
 
 public class TrackParser {
@@ -47,77 +48,111 @@ public class TrackParser {
 
         return timestamps;
     }
-////
-//    public static List<ObjectOrEvent> parse(Timeline timeline, Scenario scenario) {
-//        final List<ObjectOrEvent> result = new ArrayList<>();
-//
-//        final Map<Integer, Object> previous = new HashMap<>();
-//        long time = 0;
-//        for (Timestamp timestamp : scenario.getTimestamps()) {
-//            time += timestamp.time();
-//
-//            for (Event other : timestamp.events()) { switch (other) {
-//                case AddElementEvent event -> {
-//                    long duration = TimeCompiler.compileTime(event.element());
-//
-//                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, event.id(), time, duration, event.element(), event.layer(), timestamp.waitForDialogue());
-//                    previous.put(event.id(), objectOrEvent);
-//                    result.add(objectOrEvent);
-//                }
-//                case RemoveElementEvent event -> {
-//                    Object object = previous.get(event.id());
-//                    if (!(object instanceof ObjectOrEvent oOE)) {
-//                        continue;
-//                    }
-//
-//                    oOE.duration = Math.min(time - oOE.start, oOE.duration);
-//                }
-//                case PlaySoundEvent event -> {
-//                    long duration = AudioUtils.toDuration(scenario.getName(), event.sound().file());
-//                    Track track = findNonOccupiedSlot(timeline, time, duration, result);
-//
-//                    final SoundAsElement element = new SoundAsElement(event.sound(), (int) event.duration(), 0, event.start(), duration);
-//                    track.put(time, duration, element, null, timestamp.waitForDialogue());
-//                }
-//                case StopSoundEvent event -> {
-//                    Track track = result.get(event.id());
-//                    if (track == null) {
-//                        continue;
-//                    }
-//
-//                    final Track.ObjectOrEvent objectOrEvent = track.getObjects().get(track.prevObjectStart);
-//                    if (objectOrEvent == null || !(objectOrEvent.object instanceof SoundAsElement sound)) {
-//                        continue;
-//                    }
-//
-//                    final SoundAsElement.Builder builder = sound.toBuilder();
-//                    builder.out(event.duration());
-//
-//                    objectOrEvent.object = builder.build();
-//                    objectOrEvent.duration = Math.min(time - track.prevObjectStart, objectOrEvent.duration);
-//                }
-//                default -> {
-//                    long duration = TimeCompiler.compileTime(other);
-//                    Track track = findNonOccupiedSlot(timeline, time, duration, result);
-//
-//                    track.put(time, duration, other, null, timestamp.waitForDialogue());
-//                }
-//            }}
-//        }
-//
-//        return result;
-//    }
-//
-//    private static int findNonOccupiedSlot(Timeline timeline, long time, long duration, Map<Integer, Track> tracks) {
-//        int i = 0;
-//        while ((track = tracks.get(i)) != null) {
-//            if (track.isNotOccupied(time, duration, null)) {
-//                return track;
-//            }
-//            i++;
-//        }
-//        track = new Track(timeline, i);
-//        tracks.put(i, track);
-//        return track;
-//    }
+
+    public static List<ObjectOrEvent> parse(Timeline timeline, Scenario scenario) {
+        final List<ObjectOrEvent> result = new ArrayList<>();
+        final Map<Integer, Map<Long, Pair<Long, Long>>> occupies = new HashMap<>();
+
+        final Map<Integer, Object> previous = new HashMap<>();
+
+        long time = 0;
+        for (Timestamp timestamp : scenario.getTimestamps()) {
+            time += timestamp.time();
+
+            for (Event other : timestamp.events()) { switch (other) {
+                case AddElementEvent event -> {
+                    long duration = TimeCompiler.compileTime(event.element());
+
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, event.id(), time, duration, event.element(), event.layer(), timestamp.waitForDialogue());
+                    previous.put(event.id(), objectOrEvent);
+                    result.add(objectOrEvent);
+
+                    occupies.computeIfAbsent(event.id(), i -> new HashMap<>()).put(time, new Pair<>(time, time + duration));
+                }
+                case RemoveElementEvent event -> {
+                    Object object = previous.get(event.id());
+                    if (!(object instanceof ObjectOrEvent oOE)) {
+                        continue;
+                    }
+
+                    oOE.duration = Math.min(time - oOE.start, oOE.duration);
+
+                    Map<Long, Pair<Long, Long>> track = occupies.get(oOE.track);
+                    if (track != null) {
+                        final Pair<Long, Long> pair = track.get(oOE.start);
+                        if (pair != null) {
+                            pair.right(pair.left() + oOE.duration);
+
+                        }
+                    }
+                }
+                case PlaySoundEvent event -> {
+                    long duration = AudioUtils.toDuration(scenario.getName(), event.sound().file());
+                    int track = findNonOccupiedSlot(time, duration, occupies);
+
+                    final SoundAsElement element = new SoundAsElement(event.sound(), (int) event.duration(), 0, event.start(), duration);
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, element, null, timestamp.waitForDialogue());
+                    previous.put(track, objectOrEvent);
+                    result.add(objectOrEvent);
+
+                    occupies.computeIfAbsent(track, i -> new HashMap<>()).put(time, new Pair<>(time, time + duration));
+                }
+                case StopSoundEvent event -> {
+                    Object object = previous.get(event.id());
+                    if (!(object instanceof ObjectOrEvent oOE) || !(oOE.object instanceof SoundAsElement sound)) {
+                        continue;
+                    }
+
+                    final SoundAsElement.Builder builder = sound.toBuilder();
+                    builder.out(event.duration());
+
+                    oOE.object = builder.build();
+                    oOE.duration = Math.min(time - oOE.start, oOE.duration);
+
+                    Map<Long, Pair<Long, Long>> track = occupies.get(oOE.track);
+                    if (track != null) {
+                        final Pair<Long, Long> pair = track.get(oOE.start);
+                        if (pair != null) {
+                            pair.right(pair.left() + oOE.duration);
+                        }
+                    }
+                }
+                default -> {
+                    long duration = TimeCompiler.compileTime(other);
+                    int track = findNonOccupiedSlot(time, duration, occupies);
+
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, other, null, timestamp.waitForDialogue());
+                    previous.put(track, objectOrEvent);
+                    result.add(objectOrEvent);
+
+                    occupies.computeIfAbsent(track, i -> new HashMap<>()).put(time, new Pair<>(time, time + duration));
+                }
+            }}
+        }
+
+        return result;
+    }
+
+    private static int findNonOccupiedSlot(long time, long duration, Map<Integer, Map<Long, Pair<Long, Long>>> occupies) {
+        int i = 0;
+
+        Map<Long, Pair<Long, Long>> map;
+        while ((map = occupies.get(i)) != null) {
+            boolean occupied = false;
+            for (Pair<Long, Long> pair : map.values()) {
+                final long maxTime = Math.abs(pair.right()), minTime = pair.left();
+                if (maxTime >= time && minTime <= time + duration) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied) {
+                return i;
+            }
+            i++;
+        }
+
+        return i;
+    }
 }

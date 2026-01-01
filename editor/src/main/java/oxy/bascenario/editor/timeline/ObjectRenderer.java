@@ -17,10 +17,6 @@ public class ObjectRenderer {
     private final ObjectOrEvent object;
 
     public float x, y, width;
-//    private float dragX, dragY;
-//    private boolean dragging;
-//
-//    private boolean resizing;
 
     public void render() {
         if (object.track < timeline.getVerticalScroll()) {
