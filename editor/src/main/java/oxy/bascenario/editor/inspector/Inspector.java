@@ -3,6 +3,8 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -25,16 +27,20 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
-import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.inspector.impl.events.*;
-import oxy.bascenario.editor.element.Timeline;
-import oxy.bascenario.editor.element.Track;
 import oxy.bascenario.editor.inspector.impl.objects.*;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.AudioUtils;
 import oxy.bascenario.editor.utils.SoundAsElement;
+import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.utils.ImGuiUtils;
-import oxy.bascenario.utils.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class Inspector {
@@ -45,22 +51,22 @@ public class Inspector {
     public void render() {
         ImGui.begin("Inspector");
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
-        final Track.ElementRenderer renderer = timeline.getSelectedElement();
-        if (renderer == null) {
+        final ObjectOrEvent object = timeline.getSelectedObject();
+        if (object == null) {
             ImGui.end();
             return;
         }
 
-        Pair<Track.Cache, Long> pair = renderer.getPair();
+//        Pair<Track.ObjectOrEvent, Long> pair = renderer.getPair();
 
-        boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", pair.left().requireWait());
+        boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", object.requireWait);
         RenderLayer layer = null;
-        if (pair.left().layer() != null) {
-            layer = RenderLayer.values()[ImGuiUtils.combo("Render Layer", pair.left().layer().ordinal(), RenderLayer.getAlls())];
+        if (object.layer != null) {
+            layer = RenderLayer.values()[ImGuiUtils.combo("Render Layer", object.layer.ordinal(), RenderLayer.getAlls())];
         }
 
-        final Object old = pair.left().object();
-        pair.left().object(switch (pair.left().object()) {
+        final Object old = object.object;
+        object.object = switch (object.object) {
             case Preview preview -> PreviewInspector.render(preview);
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
@@ -91,60 +97,61 @@ public class Inspector {
 
             case PositionElementEvent event -> PositionInspector.render(event);
             case RotateElementEvent event -> PositionInspector.render(event);
+
+            case SetBackgroundEvent event -> BackgroundInspector.render(event);
+            case ClearBackgroundEvent event -> BackgroundInspector.render(event);
+
             default -> old;
-        });
+        };
 
-        if (!old.equals(pair.left().object()) || requireWait != pair.left().requireWait() || pair.left().layer() != layer) {
-            pair.left().requireWait(requireWait);
-            pair.left().layer(layer);
+        boolean objectEquals = !old.equals(object.object);
+        if (objectEquals || requireWait != object.requireWait || object.layer != layer) {
+            object.requireWait = requireWait;
+            object.layer = layer;
 
-            long duration = pair.left().object() instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(pair.left().object());
-            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
-            if (duration == Long.MAX_VALUE) {
-                duration = 0;
-            }
-            if (oldDuration == Long.MAX_VALUE) {
-                oldDuration = 0;
-            }
-            duration += Math.max(0, pair.right() - oldDuration);
-            pair.right(duration);
-
-            final Track track = findNonOccupiedSlot(renderer.getTrack().getIndex(), renderer.getStartTime(), pair.right(), renderer.getTrack().getOccupies().get(renderer.getStartTime()));
-            if (track == renderer.getTrack()) {
-                Pair<Long, Long> occupy = renderer.getTrack().getOccupies().get(renderer.getStartTime());
-                if (occupy != null) {
-                    occupy.right(occupy.left() + duration);
+            if (objectEquals) {
+                long duration = object.object instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(object.object);
+                long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
+                if (duration == Long.MAX_VALUE) {
+                    duration = 0;
                 }
-            } else {
-                renderer.getTrack().remove(renderer.getStartTime());
-                track.put(renderer.getStartTime(), pair);
+                if (oldDuration == Long.MAX_VALUE) {
+                    oldDuration = 0;
+                }
+                duration += Math.max(0, object.duration - oldDuration);
+                object.duration = duration;
 
-                timeline.setSelectedElement(track.getRenderers().get(renderer.getStartTime()));
+                object.track = findNonOccupiedSlot(object.track, object.start, object.duration, object);
             }
 
-            timeline.updateScenario(true);
-        } else {
-            pair.left().requireWait(requireWait);
-            pair.left().layer(layer);
+            timeline.queueUpdate = true;
         }
 
         ImGui.end();
     }
 
-    private Track findNonOccupiedSlot(int initId, long time, long duration, Pair<Long, Long> ignore) {
+    private int findNonOccupiedSlot(int initId, long time, long duration, ObjectOrEvent object1) {
+        final Map<Integer, List<ObjectOrEvent>> map = new HashMap<>();
+        timeline.getObjects().forEach(object -> map.computeIfAbsent(object.track, n -> new ArrayList<>()).add(object));
+
         int i = initId;
-        Track track;
-        while ((track = timeline.getTrack(i)) != null) {
-            if (!track.isOccupied(time, duration, ignore)) {
-                break;
+        List<ObjectOrEvent> track;
+        while ((track = map.get(i)) != null) {
+            boolean occupied = false;
+            for (ObjectOrEvent object : track) {
+                final long maxTime = object.start + object.duration, minTime = object.start;
+                if (maxTime >= time && minTime <= time + duration && object1 != object) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied) {
+                return i;
             }
             i++;
         }
-        if (track == null) {
-            track = new Track(timeline, i);
-            timeline.putTrack(i, track);
-        }
 
-        return track;
+        return i;
     }
 }

@@ -43,7 +43,6 @@ public class ScenarioManager implements ScenarioManagerApi {
         for (Path entry : stream) {
             final File file = new File(entry.toFile(), "scenario.base");
             if (file.isDirectory() || !file.exists()) {
-                System.out.println(file);
                 continue;
             }
 

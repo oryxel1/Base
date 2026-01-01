@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.miniuis;
 
 import imgui.ImColor;
 import imgui.ImGui;
@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -24,17 +27,19 @@ import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
-import oxy.bascenario.editor.utils.TimeCompiler;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.editor.utils.TimeCompiler;
 
-import java.util.LinkedHashMap;
+import java.util.*;
 
 @RequiredArgsConstructor
-public class EventAdder {
+public class ActionsUI {
     private static final Dialogue DUMMY_DIALOGUE = Dialogue.builder().add("Hello World!").build();
 
     private final BaseScenarioEditorScreen screen;
@@ -119,6 +124,16 @@ public class EventAdder {
                 "Like color overlay, but instead of overlaying color it change the object color itself.",
                 new SetColorEvent(0, 500, Color.WHITE));
 
+        ImGui.separatorText("Background");
+
+        add("Set Background",
+                "A simple way to change the background with fade duration.",
+                new SetBackgroundEvent(new FileInfo("assets/base/black.png", false, true), 500));
+
+        add("Clear Background",
+                "Clear the current background and fade it to black!",
+                new ClearBackgroundEvent(500));
+
         ImGui.separatorText("Sounds");
 
 //        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1, 0));
@@ -134,7 +149,10 @@ public class EventAdder {
         add("Screen Color",
                 "This will cover the entire screen with a color you choose on a render layer that you also choose.",
                 new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
-//        add("Change background", null);
+
+        add("Lock Click",
+                "This lock or unlock the mouse click button to interact with the options or dialogue.",
+                new LockClickEvent(false));
 
         ImGui.end();
     }
@@ -146,27 +164,36 @@ public class EventAdder {
             }
             return;
         }
-        timeline.setSelectedElement(null);
+        timeline.setSelectedObject(null);
 
         long duration = TimeCompiler.compileTime(event);
-        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(event, null, null, false), duration));
+        final int track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
+
+        timeline.put(track, timeline.getTimestamp(), duration, event, null, false);
     }
 
-    private Track findNonOccupiedSlot(long time, long duration) {
+    private int findNonOccupiedSlot(long time, long duration) {
+        final Map<Integer, List<ObjectOrEvent>> map = new HashMap<>();
+        timeline.getObjects().forEach(object -> map.computeIfAbsent(object.track, n -> new ArrayList<>()).add(object));
+
         int i = 0;
-        Track track;
-        while ((track = timeline.getTrack(i)) != null) {
-            if (!track.isOccupied(time, duration, null)) {
-                break;
+        List<ObjectOrEvent> track;
+        while ((track = map.get(i)) != null) {
+            boolean occupied = false;
+            for (ObjectOrEvent object : track) {
+                final long maxTime = object.start + object.duration, minTime = object.start;
+                if (maxTime >= time && minTime <= time + duration) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied) {
+                return i;
             }
             i++;
         }
-        if (track == null) {
-            track = new Track(timeline, i);
-            timeline.putTrack(i, track);
-        }
 
-        return track;
+        return i;
     }
 }

@@ -1,4 +1,4 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.miniuis;
 
 import imgui.ImColor;
 import imgui.ImGui;
@@ -17,17 +17,19 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.editor.timeline.ObjectOrEvent;
+import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.SoundAsElement;
-import oxy.bascenario.utils.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
-public class ElementAdder {
+public class ObjectsUI {
     private final BaseScenarioEditorScreen screen;
     private final Timeline timeline;
 
@@ -83,6 +85,7 @@ public class ElementAdder {
         ImGui.end();
     }
 
+    private int index;
     private void add(String label, String tooltip, Object element) {
         if (!ImGui.button(label, new ImVec2(ImGui.getWindowSize().x - 20, 50))) {
             if (ImGui.isItemHovered(ImGuiHoveredFlags.DelayNormal)) {
@@ -91,31 +94,39 @@ public class ElementAdder {
             return;
         }
 
-        timeline.setSelectedElement(null);
+        timeline.setSelectedObject(null);
 
         long duration = TimeCompiler.compileTime(element);
         if (duration == Long.MAX_VALUE) {
             duration = 1000L;
         }
 
-        final Track track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        track.put(timeline.getTimestamp(), new Pair<>(new Track.Cache(element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, null, false), duration));
+        final int track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
+        timeline.put(track, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false);
     }
 
-    private Track findNonOccupiedSlot(long time, long duration) {
+    private int findNonOccupiedSlot(long time, long duration) {
+        final Map<Integer, List<ObjectOrEvent>> map = new HashMap<>();
+        timeline.getObjects().forEach(object -> map.computeIfAbsent(object.track, n -> new ArrayList<>()).add(object));
+
         int i = 0;
-        Track track;
-        while ((track = timeline.getTrack(i)) != null) {
-            if (!track.isOccupied(time, duration, null)) {
-                break;
+        List<ObjectOrEvent> track;
+        while ((track = map.get(i)) != null) {
+            boolean occupied = false;
+            for (ObjectOrEvent object : track) {
+                final long maxTime = object.start + object.duration, minTime = object.start;
+                if (maxTime >= time && minTime <= time + duration) {
+                    occupied = true;
+                    break;
+                }
+            }
+
+            if (!occupied) {
+                return i;
             }
             i++;
         }
-        if (track == null) {
-            track = new Track(timeline, i);
-            timeline.putTrack(i, track);
-        }
 
-        return track;
+        return i;
     }
 }

@@ -1,16 +1,19 @@
-package oxy.bascenario.editor.element;
+package oxy.bascenario.editor.timeline;
 
 import imgui.*;
+import imgui.flag.ImGuiKey;
 import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 // Shit code but whatever.
 public class Timeline {
@@ -20,34 +23,37 @@ public class Timeline {
     public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
 
     @Getter
-    private final Map<Integer, Track> tracks;
-    public void putTrack(int id, Track track) {
-        this.tracks.put(id, track);
-    }
-    public Track getTrack(int id) {
-        return this.tracks.get(id);
-    }
-    public void updateScenario(boolean updateScreen) {
-        if (tracks == null) {
-            return;
-        }
+    private final List<ObjectOrEvent> objects;
+    public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
+        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
+        this.objects.add(objectOrEvent);
+        this.objects.sort(Comparator.comparingLong(o -> o.start));
 
-        screen.getScenario().timestamps().clear();
-        screen.getScenario().timestamps().addAll(TrackParser.parse(this.tracks));
-        if (updateScreen) {
-            screen.update();
-        }
+        this.queueUpdate = true;
     }
+
 
     @Getter @Setter
-    private Track.ElementRenderer selectedElement;
+    private ObjectOrEvent selectedObject;
+
+    @Setter @Getter
+    private ObjectDragDrop draggingObject;
+    public boolean isDragging() {
+        return draggingObject != null;
+    }
+    public boolean isDragging(ObjectOrEvent object) {
+        return this.draggingObject != null && object == this.draggingObject.object;
+    }
+
+    public boolean queueUpdate;
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
+
         if (scenario == null) {
-            tracks = new ConcurrentHashMap<>();
+            this.objects = new ArrayList<>();
         } else {
-            tracks = TrackParser.parse(this, scenario.build());
+            this.objects = TrackParser.parse(this, scenario.build());
         }
     }
 
@@ -108,12 +114,54 @@ public class Timeline {
             }
         }
 
+        if (this.queueUpdate) {
+            this.objects.sort(Comparator.comparingLong(o -> o.start));
+            this.screen.update();
+            this.queueUpdate = false;
+        }
+
         ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
         drawElapsedTimeSegments(size.x / 4, pos, size);
         drawTimelineSegments(size.x / 4, pos, size);
         drawElapsedTime(size.x / 4, pos, size);
         drawTimelineCursor(size.x / 4, pos, size);
 
+        if (this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+            this.objects.remove(this.selectedObject);
+            this.selectedObject = null;
+            this.queueUpdate = true;
+        }
+
+        if (!this.isDragging()) {
+            ImGui.end();
+            return;
+        }
+
+        // Render dragging separately on top of everything...
+        this.draggingObject.object.renderer.render();
+        if (this.draggingObject == null || !this.draggingObject.isWaiting()) {
+            ImGui.end();
+            return;
+        } else if (!this.draggingObject.loop) {
+            ImGui.end();
+            this.draggingObject.loop = true;
+            return;
+        }
+
+        if (!this.draggingObject.isRejected()) {
+            this.draggingObject.accept(); // Accept the result of dragging if not rejected...
+            this.draggingObject = null;
+        } else {
+            final float ratio = (this.draggingObject.object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+            long time = (long) (Timeline.DEFAULT_MAX_TIME * scale * scroll + ratio * Timeline.DEFAULT_MAX_TIME * scale);
+
+            if (this.draggingObject.second || this.draggingObject.nearestTime - time > 350L) {
+                this.draggingObject = null; // Done!
+            } else {
+                this.draggingObject.reset();
+                this.draggingObject.second = true;
+            }
+        }
         ImGui.end();
     }
 
@@ -125,10 +173,6 @@ public class Timeline {
 //        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
 
         for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            if (tracks.get(i) == null) {
-                tracks.put(i, new Track(this, i));
-            }
-
             drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + 50), ImColor.rgb(33, 33, 33));
 
             ImGui.pushFont(FontUtils.IM_FONT_REGULAR_35);
@@ -140,11 +184,11 @@ public class Timeline {
             y += 50;
         }
 
-        y = pos.y + 80;
-        for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            tracks.get(i).render(pos.x + timelineManagerWidth, y, size.x - timelineManagerWidth);
-            y += 50;
-        }
+        this.objects.forEach(object -> {
+            if (!this.isDragging(object)) {
+                object.renderer.render();
+            }
+        });
     }
 
     private void drawElapsedTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
@@ -218,7 +262,7 @@ public class Timeline {
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
                 timestamp = Math.max(0, timestamp - backtrackTime);
                 screen.update();
-                this.selectedElement = null;
+                this.selectedObject = null;
             }
             return;
         }
@@ -230,7 +274,7 @@ public class Timeline {
         final float ratio = (vec2.x - pos.x - size.x / 4) / (size.x - size.x / 4);
         long last = timestamp;
         timestamp = (long) (DEFAULT_MAX_TIME * scale * scroll + ratio * DEFAULT_MAX_TIME * scale);
-        this.selectedElement = null;
+        this.selectedObject = null;
         if (last != timestamp) {
             screen.update();
         }
@@ -245,6 +289,6 @@ public class Timeline {
         long second = (ms / 1000) % 60;
         long minute = (ms / (1000 * 60)) % 60;
         long hour = (ms / (1000 * 60 * 60)) % 24;
-        return String.format("%02d:%02d:%02d.%d", hour, minute, second, millis);
+        return hour + ":" + minute + ":" + second + ":" + millis;
     }
 }

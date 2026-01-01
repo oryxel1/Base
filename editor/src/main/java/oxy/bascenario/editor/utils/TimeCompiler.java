@@ -1,5 +1,7 @@
 package oxy.bascenario.editor.utils;
 
+import oxy.bascenario.api.event.background.ClearBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
@@ -67,6 +69,16 @@ public class TimeCompiler {
                 builder.duration(event.duration() + duration);
                 yield builder.build();
             }
+            case SetBackgroundEvent event -> {
+                SetBackgroundEvent.Builder builder = event.toBuilder();
+                builder.duration(event.duration() + duration);
+                yield builder.build();
+            }
+            case ClearBackgroundEvent event -> {
+                ClearBackgroundEvent.Builder builder = event.toBuilder();
+                builder.duration(event.duration() + duration);
+                yield builder.build();
+            }
             default -> object;
         };
     }
@@ -75,7 +87,7 @@ public class TimeCompiler {
         return compileTime(object) == Long.MAX_VALUE || object instanceof LocationInfo || object instanceof Emoticon ||
                 object instanceof PositionElementEvent || object instanceof RotateElementEvent ||
                 object instanceof PlaySoundEvent || object instanceof SoundVolumeEvent || object instanceof StopSoundEvent ||
-                object instanceof ColorOverlayEvent || object instanceof SetColorEvent;
+                object instanceof ColorOverlayEvent || object instanceof SetColorEvent || object instanceof ClearBackgroundEvent || object instanceof SetBackgroundEvent;
     }
 
     public static long compileTime(final Object object) {
@@ -109,6 +121,8 @@ public class TimeCompiler {
             case StopSoundEvent event -> Math.max(100, event.duration());
             case ColorOverlayEvent event -> Math.max(100, event.duration());
             case SetColorEvent event -> Math.max(100, event.duration());
+            case ClearBackgroundEvent event -> Math.max(100, event.duration());
+            case SetBackgroundEvent event -> Math.max(100, event.duration());
 
             default -> 100L; // has to be something for it to show up in the editor.
         };

@@ -3,7 +3,7 @@ package oxy.bascenario.editor.inspector.impl.objects;
 import imgui.ImGui;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.element.AssetsUI;
+import oxy.bascenario.editor.miniuis.AssetsUI;
 
 public class SpriteInspector {
     private static FileInfo skeleton, atlas;

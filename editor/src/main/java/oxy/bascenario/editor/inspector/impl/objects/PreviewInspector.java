@@ -1,10 +1,9 @@
 package oxy.bascenario.editor.inspector.impl.objects;
 
 import imgui.ImGui;
-import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.editor.element.AssetsUI;
+import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;
 
 public class PreviewInspector {

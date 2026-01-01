@@ -1,6 +1,6 @@
-package oxy.bascenario.event.impl;
+package oxy.bascenario.event.impl.background;
 
-import oxy.bascenario.api.event.SetBackgroundEvent;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 
@@ -11,6 +11,6 @@ public class FunctionSetBackground extends FunctionEvent<SetBackgroundEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-//        screen.setBackground(event.getBackground());
+        screen.background(event.background(), event.duration());
     }
 }

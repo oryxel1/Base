@@ -2,9 +2,14 @@ package oxy.bascenario.screens;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.lenni0451.commons.animation.easing.EasingFunction;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
@@ -12,12 +17,16 @@ import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
+import oxy.bascenario.utils.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.animation.AnimationUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class ScenarioScreen extends ExtendableScreen {
     @Getter
@@ -35,38 +44,17 @@ public class ScenarioScreen extends ExtendableScreen {
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
     }
 
-//    private Image background, queueBackground;
-//    private DynamicAnimation backgroundFade = AnimationUtils.dummy(1);
+    private FileInfo background;
+    private DynamicAnimation backgroundFade = AnimationUtils.dummy(0);
 
-//    public void setBackground(Image background) {
-//        this.queueBackground = null;
-//        if (this.background != null && this.background instanceof FadeImage fade && fade.fadeOut() > 0) {
-//            this.backgroundFade = AnimationUtils.build(fade.fadeOut(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 1, 0, EasingFunction.LINEAR);
-//            this.queueBackground = background;
-//            return;
-//        }
-//
-//        this.background = background;
-//        if (this.background != null && background instanceof FadeImage fade && fade.fadeOut() > 0) {
-//            this.backgroundFade = AnimationUtils.build(fade.fadeIn(), this.backgroundFade.isRunning() ? this.backgroundFade.getValue() : 0, 1, EasingFunction.LINEAR);
-//        }
-//    }
-//
-//    private void renderBackground() {
-//        if (!this.backgroundFade.isRunning() && this.queueBackground != null) {
-//            this.background = null;
-//            setBackground(this.queueBackground);
-//        }
-//
-//        if (this.background != null) {
-//            Color color = Color.WHITE;
-//            if (this.backgroundFade.isRunning()) {
-//                color = color.withAlphaF(this.backgroundFade.getValue());
-//            }
-//
-//            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture(scenario, this.background.file()), 0, 0, 1920, 1080, color);
-//        }
-//    }
+    public void clearBackground(long duration) {
+        this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue(), 0, EasingFunction.LINEAR);
+    }
+
+    public void background(FileInfo file, long duration) {
+        this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue() == 1 ? 0 : this.backgroundFade.getValue(), 1, EasingFunction.LINEAR);
+        this.background = file;
+    }
 
     public long sinceDialogue, sincePoll;
     private long sinceRender;
@@ -97,7 +85,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
             peek.events().forEach(event -> {
                 try {
-                    final FunctionEvent function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                    final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
                     function.run(this);
                 } catch (Exception ignored) {
                 }
@@ -146,7 +134,15 @@ public class ScenarioScreen extends ExtendableScreen {
     public void render(float delta) {
         ThinGLUtils.start();
         pollEvents(false);
-//        renderBackground();
+
+        if (this.backgroundFade.getValue() == 0 && !this.backgroundFade.isRunning()) {
+            this.background = null;
+        }
+        if (this.background != null) {
+            ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.background), Color.WHITE.withAlphaF(this.backgroundFade.getValue()));
+        } else {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
+        }
 
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
