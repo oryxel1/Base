@@ -273,6 +273,6 @@ public class Timeline {
         long second = (ms / 1000) % 60;
         long minute = (ms / (1000 * 60)) % 60;
         long hour = (ms / (1000 * 60 * 60)) % 24;
-        return String.format("%02d:%02d:%02d.%d", hour, minute, second, millis);
+        return hour + ":" + minute + ":" + second + ":" + millis;
     }
 }
