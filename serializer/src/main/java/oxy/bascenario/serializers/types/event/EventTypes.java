@@ -64,6 +64,7 @@ public class EventTypes implements Type<Event> {
         put(CloseOptionsEvent.class, new CloseOptionsType());
         put(CloseDialogueEvent.class, new CloseDialogueType());
         put(AddDialogueEvent.class, new AddDialogueType());
+        put(RedirectDialogueEvent.class, new RedirectDialogueType());
 
         put(ColorOverlayEvent.class, new ColorOverlayType());
         put(SetColorEvent.class, new SetColorType());

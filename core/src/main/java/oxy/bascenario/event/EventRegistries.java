@@ -69,6 +69,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(StartDialogueEvent.class, FunctionStartDialogue.class);
         EVENT_TO_FUNCTION.put(AddDialogueEvent.class, FunctionAddDialogue.class);
         EVENT_TO_FUNCTION.put(CloseDialogueEvent.class, FunctionCloseDialogue.class);
+        EVENT_TO_FUNCTION.put(RedirectDialogueEvent.class, FunctionRedirectDialogue.class);
 
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
         EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseOptions.class);
