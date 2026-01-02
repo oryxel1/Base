@@ -4,6 +4,7 @@ import imgui.ImGui;
 import imgui.type.ImBoolean;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
+import oxy.bascenario.api.event.dialogue.RedirectDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.editor.inspector.impl.objects.TextInspector;
@@ -13,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DialogueInspector {
+    public static RedirectDialogueEvent render(RedirectDialogueEvent event) {
+        return new RedirectDialogueEvent(ImGuiUtils.inputInt("Dialogue Index", event.index()));
+    }
+
     public static AddDialogueEvent render(Scenario.Builder scenario, AddDialogueEvent event) {
         AddDialogueEvent.Builder builder = event.toBuilder();
 

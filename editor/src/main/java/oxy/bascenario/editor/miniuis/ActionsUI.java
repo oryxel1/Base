@@ -73,6 +73,10 @@ public class ActionsUI {
                 "Add a new dialogue (text) onto any existing playing dialogue, allows for playing a certain dialogue text a bit late.",
                 new AddDialogueEvent(0, DUMMY_DIALOGUE));
 
+        add("Redirect Dialogue",
+                "Set the dialogue index to a whole number you choose.",
+                new RedirectDialogueEvent(0));
+
         add("Close Dialogue", "Close any currently present dialogue", new CloseDialogueEvent());
         {
             final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
