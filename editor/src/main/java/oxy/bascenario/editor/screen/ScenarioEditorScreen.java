@@ -1,5 +1,8 @@
 package oxy.bascenario.editor.screen;
 
+import imgui.ImGui;
+import imgui.ImVec2;
+import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.utils.TrackParser;
@@ -35,9 +38,30 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.dispose();
     }
 
+    ImVec2 windowSize = new ImVec2(0, 0), windowPos = new ImVec2(0, 0);
     @Override
     public void renderScenario() {
+        windowSize = ImGui.getWindowSize();
+        windowPos = ImGui.getWindowPos();
         screen.render(0);
+    }
+
+    @Override
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+        if (!timeline.isPlaying()) {
+            return;
+        }
+
+        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+        float y = ThinGL.windowInterface().getFramebufferHeight() / 1080f;
+        mouseX *= 1 / x;
+        mouseY *= 1 / y;
+        mouseX *= windowSize.x / 1920f;
+        mouseY *= (windowSize.y - 23) / 1080f;
+        mouseX += windowPos.x;
+        mouseY += windowPos.y + 23;
+
+        screen.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

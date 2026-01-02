@@ -115,7 +115,7 @@ public class TimeCompiler {
         return switch (object) {
             case PositionElementEvent event -> Math.max(100, event.duration());
             case RotateElementEvent event -> Math.max(100, event.duration());
-            case ShowOptionsEvent ignored -> 500L; // eh.
+            case ShowOptionsEvent ignored -> 250L; // eh.
             case PlaySoundEvent event -> Math.max(100, event.duration());
             case SoundVolumeEvent event -> Math.max(100, event.duration());
             case StopSoundEvent event -> Math.max(100, event.duration());

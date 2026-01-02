@@ -25,10 +25,7 @@ import oxy.bascenario.event.impl.animation.FunctionStopAnimation;
 import oxy.bascenario.event.impl.background.FunctionClearBackground;
 import oxy.bascenario.event.impl.background.FunctionSetBackground;
 import oxy.bascenario.event.impl.color.FunctionSetColor;
-import oxy.bascenario.event.impl.dialogue.FunctionAddDialogue;
-import oxy.bascenario.event.impl.dialogue.FunctionCloseDialogue;
-import oxy.bascenario.event.impl.dialogue.FunctionShowOptions;
-import oxy.bascenario.event.impl.dialogue.FunctionStartDialogue;
+import oxy.bascenario.event.impl.dialogue.*;
 import oxy.bascenario.event.impl.element.*;
 import oxy.bascenario.event.impl.color.FunctionColorOverlay;
 import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
@@ -74,7 +71,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(CloseDialogueEvent.class, FunctionCloseDialogue.class);
 
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
-        EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseDialogue.class);
+        EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseOptions.class);
 
         EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
 
