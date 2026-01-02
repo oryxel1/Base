@@ -44,8 +44,6 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
     @Override
     protected void renderThinGL() {
-        ThinGLUtils.start();
-
         // Ehmmm... It's hardcoded yes.... I know but it works!
         if (borderFade instanceof AnimationUtils.DummyAnimation) {
             borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
@@ -96,8 +94,6 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         if (element.background() == null) {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(0, 0, 0, Math.round(255 * (1 - globalFade.getValue()))));
         }
-
-        ThinGLUtils.end();
     }
 
     private void renderBackground() {
