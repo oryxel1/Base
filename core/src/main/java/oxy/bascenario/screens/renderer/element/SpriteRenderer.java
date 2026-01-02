@@ -9,6 +9,7 @@ import imgui.ImGui;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.elements.Sprite;
@@ -57,15 +58,21 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario.getName(), this.element.atlas()));
-        SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
-        this.skeleton = new Skeleton(skeletonData);
-
-        this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));
+        this.atlas = (TextureAtlas) Base.instance().assetsManager().assets(scenario.getName(), this.element.atlas()).asset();
+        // Not a good fix but it is a fix....
+        new Thread(() -> {
+            SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
+            this.skeleton = new Skeleton(skeletonData);
+            this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));
+        }).start();
     }
 
     @Override
     protected void render() {
+        if (this.skeleton == null) {
+            return;
+        }
+
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
 
         this.state.update(Gdx.graphics.getDeltaTime());

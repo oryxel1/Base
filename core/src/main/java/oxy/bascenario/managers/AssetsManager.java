@@ -1,5 +1,6 @@
 package oxy.bascenario.managers;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import lombok.SneakyThrows;
 import net.raphimc.audiomixer.io.AudioIO;
 import net.raphimc.audiomixer.io.mp3.Mp3InputStream;
@@ -143,7 +144,9 @@ public class AssetsManager implements AssetsManagerApi {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
         } else if (path.endsWith(".ttf")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
-        } else {
+        } else if (path.endsWith(".atlas")) {
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAtlas(FileUtils.toHandle(scenario, info))));
+        }else {
             if (!path.endsWith(".mp3") && !path.endsWith(".ogg") && !path.endsWith(".wav")) {
                 this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
             }
