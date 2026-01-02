@@ -52,16 +52,24 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
             return;
         }
 
-        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
-        float y = ThinGL.windowInterface().getFramebufferHeight() / 1080f;
-        mouseX *= 1 / x;
-        mouseY *= 1 / y;
-        mouseX *= windowSize.x / 1920f;
-        mouseY *= (windowSize.y - 23) / 1080f;
-        mouseX += windowPos.x;
-        mouseY += windowPos.y + 23;
+        mouseX *= (ThinGL.windowInterface().getFramebufferWidth() / 1920F);
+        mouseY *= (ThinGL.windowInterface().getFramebufferHeight() / 1080F);
+        mouseX -= windowPos.x;
+        mouseY -= windowPos.y + 23;
+
+        mouseX /= (windowSize.x / 1920f);
+        mouseY /= ((windowSize.y - 23) / 1080f);
 
         screen.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void mouseRelease() {
+        if (!timeline.isPlaying()) {
+            return;
+        }
+
+        screen.mouseRelease();
     }
 
     @Override
