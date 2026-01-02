@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import lombok.Getter;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
@@ -30,7 +31,9 @@ public class OptionsRenderer {
         return this.options != null;
     }
 
-    private DynamicAnimation scale = AnimationUtils.dummy(1), flash = AnimationUtils.dummy(1);
+    @Getter
+    private DynamicAnimation scale = AnimationUtils.dummy(1);
+    private DynamicAnimation flash = AnimationUtils.dummy(1);
 
     public void render(ScenarioScreen screen) {
         if (this.options == null) {

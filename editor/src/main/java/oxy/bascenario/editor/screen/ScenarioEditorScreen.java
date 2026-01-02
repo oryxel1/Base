@@ -38,6 +38,14 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.dispose();
     }
 
+    @Override
+    public void render(float delta) {
+        boolean busyDialogue = screen.isBusyDialogue() && !screen.getDialogueRenderer().isBusy();
+        boolean busyOptions = screen.isBusyOptions() && !(screen.getOptionsRenderer().getScale().isRunning() && screen.getOptionsRenderer().getScale().getTarget() == 1);
+        timeline.setTickTime(!busyDialogue && !busyOptions);
+        super.render(delta);
+    }
+
     ImVec2 windowSize = new ImVec2(0, 0), windowPos = new ImVec2(0, 0);
     @Override
     public void renderScenario() {

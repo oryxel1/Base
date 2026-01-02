@@ -111,7 +111,8 @@ public class ScenarioScreen extends ExtendableScreen {
         this.sincePoll += timeDelta;
 
         boolean busyDialogue = this.busyDialogue && this.dialogueRenderer.isBusy();
-        if (!busyDialogue && !this.busyOptions) {
+        boolean busyOptions = this.busyOptions && !(this.optionsRenderer.getScale().isRunning() && this.optionsRenderer.getScale().getTarget() == 1);
+        if (!busyDialogue && !busyOptions) {
             this.sinceDialogue += timeDelta;
         }
 
