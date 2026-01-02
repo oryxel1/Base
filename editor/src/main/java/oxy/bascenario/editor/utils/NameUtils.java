@@ -14,6 +14,7 @@ import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.elements.LocationInfo;
+import oxy.bascenario.api.render.elements.image.AnimatedImage;
 
 public class NameUtils {
     public static String name(Object object) {
@@ -60,6 +61,7 @@ public class NameUtils {
 
             case LocationInfo ignored -> "Location Info";
             case SoundAsElement ignored -> "Sound";
+            case AnimatedImage ignored -> "Gif";
 
             default -> object.getClass().getSimpleName();
         };

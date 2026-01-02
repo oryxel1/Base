@@ -173,7 +173,6 @@ public class ObjectRenderer {
         if (resizing && yMatch) { // If we're already resizing. we can't check for x axis xD.
             float ratio = (mouse.x - (x + width)) / (size.x - size.x / 4);
             long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * ratio);
-            System.out.println(ratio + "," + timeline.getScale() + "," + duration);
 
             // I wonder how fast this is....
             int next = timeline.getObjects().indexOf(this.object);

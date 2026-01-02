@@ -19,6 +19,11 @@ import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.FileUtils;
 import oxy.bascenario.utils.ThinGLUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.esotericsoftware.spine.attachments.Sequence.SequenceMode.loop;
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 // The fact we're combining libgdx-spine way of rendering with ThinGL is a literal dog shit implement xDDDD
@@ -34,9 +39,12 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
     private Skeleton skeleton;
     private AnimationState state;
     private AnimationStateData stateData;
+
+    final List<QueueAnimation> queueAnimations = new CopyOnWriteArrayList<>();
+    private record QueueAnimation(String animation, int index, float duration, boolean loop) {
+    }
     public void play(String animation, int index, float duration, boolean loop) {
-        stateData.setDefaultMix(duration);
-        state.setAnimation(index, animation, loop);
+        this.queueAnimations.add(new QueueAnimation(animation, index, duration, loop));
     }
 
     private final Scenario scenario;
@@ -63,7 +71,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         new Thread(() -> {
             SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
             this.skeleton = new Skeleton(skeletonData);
-            this.state = new AnimationState(this.stateData = new AnimationStateData(skeletonData));
+            this.stateData = new AnimationStateData(skeletonData);
+            this.state = new AnimationState(this.stateData);
         }).start();
     }
 
@@ -71,6 +80,15 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
     protected void render() {
         if (this.skeleton == null || this.state == null) {
             return;
+        }
+
+        try {
+            this.queueAnimations.forEach(animation -> {
+                stateData.setDefaultMix(animation.duration);
+                state.setAnimation(animation.index, animation.animation, animation.loop);
+            });
+            this.queueAnimations.clear();
+        } catch (Exception ignored) {
         }
 
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
