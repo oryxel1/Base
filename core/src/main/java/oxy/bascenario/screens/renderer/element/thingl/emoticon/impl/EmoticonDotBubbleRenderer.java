@@ -51,7 +51,7 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
         final Texture2D bubble = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Balloon_" + (hesitated ? "N.png" : "T.png"));
         final Texture2D dot = Base.instance().assetsManager().texture("assets/base/uis/emoticons/Emoticon_Idea.png");
 
-        GLOBAL_RENDER_STACK.popMatrix();
+        GLOBAL_RENDER_STACK.pushMatrix();
         GLOBAL_RENDER_STACK.scale(this.scale.getValue());
         final Color color = Color.WHITE.withAlphaF(opacity.getValue());
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, bubble, 0, 35, BUBBLE_WIDTH, hesitated ? HESITATED_HEIGHT : THINKING_HEIGHT, color);
@@ -63,7 +63,7 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
                     (35 + (hesitated ? HESITATED_HEIGHT : THINKING_HEIGHT) / 2 - DOT_SIZE / 2) - (hesitated ? 2.8f : 10.5f),
                     DOT_SIZE, DOT_SIZE, color);
         }
-        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 
     @Override
