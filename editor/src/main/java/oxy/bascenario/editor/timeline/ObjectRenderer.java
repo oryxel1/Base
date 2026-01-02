@@ -10,6 +10,7 @@ import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import net.raphimc.thingl.text.TextRun;
 import org.lwjgl.glfw.GLFW;
+import org.spongepowered.configurate.yaml.internal.snakeyaml.external.com.google.gdata.util.common.base.Escaper;
 import oxy.bascenario.editor.utils.NameUtils;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.utils.font.FontUtils;
@@ -170,8 +171,9 @@ public class ObjectRenderer {
         final ImVec2 mouse = ImGui.getMousePos(), size = ImGui.getWindowSize();
         final boolean yMatch = mouse.y >= y && mouse.y <= y + 50;
         if (resizing && yMatch) { // If we're already resizing. we can't check for x axis xD.
-            float delta = mouse.x - (x + width);
-            long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * (delta / (size.x - size.x / 4)));
+            float ratio = (mouse.x - (x + width)) / (size.x - size.x / 4);
+            long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * ratio);
+            System.out.println(ratio + "," + timeline.getScale() + "," + duration);
 
             // I wonder how fast this is....
             int next = timeline.getObjects().indexOf(this.object);
@@ -186,7 +188,7 @@ public class ObjectRenderer {
                 object.duration = Math.max(0, object.duration + duration);
                 object.object = TimeCompiler.addTime(object.object, (int) duration);
 
-                this.width = ((float) object.duration / Timeline.DEFAULT_MAX_TIME * timeline.getScale()) * (size.x - size.x / 4);
+                this.width = ((float) object.duration / (Timeline.DEFAULT_MAX_TIME * timeline.getScale())) * (size.x - size.x / 4);
                 timeline.queueUpdate = true;
             }
 
