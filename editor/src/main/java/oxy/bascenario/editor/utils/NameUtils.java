@@ -59,6 +59,7 @@ public class NameUtils {
             case LockClickEvent ignored -> "Lock Click";
 
             case LocationInfo ignored -> "Location Info";
+            case SoundAsElement ignored -> "Sound";
 
             default -> object.getClass().getSimpleName();
         };
