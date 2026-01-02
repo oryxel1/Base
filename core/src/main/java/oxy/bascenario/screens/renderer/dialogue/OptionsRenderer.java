@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -75,16 +76,16 @@ public class OptionsRenderer {
             // For fuck’s sake, I don't fucking know what the actual font is, It's slightly thinner than noto sans regular that for sure.
             TextRun textRun = TextRun.fromString(FontUtils.DEFAULT, text, TEXT_COLOR.withAlphaF(alpha));
             if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
-                textScale = TextUtils.getVisualWidth(44, textRun.shape()) / (buttonWidth - 100);
+                textScale = Math.min((buttonWidth - 100) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
             }
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
-            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getVisualHeight(44, textRun.shape()) * textScale * scale) / 2;
+            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getLogicalHeight(44, textRun.shape()) * textScale * scale) / 2;
             GLOBAL_RENDER_STACK.pushMatrix();
-            GLOBAL_RENDER_STACK.translate(textX + 7, textY + 1, 0);
+            GLOBAL_RENDER_STACK.translate(textX + 7, textY, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
             GLOBAL_RENDER_STACK.scale(scale);
-            TextUtils.textRun(44, textRun, 0, 0);
+            TextUtils.textRun(44, textRun, 0, 0, RendererText.VerticalOrigin.LOGICAL_TOP, RendererText.HorizontalOrigin.LOGICAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
 
             i++;
