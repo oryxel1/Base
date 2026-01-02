@@ -31,6 +31,7 @@ public class Timeline {
         this.objects.sort(Comparator.comparingLong(o -> o.start));
 
         this.queueUpdate = true;
+        this.setSelectedObject(objectOrEvent);
     }
 
 
