@@ -127,10 +127,14 @@ public class Timeline {
         drawElapsedTime(size.x / 4, pos, size);
         drawTimelineCursor(size.x / 4, pos, size);
 
-        if (this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+        if (ImGui.isWindowFocused() && this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
             this.objects.remove(this.selectedObject);
             this.selectedObject = null;
             this.queueUpdate = true;
+        }
+
+        if (ImGui.isWindowFocused() && ImGui.isKeyPressed(ImGuiKey.Space)) {
+            this.screen.setPlaying(!this.isPlaying());
         }
 
         if (!this.isDragging()) {
@@ -285,11 +289,12 @@ public class Timeline {
         return offsetX + ((timestamp - (Timeline.DEFAULT_MAX_TIME * scale * scroll)) / (Timeline.DEFAULT_MAX_TIME * scale)) * size;
     }
 
+    // Don't comment on this.
     private static String format(long ms) {
         long millis = ms % 1000;
         long second = (ms / 1000) % 60;
         long minute = (ms / (1000 * 60)) % 60;
         long hour = (ms / (1000 * 60 * 60)) % 24;
-        return hour + ":" + minute + ":" + second + ":" + millis;
+        return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute) + ":" + (second < 10 ? "0" + second : second) + ":" + (millis < 10 ? "0" + millis : millis);
     }
 }

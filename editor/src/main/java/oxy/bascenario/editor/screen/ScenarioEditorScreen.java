@@ -78,7 +78,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     }
 
     @Override
-    protected void setPlaying(boolean playing) {
+    public void setPlaying(boolean playing) {
         if (playing) {
             if (!timeline.isPlaying()) {
                 update();

@@ -111,7 +111,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.endMainMenuBar();
     }
 
-    protected void setPlaying(boolean playing) {
+    public void setPlaying(boolean playing) {
         timeline.setPlaying(playing);
     }
 }
