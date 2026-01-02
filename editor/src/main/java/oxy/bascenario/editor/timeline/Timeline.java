@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.screen.BaseScenarioEditorScreen;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.font.FontUtils;
@@ -24,8 +25,8 @@ public class Timeline {
 
     @Getter
     private final List<ObjectOrEvent> objects;
-    public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait) {
-        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait);
+    public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait, Vec2 vec2) {
+        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait, vec2);
         this.objects.add(objectOrEvent);
         this.objects.sort(Comparator.comparingLong(o -> o.start));
 

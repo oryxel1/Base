@@ -32,7 +32,7 @@ public class TrackParser {
                     events.computeIfAbsent(object.start + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new StopSoundEvent(sound.id(), out));
                 }
             } else {
-                list.right().add(new AddElementEvent(object.track, object.object, object.layer));
+                list.right().add(new AddElementEvent(object.track, object.vec2, object.object, object.layer));
                 events.computeIfAbsent(object.start + object.duration, n -> new Pair<>(object.requireWait, new ArrayList<>())).right().add(new RemoveElementEvent(object.track));
             }
         });
@@ -63,7 +63,7 @@ public class TrackParser {
                 case AddElementEvent event -> {
                     long duration = TimeCompiler.compileTime(event.element());
 
-                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, event.id(), time, duration, event.element(), event.layer(), timestamp.waitForDialogue());
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, event.id(), time, duration, event.element(), event.layer(), timestamp.waitForDialogue(), event.position());
                     previous.put(event.id(), objectOrEvent);
                     result.add(objectOrEvent);
 
@@ -91,7 +91,7 @@ public class TrackParser {
                     int track = findNonOccupiedSlot(time, duration, occupies);
 
                     final SoundAsElement element = new SoundAsElement(event.sound(), (int) event.duration(), 0, event.start(), duration);
-                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, element, null, timestamp.waitForDialogue());
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, element, null, timestamp.waitForDialogue(), null);
                     previous.put(track, objectOrEvent);
                     result.add(objectOrEvent);
 
@@ -121,7 +121,7 @@ public class TrackParser {
                     long duration = TimeCompiler.compileTime(other);
                     int track = findNonOccupiedSlot(time, duration, occupies);
 
-                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, other, null, timestamp.waitForDialogue());
+                    final ObjectOrEvent objectOrEvent = new ObjectOrEvent(timeline, track, time, duration, other, null, timestamp.waitForDialogue(), null);
                     previous.put(track, objectOrEvent);
                     result.add(objectOrEvent);
 

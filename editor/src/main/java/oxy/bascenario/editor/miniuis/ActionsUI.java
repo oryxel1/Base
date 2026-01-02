@@ -167,7 +167,7 @@ public class ActionsUI {
         long duration = TimeCompiler.compileTime(event);
         final int track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
 
-        timeline.put(track, timeline.getTimestamp(), duration, event, null, false);
+        timeline.put(track, timeline.getTimestamp(), duration, event, null, false, null);
     }
 
     private int findNonOccupiedSlot(long time, long duration) {

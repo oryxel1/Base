@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.timeline;
 
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.utils.math.Vec2;
 
 public class ObjectOrEvent {
     public int track;
@@ -10,8 +11,9 @@ public class ObjectOrEvent {
     public Object object;
     public RenderLayer layer;
     public boolean requireWait;
+    public Vec2 vec2;
 
-    public ObjectOrEvent(Timeline timeline, int track, long start, long duration, Object object, RenderLayer layer, boolean requireWait) {
+    public ObjectOrEvent(Timeline timeline, int track, long start, long duration, Object object, RenderLayer layer, boolean requireWait, Vec2 vec2) {
         this.track = track;
         this.start = start;
         this.duration = duration;
@@ -19,5 +21,6 @@ public class ObjectOrEvent {
         this.object = object;
         this.layer = layer;
         this.requireWait = requireWait;
+        this.vec2 = vec2;
     }
 }

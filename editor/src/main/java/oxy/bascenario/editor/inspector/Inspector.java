@@ -27,6 +27,7 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.inspector.impl.events.*;
 import oxy.bascenario.editor.inspector.impl.objects.*;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
@@ -38,10 +39,7 @@ import oxy.bascenario.editor.utils.SoundAsElement;
 import oxy.bascenario.editor.utils.TimeCompiler;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class Inspector {
@@ -63,9 +61,18 @@ public class Inspector {
 
         boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", object.requireWait);
         RenderLayer layer = null;
+        Vec2 vec2 = null;
         if (object.layer != null) {
             layer = RenderLayer.values()[ImGuiUtils.combo("Render Layer", object.layer.ordinal(), RenderLayer.getAlls())];
+
+            if (object.vec2 != null) {
+                float x = ImGuiUtils.sliderFloat("X", object.vec2.x(), -1920, 1920);
+                float y = ImGuiUtils.sliderFloat("Y", object.vec2.y(), -1080, 1080);
+                vec2 = new Vec2(x, y);
+            }
         }
+
+        ImGui.separator();
 
         final Object old = object.object;
         object.object = switch (object.object) {
@@ -107,9 +114,10 @@ public class Inspector {
         };
 
         boolean objectEquals = !old.equals(object.object);
-        if (objectEquals || requireWait != object.requireWait || object.layer != layer) {
+        if (objectEquals || requireWait != object.requireWait || object.layer != layer || !Objects.equals(vec2, object.vec2)) {
             object.requireWait = requireWait;
             object.layer = layer;
+            object.vec2 = vec2;
 
             if (objectEquals) {
                 long duration = object.object instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(object.object);

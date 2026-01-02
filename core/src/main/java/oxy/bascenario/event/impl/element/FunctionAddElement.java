@@ -1,5 +1,6 @@
 package oxy.bascenario.event.impl.element;
 
+import net.lenni0451.commons.animation.easing.EasingFunction;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.*;
@@ -29,6 +30,7 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     @Override
     public void run(ScenarioScreen screen) {
         final ElementRenderer<?> renderer = getRenderer(screen.getScenario(), event.element(), event.layer());
+        renderer.getPosition().set(EasingFunction.LINEAR, event.position(), 0);
 
         renderer.resize(0, 0); // TODO: Properly do this?
         screen.getElements().put(Math.abs(event.id()), renderer);
