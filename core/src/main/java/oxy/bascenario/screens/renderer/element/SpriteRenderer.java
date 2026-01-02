@@ -69,7 +69,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
     @Override
     protected void render() {
-        if (this.skeleton == null) {
+        if (this.skeleton == null || this.state == null) {
             return;
         }
 
