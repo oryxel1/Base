@@ -102,7 +102,7 @@ public class ObjectsUI {
         }
 
         final int track = findNonOccupiedSlot(timeline.getTimestamp(), duration);
-        timeline.put(track, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, false, element instanceof SoundAsElement ? null : new Vec2(0, 0));
+        timeline.put(track, timeline.getTimestamp(), duration, element, element instanceof SoundAsElement ? null : RenderLayer.ABOVE_DIALOGUE, true, element instanceof SoundAsElement ? null : new Vec2(0, 0));
     }
 
     private int findNonOccupiedSlot(long time, long duration) {
