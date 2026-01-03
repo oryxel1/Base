@@ -58,9 +58,9 @@ public class Inspector {
         }
 
         ImGui.text(NameUtils.name(object.object));
-        ImGui.separator();
 
-        boolean requireWait = ImGuiUtils.checkbox("Wait For Dialogue", object.requireWait);
+        // I seriously can't think of a proper way to implement this in the editor, so we going with the always wait approch.
+        boolean requireWait = true; // ImGuiUtils.checkbox("Wait For Dialogue", object.requireWait);
         RenderLayer layer = null;
         Vec2 vec2 = null;
         if (object.layer != null) {
