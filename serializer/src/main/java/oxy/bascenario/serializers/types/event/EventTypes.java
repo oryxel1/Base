@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
@@ -20,6 +21,7 @@ import oxy.bascenario.api.event.sound.*;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.event.impl.LockClickType;
+import oxy.bascenario.serializers.types.event.impl.ShowButtonsType;
 import oxy.bascenario.serializers.types.event.impl.animation.PlayAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.SpriteAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.StopAnimationType;
@@ -77,6 +79,7 @@ public class EventTypes implements Type<Event> {
         put(ClearBackgroundEvent.class, new ClearBackgroundType());
 
         put(LockClickEvent.class, new LockClickType());
+        put(ShowButtonsEvent.class, new ShowButtonsType());
     }
 
     @Override

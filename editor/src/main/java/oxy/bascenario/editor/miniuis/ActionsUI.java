@@ -9,6 +9,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -155,6 +156,10 @@ public class ActionsUI {
         add("Lock Click",
                 "This lock or unlock the mouse click button to interact with the options or dialogue.",
                 new LockClickEvent(false));
+
+        add("Show Buttons",
+                "Choose to hide/show the auto/menu button at the top right of the screen.",
+                new ShowButtonsEvent(true));
 
         ImGui.end();
     }

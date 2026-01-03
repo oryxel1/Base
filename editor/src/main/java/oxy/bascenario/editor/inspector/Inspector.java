@@ -3,6 +3,7 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -113,6 +114,7 @@ public class Inspector {
             case SetBackgroundEvent event -> BackgroundInspector.render(event);
             case ClearBackgroundEvent event -> BackgroundInspector.render(event);
 
+            case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
             default -> old;
         };
 

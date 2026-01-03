@@ -1,6 +1,7 @@
 package oxy.bascenario.event;
 
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -19,6 +20,7 @@ import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.FunctionLockClick;
+import oxy.bascenario.event.impl.FunctionShowButtons;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
 import oxy.bascenario.event.impl.animation.FunctionSpriteAnimation;
 import oxy.bascenario.event.impl.animation.FunctionStopAnimation;
@@ -77,6 +79,7 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
 
         EVENT_TO_FUNCTION.put(LockClickEvent.class, FunctionLockClick.class);
+        EVENT_TO_FUNCTION.put(ShowButtonsEvent.class, FunctionShowButtons.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }

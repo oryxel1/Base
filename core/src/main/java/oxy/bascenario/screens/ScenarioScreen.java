@@ -134,6 +134,8 @@ public class ScenarioScreen extends ExtendableScreen {
         }
     }
 
+    @Setter
+    private boolean showButtons = true;
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -157,6 +159,10 @@ public class ScenarioScreen extends ExtendableScreen {
         elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
 
         this.optionsRenderer.render(this);
+
+        if (showButtons) {
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/buttons_auto_off.png"), 1920 - 394 - 10, 23, 394, 86);
+        }
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
