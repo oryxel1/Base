@@ -1,2 +1,2 @@
 rootProject.name = "Base"
-include("api", "core", "serializer", "editor")
+include("api", "core", "serializer", "editor", "launcher")
