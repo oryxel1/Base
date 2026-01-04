@@ -9,6 +9,7 @@ import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.extension.implot.ImPlot;
 import imgui.flag.ImGuiConfigFlags;
+import imgui.flag.ImGuiKey;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import lombok.RequiredArgsConstructor;
@@ -122,16 +123,24 @@ public final class EngineRenderer extends Game {
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
-        time = System.currentTimeMillis();
-
-        if (System.currentTimeMillis() - time >= 1000L) {
+        if (System.currentTimeMillis() - time >= 500L) {
             int width = ThinGL.windowInterface().getFramebufferWidth(), height = ThinGL.windowInterface().getFramebufferHeight();
-            boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
-            int fixedWidth = widthLargerHeight ? width : (int) (height * 16/9f);
-            int fixedHeight = widthLargerHeight ? (int) (width * (9/16f)) : height;
+            if (width/(float)height != 16/9f) {
+                boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
+                int fixedWidth = widthLargerHeight ? width : (int) (height * 16/9f);
+                int fixedHeight = widthLargerHeight ? (int) (width * (9/16f)) : height;
 
-            System.out.println(fixedWidth + "," + fixedHeight);
-            Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
+                Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
+            }
+            time = System.currentTimeMillis();
+        }
+
+        if (ImGui.isKeyReleased(ImGuiKey.F11)) {
+            if (Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            } else {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
         }
     }
 

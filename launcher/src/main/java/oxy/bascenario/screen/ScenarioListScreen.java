@@ -1,6 +1,7 @@
 package oxy.bascenario.screen;
 
 import imgui.ImGui;
+import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiTableColumnFlags;
 import imgui.flag.ImGuiTableFlags;
 import imgui.flag.ImGuiWindowFlags;
@@ -49,7 +50,14 @@ public class ScenarioListScreen extends ExtendableScreen {
                 }
                 ImGui.sameLine();
                 if (ImGui.smallButton("Play##" + ImGuiUtils.COUNTER++)) {
-                    Launcher.WINDOW.setScreen(new ScenarioScreen(scenario));
+                    Launcher.WINDOW.setScreen(new ScenarioScreen(scenario) {
+                        @Override
+                        public void render(float delta) {
+                            if (ImGui.isKeyReleased(ImGuiKey.Escape)) {
+                                Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
+                            }
+                        }
+                    });
                 }
             }
 
