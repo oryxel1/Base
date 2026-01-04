@@ -17,10 +17,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screen.ScenarioListScreen;
 import oxy.bascenario.screen.title.button.TitleScreenButton;
-import oxy.bascenario.utils.DynamicAnimation;
-import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
@@ -50,15 +47,13 @@ public class TitleScreen extends ExtendableScreen {
             return;
         }
 
-        Base.instance();
-
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false);
         this.batch = new PolygonSpriteBatch();
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = (TextureAtlas) Base.instance().assetsManager().assets(new FileInfo("assets/base/uis/title/CH0086_home.atlas", false, true)).asset();
+        this.atlas = new TextureAtlas(FileUtils.toHandle(null, new FileInfo("assets/base/uis/title/CH0086_home.atlas", false, true)));
         SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(Gdx.files.internal("assets/base/uis/title/CH0086_home.skel"));
         this.skeleton = new Skeleton(skeletonData);
         this.state = new AnimationState(new AnimationStateData(skeletonData));

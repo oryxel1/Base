@@ -7,6 +7,7 @@ import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.managers.other.GifAsset;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.TimeUtils;
 
@@ -20,7 +21,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> 
         super(element, layer);
 
         try {
-            this.texture = (SequencedTexture) Base.instance().assetsManager().assets(scenario.getName(), element.file()).asset();
+            this.texture = ((GifAsset)Base.instance().assetsManager().assets(scenario.getName(), element.file()).asset()).get();
         } catch (Exception ignored) {
             this.texture = null;
             return;

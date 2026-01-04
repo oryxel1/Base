@@ -17,6 +17,8 @@ import oxy.bascenario.api.render.elements.Dummy;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
+import oxy.bascenario.managers.other.GifAsset;
+import oxy.bascenario.managers.other.TextureAsset;
 import oxy.bascenario.utils.FileUtils;
 
 import javax.sound.sampled.AudioInputStream;
@@ -48,25 +50,6 @@ public class AssetsManager implements AssetsManagerApi {
     }
 
     public void load() {
-        // This is purely only for audio, considering that it's quite slow to load and cache these.
-        // The rest like texture can be load very quickly so we don't really need to worry about those.
-        new Thread(() -> {
-            for (Scenario scenario : Base.instance().scenarioManager().scenarios()) {
-                final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.getName()), "files").toPath();
-
-                try (final Stream<Path> stream = Files.walk(path)) {
-                    List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
-
-                    for (File file : files) {
-                        final FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
-                        final InputStream inputStream = FileUtils.toStream(scenario.getName(), info);
-                        loadAudio(scenario.getName(), inputStream, info);
-                    }
-                } catch (IOException ignored) {
-                }
-            }
-        }).start();
-
         for (Scenario scenario : Base.instance().scenarioManager().scenarios()) {
             final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.getName()), "files").toPath();
 
@@ -75,7 +58,7 @@ public class AssetsManager implements AssetsManagerApi {
 
                 for (File file : files) {
                     FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
-                    load(scenario.getName(), info, false);
+                    load(scenario.getName(), info, true);
                 }
             }  catch (IOException ignored) {
             }
@@ -92,7 +75,7 @@ public class AssetsManager implements AssetsManagerApi {
 
     public Texture2D texture(String scenario, FileInfo info) {
         try {
-            return (Texture2D) assets(scenario, info).asset();
+            return ((TextureAsset)assets(scenario, info).asset()).get();
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);
@@ -100,7 +83,7 @@ public class AssetsManager implements AssetsManagerApi {
                 load(null, invalidTexture);
             }
 
-            return (Texture2D) this.assets.get(INVALID_TEXTURE_KEY).asset();
+            return ((TextureAsset)this.assets.get(INVALID_TEXTURE_KEY).asset()).get();
         }
     }
 
@@ -138,16 +121,14 @@ public class AssetsManager implements AssetsManagerApi {
 
         final String path = info.path().toLowerCase(Locale.ROOT);
         if (path.endsWith(".gif")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new SequencedTexture(new AwtGifImage(stream))));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new GifAsset(stream.readAllBytes())));
         } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, Texture2D.fromImage(stream.readAllBytes())));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAsset(stream.readAllBytes())));
         } else if (path.endsWith(".ttf")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
         } else if (path.endsWith(".ttf")) {
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
-        } else if (path.endsWith(".atlas")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAtlas(FileUtils.toHandle(scenario, info))));
-        }else {
+        } else {
             if (!path.endsWith(".mp3") && !path.endsWith(".ogg") && !path.endsWith(".wav")) {
                 this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
             }

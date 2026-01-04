@@ -66,7 +66,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = (TextureAtlas) Base.instance().assetsManager().assets(scenario.getName(), this.element.atlas()).asset();
+        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario.getName(), element.atlas()));
         // Not a good fix but it is a fix....
         new Thread(() -> {
             SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
