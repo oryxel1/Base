@@ -1,5 +1,6 @@
 package oxy.bascenario.editor.screen;
 
+import com.badlogic.gdx.Screen;
 import imgui.ImGui;
 import imgui.ImVec2;
 import net.raphimc.thingl.ThinGL;
@@ -15,8 +16,8 @@ import java.util.*;
 public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     private ScenarioScreen screen;
 
-    public ScenarioEditorScreen(Scenario scenario, Scenario.Builder builder) {
-        super(builder);
+    public ScenarioEditorScreen(Screen screen, Scenario scenario, Scenario.Builder builder) {
+        super(screen, builder);
         this.screen = new ScenarioScreen(scenario);
         this.screen.setPlaying(false);
     }

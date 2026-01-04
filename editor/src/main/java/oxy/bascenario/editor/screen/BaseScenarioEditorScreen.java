@@ -1,12 +1,12 @@
 package oxy.bascenario.editor.screen;
 
+import com.badlogic.gdx.Screen;
 import imgui.ImGui;
 import imgui.ImGuiViewport;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiDockNodeFlags;
 import imgui.flag.ImGuiWindowFlags;
 import lombok.Getter;
-import lombok.Setter;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
@@ -18,9 +18,12 @@ import oxy.bascenario.editor.inspector.Inspector;
 
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.utils.ThinGLUtils;
 
 public class BaseScenarioEditorScreen extends ExtendableScreen {
+    private final Screen prevScreen;
+
     @Getter
     protected final Scenario.Builder scenario;
     protected final Timeline timeline;
@@ -28,7 +31,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
     protected final ActionsUI eventAdder;
     protected final Inspector inspector;
 
-    public BaseScenarioEditorScreen(Scenario.Builder scenario) {
+    public BaseScenarioEditorScreen(Screen prevScreen, Scenario.Builder scenario) {
+        this.prevScreen = prevScreen;
         this.scenario = scenario;
         this.timeline = new Timeline(this, scenario);
         this.objectsUI = new ObjectsUI(this, this.timeline);
@@ -86,35 +90,59 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         if (ImGui.beginMenu("Save")) {
             boolean asJson;
             if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
-                scenario.timestamps().clear();
-                scenario.timestamps().addAll(TrackParser.parse(this.timeline.getObjects()));
                 scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
-
-                Base.instance().scenarioManager().put(scenario.name(), scenario.build());
-                try {
-                    Base.instance().scenarioManager().saveToPath(scenario.build());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                save();
             }
             ImGui.endMenu();
         }
 
-
-//        if (ImGui.beginMenu("Edit")) {
-//            if (ImGui.menuItem("Undo", "Ctrl+Z")) {}
-//            if (ImGui.menuItem("Redo", "Ctrl+Y", false, false)) {} // Disabled item
-//            ImGui.separator();
-//            if (ImGui.menuItem("Cut", "Ctrl+X")) {}
-//            if (ImGui.menuItem("Copy", "Ctrl+C")) {}
-//            if (ImGui.menuItem("Paste", "Ctrl+V")) {}
-//            ImGui.endMenu();
-//        }
+        if (ImGui.beginMenu("Exit")) {
+            if (ImGui.menuItem("Exit and Save")) {
+                save();
+                Launcher.WINDOW.setScreen(prevScreen);
+            }
+            if (ImGui.menuItem("Exit and Discard")) {
+                confirmExitAndDiscard = true;
+            }
+            ImGui.endMenu();
+        }
 
         ImGui.endMainMenuBar();
+
+        if (confirmExitAndDiscard) {
+            ImGui.openPopup("AreYouSureeeeeee");
+            confirmExitAndDiscard = false;
+        }
+
+        if (ImGui.beginPopupModal("AreYouSureeeeeee", ImGuiWindowFlags.NoResize)) {
+            ImGui.text("You rlly want to discard all that hard works? Are you sureeeeee?");
+            if (ImGui.button("Nevermine let's save and quit!")) {
+                save();
+                Launcher.WINDOW.setScreen(prevScreen);
+            }
+            ImGui.sameLine();
+            if (ImGui.button("Yep!")) {
+                Launcher.WINDOW.setScreen(prevScreen);
+            }
+            ImGui.endPopup();
+        }
     }
+
+    private boolean confirmExitAndDiscard;
 
     public void setPlaying(boolean playing) {
         timeline.setPlaying(playing);
+    }
+
+    private void save() {
+        scenario.timestamps().clear();
+        scenario.timestamps().addAll(TrackParser.parse(this.timeline.getObjects()));
+
+        Base.instance().scenarioManager().put(scenario.name(), scenario.build());
+        try {
+            Base.instance().scenarioManager().saveToPath(scenario.build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package oxy.bascenario.api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import oxy.bascenario.api.event.api.Event;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
+@ToString
 @Getter
 public class Scenario {
     private final String name;
@@ -65,16 +67,18 @@ public class Scenario {
             return name;
         }
 
-        public void name(String name) {
+        public Builder name(String name) {
             this.name = name;
+            return this;
         }
 
         public SaveType saveType() {
             return this.saveType;
         }
 
-        public void saveType(SaveType saveType) {
+        public Builder saveType(SaveType saveType) {
             this.saveType = saveType;
+            return this;
         }
 
         public Builder add(int time, Event... events) {

@@ -52,9 +52,9 @@ public class ScenarioManager implements ScenarioManagerApi {
                 final Scenario scenario = Types.SCENARIO_TYPE.read(object);
                 scenarios.put(scenario.getName(), scenario);
             } catch (Exception ignored) {
-                ByteBuf buf = Unpooled.buffer().writeBytes(bytes);
+                ByteBuf buf = Unpooled.wrappedBuffer(bytes);
                 try {
-                    final Scenario scenario = Types.SCENARIO_TYPE.read(buf);
+                    Scenario scenario = Types.SCENARIO_TYPE.read(buf);
                     scenarios.put(scenario.getName(), scenario);
                 } catch (Exception ignored1) {
                 } finally {

@@ -34,6 +34,8 @@ public final class EngineRenderer extends Game {
     private final Screen initialScreen;
 
     public double mouseX, mouseY;
+    private long time;
+
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
@@ -119,6 +121,18 @@ public final class EngineRenderer extends Game {
 
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        time = System.currentTimeMillis();
+
+        if (System.currentTimeMillis() - time >= 1000L) {
+            int width = ThinGL.windowInterface().getFramebufferWidth(), height = ThinGL.windowInterface().getFramebufferHeight();
+            boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
+            int fixedWidth = widthLargerHeight ? width : (int) (height * 16/9f);
+            int fixedHeight = widthLargerHeight ? (int) (width * (9/16f)) : height;
+
+            System.out.println(fixedWidth + "," + fixedHeight);
+            Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
+        }
     }
 
     @Override

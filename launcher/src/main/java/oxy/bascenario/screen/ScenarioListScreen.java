@@ -7,12 +7,19 @@ import imgui.flag.ImGuiWindowFlags;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.screen.ScenarioEditorScreen;
+import oxy.bascenario.managers.ScenarioManager;
 import oxy.bascenario.screen.title.TitleScreen;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.utils.ImGuiUtils;
 import oxy.bascenario.utils.Launcher;
 
+import java.io.File;
+
 public class ScenarioListScreen extends ExtendableScreen {
+    private boolean popupNewScenario;
+    private String cacheName;
+
     @Override
     public void render(float delta) {
         ImGui.beginMainMenuBar();
@@ -20,6 +27,7 @@ public class ScenarioListScreen extends ExtendableScreen {
             Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
         }
         if (ImGui.menuItem("New Scenario")) {
+            popupNewScenario = true;
         }
         ImGui.endMainMenuBar();
 
@@ -36,19 +44,43 @@ public class ScenarioListScreen extends ExtendableScreen {
                 ImGui.tableNextColumn();
                 ImGui.text(scenario.getName());
                 ImGui.sameLine();
-                if (ImGui.smallButton("Edit")) {
-                    Launcher.WINDOW.setScreen(new ScenarioEditorScreen(scenario, scenario.toBuilder()));
+                if (ImGui.smallButton("Edit##" + ImGuiUtils.COUNTER++)) {
+                    Launcher.WINDOW.setScreen(new ScenarioEditorScreen(this, scenario, scenario.toBuilder()));
                 }
                 ImGui.sameLine();
-                if (ImGui.smallButton("Play")) {
+                if (ImGui.smallButton("Play##" + ImGuiUtils.COUNTER++)) {
                     Launcher.WINDOW.setScreen(new ScenarioScreen(scenario));
                 }
             }
-
 
             ImGui.endTable();
         }
 
         ImGui.end();
+
+        if (popupNewScenario) {
+            popupNewScenario = false;
+            cacheName = "";
+            ImGui.openPopup("New Scenario");
+        }
+
+        if (ImGui.beginPopupModal("New Scenario")) {
+            cacheName = ImGuiUtils.inputText("Name", cacheName);
+            final File path = new File(ScenarioManager.SAVE_DIR, cacheName);
+
+            if (path.isDirectory() || cacheName.isEmpty()) {
+                ImGui.text(cacheName.isEmpty() ? "Name can't be empty!" : "A directory with this name already exist!");
+            }
+            if (ImGui.button("Create##" + ImGuiUtils.COUNTER++) && !path.isDirectory() && !cacheName.isEmpty()) {
+                Base.instance().scenarioManager().put(cacheName, Scenario.builder().name(cacheName).build());
+                ImGui.closeCurrentPopup();
+            }
+            ImGui.sameLine();
+            if (ImGui.button("Ok nevermine..")) {
+                ImGui.closeCurrentPopup();
+            }
+
+            ImGui.endPopup();
+        }
     }
 }

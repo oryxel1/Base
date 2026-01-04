@@ -9,6 +9,6 @@ public class ScenarioEditorTest {
 //        scenario.name("EditorTest");
 //        Base.instance().scenarioManager().put("EditorTest", scenario.build());
 
-        Launcher.launch(new ScenarioEditorScreen(scenario.build(), scenario), false);
+        Launcher.launch(new ScenarioEditorScreen(null, scenario.build(), scenario), false);
     }
 }
