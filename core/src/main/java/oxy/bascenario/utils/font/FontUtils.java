@@ -74,8 +74,10 @@ public class FontUtils {
     private static ImFont loadImFont(String font, int size) {
         final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
 
+        final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
+        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
+
         final ImGuiIO data = ImGui.getIO();
-        final ImFontAtlas atlas = data.getFonts();
-        return atlas.addFontFromMemoryTTF(fontData, size, new ImFontConfig(), data.getFonts().getGlyphRangesDefault());
+        return data.getFonts().addFontFromMemoryTTF(fontData, size, new ImFontConfig(), rangesBuilder.buildRanges());
     }
 }

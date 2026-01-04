@@ -29,7 +29,6 @@ import javax.sound.sampled.LineUnavailableException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 
 public class AudioManager {
@@ -75,6 +74,7 @@ public class AudioManager {
             cache.fadeIn = AnimationUtils.build(fadeIn, 0, sound.maxVolume(), EasingFunction.LINEAR);
         }
         source.setPosition(start);
+        cache.loop = sound.loop();
 
         CachedSound old = this.cachedSounds.get(sound.id());
         if (old != null) {
@@ -132,6 +132,11 @@ public class AudioManager {
                 continue;
             }
 
+            if (cache.loop && cache.stereoSound.isFinished()) {
+                ((StereoStaticPcmSource)cache.stereoSound.getPcmSource()).setPosition(0);
+                cache.resume();
+            }
+
             if (cache.fadeOut != null) {
                 if (cache.fadeOut.isRunning()) {
                     cache.setVolume(cache.fadeOut.getValue());
@@ -164,6 +169,7 @@ public class AudioManager {
         private final Sound sound;
         private DynamicAnimation fadeOut, fadeIn;
         private DynamicAnimation fade;
+        private boolean loop;
 
         private float getVolume() {
             return modifier.getVolume();

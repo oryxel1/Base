@@ -6,6 +6,7 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":core"))
     implementation(libs.gdx.base)
+    implementation(libs.gdx.spine)
 
     implementation(libs.imgui.binding)
     implementation(libs.imgui.lwjgl3)
@@ -15,4 +16,6 @@ dependencies {
 
     implementation(libs.raphimc.thingl)
     implementation(libs.raphimc.audiomixer)
+
+    implementation(libs.commons.animations)
 }

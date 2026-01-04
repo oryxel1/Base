@@ -83,9 +83,9 @@ public final class EngineRenderer extends Game {
 
     @Override
     public void setScreen(Screen screen) {
-        super.setScreen(screen);
-        TimeUtils.fakeTimeMillis = null;
         ScenarioScreen.RENDER_WITHIN_IMGUI = !(screen instanceof ScenarioScreen);
+        TimeUtils.fakeTimeMillis = null;
+        super.setScreen(screen);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class EmoticonMainRenderer extends ThinGLElementRenderer<Emoticon> {
         super(element, layer);
 
         if (element.sound()) {
-            AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/" + element.type().getSfx(), false, true)), -1);
+            AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/" + element.type().getSfx(), false, true), false), -1);
         }
 
         this.renderer = switch (element.type()) {
