@@ -6,6 +6,7 @@ fanmade custom Blue Archive story in their visual style using a simple UI video-
 
 ## Features (also TODO)
 - [x] Video Editor like UI allowing you to edit your scenario/story with ease (Experimental).
+which you can watch an [example video here](https://www.youtube.com/watch?v=eyiE2MwoJxM)
   ![showcase](pictures/editor.png)
 - [x] A full-blown replicated visual engine that allows the creation of story
     - Emoticon like in game to express emoji and allat.
