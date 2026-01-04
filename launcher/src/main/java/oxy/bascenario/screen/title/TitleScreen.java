@@ -157,4 +157,9 @@ public class TitleScreen extends ExtendableScreen {
         skeleton.update(Gdx.graphics.getDeltaTime());
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }
+
+    @Override
+    public void dispose() {
+        this.atlas.dispose();
+    }
 }
