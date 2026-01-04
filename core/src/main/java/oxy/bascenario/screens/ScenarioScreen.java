@@ -135,7 +135,7 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Setter
-    private boolean showButtons = true;
+    private boolean showButtons;
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
