@@ -18,6 +18,7 @@ which you can watch an [example video here](https://www.youtube.com/watch?v=eyiE
     - And a bunch of other effects that made this super customizable
     - Allow you to dynamically hide the auto/menu buttons.
       ![showcase](pictures/scenario.png)
+- [ ] UI for making custom animations
 - [ ] Settings
 - [ ] Scripting api, or extensions.
 - [ ] Better UI, performances.
@@ -34,6 +35,11 @@ or alternatively in [releases](https://github.com/oryxel1/Base/releases) section
 ## Usage and examples
 Download **Java 21** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
 <br> Examples or wiki is not here at the moment since it will take a while to write them, so for now you on your own xD.
+
+### Sharing scenarios
+You can do this through zipping the scenario you want to share that located at whenever your system 
+save your user profile and go into Base, for e.g. on windows: `C:\Users\%username%\Base\scenarios\` and
+find your scenario, then zip it and share that zip file, the other person just have to extract it.
 
 ## Contact
 If you encounter any issues, please report them on the [issue tracker](https://github.com/oryxel1/Base/issues).<br>
