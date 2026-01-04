@@ -4,6 +4,7 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -108,6 +109,10 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
 
             lastDuration = duration;
             last = object.start + duration;
+
+            if (object.object instanceof StartDialogueEvent && timeline.getTimestamp() > object.start + duration) {
+                screen.setBusyDialogue(false);
+            }
         }
 
         renderScenarioWindow();
