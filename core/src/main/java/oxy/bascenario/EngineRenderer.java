@@ -33,7 +33,7 @@ public final class EngineRenderer extends Game {
 
     private final Screen initialScreen;
 
-    private double mouseX, mouseY;
+    public double mouseX, mouseY;
     @Override
     public void create() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();

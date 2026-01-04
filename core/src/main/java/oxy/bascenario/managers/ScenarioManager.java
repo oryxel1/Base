@@ -90,7 +90,7 @@ public class ScenarioManager implements ScenarioManagerApi {
 
         File file1 = new File(new File(SAVE_DIR, location), "files");
         File result = new File(file1, file.path());
-        result.mkdirs();
+        new File(result.getAbsolutePath().replace(result.getName(), "")).mkdirs();
         return result;
     }
 

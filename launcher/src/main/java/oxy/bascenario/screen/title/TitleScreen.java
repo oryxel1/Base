@@ -1,4 +1,4 @@
-package oxy.bascenario.screen;
+package oxy.bascenario.screen.title;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,19 +11,28 @@ import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
+import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screen.ScenarioListScreen;
+import oxy.bascenario.screen.title.button.TitleScreenButton;
 import oxy.bascenario.utils.DynamicAnimation;
 import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.utils.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class TitleScreen extends ExtendableScreen {
+    public static final TitleScreen INSTANCE = new TitleScreen();
+
     private OrthographicCamera camera;
     private PolygonSpriteBatch batch;
     private SkeletonRenderer renderer;
@@ -32,8 +41,15 @@ public class TitleScreen extends ExtendableScreen {
     private Skeleton skeleton;
     private AnimationState state;
 
+    private final List<TitleScreenButton> buttons = new ArrayList<>();
+
+    private int id;
     @Override
     public void show() {
+        if (this.camera != null) {
+            return;
+        }
+
         Base.instance();
 
         this.camera = new OrthographicCamera();
@@ -50,10 +66,28 @@ public class TitleScreen extends ExtendableScreen {
         this.state.addAnimation(0, "Idle_01", true, this.state.getTracks().get(0).getTrackComplete());
         this.state.setAnimation(1, "Snow_00_R", true);
 
-        AudioManager.getInstance().play(
-                Sound.sound(new FileInfo("assets/base/sounds/Track_67_KARUT_Someday,_sometime.ogg", false, true), true),
-                1000L
-        );
+        Sound sound = Sound.sound(new FileInfo("assets/base/sounds/Track_67_KARUT_Someday,_sometime.ogg", false, true), true);
+        id = sound.id();
+        AudioManager.getInstance().play(sound, 1000L);
+
+        initComponents();
+    }
+
+    private void initComponents() {
+        float logoWidth = 3385 / 5F, logoHeight = 1218 / 5F;
+        float logoX = 1920 - logoWidth - 50, logoY = 19.98f;
+
+        float textHeightY = TextUtils.getVisualHeight(31.95f, TextRun.fromString(FontUtils.SEMI_BOLD, "Scenario Engine").shape());
+
+        float posY = logoY + logoHeight + textHeightY + 0.04629629629F * 1080;
+        this.buttons.clear();
+        this.buttons.add(new TitleScreenButton("Scenario List", logoX, posY, logoWidth, 0.08F * 1080, () -> Launcher.WINDOW.setScreen(new ScenarioListScreen())));
+        posY += 0.08F * 1080 + 0.04629629629F * 1080;
+        this.buttons.add(new TitleScreenButton("Settings", logoX, posY, logoWidth, 0.08F * 1080, () -> {
+        }));
+//        posY += 0.08F * 1080 + 0.04629629629F * 1080;
+//        this.buttons.add(new TitleScreenButton("Settings", logoX, posY, logoWidth, 0.08F * 1080, () -> {
+//        }));
     }
 
     @Override
@@ -83,17 +117,32 @@ public class TitleScreen extends ExtendableScreen {
         ThinGLUtils.start();
         if (this.state.getTracks().get(0).getAnimation().getName().equals("Idle_01")) {
             renderLogo();
+            GLOBAL_RENDER_STACK.pushMatrix();
+            GLOBAL_RENDER_STACK.translate(buttonsBounceIn.getValue(), 0, 0);
+            this.buttons.forEach(TitleScreenButton::render);
+            GLOBAL_RENDER_STACK.popMatrix();
         }
         ThinGLUtils.end();
     }
 
-    private DynamicAnimation titleBounceIn;
+    @Override
+    public void hide() {
+        AudioManager.getInstance().stop(id, 1000);
+    }
+
+    @Override
+    public void mouseClicked(double mouseX, double mouseY, int button) {
+        this.buttons.forEach(b -> b.mouseClicked(mouseX, mouseY, button));
+    }
+
+    private DynamicAnimation titleBounceIn, buttonsBounceIn;
     private void renderLogo() {
         final Texture2D logo = Base.instance().assetsManager().texture("assets/base/uis/Blue_Archive.png");
         float logoWidth = 3385 / 5F, logoHeight = 1218 / 5F;
         float logoX = 1920 - logoWidth - 50, logoY = 19.98f;
         if (titleBounceIn == null) {
             titleBounceIn = AnimationUtils.build(700L, 1925, logoX, EasingFunction.EXPO);
+            buttonsBounceIn = AnimationUtils.build(700L, logoWidth + 55, 0, EasingFunction.CIRC);
         }
         logoX = titleBounceIn.getValue();
 
@@ -113,5 +162,4 @@ public class TitleScreen extends ExtendableScreen {
         skeleton.update(Gdx.graphics.getDeltaTime());
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }
-
 }

@@ -58,7 +58,7 @@ public class AssetsManager implements AssetsManagerApi {
                     List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
 
                     for (File file : files) {
-                        final FileInfo info = new FileInfo(file.getName(), false, false);
+                        final FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
                         final InputStream inputStream = FileUtils.toStream(scenario.getName(), info);
                         loadAudio(scenario.getName(), inputStream, info);
                     }
@@ -74,9 +74,10 @@ public class AssetsManager implements AssetsManagerApi {
                 List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
 
                 for (File file : files) {
-                    load(scenario.getName(), new FileInfo(file.getName(), false, false), false);
+                    FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
+                    load(scenario.getName(), info, false);
                 }
-            } catch (IOException ignored) {
+            }  catch (IOException ignored) {
             }
         }
     }
@@ -155,7 +156,6 @@ public class AssetsManager implements AssetsManagerApi {
     }
 
     private boolean loadAudio(String scenario, InputStream stream, FileInfo info) {
-        this.currentlyLoadingAssets.add(info.hashCode(scenario));
         try {
             final AudioInputStream audioInputStream;
             final String path = info.path().toLowerCase(Locale.ROOT);
@@ -169,6 +169,7 @@ public class AssetsManager implements AssetsManagerApi {
                 return false;
             }
 
+            this.currentlyLoadingAssets.add(info.hashCode(scenario));
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
             this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
             this.currentlyLoadingAssets.remove(info.hashCode(scenario));

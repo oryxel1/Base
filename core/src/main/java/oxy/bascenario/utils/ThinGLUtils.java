@@ -139,4 +139,13 @@ public final class ThinGLUtils {
         ThinGL.programs().getGaussianBlur().render(x, y, x + width, y + height);
         ThinGL.programs().getGaussianBlur().clearInput();
     }
+
+    public static void blur(Runnable runnable, int strength) {
+        ThinGL.programs().getGaussianBlur().bindInput();
+        runnable.run();
+        ThinGL.programs().getGaussianBlur().unbindInput();
+        ThinGL.programs().getGaussianBlur().configureParameters(strength);
+        ThinGL.programs().getGaussianBlur().render(0, 0, 1920, 1080);
+        ThinGL.programs().getGaussianBlur().clearInput();
+    }
 }

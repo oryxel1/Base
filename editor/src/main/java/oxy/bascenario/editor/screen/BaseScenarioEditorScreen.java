@@ -16,6 +16,7 @@ import oxy.bascenario.editor.miniuis.ActionsUI;
 import oxy.bascenario.editor.timeline.Timeline;
 import oxy.bascenario.editor.inspector.Inspector;
 
+import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 
@@ -85,6 +86,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         if (ImGui.beginMenu("Save")) {
             boolean asJson;
             if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
+                scenario.timestamps().clear();
+                scenario.timestamps().addAll(TrackParser.parse(this.timeline.getObjects()));
                 scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
 
                 Base.instance().scenarioManager().put(scenario.name(), scenario.build());

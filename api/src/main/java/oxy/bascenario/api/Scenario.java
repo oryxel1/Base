@@ -47,6 +47,7 @@ public class Scenario {
     public Builder toBuilder() {
         final Builder builder = new Builder(timestamps);
         builder.saveType = saveType;
+        builder.name = name;
         return builder;
     }
 

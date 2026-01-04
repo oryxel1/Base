@@ -4,7 +4,9 @@ plugins {
 
 dependencies {
     implementation(project(":api"))
+    implementation(project(":editor"))
     implementation(project(":core"))
+
     implementation(libs.gdx.base)
     implementation(libs.gdx.spine)
 
