@@ -56,6 +56,7 @@ public class ScenarioListScreen extends ExtendableScreen {
                             if (ImGui.isKeyReleased(ImGuiKey.Escape)) {
                                 Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
                             }
+                            super.render(delta);
                         }
                     });
                 }
