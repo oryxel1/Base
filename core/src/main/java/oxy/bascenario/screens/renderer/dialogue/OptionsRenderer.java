@@ -3,6 +3,9 @@ package oxy.bascenario.screens.renderer.dialogue;
 import lombok.Getter;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
+import oxy.bascenario.api.effects.Sound;
+import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -95,9 +98,13 @@ public class OptionsRenderer {
         }
     }
 
-    private boolean queue;
+    private boolean queue, sound;
     public void mouseRelease() {
         if (this.clicked != null) {
+            if (!sound) {
+                AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
+                sound = true;
+            }
             if (this.scale.getValue() != 0.9f) {
                 this.queue = true;
             } else {
@@ -123,6 +130,7 @@ public class OptionsRenderer {
                 this.clicked = text;
                 this.scale.setTarget(0.9f);
                 screen.getDialogueRenderer().setCurrentIndex(this.options.get(text));
+                AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
 //                AudioManager.getInstance().play("assets/base/sounds/click-sound.mp3", false, 1, true);
                 break;
             }

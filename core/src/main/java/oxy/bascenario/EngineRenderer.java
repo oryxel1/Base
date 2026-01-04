@@ -22,6 +22,10 @@ import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.font.FontUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
@@ -75,6 +79,14 @@ public final class EngineRenderer extends Game {
         data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
         imGuiGlfw.init(windowHandle, true);
         imGuiGl3.init();
+
+        if (!new File("base.imgui").exists()) {
+            try {
+                ImGui.loadIniSettingsFromMemory(new String(EngineRenderer.class.getResourceAsStream("/assets/base/base.imgui").readAllBytes()));
+            } catch (IOException ignored) {
+            }
+
+        }
 
         FontUtils.loadFonts();
 
