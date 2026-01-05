@@ -106,7 +106,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.batch.getProjectionMatrix().set(camera.combined);
 
         if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
-            this.skeleton.setColor(1, 1, 1, 1);
+            this.skeleton.setColor(color.red(), color.blue(), color.green(), color.alpha());
             this.batch.begin();
             this.renderer.draw(this.batch, this.skeleton);
             this.batch.end();
