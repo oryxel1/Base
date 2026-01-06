@@ -18,6 +18,7 @@ which you can watch an [example video here](https://www.youtube.com/watch?v=eyiE
     - And a bunch of other effects that made this super customizable
     - Allow you to dynamically hide the auto/menu buttons.
       ![showcase](pictures/scenario.png)
+- [ ] Functional Menu and Auto button when rendering scenario....
 - [ ] UI for making custom animations
 - [ ] Settings
 - [ ] Scripting api, or extensions.
