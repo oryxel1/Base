@@ -161,7 +161,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.optionsRenderer.render(this);
 
         if (showButtons) {
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/buttons_auto_off.png"), 1920 - 394 - 10, 23, 394, 86);
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/buttons_auto_off.png"), 1920 - 394 - 14, 21, 394, 86);
         }
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);

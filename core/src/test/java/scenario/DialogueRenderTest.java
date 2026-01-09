@@ -1,6 +1,7 @@
 package scenario;
 
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
@@ -21,6 +22,7 @@ public class DialogueRenderTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
 
+        scenario.add(0, new ShowButtonsEvent(true));
         scenario.add(0, new AddElementEvent(0, new Rectangle(1920, 1080, Color.WHITE, false), RenderLayer.BEHIND_DIALOGUE));
 
         final List<TextSegment> segments = new ArrayList<>();
