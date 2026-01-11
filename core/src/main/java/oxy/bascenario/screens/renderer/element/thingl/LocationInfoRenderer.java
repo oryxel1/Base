@@ -1,6 +1,7 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
 import oxy.bascenario.Base;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -39,7 +40,7 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
             this.text.setTarget(0f, TimeUtils.currentTimeMillis() - distance);
         }
 
-        final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, element.location(), Color.WHITE.withAlphaF(this.text.getValue()));
+        final TextRun text = TextRun.fromString(FontUtils.font(FontStyle.SEMI_BOLD, element.font()), element.location(), Color.WHITE.withAlphaF(this.text.getValue()));
         float width = TextUtils.getVisualWidth(40, text.shape()) + 85;
 
         Color color = Color.WHITE.withAlphaF(this.box.getValue());

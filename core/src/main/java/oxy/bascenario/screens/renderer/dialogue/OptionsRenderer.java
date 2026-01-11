@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.Sound;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.DynamicAnimation;
@@ -24,10 +26,14 @@ public class OptionsRenderer {
     private static final Color TEXT_COLOR = Color.fromRGB(44, 67, 90);
     private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1345, DISTANCE_BETWEEN = 35;
 
+    private FontType type;
     private Map<String, Integer> options;
-    public void setOptions(Map<String, Integer> options) {
+    public void setOptions(FontType type, Map<String, Integer> options) {
+        this.type = type;
         this.options = options;
-        this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.QUAD);
+        if (this.options != null) {
+            this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.QUAD);
+        }
     }
 
     public boolean isBusy() {
@@ -80,7 +86,7 @@ public class OptionsRenderer {
 
             float textScale = 1;
             // For fuck’s sake, I don't fucking know what the actual font is, It's slightly thinner than noto sans regular that for sure.
-            TextRun textRun = TextRun.fromString(FontUtils.DEFAULT, text, TEXT_COLOR.withAlphaF(alpha));
+            TextRun textRun = TextRun.fromString(FontUtils.font(FontStyle.REGULAR, type), text, TEXT_COLOR.withAlphaF(alpha));
             if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
                 textScale = Math.min((buttonWidth - 100) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
             }

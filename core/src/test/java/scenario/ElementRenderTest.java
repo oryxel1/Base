@@ -1,6 +1,7 @@
 package scenario;
 
 import net.lenni0451.commons.color.Color;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
@@ -35,14 +36,14 @@ public class ElementRenderTest {
         segments.add(TextSegment.builder().text("brown ").bold(true).build());
         segments.add(TextSegment.builder().text("fox ").italic(true).build());
         segments.add(TextSegment.builder().text("jump  ").font(new FileInfo("PlaywriteUSTradGuides-Regular.ttf", false, true)).build());
-        segments.add(TextSegment.builder().text("over ").type(FontStyle.SEMI_BOLD).build());
-        segments.add(TextSegment.builder().text("the ").type(FontStyle.BOLD).build());
+        segments.add(TextSegment.builder().text("over ").style(FontStyle.SEMI_BOLD).build());
+        segments.add(TextSegment.builder().text("the ").style(FontStyle.BOLD).build());
         segments.add(TextSegment.builder().text("lazy ").shadow(true).build());
         segments.add(TextSegment.builder().text("dog ").underline(true).build());
         final Text text = new Text(segments, 42);
 
         scenario.add(300,
-                new AddElementEvent(0, new LocationInfo("The gray room", 2000, 800), RenderLayer.ABOVE_DIALOGUE),
+                new AddElementEvent(0, new LocationInfo(FontType.NotoSans, "The gray room", 2000, 800), RenderLayer.ABOVE_DIALOGUE),
                 new AddElementEvent(1, new Rectangle(1920, 1080, Color.GRAY, false), RenderLayer.BEHIND_DIALOGUE),
                 new AddElementEvent(2, sprite, RenderLayer.TOP),
                 new AddElementEvent(3, text, RenderLayer.TOP),

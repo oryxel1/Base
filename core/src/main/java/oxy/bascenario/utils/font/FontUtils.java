@@ -10,6 +10,7 @@ import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
@@ -17,6 +18,10 @@ public class FontUtils {
     private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
 
     public static ImFont IM_FONT_SEMI_BOLD_20, IM_FONT_SEMI_BOLD_30, IM_FONT_REGULAR_35;
+
+    public static Font font(FontStyle style, FontType type) {
+        return NAME_TO_FONTS.get(type.toName(style));
+    }
 
     public static Font toFont(Scenario scenario, TextSegment segment) {
         Font font;

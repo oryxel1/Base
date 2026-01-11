@@ -11,6 +11,6 @@ public class FunctionCloseOptions extends FunctionEvent<CloseDialogueEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        screen.getOptionsRenderer().setOptions(null);
+        screen.getOptionsRenderer().setOptions(null, null);
     }
 }
