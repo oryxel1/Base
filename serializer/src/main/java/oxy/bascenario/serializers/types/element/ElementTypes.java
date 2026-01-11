@@ -12,10 +12,12 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
+import oxy.bascenario.api.render.elements.text.font.Font;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.TextStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.types.element.impl.LocationInfoType;
@@ -35,7 +37,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class ElementTypes implements Type<Object> {
-    public static final Type<FontStyle> FONT_TYPE_TYPE = new EnumType<>(FontStyle.class, FontStyle.values());
+    public static final Type<FontStyle> FONT_STYLE_TYPE = new EnumType<>(FontStyle.class, FontStyle.values());
+    public static final Type<FontType> FONT_TYPE_TYPE = new EnumType<>(FontType.class, FontType.values());
+    public static final Type<Font> FONT_TYPE = new oxy.bascenario.serializers.types.element.impl.text.font.FontType();
 
     public static final Type<Set<TextStyle>> TEXT_STYLES_TYPE = new TextStylesType();
     public static final Type<TextSegment> TEXT_SEGMENT_TYPE = new TextSegmentType();

@@ -66,6 +66,11 @@ public class TextSegment {
             return font.build();
         }
 
+        public Builder font(Font font) {
+            this.font = font.toBuilder();
+            return this;
+        }
+
         public Builder font(FileInfo font) {
             if (font == null) {
                 return this;
