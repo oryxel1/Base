@@ -3,6 +3,7 @@ package oxy.bascenario.utils;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import oxy.bascenario.Base;
 import oxy.bascenario.EngineRenderer;
 
 public class Launcher {
@@ -13,6 +14,14 @@ public class Launcher {
     }
 
     public static void launch(Screen screen, boolean fullScreen) {
+        launch(screen, fullScreen, false);
+    }
+
+    public static void launch(Screen screen, boolean fullScreen, boolean bypass) {
+        if (!bypass) {
+            Base.instance(); // Load a base instance first!
+        }
+
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Blue Archive Scenario Engine.");
         configuration.setWindowedMode(1280, 720);
