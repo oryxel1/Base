@@ -108,8 +108,10 @@ public class ImGuiUtils {
     }
 
     public static String inputText(String name, String value) {
+        ImGui.pushFont(FontUtils.CHILLGOTHIC_17);
         final ImString imString = new ImString(value);
         ImGui.inputText(name + "##" + COUNTER++, imString, ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackResize);
+        ImGui.popFont();
         return imString.get();
     }
 
