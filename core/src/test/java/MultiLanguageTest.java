@@ -24,6 +24,9 @@ public class MultiLanguageTest {
         scenario.add(true, 0, new StartDialogueEvent(FontType.ChillRoundGothic, 0, "加代子", "问题解决者 68", true,
                 Dialogue.builder().add("敏捷的棕色狐狸跳过懒惰的狗", FontType.ChillRoundGothic).build()));
 
+        scenario.add(true, 0, new StartDialogueEvent(FontType.ChillRoundGothic, 0, "加代子", "问题解决者 68", true,
+                Dialogue.builder().add("敏捷的棕色狐狸跳過了懶惰的狗", FontType.NotoSansTC).build()));
+
 //        scenario.add(0, new AddElementEvent(0, new Preview(FontType.ShinMaruGo, "シナリオプレビューテスト", "エピソード: 1", null), RenderLayer.TOP));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);

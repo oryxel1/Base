@@ -55,10 +55,15 @@ public class FontUtils {
         loadFont("ShinMaruGoSemiBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
         loadFont("ShinMaruGoBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
 
-        // Chinese
-        loadFont("ChillRoundRegular", "/assets/base/fonts/chinese/ChillRoundGothic_Regular.otf");
-        loadFont("ChillRoundSemiBold", "/assets/base/fonts/chinese/ChillRoundGothic_Medium.otf");
-        loadFont("ChillRoundBold", "/assets/base/fonts/chinese/ChillRoundGothic_Bold.otf");
+        // Simplified Chinese
+        loadFont("ChillRoundRegular", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf");
+        loadFont("ChillRoundSemiBold", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Medium.otf");
+        loadFont("ChillRoundBold", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Bold.otf");
+
+        // Traditional Chinese
+        loadFont("NotoSansTCRegular", "/assets/base/fonts/chinese/traditional/NotoSansTC-Regular.ttf");
+        loadFont("NotoSansTCSemiBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-SemiBold.ttf");
+        loadFont("NotoSansTCBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-Bold.ttf");
 
         ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17, false));
 
@@ -68,7 +73,7 @@ public class FontUtils {
         IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20, false);
         IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30, false);
         IM_FONT_REGULAR_35 = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 35, false);
-        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/ChillRoundGothic_Regular.otf", 17, true);
+        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 17, true);
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
