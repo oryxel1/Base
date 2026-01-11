@@ -33,16 +33,28 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
-        // Cache these font so I can use them dynamically later.
+        // Cache these font, so I can use them dynamically later.
+
+        // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");
         loadFont("NotoSansBold", "/assets/base/fonts/global/NotoSans-Bold.ttf");
 
+        // Korea
+        loadFont("GyeonggiRegular", "/assets/base/fonts/korea/Gyeonggi_Regular.ttf");
+        loadFont("GyeonggiSemiBold", "/assets/base/fonts/korea/Gyeonggi_Medium.ttf");
+        loadFont("GyeonggiBold", "/assets/base/fonts/korea/Gyeonggi_Bold.ttf");
+
+        // Chinese/Japan (I think?)
+        loadFont("ShinMaruGoRegular", "/assets/base/fonts/japan/U-OTF-ShinMGoUpr-Medium.otf");
+        loadFont("ShinMaruGoSemiBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
+        loadFont("ShinMaruGoBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro B.otf");
+
         ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17));
 
         DEFAULT = NAME_TO_FONTS.get("NotoSansRegular");
-        BOLD = NAME_TO_FONTS.get("NotoSansBold");
-        SEMI_BOLD = NAME_TO_FONTS.get("NotoSansSemiBold");
+        BOLD = NAME_TO_FONTS.get("NotoSansSemiBold");
+        SEMI_BOLD = NAME_TO_FONTS.get("NotoSansBold");
 
         IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20);
         IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30);
