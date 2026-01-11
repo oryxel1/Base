@@ -20,8 +20,8 @@ public enum FontType {
     public String toName(FontStyle style) {
         return switch (style) {
             case SEMI_BOLD -> this.asset + "SemiBold";
-            case BOLD -> this.asset + "NotoSansBold";
-            default -> this.asset + "NotoSansRegular";
+            case BOLD -> this.asset + "Bold";
+            default -> this.asset + "Regular";
         };
     }
 }

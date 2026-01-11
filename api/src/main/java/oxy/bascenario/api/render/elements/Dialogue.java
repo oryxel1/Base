@@ -6,6 +6,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,11 @@ public class Dialogue {
 
         public Builder add(String dialogue) {
             this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).build());
+            return this;
+        }
+
+        public Builder add(String dialogue, FontType type) {
+            this.add(TextSegment.builder().text(dialogue).type(type).outline(DEFAULT_OUTLINE_COLOR).build());
             return this;
         }
 
