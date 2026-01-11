@@ -14,7 +14,7 @@ import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
-    public static Font DEFAULT, BOLD, SEMI_BOLD;
+    public static Font DEFAULT;
     private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
 
     public static ImFont IM_FONT_SEMI_BOLD_20, IM_FONT_SEMI_BOLD_30, IM_FONT_REGULAR_35;
@@ -50,16 +50,19 @@ public class FontUtils {
         loadFont("GyeonggiSemiBold", "/assets/base/fonts/korea/Gyeonggi_Medium.ttf");
         loadFont("GyeonggiBold", "/assets/base/fonts/korea/Gyeonggi_Bold.ttf");
 
-        // Chinese/Japan (I think?)
+        // Japan
         loadFont("ShinMaruGoRegular", "/assets/base/fonts/japan/U-OTF-ShinMGoUpr-Medium.otf");
         loadFont("ShinMaruGoSemiBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
         loadFont("ShinMaruGoBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
 
+        // Chinese
+        loadFont("ChillRoundRegular", "/assets/base/fonts/chinese/ChillRoundGothic_Regular.otf");
+        loadFont("ChillRoundSemiBold", "/assets/base/fonts/chinese/ChillRoundGothic_Medium.otf");
+        loadFont("ChillRoundBold", "/assets/base/fonts/chinese/ChillRoundGothic_Bold.otf");
+
         ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17));
 
         DEFAULT = NAME_TO_FONTS.get("NotoSansRegular");
-        SEMI_BOLD = NAME_TO_FONTS.get("NotoSansSemiBold");
-        BOLD = NAME_TO_FONTS.get("NotoSansBold");
 
         IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20);
         IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30);

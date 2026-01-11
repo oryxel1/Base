@@ -21,9 +21,8 @@ public class MultiLanguageTest {
         scenario.add(true, 0, new StartDialogueEvent(FontType.ShinMaruGo, 0, "カヨコ", "問題解決者68", true,
                 Dialogue.builder().add("素早い茶色キツネが怠けた犬を飛び越えました", FontType.ShinMaruGo).build()));
 
-        // Chinese font still somewhat incorrect.
-        scenario.add(true, 0, new StartDialogueEvent(FontType.ShinMaruGo, 0, "加代子", "问题解决者 68", true,
-                Dialogue.builder().add("敏捷的棕色狐狸跳过懒惰的狗", FontType.ShinMaruGo).build()));
+        scenario.add(true, 0, new StartDialogueEvent(FontType.ChillRoundGothic, 0, "加代子", "问题解决者 68", true,
+                Dialogue.builder().add("敏捷的棕色狐狸跳过懒惰的狗", FontType.ChillRoundGothic).build()));
 
 //        scenario.add(0, new AddElementEvent(0, new Preview(FontType.ShinMaruGo, "シナリオプレビューテスト", "エピソード: 1", null), RenderLayer.TOP));
 

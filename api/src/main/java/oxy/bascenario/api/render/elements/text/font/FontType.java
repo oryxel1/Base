@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum FontType {
-    NotoSans("Noto Sans (EN)", "NotoSans"), Gyeonggi("Gyeonggi (KR)", "Gyeonggi"), ShinMaruGo("Shin Maru Go (JP/CN", "ShinMaruGo");
+    NotoSans("Noto Sans (EN)", "NotoSans"),
+    Gyeonggi("Gyeonggi (KR)", "Gyeonggi"),
+    ShinMaruGo("Shin Maru Go (JP)", "ShinMaruGo"),
+    ChillRoundGothic("Chill Round Gothic (CN)", "ChillRound");
 
     private final String name, asset;
 
