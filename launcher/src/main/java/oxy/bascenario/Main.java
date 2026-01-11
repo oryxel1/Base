@@ -1,7 +1,6 @@
 package oxy.bascenario;
 
 import oxy.bascenario.screen.SplashScreen;
-import oxy.bascenario.screen.title.TitleScreen;
 import oxy.bascenario.utils.Launcher;
 
 public class Main {
@@ -12,6 +11,6 @@ public class Main {
             screen.setDone(true);
         }).start();
 
-        Launcher.launch(screen, false);
+        Launcher.launch(screen, false, true);
     }
 }
