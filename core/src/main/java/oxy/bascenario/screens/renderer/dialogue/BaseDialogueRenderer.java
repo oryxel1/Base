@@ -73,11 +73,11 @@ public abstract class BaseDialogueRenderer {
 
     private void renderDetails() {
         final TextRun name = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.name, Color.WHITE, 0, OUTLINE_COLOR));
-        TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 6, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         final float nameTextWidth = TextUtils.getVisualWidth(58, name.shape());
 
         final TextRun association = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.association, Color.fromRGB(132, 212, 249), 0, OUTLINE_COLOR));
-        TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 30, SEPARATOR_Y - 11, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 25, SEPARATOR_Y - 23, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 
     private void renderBackground() {
