@@ -9,6 +9,7 @@ import net.lenni0451.commons.color.Color;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.utils.FileInfo;
+import oxy.bascenario.utils.font.FontUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,8 +114,10 @@ public class ImGuiUtils {
     }
 
     public static String inputMultiLineText(String name, String value) {
+        ImGui.pushFont(FontUtils.CHILLGOTHIC_17);
         final ImString imString = new ImString(value);
         ImGui.inputTextMultiline(name + "##" + COUNTER++, imString, ImGuiInputTextFlags.CallbackResize);
+        ImGui.popFont();
         return imString.get();
     }
 
