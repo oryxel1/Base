@@ -2,6 +2,7 @@ package oxy.bascenario.editor.inspector.impl.objects;
 
 import imgui.ImGui;
 import oxy.bascenario.api.render.elements.Preview;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;
@@ -11,6 +12,7 @@ public class PreviewInspector {
 
     public static Preview render(Preview preview) {
         final Preview.Builder builder = preview.toBuilder();
+        builder.type(FontType.values()[ImGuiUtils.combo("Font Type", preview.type().ordinal(), FontType.getAlls())]);
         builder.title(ImGuiUtils.inputText("Title", preview.title()));
         builder.subtitle(ImGuiUtils.inputText("Subtitle", preview.subtitle()));
 

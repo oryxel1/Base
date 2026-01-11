@@ -17,6 +17,7 @@ import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
@@ -41,7 +42,7 @@ public class ObjectsUI {
 
         add("Preview",
                 "Show up the \"preview\" of the scenario like when you first play the story like in the game.\nWith title and (optional) subtitle and optional background.",
-                new Preview("Title", "Subtitle", null));
+                new Preview(FontType.NotoSans, "Title", "Subtitle", null));
 
         add("Emoticon",
                 "Popup an emoji that show emotions like in game, eg: Angry, Thinking, etc.",
@@ -77,7 +78,7 @@ public class ObjectsUI {
 //        add("Triangle", null);
         add("Location Info",
                 "Popup a box that show the current location name like in game.",
-                new LocationInfo("Location Name", 2500, 500));
+                new LocationInfo(FontType.NotoSans, "Location Name", 2500, 500));
 
         add("Sound",
                 "It's a sound, this will play a sound.",

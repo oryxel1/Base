@@ -3,6 +3,8 @@ package oxy.bascenario.editor.inspector.impl.events;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.LinkedHashMap;
@@ -11,6 +13,8 @@ import java.util.Map;
 public class OptionsInspector {
     public static ShowOptionsEvent render(ShowOptionsEvent event) {
         final Map<String, Integer> options = new LinkedHashMap<>();
+
+        FontType type = FontType.values()[ImGuiUtils.combo("Font Type", event.type().ordinal(), FontType.getAlls())];
 
         boolean add = ImGui.button("New option!");
 
@@ -31,6 +35,6 @@ public class OptionsInspector {
             options.put("", 0);
         }
 
-        return new ShowOptionsEvent(options);
+        return new ShowOptionsEvent(type, options);
     }
 }
