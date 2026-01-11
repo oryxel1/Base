@@ -55,12 +55,12 @@ public class Dialogue {
         }
 
         public Builder add(String dialogue, FontStyle type) {
-            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).style(type).build());
             return this;
         }
 
         public Builder add(String dialogue, FontStyle type, Color color) {
-            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).color(color).build());
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).style(type).color(color).build());
             return this;
         }
 

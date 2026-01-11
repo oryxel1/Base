@@ -20,14 +20,14 @@ public class FontUtils {
 
     public static Font toFont(Scenario scenario, TextSegment segment) {
         Font font;
-        if (segment.font().isPresent()) {
-            font = NAME_TO_FONTS.get(String.valueOf(segment.font().get().hashCode(scenario.getName())));
+        if (segment.font().file().isPresent()) {
+            font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().get().hashCode(scenario.getName())));
             if (font == null) {
-                font = FontUtils.loadSpecificFont(scenario, segment.font().get());
-                NAME_TO_FONTS.put(String.valueOf(segment.font().get().hashCode(scenario.getName())), font);
+                font = FontUtils.loadSpecificFont(scenario, segment.font().file().get());
+                NAME_TO_FONTS.put(String.valueOf(segment.font().file().get().hashCode(scenario.getName())), font);
             }
         } else {
-            font = NAME_TO_FONTS.get(FontStyle.toName(segment.type()));
+            font = NAME_TO_FONTS.get(segment.font().type().toName(segment.font().style()));
         }
         return font;
     }

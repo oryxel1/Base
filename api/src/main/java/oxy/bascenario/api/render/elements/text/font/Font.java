@@ -1,9 +1,11 @@
 package oxy.bascenario.api.render.elements.text.font;
 
+import lombok.Builder;
 import oxy.bascenario.api.utils.FileInfo;
 
 import java.util.Optional;
 
-public record Font(Optional<FileInfo> info, FontStyle style, FontType type) {
+@Builder(toBuilder = true, builderClassName = "Builder")
+public record Font(Optional<FileInfo> file, FontStyle style, FontType type) {
     public static Font DEFAULT = new Font(Optional.empty(), FontStyle.REGULAR, FontType.NotoSans);
 }

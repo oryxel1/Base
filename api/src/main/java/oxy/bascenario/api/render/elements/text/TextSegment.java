@@ -3,6 +3,7 @@ package oxy.bascenario.api.render.elements.text;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.elements.text.font.Font;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 
 import java.util.EnumSet;
@@ -31,7 +32,7 @@ public class TextSegment {
         Builder builder = builder();
         builder.color = color;
         builder.text = text;
-        builder.font = font;
+        builder.font = font.toBuilder();
         builder.outline = outline;
         builder.styles.addAll(styles);
         builder.outline = outline;
@@ -44,7 +45,7 @@ public class TextSegment {
 
     public static final class Builder {
         private String text = "";
-        private Font font = Font.DEFAULT;
+        private Font.Builder font = Font.DEFAULT.toBuilder();
         private Color color = Color.WHITE;
         private Optional<Color> outline = Optional.empty();
         private final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
@@ -54,21 +55,35 @@ public class TextSegment {
         public TextSegment build() {
             final TextSegment segment = new TextSegment();
             segment.text = text;
-            segment.font = font;
+            segment.font = font.build();
             segment.color = color;
             segment.outline = outline;
             segment.styles.addAll(styles);
             return segment;
         }
 
-//        public Optional<FileInfo> font() {
-//            return font;
-//        }
+        public Font font() {
+            return font.build();
+        }
 
-//        public Builder font(FileInfo font) {
-//            this.font = font == null ? Optional.empty() : Optional.of(font);
-//            return this;
-//        }
+        public Builder font(FileInfo font) {
+            if (font == null) {
+                return this;
+            }
+
+            this.font = new Font(Optional.of(font), null, null).builder();
+            return this;
+        }
+
+        public Builder style(FontStyle style) {
+            font.style(style);
+            return this;
+        }
+
+        public Builder type(FontType type) {
+            font.type(type);
+            return this;
+        }
 
         public Optional<Color> outline() {
             return outline;
@@ -87,15 +102,15 @@ public class TextSegment {
             this.text = text;
             return this;
         }
-
-        public FontStyle type() {
-            return type;
-        }
-
-        public Builder type(FontStyle type) {
-            this.type = type;
-            return this;
-        }
+//
+//        public FontStyle type() {
+//            return type;
+//        }
+//
+//        public Builder type(FontStyle type) {
+//            this.type = type;
+//            return this;
+//        }
 
         public Color color() {
             return color;
@@ -168,17 +183,17 @@ public class TextSegment {
         return text;
     }
 
-    public FontStyle type() {
-        return type;
-    }
-
     public Color color() {
         return color;
     }
 
-    public Optional<FileInfo> font() {
+    public Font font() {
         return font;
     }
+
+    //    public Optional<FileInfo> font() {
+//        return font;
+//    }
 
     public Optional<Color> outline() {
         return outline;
