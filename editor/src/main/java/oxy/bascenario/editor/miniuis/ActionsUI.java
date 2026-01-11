@@ -25,6 +25,7 @@ import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
@@ -68,7 +69,7 @@ public class ActionsUI {
 
         add("Start Dialogue",
                 "Start a dialogue like in game, with values like name, association or should this render background, and of course dialogues.",
-                new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
+                new StartDialogueEvent(FontType.NotoSans, 0, "", "", true, DUMMY_DIALOGUE));
 
         add("Add Dialogue",
                 "Add a new dialogue (text) onto any existing playing dialogue, allows for playing a certain dialogue text a bit late.",
@@ -85,7 +86,7 @@ public class ActionsUI {
             map.put("No", 0);
             add("Show Options",
                     "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
-                    new ShowOptionsEvent(map));
+                    new ShowOptionsEvent(FontType.NotoSans, map));
         }
         add("Close Options", "Close any currently present options", new CloseOptionsEvent());
 

@@ -4,10 +4,12 @@ import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
-import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import oxy.bascenario.api.render.elements.Dialogue;
+import oxy.bascenario.api.render.elements.text.font.Font;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
@@ -33,11 +35,13 @@ public abstract class BaseDialogueRenderer {
         return mouseX >= 0 && mouseX <= 1920 && mouseY >= 720 && mouseY <= 1080;
     }
 
-    public final void start(int index, String name, String association, boolean background, Dialogue... dialogues) {
+    private FontType font;
+    public final void start(FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
         if (index != currentIndex) {
             return;
         }
 
+        this.font = type;
         this.name = name;
         this.association = association;
 
@@ -68,12 +72,12 @@ public abstract class BaseDialogueRenderer {
     }
 
     private void renderDetails() {
-        final TextRun name = new TextRun(FontUtils.BOLD, new TextSegment(this.name, Color.WHITE, 0, OUTLINE_COLOR));
-        TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 6, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        final TextRun name = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.name, Color.WHITE, 0, OUTLINE_COLOR));
+        TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         final float nameTextWidth = TextUtils.getVisualWidth(58, name.shape());
 
-        final TextRun association = new TextRun(FontUtils.BOLD, new TextSegment(this.association, Color.fromRGB(132, 212, 249), 0, OUTLINE_COLOR));
-        TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 30, SEPARATOR_Y - 11, RendererText.VerticalOrigin.LOGICAL_BOTTOM, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        final TextRun association = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.association, Color.fromRGB(132, 212, 249), 0, OUTLINE_COLOR));
+        TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 25, SEPARATOR_Y - 23, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 
     private void renderBackground() {

@@ -5,6 +5,7 @@ import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Preview;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.Launcher;
 
@@ -17,7 +18,7 @@ public class OptionsTest {
             final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
             map.put("Yes", 0);
             map.put("No", 0);
-            scenario.add(0, new ShowOptionsEvent(map));
+            scenario.add(0, new ShowOptionsEvent(FontType.NotoSans, map));
         }
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);

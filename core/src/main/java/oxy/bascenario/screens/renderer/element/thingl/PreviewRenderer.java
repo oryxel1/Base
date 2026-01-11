@@ -1,6 +1,7 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
 import oxy.bascenario.Base;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.utils.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -141,7 +142,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
         final float scale = this.titlePopup.getValue();
         {
-            final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
+            final TextRun text = TextRun.fromString(FontUtils.font(FontStyle.SEMI_BOLD, element.type()), this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
             float textCenterX = Math.max(0, 1920 / 2F - (TextUtils.getVisualWidth(76, text.shape()) * scale / 2));
             float textCenterY = Math.max(0, 1080 / 2F - (TextUtils.getVisualHeight(76, text.shape()) * scale / 2)) + 5;
             if (!element.subtitle().isEmpty()) {
@@ -160,7 +161,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         }
 
         {
-            final TextRun text = TextRun.fromString(FontUtils.SEMI_BOLD, this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
+            final TextRun text = TextRun.fromString(FontUtils.font(FontStyle.SEMI_BOLD, element.type()), this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
             float width = TextUtils.getVisualWidth(42, text.shape());
             float height = TextUtils.getVisualHeight(42, text.shape());
             float textCenterX = Math.max(0, 1920 / 2F - (width * scale / 2));

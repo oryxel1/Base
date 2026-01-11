@@ -3,9 +3,10 @@ package oxy.bascenario.api.render.elements;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.render.elements.text.FontType;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +56,17 @@ public class Dialogue {
         }
 
         public Builder add(String dialogue, FontType type) {
-            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).build());
+            this.add(TextSegment.builder().text(dialogue).type(type).outline(DEFAULT_OUTLINE_COLOR).build());
             return this;
         }
 
-        public Builder add(String dialogue, FontType type, Color color) {
-            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).type(type).color(color).build());
+        public Builder add(String dialogue, FontStyle type) {
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).style(type).build());
+            return this;
+        }
+
+        public Builder add(String dialogue, FontStyle type, Color color) {
+            this.add(TextSegment.builder().text(dialogue).outline(DEFAULT_OUTLINE_COLOR).style(type).color(color).build());
             return this;
         }
 

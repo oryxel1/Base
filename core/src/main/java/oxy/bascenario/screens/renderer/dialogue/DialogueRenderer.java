@@ -1,8 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
-import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.text.TextLine;
@@ -18,8 +16,6 @@ import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public final class DialogueRenderer extends BaseDialogueRenderer {
     private final Scenario scenario;

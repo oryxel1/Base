@@ -27,6 +27,7 @@ import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.utils.math.Axis;
 import oxy.bascenario.api.utils.math.Vec2;
@@ -80,14 +81,14 @@ public class CompilerResultCompareTest {
         builder.add(0, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
         builder.add(0, new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));
         builder.add(0, new StopAnimationEvent(0, "bascenarioengine:default-shake"));
-        builder.add(100, new StartDialogueEvent(0, "", "", true, DUMMY_DIALOGUE));
+        builder.add(100, new StartDialogueEvent(FontType.NotoSans, 0, "", "", true, DUMMY_DIALOGUE));
         builder.add(200, new AddDialogueEvent(0, DUMMY_DIALOGUE));
 
         {
             final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
             map.put("Yes", 0);
             map.put("No", 0);
-            builder.add(300, new ShowOptionsEvent(map));
+            builder.add(300, new ShowOptionsEvent(FontType.NotoSans, map));
         }
 
         for (PositionElementEvent.Type type : PositionElementEvent.Type.values()) {
@@ -101,7 +102,7 @@ public class CompilerResultCompareTest {
         builder.add(10, new SoundVolumeEvent(0, 1000, 1, Easing.LINEAR));
         builder.add(10, new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
 
-        builder.add(1, new AddElementEvent(1, new Preview("Title", "Subtitle", null), RenderLayer.TOP));
+        builder.add(1, new AddElementEvent(1, new Preview(FontType.NotoSans, "Title", "Subtitle", null), RenderLayer.TOP));
         builder.add(1, new AddElementEvent(1, new Emoticon(1000, EmoticonType.NOTE, true), RenderLayer.TOP));
         builder.add(1, new AddElementEvent(1, new Sprite(FileInfo.from("test"), FileInfo.from("test")), RenderLayer.TOP));
 
