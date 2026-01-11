@@ -4,7 +4,7 @@ import imgui.ImGui;
 import imgui.type.ImBoolean;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.render.elements.text.FontType;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.TextStyle;
 import oxy.bascenario.api.utils.FileInfo;
@@ -49,7 +49,7 @@ public class TextSegmentInspector {
             ImGui.textUnformatted(segment.font().isEmpty() ? "" : segment.font().get().path());
         } else {
             builder.font(null);
-            builder.type(FontType.values()[ImGuiUtils.combo("Font Type", segment.type().ordinal(), FontType.getAlls())]);
+            builder.type(FontStyle.values()[ImGuiUtils.combo("Font Type", segment.type().ordinal(), FontStyle.getAlls())]);
         }
 
         if (last != null) {

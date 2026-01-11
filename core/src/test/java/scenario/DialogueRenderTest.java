@@ -10,7 +10,7 @@ import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
-import oxy.bascenario.api.render.elements.text.FontType;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -31,8 +31,8 @@ public class DialogueRenderTest {
         segments.add(TextSegment.builder().text("brown ").bold(true).build());
         segments.add(TextSegment.builder().text("fox ").italic(true).build());
         segments.add(TextSegment.builder().text("jump  ").font(new FileInfo("PlaywriteUSTradGuides-Regular.ttf", false, true)).build());
-        segments.add(TextSegment.builder().text("over ").type(FontType.SEMI_BOLD).build());
-        segments.add(TextSegment.builder().text("the ").type(FontType.BOLD).build());
+        segments.add(TextSegment.builder().text("over ").type(FontStyle.SEMI_BOLD).build());
+        segments.add(TextSegment.builder().text("the ").type(FontStyle.BOLD).build());
         segments.add(TextSegment.builder().text("lazy ").shadow(true).build());
         segments.add(TextSegment.builder().text("dog ").underline(true).build());
 
