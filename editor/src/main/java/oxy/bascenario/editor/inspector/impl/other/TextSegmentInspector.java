@@ -41,7 +41,7 @@ public class TextSegmentInspector {
         if (ImGuiUtils.checkbox("Custom Font", segment.font().isPresent())) {
             if (segment.font().isEmpty()) {
                 // We kinda need to set this to something first.
-                builder.font(new FileInfo("assets/base/fonts/NotoSans-Regular.ttf", false, true));
+                builder.font(new FileInfo("assets/base/fonts/global/NotoSans-Regular.ttf", false, true));
             }
 
             AssetsUI.pick("Pick Font!", file -> last = file, "ttf");

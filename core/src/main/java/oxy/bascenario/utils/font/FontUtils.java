@@ -4,20 +4,13 @@ import java.util.*;
 
 import imgui.*;
 import lombok.SneakyThrows;
-import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
-import net.raphimc.thingl.text.TextRun;
-import net.raphimc.thingl.text.shaping.ShapedTextLine;
-import net.raphimc.thingl.text.shaping.ShapedTextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.FontType;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.utils.FileInfo;
-
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class FontUtils {
     public static Font DEFAULT, BOLD, SEMI_BOLD;
@@ -41,19 +34,19 @@ public class FontUtils {
 
     public static void loadFonts() {
         // Cache these font so I can use them dynamically later.
-        loadFont("NotoSansRegular", "/assets/base/fonts/NotoSans-Regular.ttf");
-        loadFont("NotoSansSemiBold", "/assets/base/fonts/NotoSans-SemiBold.ttf");
-        loadFont("NotoSansBold", "/assets/base/fonts/NotoSans-Bold.ttf");
+        loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
+        loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");
+        loadFont("NotoSansBold", "/assets/base/fonts/global/NotoSans-Bold.ttf");
 
-        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/NotoSans-Regular.ttf", 17));
+        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17));
 
         DEFAULT = NAME_TO_FONTS.get("NotoSansRegular");
         BOLD = NAME_TO_FONTS.get("NotoSansBold");
         SEMI_BOLD = NAME_TO_FONTS.get("NotoSansSemiBold");
 
-        IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/NotoSans-SemiBold.ttf", 20);
-        IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/NotoSans-SemiBold.ttf", 30);
-        IM_FONT_REGULAR_35 = loadImFont("/assets/base/fonts/NotoSans-Regular.ttf", 35);
+        IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20);
+        IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30);
+        IM_FONT_REGULAR_35 = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 35);
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
