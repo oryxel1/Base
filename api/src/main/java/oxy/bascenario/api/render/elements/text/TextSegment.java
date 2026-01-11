@@ -72,11 +72,7 @@ public class TextSegment {
         }
 
         public Builder font(FileInfo font) {
-            if (font == null) {
-                return this;
-            }
-
-            this.font = new Font(Optional.of(font), null, null).builder();
+            this.font.file(font);
             return this;
         }
 

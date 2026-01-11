@@ -13,8 +13,8 @@ import java.util.Optional;
 public class FontType implements Type<Font> {
     @Override
     public JsonElement write(Font font) {
-        if (font.file().isPresent()) {
-            return Types.FILE_INFO_TYPE.write(font.file().get());
+        if (font.file() != null) {
+            return Types.FILE_INFO_TYPE.write(font.file());
         }
 
         final JsonObject object = new JsonObject();
@@ -27,17 +27,17 @@ public class FontType implements Type<Font> {
     public Font read(JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
         if (!object.has("style")) {
-            return new Font(Optional.of(Types.FILE_INFO_TYPE.read(object)), null, null);
+            return new Font(Types.FILE_INFO_TYPE.read(object), null, null);
         }
 
-        return new Font(Optional.empty(), ElementTypes.FONT_STYLE_TYPE.read(object.get("style")), ElementTypes.FONT_TYPE_TYPE.read(object.get("type")));
+        return new Font(null, ElementTypes.FONT_STYLE_TYPE.read(object.get("style")), ElementTypes.FONT_TYPE_TYPE.read(object.get("type")));
     }
 
     @Override
     public void write(Font font, ByteBuf buf) {
-        buf.writeBoolean(font.file().isPresent());
-        if (font.file().isPresent()) {
-            Types.FILE_INFO_TYPE.write(font.file().get(), buf);
+        buf.writeBoolean(font.file() != null);
+        if (font.file() != null) {
+            Types.FILE_INFO_TYPE.write(font.file(), buf);
             return;
         }
 
@@ -48,9 +48,9 @@ public class FontType implements Type<Font> {
     @Override
     public Font read(ByteBuf buf) {
         if (buf.readBoolean()) {
-            return new Font(Optional.of(Types.FILE_INFO_TYPE.read(buf)), null, null);
+            return new Font(Types.FILE_INFO_TYPE.read(buf), null, null);
         }
 
-        return new Font(Optional.empty(), ElementTypes.FONT_STYLE_TYPE.read(buf), ElementTypes.FONT_TYPE_TYPE.read(buf));
+        return new Font(null, ElementTypes.FONT_STYLE_TYPE.read(buf), ElementTypes.FONT_TYPE_TYPE.read(buf));
     }
 }

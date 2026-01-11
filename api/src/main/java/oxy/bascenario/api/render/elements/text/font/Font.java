@@ -6,6 +6,6 @@ import oxy.bascenario.api.utils.FileInfo;
 import java.util.Optional;
 
 @Builder(toBuilder = true, builderClassName = "Builder")
-public record Font(Optional<FileInfo> file, FontStyle style, FontType type) {
-    public static Font DEFAULT = new Font(Optional.empty(), FontStyle.REGULAR, FontType.NotoSans);
+public record Font(FileInfo file, FontStyle style, FontType type) {
+    public static Font DEFAULT = new Font(null, FontStyle.REGULAR, FontType.NotoSans);
 }

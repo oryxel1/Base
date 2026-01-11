@@ -25,11 +25,11 @@ public class FontUtils {
 
     public static Font toFont(Scenario scenario, TextSegment segment) {
         Font font;
-        if (segment.font().file().isPresent()) {
-            font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().get().hashCode(scenario.getName())));
+        if (segment.font().file() != null) {
+            font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().hashCode(scenario.getName())));
             if (font == null) {
-                font = FontUtils.loadSpecificFont(scenario, segment.font().file().get());
-                NAME_TO_FONTS.put(String.valueOf(segment.font().file().get().hashCode(scenario.getName())), font);
+                font = FontUtils.loadSpecificFont(scenario, segment.font().file());
+                NAME_TO_FONTS.put(String.valueOf(segment.font().file().hashCode(scenario.getName())), font);
             }
         } else {
             font = NAME_TO_FONTS.get(segment.font().type().toName(segment.font().style()));
@@ -86,6 +86,8 @@ public class FontUtils {
 
         final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
         rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
+        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
+        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
 
         final ImGuiIO data = ImGui.getIO();
         return data.getFonts().addFontFromMemoryTTF(fontData, size, new ImFontConfig(), rangesBuilder.buildRanges());

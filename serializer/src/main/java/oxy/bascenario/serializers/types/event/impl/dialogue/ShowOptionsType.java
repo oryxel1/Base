@@ -1,5 +1,6 @@
 package oxy.bascenario.serializers.types.event.impl.dialogue;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
@@ -22,7 +23,10 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
     public JsonElement write(ShowOptionsEvent event) {
         final JsonObject object = new JsonObject();
         object.add("font", ElementTypes.FONT_TYPE_TYPE.write(event.type()));
-        event.options().forEach(object::addProperty);
+
+        final JsonObject options = new JsonObject();
+        event.options().forEach(options::addProperty);
+        object.add("options", options);
         return object;
     }
 
@@ -30,8 +34,10 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
     public ShowOptionsEvent read(JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
         final Map<String, Integer> map = new LinkedHashMap<>();
-        for (String key : object.keySet()) {
-            map.put(key, object.get(key).getAsInt());
+
+        final JsonObject o = object.getAsJsonObject("options");
+        for (String key : o.keySet()) {
+            map.put(key, o.get(key).getAsInt());
         }
 
         return new ShowOptionsEvent(ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), map);

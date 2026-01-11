@@ -12,10 +12,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.miniuis.AssetsUI;
 import oxy.bascenario.utils.ImGuiUtils;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TextSegmentInspector {
     public static List<TextSegment> render(Scenario.Builder scenario, List<TextSegment> segments) {
@@ -39,18 +36,22 @@ public class TextSegmentInspector {
         TextSegment.Builder builder = segment.toBuilder();
         builder.text(ImGuiUtils.inputMultiLineText("Text", segment.text()));
 
-        if (ImGuiUtils.checkbox("Custom Font", segment.font().file().isPresent())) {
-            if (segment.font().file().isEmpty()) {
+        if (ImGuiUtils.checkbox("Custom Font", segment.font().file() != null)) {
+            if (segment.font().file() == null) {
                 // We kinda need to set this to something first.
                 builder.font(new FileInfo("assets/base/fonts/global/NotoSans-Regular.ttf", false, true));
             }
 
             AssetsUI.pick("Pick Font!", file -> last = file, "ttf");
             ImGui.sameLine();
-            ImGui.textUnformatted(segment.font().file().isEmpty() ? "" : segment.font().file().get().path());
+            ImGui.textUnformatted(segment.font().file() == null ? "" : segment.font().file().path());
         } else {
-            builder.type(FontType.values()[ImGuiUtils.combo("Font Type", segment.font().type().ordinal(), FontType.getAlls())]);
-            builder.style(FontStyle.values()[ImGuiUtils.combo("Font Style", segment.font().style().ordinal(), FontStyle.getAlls())]);
+            builder.font((FileInfo) null);
+
+            int type = segment.font().type() == null ? 0 : segment.font().type().ordinal();
+            int style = segment.font().style() == null ? 0 : segment.font().style().ordinal();
+            builder.type(FontType.values()[ImGuiUtils.combo("Font Type", type, FontType.getAlls())]);
+            builder.style(FontStyle.values()[ImGuiUtils.combo("Font Style", style, FontStyle.getAlls())]);
         }
 
         if (last != null) {
