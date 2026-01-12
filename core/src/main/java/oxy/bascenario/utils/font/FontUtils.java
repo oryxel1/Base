@@ -67,8 +67,8 @@ public class FontUtils {
 
         ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17, false));
 
-        DEFAULT = NAME_TO_FONTS.get("NotoSansRegular");
-        SEMI_BOLD = NAME_TO_FONTS.get("NotoSansSemiBold");
+        DEFAULT = NAME_TO_FONTS.get("ChillRoundRegular");
+        SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
 
         IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20, false);
         IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30, false);
