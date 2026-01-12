@@ -106,14 +106,18 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.batch.getProjectionMatrix().set(camera.combined);
 
         if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
-            this.skeleton.setColor(color.red(), color.blue(), color.green(), color.alpha());
+            final int width = ThinGL.windowInterface().getFramebufferWidth();
+            final int height = ThinGL.windowInterface().getFramebufferHeight();
+            ThinGL.programs().getColorTweak().bindInput();
             this.batch.begin();
             this.renderer.draw(this.batch, this.skeleton);
             this.batch.end();
+            ThinGL.programs().getColorTweak().unbindInput();
+            ThinGL.programs().getColorTweak().configureParameters(this.color.color());
+            ThinGL.programs().getColorTweak().render(-width, -height, width, height);
+            ThinGL.programs().getColorTweak().clearInput();
 
             if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
-                final int width = ThinGL.windowInterface().getFramebufferWidth();
-                final int height = ThinGL.windowInterface().getFramebufferHeight();
                 ThinGL.programs().getColorTweak().bindInput();
 
                 this.batch.begin();
