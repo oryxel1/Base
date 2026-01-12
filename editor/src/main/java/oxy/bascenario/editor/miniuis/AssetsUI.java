@@ -5,15 +5,19 @@ import imgui.ImGui;
 import imgui.flag.ImGuiTableColumnFlags;
 import imgui.flag.ImGuiTableFlags;
 import imgui.flag.ImGuiTreeNodeFlags;
-import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.timeline.Timeline;
+import oxy.bascenario.managers.ScenarioManager;
 import oxy.bascenario.utils.ImGuiUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class AssetsUI {
     public static boolean popup;
@@ -57,86 +61,76 @@ public class AssetsUI {
             object = timeline.getSelectedObject();
         }
 
-        final Consumer<FileInfo> PICK_CONSUMER = file -> {
-            String lowercase = file.path().toLowerCase(Locale.ROOT);
-            if (lowercase.endsWith(".mp3") || lowercase.endsWith(".ogg") || lowercase.endsWith(".wav")) {
-                new Thread(() -> Base.instance().assetsManager().load(scenario.name(), file)).start();
-            } else {
-                Base.instance().assetsManager().load(scenario.name(), file);
-            }
-        };
-        ImGuiUtils.pick(PICK_CONSUMER, scenario, "Load File", filter != null ? filter : "*");
+        ImGuiUtils.pick(f -> {}, scenario, "Load File", filter != null ? filter : "*");
         ImGui.sameLine();
-        ImGuiUtils.pickFolder(PICK_CONSUMER, scenario, "Load Folder");
+        ImGuiUtils.pickFolder(f -> {}, scenario, "Load Folder");
 
-        final List<Asset<?>> noFolders = new ArrayList<>();
+        final List<FileInfo> noFolders = new ArrayList<>();
+        final Map<String, List<FileInfo>> folders = new HashMap<>();
 
-        final Map<String, List<Asset<?>>> folders = new HashMap<>();
-        for (Asset<?> asset : Base.instance().assetsManager().assets()) {
-            if (asset.file().internal() || !Objects.equals(asset.scenario(), scenario.name())) {
-                continue;
-            }
+        final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.name()), "files").toPath();
+        try (final Stream<Path> stream = Files.walk(path)) {
+            List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
 
-            if (filter != null && !filter.equals("*")) {
-                boolean valid = false;
-                for (String ext : filter.replace(" ", "").split(",")) {
-                    if (asset.file().path().toLowerCase(Locale.ROOT).endsWith("." + ext)) {
-                        valid = true;
-                        break;
+            for (File file : files) {
+                FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
+                if (filter != null && !filter.equals("*")) {
+                    boolean valid = false;
+                    for (String ext : filter.replace(" ", "").split(",")) {
+                        if (info.path().toLowerCase(Locale.ROOT).endsWith("." + ext)) {
+                            valid = true;
+                            break;
+                        }
+                    }
+
+                    if (!valid) {
+                        continue;
                     }
                 }
 
-                if (!valid) {
+                if (!info.path().contains("\\")) {
+                    noFolders.add(info);
                     continue;
                 }
-            }
 
-            if (!asset.file().path().contains("\\")) {
-                noFolders.add(asset);
-                continue;
-            }
+                String[] split = info.path().split("\\\\");
+                if (split.length != 2) {
+                    noFolders.add(info);
+                    continue; // We don't support stacked folder, if they do that, their fault.
+                }
 
-            String[] split = asset.file().path().split("\\\\");
-            if (split.length != 2) {
-                noFolders.add(asset);
-                continue; // We don't support stacked folder, if they do that, their fault.
+                folders.computeIfAbsent(split[0], p -> new ArrayList<>()).add(info);
             }
-
-            folders.computeIfAbsent(split[0], p -> new ArrayList<>()).add(asset);
+        }  catch (IOException ignored) {
         }
 
-        if (ImGui.beginTable("2ways", 2, ImGuiTableFlags.BordersV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.Resizable | ImGuiTableFlags.RowBg | ImGuiTableFlags.NoBordersInBody)) {
+        if (ImGui.beginTable("1ways", 1, ImGuiTableFlags.BordersV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.Resizable | ImGuiTableFlags.RowBg | ImGuiTableFlags.NoBordersInBody)) {
             ImGui.tableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
-            ImGui.tableSetupColumn("Type");
             ImGui.tableHeadersRow();
 
-            for (Map.Entry<String, List<Asset<?>>> folder : folders.entrySet()) {
+            for (Map.Entry<String, List<FileInfo>> folder : folders.entrySet()) {
                 ImGui.tableNextRow();
                 ImGui.tableNextColumn();
                 if (ImGui.treeNodeEx(folder.getKey(), ImGuiTreeNodeFlags.SpanAllColumns | ImGuiTreeNodeFlags.DefaultOpen)) {
-                    renderAssets(timeline, scenario.name(), folder.getValue(), consumer, true);
+                    renderAssets(timeline, folder.getValue(), consumer, true);
                     ImGui.treePop();
                 }
             }
 
-            renderAssets(timeline, scenario.name(), noFolders, consumer, false);
+            renderAssets(timeline, noFolders, consumer, false);
 
             ImGui.endTable();
         }
     }
 
-    private static void renderAssets(Timeline timeline, String scenario, List<Asset<?>> assets, Consumer<FileInfo> consumer, boolean split) {
-        for (Asset<?> asset : assets) {
-            if (asset.file().internal() || !Objects.equals(asset.scenario(), scenario)) {
-                continue;
-            }
-
+    private static void renderAssets(Timeline timeline, List<FileInfo> files, Consumer<FileInfo> consumer, boolean split) {
+        for (FileInfo file : files) {
             ImGui.tableNextRow();
             ImGui.tableNextColumn();
-            if (ImGui.selectable(split ? asset.file().path().split("\\\\")[1] : asset.file().path())) {
+            if (ImGui.selectable(split ? file.path().split("\\\\")[1] : file.path())) {
                 if (consumer != null) {
                     if (object == timeline.getSelectedObject()) {
-                        consumer.accept(asset.file());
+                        consumer.accept(file);
                     }
                     AssetsUI.consumer = null;
                 }
@@ -144,8 +138,6 @@ public class AssetsUI {
                 ImGui.closeCurrentPopup();
                 filter = null;
             }
-            ImGui.tableNextColumn();
-            ImGui.text(asset.asset().getClass().getSimpleName());
         }
     }
 }

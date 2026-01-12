@@ -46,24 +46,24 @@ public class AssetsManager implements AssetsManagerApi {
     public AssetsManager() {
         this.assets = new HashMap<>();
         this.currentlyLoadingAssets = Collections.synchronizedSet(new HashSet<>());
-        load();
     }
 
-    public void load() {
-        for (Scenario scenario : Base.instance().scenarioManager().scenarios()) {
-            final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.getName()), "files").toPath();
-
-            try (final Stream<Path> stream = Files.walk(path)) {
-                List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
-
-                for (File file : files) {
-                    FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
-                    load(scenario.getName(), info, true);
-                }
-            }  catch (IOException ignored) {
-            }
-        }
-    }
+    // We no longer do this, but I'll keep this here anyway.
+//    public void load() {
+//        for (Scenario scenario : Base.instance().scenarioManager().scenarios()) {
+//            final Path path = new File(new File(ScenarioManager.SAVE_DIR, scenario.getName()), "files").toPath();
+//
+//            try (final Stream<Path> stream = Files.walk(path)) {
+//                List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
+//
+//                for (File file : files) {
+//                    FileInfo info = new FileInfo(file.getAbsolutePath().replace(path.toFile().getAbsolutePath() + "\\", ""), false, false);
+//                    load(scenario.getName(), info, true);
+//                }
+//            }  catch (IOException ignored) {
+//            }
+//        }
+//    }
 
     public Texture2D texture(String path) {
         return texture(null, new FileInfo(path, false, true));

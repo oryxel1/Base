@@ -37,18 +37,23 @@ public class ImGuiUtils {
         try (final Stream<Path> stream = Files.walk(folder.toPath())) {
             List<File> files = stream.filter(Files::isRegularFile).map(Path::toFile).toList();
 
-            for (final File file : files) {
-                String strip = file.getAbsolutePath().replace(folder.getAbsolutePath() + "\\", "");
-                FileInfo info = new FileInfo(folder.getName() + "\\" + strip, false, false);
+            new Thread(() -> {
+                try {
+                    for (final File file : files) {
+                        String strip = file.getAbsolutePath().replace(folder.getAbsolutePath() + "\\", "");
+                        FileInfo info = new FileInfo(folder.getName() + "\\" + strip, false, false);
 
-                File save = Base.instance().scenarioManager().file(scenario.name(), info);
-                if (save.isDirectory() && !save.delete()) {
-                    continue;
+                        File save = Base.instance().scenarioManager().file(scenario.name(), info);
+                        if (save.isDirectory() && !save.delete()) {
+                            continue;
+                        }
+
+                        Files.write(save.toPath(), Files.readAllBytes(file.toPath()));
+                        consumer.accept(info);
+                    }
+                } catch (Exception ignored) {
                 }
-
-                Files.write(save.toPath(), Files.readAllBytes(file.toPath()));
-                consumer.accept(info);
-            }
+            }).start();
         } catch (Exception ignored) {
         }
     }
