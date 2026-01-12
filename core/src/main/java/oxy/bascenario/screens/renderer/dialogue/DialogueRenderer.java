@@ -97,7 +97,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             return;
         }
 
-        float y = SEPARATOR_Y + 64;
+        float y = SEPARATOR_Y + 2;
 
         int done = 0;
         boolean finished = true;
@@ -105,6 +105,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             if (!finished) {
                 break;
             }
+
+            // This will break with some font, but it works best sooo.
+            y += (text.size / 42f) * 57 + 5;
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
             long words = Math.min((TimeUtils.currentTimeMillis() - time - text.distance) / msPerWord, text.allSegments.size() - 1);
@@ -139,7 +142,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
             final TextLine line = new TextLine(segments);
             TextUtils.textLine(text.size(), line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
-            y += TextUtils.getLogicalHeight(text.size(), line.shape()) + 5;
+//            y += TextUtils.getLogicalHeight(text.size(), line.shape()) + 5;
         }
 
         this.finished = done == this.texts.size();
