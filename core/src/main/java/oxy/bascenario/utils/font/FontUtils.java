@@ -73,6 +73,7 @@ public class FontUtils {
         IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20, false);
         IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30, false);
         IM_FONT_REGULAR_35 = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 35, false);
+
         CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 17, true);
     }
 
@@ -99,7 +100,13 @@ public class FontUtils {
         if (full) {
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseFull());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseSimplifiedCommon());
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
+
+            // Thanks ImGui :D, memory goin to be nice! and well imgui-java still on 1.90.0 so no dynamic render.
+            for (char c = '\u4e00'; c <= '\u9fff'; c++) {
+                rangesBuilder.addChar(c);
+            }
         }
 
         final ImGuiIO data = ImGui.getIO();

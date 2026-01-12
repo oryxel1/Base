@@ -35,7 +35,6 @@ public final class EngineRenderer extends Game {
     private final Screen initialScreen;
 
     public double mouseX, mouseY;
-    private long time;
 
     @Override
     public void create() {
@@ -88,7 +87,6 @@ public final class EngineRenderer extends Game {
                 ImGui.loadIniSettingsFromMemory(new String(EngineRenderer.class.getResourceAsStream("/assets/base/base.imgui").readAllBytes()));
             } catch (IOException ignored) {
             }
-
         }
 
         FontUtils.loadFonts();
