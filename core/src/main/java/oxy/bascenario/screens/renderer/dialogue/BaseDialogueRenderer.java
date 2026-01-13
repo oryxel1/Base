@@ -19,7 +19,7 @@ public abstract class BaseDialogueRenderer {
     protected static final float NON_GRADIENT_PART = 240, GRADIENT_PART = 120;
     protected static final float SEPARATOR_Y = 843.6F, SEPARATOR_WIDTH = 1555.2F - 6f, SEPARATOR_X = 182.4f + 3f;
 
-    protected static final Color OUTLINE_COLOR = Color.fromRGB(50, 70, 90);
+    protected static final Color OUTLINE_COLOR = Color.fromRGB(41, 65, 90);
 
     protected String name, association;
     private boolean background;

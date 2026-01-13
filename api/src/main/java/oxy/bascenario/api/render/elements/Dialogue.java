@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Getter
 public class Dialogue {
-    private static final Color DEFAULT_OUTLINE_COLOR = Color.fromRGB(50, 70, 90);
+    private static final Color DEFAULT_OUTLINE_COLOR = Color.fromRGB(41, 65, 90);
     public static long MS_PER_WORD = 50L;
 
     private Text dialogue;
