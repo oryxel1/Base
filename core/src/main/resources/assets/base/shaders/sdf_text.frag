@@ -26,17 +26,18 @@ void main() {
     o_Color = vec4(v_TextColor.rgb, v_TextColor.a * alpha);
 
     float width = fwidth(dist);
-    if (v_OutlineColor.a != 0) {
-        o_Color = mix(v_OutlineColor, v_TextColor, alpha);
-        float center = clamp(0.51 - float(v_FontSize) / 32.0 / 10.0, 0.05, 0.5);
-        float outlineAlpha = smoothstep(max(center - width, 0.0), min(center + width, 1.0), dist);
-        o_Color = vec4(o_Color.rgb, o_Color.a * outlineAlpha);
-    }
 
     if ((v_StyleFlags & STYLE_BOLD_BIT) != 0) {
         float center = clamp(0.5 - float(v_FontSize) / 64.0 / 10.0, 0.05, 0.5);
         float boldAlpha = smoothstep(max(center - width, 0.0), min(center + width, 1.0), dist);
         o_Color = vec4(v_TextColor.rgb, v_TextColor.a * boldAlpha);
+    }
+
+    if (v_OutlineColor.a != 0) {
+        o_Color = mix(v_OutlineColor, v_TextColor, alpha);
+        float center = clamp(0.51 - float(v_FontSize) / 32.0 / 10.0, 0.05, 0.5);
+        float outlineAlpha = smoothstep(max(center - width, 0.0), min(center + width, 1.0), dist);
+        o_Color = vec4(o_Color.rgb, o_Color.a * outlineAlpha);
     }
 
     o_Color *= u_ColorModifier;

@@ -61,7 +61,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                     final TextBuilder builder = texts.get(texts.size() - 1);
                     builder.builder().append(c);
 
-                    final Color outline = segment.outline().isPresent() ? segment.outline().get() : OUTLINE_COLOR;
+                    final Color outline = segment.outline().isPresent() ? segment.outline().get() : Color.TRANSPARENT;
                     final net.raphimc.thingl.text.TextSegment textSegment = new net.raphimc.thingl.text.TextSegment(String.valueOf(c), segment.color(), segment.toFlags(), outline);
                     builder.segments().add(new Pair<>(textSegment, font));
                 }
