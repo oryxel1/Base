@@ -1,16 +1,20 @@
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.text.font.FontType;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.Launcher;
 
 public class MultiLanguageTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
+
+        scenario.add(0, new SetBackgroundEvent(new FileInfo("BG_ShoppingMall.jpg", false, true), 0));
 
         scenario.add(true, 0, new StartDialogueEvent(FontType.NotoSans, 0, "Kayoko", "Problem Solver 68", true,
                 Dialogue.builder().add("The quick brown fox jump over the lazy dog").build()));

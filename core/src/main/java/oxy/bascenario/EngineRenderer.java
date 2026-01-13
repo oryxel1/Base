@@ -14,6 +14,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.gl.program.Programs;
 import net.raphimc.thingl.gl.wrapper.GLStateManager;
 import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.joml.Matrix4fStack;
@@ -41,12 +42,7 @@ public final class EngineRenderer extends Game {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
 
         // Setup ThinGL, since we use this library for the main rendering logic.
-        new ThinGL(new GLFWWindowInterface(windowHandle)) {
-            @Override
-            protected GLStateManager createGLStateManager() {
-                return new GLStateManager();
-            }
-        };
+        new ThinGLExtended(windowHandle);
         ThinGL.config().setRestoreVertexArrayBinding(true);
         ThinGL.config().setRestoreProgramBinding(true);
 
