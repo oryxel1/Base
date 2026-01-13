@@ -17,7 +17,7 @@ import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public abstract class BaseDialogueRenderer {
     protected static final float NON_GRADIENT_PART = 240, GRADIENT_PART = 120;
-    protected static final float SEPARATOR_Y = 843.6F, SEPARATOR_WIDTH = 1555.2F, SEPARATOR_X = 182.4f;
+    protected static final float SEPARATOR_Y = 843.6F, SEPARATOR_WIDTH = 1555.2F - 6f, SEPARATOR_X = 182.4f + 3f;
 
     protected static final Color OUTLINE_COLOR = Color.fromRGB(50, 70, 90);
 
@@ -89,6 +89,10 @@ public abstract class BaseDialogueRenderer {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 1080 - NON_GRADIENT_PART - i, 1920, 1080 - NON_GRADIENT_PART - i + 1, color.withAlpha(alpha));
         }
 
-        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(116, 116, 126));
+        // Render the separator.
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(110, 113, 115));
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 1, Color.fromRGB(100, 103, 106));
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y + 2, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(100, 103, 106));
+
     }
 }
