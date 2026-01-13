@@ -3,3 +3,5 @@
 build/
 run/
 /base.imgui
+.gitignore
+pictures/
