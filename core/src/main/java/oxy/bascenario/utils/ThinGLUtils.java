@@ -3,10 +3,8 @@ package oxy.bascenario.utils;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.commons.color.ColorUtils;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.gl.util.DefaultGLStates;
-import net.raphimc.thingl.text.TextRun;
 import org.joml.Matrix4fStack;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -18,6 +16,26 @@ import java.util.Map;
 
 public final class ThinGLUtils {
     public static Matrix4fStack GLOBAL_RENDER_STACK;
+
+    public static void renderTriangleRectangle(float x, float y, float width, float height, float triangleWidth, int round, Color color) {
+        final float rectWidth = width - (triangleWidth / 2f);
+
+        ThinGL.glStateStack().push();
+        ThinGL.glStateStack().disable(GL11C.GL_CULL_FACE);
+        ThinGL.programs().getOutline().bindInput();
+        ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, x, y + height, x + triangleWidth, y, x + triangleWidth, y + height, color);
+        ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, x + triangleWidth + rectWidth, y, x + triangleWidth + rectWidth,
+                y + height, x + (triangleWidth * 2) + rectWidth, y, color);
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x + triangleWidth, y, x + triangleWidth + rectWidth, y + height, color);
+        ThinGL.programs().getOutline().unbindInput();
+        ThinGL.programs().getOutline().configureParameters(round);
+//        float xRatio = 1920F / ThinGL.windowInterface().getFramebufferWidth();
+//        float yRatio = 1080F / ThinGL.windowInterface().getFramebufferHeight();
+        ThinGL.programs().getOutline().renderFullscreen(); // Optimize this?
+        ThinGL.programs().getOutline().renderInput();
+        ThinGL.programs().getOutline().clearInput();
+        ThinGL.glStateStack().pop();
+    }
 
     public static void renderBackground(Texture2D texture2D, Color color) {
         Vector4f vec = MathUtils.findBackgroundRender(new Vector2f(1920, 1080), new Vector2f(texture2D.getWidth(), texture2D.getHeight()));

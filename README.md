@@ -50,7 +50,6 @@ Or alternatively (if you really need help) you can contact me on discord aka `or
 - [ThinGL](https://github.com/RaphiMC/ThinGL) for carrying the entire project since LWJGL/OpenGL is hard as hell.
 - [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes) for rendering the sprites
 - [baad](https://github.com/Deathemonic/BA-AD) for extracting the game assets.
-- [joexyz ba tools](https://ba.joexyz.online/scenario-image-generator) thanks for the Auto/Menu buttons image yipeeee.
 - and whoever helps my stupid ass made this, shout out to the dev of *ThinGL* for helping so much with rendering!
 
 ### Extra

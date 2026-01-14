@@ -1,5 +1,6 @@
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
@@ -15,6 +16,7 @@ public class MultiLanguageTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
 
+        scenario.add(0, new ShowButtonsEvent(true));
         scenario.add(0, new SetBackgroundEvent(new FileInfo("BG_ShoppingMall.jpg", false, true), 0));
 
         scenario.add(true, 0, new StartDialogueEvent(FontType.NotoSans, 0, "Kayoko", "Problem Solver 68", true,

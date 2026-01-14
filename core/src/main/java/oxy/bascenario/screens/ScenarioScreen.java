@@ -5,10 +5,14 @@ import lombok.Setter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.gl.renderer.impl.RendererText;
+import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
@@ -22,6 +26,8 @@ import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.font.FontUtils;
+import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -164,8 +170,20 @@ public class ScenarioScreen extends ExtendableScreen {
 
         this.optionsRenderer.render(this);
 
+        // TODO: Properly render shadow?
         if (showButtons) {
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/buttons_auto_off.png"), 1920 - 394 - 14, 21, 394, 86);
+            ThinGLUtils.renderTriangleRectangle(1526, 30, 160, 60, 12, 5, Color.fromRGB(244, 245, 246));
+            ThinGLUtils.renderTriangleRectangle(1526 + 160 + 30, 32, 160, 60 - 2, 12, 5, Color.fromRGB(244, 245, 246));
+
+            final TextRun auto = TextRun.fromString(FontUtils.font(FontStyle.BOLD, FontType.NotoSans), "Auto", Color.fromRGB(45, 70, 99), 1 << 2);
+            TextUtils.textRun(36, auto, 1526 + 12 + (160 / 2f) - (TextUtils.getVisualWidth(36, auto.shape()) / 2f) - 3,
+                    30 + (60 / 2f) + (TextUtils.getVisualHeight(36, auto.shape()) / 2f) + 2,
+                    RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+
+            final TextRun menu = TextRun.fromString(FontUtils.font(FontStyle.BOLD, FontType.NotoSans), "Menu", Color.fromRGB(45, 70, 99), 1 << 2);
+            TextUtils.textRun(36, menu, 1526 + 160 + 30 + 12 + (160 / 2f) - (TextUtils.getVisualWidth(36, menu.shape()) / 2f) - 5,
+                    30 + (60 / 2f) + (TextUtils.getVisualHeight(36, menu.shape()) / 2f) + 2,
+                    RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);

@@ -30,7 +30,7 @@ public class DialogueRenderTest {
         segments.add(TextSegment.builder().text("The ").build());
         segments.add(TextSegment.builder().text("quick ").color(Color.CYAN).build());
         segments.add(TextSegment.builder().text("brown ").bold(true).build());
-        segments.add(TextSegment.builder().text("fox ").italic(true).build());
+        segments.add(TextSegment.builder().text("fox ").italic(true).strikethrough(true).build());
         segments.add(TextSegment.builder().text("jump  ").font(new FileInfo("PlaywriteUSTradGuides-Regular.ttf", false, true)).build());
         segments.add(TextSegment.builder().text("over ").style(FontStyle.SEMI_BOLD).build());
         segments.add(TextSegment.builder().text("the ").style(FontStyle.BOLD).build());
