@@ -44,7 +44,7 @@ public class TextRenderer extends ThinGLElementRenderer<Text> {
 
             ThinGL.programs().getColorTweak().unbindInput();
             ThinGL.programs().getColorTweak().configureParameters(this.overlayColor.color());
-            ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
+            ThinGL.programs().getColorTweak().renderFullscreen();
             ThinGL.programs().getColorTweak().clearInput();
         }
     }

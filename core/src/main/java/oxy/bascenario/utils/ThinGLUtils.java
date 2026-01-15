@@ -20,13 +20,15 @@ public final class ThinGLUtils {
     public static void renderTriangleRectangle(float x, float y, float width, float height, float triangleWidth, int round, Color color) {
         final float rectWidth = width - (triangleWidth / 2f);
 
+        ThinGL.programs().getColorTweak().bindInput();
+
         ThinGL.glStateStack().push();
         ThinGL.glStateStack().disable(GL11C.GL_CULL_FACE);
         ThinGL.programs().getOutline().bindInput();
-        ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, x, y + height, x + triangleWidth, y, x + triangleWidth, y + height, color);
+        ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, x, y + height, x + triangleWidth, y, x + triangleWidth, y + height, Color.WHITE);
         ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, x + triangleWidth + rectWidth, y, x + triangleWidth + rectWidth,
-                y + height, x + (triangleWidth * 2) + rectWidth, y, color);
-        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x + triangleWidth, y, x + triangleWidth + rectWidth, y + height, color);
+                y + height, x + (triangleWidth * 2) + rectWidth, y, Color.WHITE);
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x + triangleWidth, y, x + triangleWidth + rectWidth, y + height, Color.WHITE);
         ThinGL.programs().getOutline().unbindInput();
         ThinGL.programs().getOutline().configureParameters(round);
 //        float xRatio = 1920F / ThinGL.windowInterface().getFramebufferWidth();
@@ -35,6 +37,11 @@ public final class ThinGLUtils {
         ThinGL.programs().getOutline().renderInput();
         ThinGL.programs().getOutline().clearInput();
         ThinGL.glStateStack().pop();
+
+        ThinGL.programs().getColorTweak().unbindInput();
+        ThinGL.programs().getColorTweak().configureParameters(color);
+        ThinGL.programs().getColorTweak().renderFullscreen();
+        ThinGL.programs().getColorTweak().clearInput();
     }
 
     public static void renderBackground(Texture2D texture2D, Color color) {
@@ -51,7 +58,7 @@ public final class ThinGLUtils {
                     ThinGL.programs().getColorTweak().unbindInput();
 
                     ThinGL.programs().getColorTweak().configureParameters(Color.fromRGBA(30, 97, 205, 60));
-                    ThinGL.programs().getColorTweak().render(0, 0, 1920, 1080);
+                    ThinGL.programs().getColorTweak().renderFullscreen();
                     ThinGL.programs().getColorTweak().configureParameters(Color.GRAY.withAlphaF(0.2f));
                     if (v[0] == Axis.X) {
                         for (int x = (int) -(1920 * 20f); x < 0; x += 200) {
@@ -102,7 +109,7 @@ public final class ThinGLUtils {
                     runnable.run();
                     ThinGL.programs().getGaussianBlur().unbindInput();
                     ThinGL.programs().getGaussianBlur().configureParameters((Integer) v[0]);
-                    ThinGL.programs().getGaussianBlur().render(0, 0,1920, 1080);
+                    ThinGL.programs().getGaussianBlur().renderFullscreen();
                     ThinGL.programs().getGaussianBlur().clearInput();
                 }
 
@@ -163,7 +170,7 @@ public final class ThinGLUtils {
         runnable.run();
         ThinGL.programs().getGaussianBlur().unbindInput();
         ThinGL.programs().getGaussianBlur().configureParameters(strength);
-        ThinGL.programs().getGaussianBlur().render(0, 0, 1920, 1080);
+        ThinGL.programs().getGaussianBlur().renderFullscreen();
         ThinGL.programs().getGaussianBlur().clearInput();
     }
 }
