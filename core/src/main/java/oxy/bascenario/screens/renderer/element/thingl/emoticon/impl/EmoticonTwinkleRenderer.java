@@ -1,7 +1,7 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
 import oxy.bascenario.Base;
-import oxy.bascenario.utils.DynamicAnimation;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
@@ -9,7 +9,7 @@ import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRend
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 // Noodle code, too lazy to refactor, it works so it works!
 public class EmoticonTwinkleRenderer extends EmoticonRenderer {

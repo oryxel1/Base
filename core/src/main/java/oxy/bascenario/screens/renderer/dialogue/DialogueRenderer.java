@@ -10,7 +10,7 @@ import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.utils.font.FontUtils;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.utils.math.Pair;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.font.TextUtils;
 

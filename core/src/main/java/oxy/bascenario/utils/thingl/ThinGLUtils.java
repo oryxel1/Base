@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.thingl;
 
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.commons.color.ColorUtils;
@@ -11,6 +11,8 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11C;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.utils.math.Axis;
+import oxy.bascenario.utils.math.MathUtils;
+import oxy.bascenario.utils.TimeUtils;
 
 import java.util.Map;
 

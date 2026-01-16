@@ -7,11 +7,11 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.screen.title.TitleScreen;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class SplashScreen extends ExtendableScreen {
     @Setter

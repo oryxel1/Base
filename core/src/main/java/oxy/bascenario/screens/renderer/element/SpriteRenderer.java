@@ -9,22 +9,19 @@ import imgui.ImGui;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
-import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
-import oxy.bascenario.utils.FileUtils;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.files.FileUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.esotericsoftware.spine.attachments.Sequence.SequenceMode.loop;
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 // The fact we're combining libgdx-spine way of rendering with ThinGL is a literal dog shit implement xDDDD
 // It's fine however, I don't really care that much...

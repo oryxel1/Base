@@ -1,8 +1,9 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.animation;
 
 import lombok.Getter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
+import oxy.bascenario.utils.TimeUtils;
 
 /**
  * A dynamic animation with dynamically changing target values.<br>

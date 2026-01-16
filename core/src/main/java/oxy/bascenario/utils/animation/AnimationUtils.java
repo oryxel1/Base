@@ -7,8 +7,6 @@ import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
-import oxy.bascenario.utils.DynamicAnimation;
-import oxy.bascenario.utils.MochaUtils;
 import team.unnamed.mocha.runtime.Scope;
 
 import java.io.IOException;

@@ -10,9 +10,8 @@ import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
 import oxy.bascenario.editor.timeline.Timeline;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.utils.math.Pair;
 
-import javax.sound.midi.Track;
 import java.util.*;
 
 public class TrackParser {

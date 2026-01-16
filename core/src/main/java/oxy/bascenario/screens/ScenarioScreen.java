@@ -21,10 +21,11 @@ import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
-import oxy.bascenario.utils.DynamicAnimation;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.thingl.ProgramsExtended;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
@@ -32,7 +33,7 @@ import oxy.bascenario.utils.font.TextUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class ScenarioScreen extends ExtendableScreen {
     @Getter

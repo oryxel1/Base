@@ -1,6 +1,5 @@
 package oxy.bascenario.managers;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import lombok.SneakyThrows;
 import net.raphimc.audiomixer.io.AudioIO;
 import net.raphimc.audiomixer.io.mp3.Mp3InputStream;
@@ -8,10 +7,6 @@ import net.raphimc.audiomixer.io.ogg.OggVorbisInputStream;
 import net.raphimc.audiomixer.util.MathUtil;
 import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
-import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
-import net.raphimc.thingl.image.animated.impl.AwtGifImage;
-import oxy.bascenario.Base;
-import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.managers.AssetsManagerApi;
 import oxy.bascenario.api.render.elements.Dummy;
 import oxy.bascenario.api.utils.FileInfo;
@@ -19,18 +14,13 @@ import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
 import oxy.bascenario.managers.other.GifAsset;
 import oxy.bascenario.managers.other.TextureAsset;
-import oxy.bascenario.utils.FileUtils;
+import oxy.bascenario.utils.files.FileUtils;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Stream;
 
 @SuppressWarnings("ALL")
 public class AssetsManager implements AssetsManagerApi {

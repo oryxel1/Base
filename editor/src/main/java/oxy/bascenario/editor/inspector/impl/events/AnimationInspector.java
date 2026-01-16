@@ -5,7 +5,7 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.utils.ImGuiUtils;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.utils.math.Pair;
 
 public class AnimationInspector {
     public static PlayAnimationEvent render(PlayAnimationEvent event) {

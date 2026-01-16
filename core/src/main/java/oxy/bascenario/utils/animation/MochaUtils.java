@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.animation;
 
 import team.unnamed.mocha.parser.MolangParser;
 import team.unnamed.mocha.parser.ast.Expression;

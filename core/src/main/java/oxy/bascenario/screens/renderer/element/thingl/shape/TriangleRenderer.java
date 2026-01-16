@@ -6,7 +6,7 @@ import oxy.bascenario.api.render.elements.shape.Triangle;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class TriangleRenderer extends ThinGLElementRenderer<Triangle> {
     public TriangleRenderer(Triangle element, RenderLayer layer) {

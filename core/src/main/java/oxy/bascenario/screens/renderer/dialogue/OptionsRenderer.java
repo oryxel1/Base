@@ -8,7 +8,7 @@ import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
-import oxy.bascenario.utils.DynamicAnimation;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -20,7 +20,7 @@ import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.Map;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class OptionsRenderer {
     private static final Color TEXT_COLOR = Color.fromRGB(44, 67, 90);

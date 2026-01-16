@@ -6,7 +6,7 @@ import oxy.bascenario.api.animation.AnimationTimeline;
 import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.managers.AnimationManagerApi;
-import oxy.bascenario.utils.Pair;
+import oxy.bascenario.utils.math.Pair;
 
 import java.io.File;
 import java.util.ArrayList;

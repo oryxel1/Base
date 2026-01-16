@@ -7,7 +7,7 @@ import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
-import oxy.bascenario.utils.MochaUtils;
+import oxy.bascenario.utils.animation.MochaUtils;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.animation.math.Vec2Animations;

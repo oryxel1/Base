@@ -3,9 +3,9 @@ package oxy.bascenario.screens.renderer.element.base;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
     private static final float DEGREES_TO_RADIANS = 0.017453292519943295f;

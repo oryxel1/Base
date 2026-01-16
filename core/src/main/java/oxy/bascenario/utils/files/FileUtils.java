@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.files;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

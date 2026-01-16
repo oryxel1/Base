@@ -19,7 +19,7 @@ import oxy.bascenario.editor.inspector.Inspector;
 import oxy.bascenario.editor.utils.TrackParser;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 public class BaseScenarioEditorScreen extends ExtendableScreen {
     private final Screen prevScreen;

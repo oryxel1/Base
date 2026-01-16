@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.math;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;

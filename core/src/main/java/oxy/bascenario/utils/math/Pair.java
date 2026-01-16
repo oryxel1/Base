@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.math;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

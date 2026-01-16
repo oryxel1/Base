@@ -12,7 +12,6 @@ import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.font.FontUtils;
-import oxy.bascenario.utils.ThinGLUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
 import java.util.ArrayList;

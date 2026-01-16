@@ -5,7 +5,7 @@ import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
-import oxy.bascenario.utils.ThinGLUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 public class ColorOverlayRenderer extends ElementRenderer<ColorOverlayEvent> {
     public ColorOverlayRenderer(RenderLayer layer) {

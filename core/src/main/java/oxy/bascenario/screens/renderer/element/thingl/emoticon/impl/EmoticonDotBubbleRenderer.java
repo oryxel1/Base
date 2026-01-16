@@ -1,7 +1,7 @@
 package oxy.bascenario.screens.renderer.element.thingl.emoticon.impl;
 
 import oxy.bascenario.Base;
-import oxy.bascenario.utils.DynamicAnimation;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -10,7 +10,7 @@ import oxy.bascenario.screens.renderer.element.thingl.emoticon.base.EmoticonRend
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
     private static final float DOT_SIZE = 27.3f, TOTAL_DOT_WIDTH = 37.8f * 2 - DOT_SIZE;

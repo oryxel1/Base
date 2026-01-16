@@ -9,7 +9,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class ImageRenderer extends ThinGLElementRenderer<Image> {
     private final Texture2D texture2D;

@@ -6,9 +6,8 @@ import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.shaping.ShapedTextLine;
 import net.raphimc.thingl.text.shaping.ShapedTextRun;
-import org.joml.Matrix4f;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class TextUtils {
     public static float getVisualWidth(float size, final ShapedTextLine textLine) {

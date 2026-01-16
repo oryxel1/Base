@@ -1,14 +1,8 @@
 import imgui.ImGui;
 import net.lenni0451.commons.color.Color;
-import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.gl.program.post.impl.OutlineProgram;
-import net.raphimc.thingl.gl.renderer.Primitives;
-import org.lwjgl.opengl.GL11C;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.ThinGLUtils;
-
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 public class DummyTest {
     public static void main(String[] args) {

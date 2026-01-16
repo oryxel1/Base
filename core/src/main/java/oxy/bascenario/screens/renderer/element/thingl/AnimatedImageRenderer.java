@@ -11,7 +11,7 @@ import oxy.bascenario.managers.other.GifAsset;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.TimeUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> {
     private SequencedTexture texture;

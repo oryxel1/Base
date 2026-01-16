@@ -2,7 +2,7 @@ package oxy.bascenario.screens.renderer.element.thingl;
 
 import oxy.bascenario.Base;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
-import oxy.bascenario.utils.DynamicAnimation;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -16,7 +16,7 @@ import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
     private static final float Y = 200, HEIGH = 64.8F, SEPARATOR_Y = 216.2f, SEPARATOR_HEIGH = HEIGH / 2f;

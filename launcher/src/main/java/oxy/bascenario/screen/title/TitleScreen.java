@@ -11,7 +11,6 @@ import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
-import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
@@ -19,13 +18,16 @@ import oxy.bascenario.screen.ScenarioListScreen;
 import oxy.bascenario.screen.title.button.TitleScreenButton;
 import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.animation.DynamicAnimation;
+import oxy.bascenario.utils.files.FileUtils;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class TitleScreen extends ExtendableScreen {
     public static final TitleScreen INSTANCE = new TitleScreen();

@@ -1,4 +1,4 @@
-package oxy.bascenario.utils;
+package oxy.bascenario.utils.files;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;

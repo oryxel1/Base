@@ -7,13 +7,12 @@ import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.api.render.elements.text.font.Font;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
-import static oxy.bascenario.utils.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public abstract class BaseDialogueRenderer {
     protected static final float NON_GRADIENT_PART = 240, GRADIENT_PART = 120;

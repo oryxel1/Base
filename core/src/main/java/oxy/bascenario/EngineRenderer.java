@@ -14,19 +14,17 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import lombok.RequiredArgsConstructor;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.gl.program.Programs;
-import net.raphimc.thingl.gl.wrapper.GLStateManager;
-import net.raphimc.thingl.implementation.window.GLFWWindowInterface;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.font.FontUtils;
+import oxy.bascenario.utils.thingl.ThinGLExtended;
+import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
