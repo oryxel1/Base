@@ -6,6 +6,7 @@ import net.raphimc.thingl.gl.program.RegularProgram;
 import net.raphimc.thingl.gl.program.post.impl.OutlineProgram;
 import net.raphimc.thingl.gl.resource.shader.Shader;
 import net.raphimc.thingl.util.GlSlPreprocessor;
+import oxy.bascenario.utils.thingl.shaders.OutlineGlowProgram;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,13 +26,13 @@ public class ProgramsExtended extends Programs {
         return program;
     });
 
-    private final Lazy<OutlineProgram> outlineGlow = Lazy.of(() -> {
-        final OutlineProgram program = new OutlineProgram(this.getShader("post/post_processing", VERTEX), this.getBaseShader("outline_glow", FRAGMENT));
+    private final Lazy<OutlineGlowProgram> outlineGlow = Lazy.of(() -> {
+        final OutlineGlowProgram program = new OutlineGlowProgram(this.getShader("post/post_processing", VERTEX), this.getBaseShader("outline_glow", FRAGMENT));
         program.setDebugName("outline_glow");
         return program;
     });
 
-    public OutlineProgram getOutlineGlow() {
+    public OutlineGlowProgram getOutlineGlow() {
         return outlineGlow.get();
     }
 

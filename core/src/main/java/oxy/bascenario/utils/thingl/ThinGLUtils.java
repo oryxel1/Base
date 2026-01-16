@@ -19,6 +19,16 @@ import java.util.Map;
 public final class ThinGLUtils {
     public static Matrix4fStack GLOBAL_RENDER_STACK;
 
+    public static void renderGlowOutline(int strength, Runnable runnable) {
+        ThinGLExtended.get().getPrograms().getOutlineGlow().bindInput();
+        runnable.run();
+        ThinGLExtended.get().getPrograms().getOutlineGlow().unbindInput();
+        ThinGLExtended.get().getPrograms().getOutlineGlow().configureParameters(strength);
+        ThinGLExtended.get().getPrograms().getOutlineGlow().renderFullscreen(); // Optimize this?
+        ThinGLExtended.get().getPrograms().getOutlineGlow().renderInput();
+        ThinGLExtended.get().getPrograms().getOutlineGlow().clearInput();
+    }
+
     public static void renderTriangleRectangle(float x, float y, float width, float height, float triangleWidth, int round, Color color) {
         final float rectWidth = width - (triangleWidth / 2f);
 
