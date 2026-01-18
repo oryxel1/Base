@@ -23,6 +23,10 @@ import java.util.Map;
 import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class OptionsRenderer {
+    private static final long FLASH_DURATION = 90L;
+    private static final float SCALE_SIZE = 1.125f;
+    private static final float FLASH_ALPHA = 0.5f;
+
     private static final Color TEXT_COLOR = Color.fromRGB(44, 67, 90);
     private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1345, DISTANCE_BETWEEN = 35;
 
@@ -31,8 +35,9 @@ public class OptionsRenderer {
     public void setOptions(FontType type, Map<String, Integer> options) {
         this.type = type;
         this.options = options;
+        this.flipped = false;
         if (this.options != null) {
-            this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.QUAD);
+            this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.CUBIC);
         }
     }
 
@@ -43,30 +48,26 @@ public class OptionsRenderer {
     @Getter
     private DynamicAnimation scale = AnimationUtils.dummy(1);
     private DynamicAnimation flash = AnimationUtils.dummy(1);
+    private boolean flipped;
 
     public void render(ScenarioScreen screen) {
         if (this.options == null) {
             return;
         }
 
-        if (this.flash.getValue() == 0 && !this.scale.isRunning() && this.clicked != null) {
+        if (flipped && this.flash.getValue() == 0 && !this.scale.isRunning() && this.clicked != null) {
             this.options = null;
             screen.setBusyOptions(false);
             return;
         }
 
-        if (this.queue && this.scale.getValue() == 0.9f) {
-            this.scale.setTarget(1.1f);
-            this.flash = AnimationUtils.build(110, 1, 0, EasingFunction.LINEAR);
-            this.queue = false;
+        if (this.scale.getValue() == SCALE_SIZE && this.flash instanceof AnimationUtils.DummyAnimation) {
+            this.flash = AnimationUtils.build(FLASH_DURATION, 0, FLASH_ALPHA, EasingFunction.LINEAR);
         }
 
         if (!(this.flash instanceof AnimationUtils.DummyAnimation) && !this.flash.isRunning()) {
-            if (this.flash.getTarget() == 1 || !this.scale.isRunning()) {
-                this.flash.setTarget(0);
-            } else if (this.flash.getTarget() == 0 && this.scale.isRunning()) {
-                this.flash.setTarget(1);
-            }
+            this.flash.setTarget(this.flash.getTarget() == FLASH_ALPHA ? 0 : FLASH_ALPHA);
+            flipped = true;
         }
 
         float totalHeight = BUTTON_HEIGHT * this.options.size() + DISTANCE_BETWEEN * (options.size() - 1);
@@ -104,19 +105,15 @@ public class OptionsRenderer {
         }
     }
 
-    private boolean queue, sound;
+    private boolean sound;
     public void mouseRelease() {
         if (this.clicked != null) {
             if (!sound) {
                 AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
                 sound = true;
             }
-            if (this.scale.getValue() != 0.9f) {
-                this.queue = true;
-            } else {
-                this.scale.setTarget(1.1f);
-                this.flash = AnimationUtils.build(110, 1, 0, EasingFunction.LINEAR);
-            }
+
+            this.scale = AnimationUtils.build(400, this.scale.getValue(), SCALE_SIZE, EasingFunction.CUBIC);
         }
     }
 
@@ -134,10 +131,9 @@ public class OptionsRenderer {
             float buttonY = 540 - (totalHeight / 2f) - BUTTON_HEIGHT + 14.9796f + ((BUTTON_HEIGHT + DISTANCE_BETWEEN) * i);
             if (mouseX >= buttonX && mouseX <= buttonX + BUTTON_WIDTH && mouseY >= buttonY && mouseY <= buttonY + BUTTON_HEIGHT) {
                 this.clicked = text;
-                this.scale.setTarget(0.9f);
+                this.scale.setTarget(92 / 96f);
                 screen.getDialogueRenderer().setCurrentIndex(this.options.get(text));
                 AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
-//                AudioManager.getInstance().play("assets/base/sounds/click-sound.mp3", false, 1, true);
                 break;
             }
 
