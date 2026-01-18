@@ -1,10 +1,7 @@
 package oxy.bascenario.managers;
 
 import oxy.bascenario.Base;
-import oxy.bascenario.api.animation.Animation;
-import oxy.bascenario.api.animation.AnimationTimeline;
-import oxy.bascenario.api.animation.AnimationValue;
-import oxy.bascenario.api.effects.Easing;
+import oxy.bascenario.api.animation.api.Animation;
 import oxy.bascenario.api.managers.AnimationManagerApi;
 import oxy.bascenario.utils.math.Pair;
 
