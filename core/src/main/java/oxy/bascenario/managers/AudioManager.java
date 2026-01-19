@@ -176,6 +176,7 @@ public class AudioManager {
         }
 
         private void resume() {
+            AudioManager.getInstance().mixer.stopSound(stereoSound); // we have to ensure there isn't a duplicate.
             AudioManager.getInstance().mixer.playSound(stereoSound);
         }
 
