@@ -122,9 +122,15 @@ public class AudioManager {
                 continue;
             }
 
-            if (cache.loop && cache.stereoSound.isFinished()) {
-                ((StereoStaticPcmSource)cache.stereoSound.getPcmSource()).setPosition(0);
-                cache.resume();
+            if (cache.stereoSound.isFinished()) {
+                if (cache.loop) {
+                    ((StereoStaticPcmSource)cache.stereoSound.getPcmSource()).setPosition(0);
+                    cache.resume();
+                } else if (cache.fadeOut == null) {
+                    cache.stop();
+                    iterator.remove();
+                    continue;
+                }
             }
 
             if (cache.fadeOut != null) {
