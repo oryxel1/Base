@@ -5,6 +5,7 @@ import net.raphimc.audiomixer.SourceDataLineAudioMixer;
 import net.raphimc.audiomixer.pcmsource.impl.StereoStaticPcmSource;
 import net.raphimc.audiomixer.sound.impl.pcm.StereoSound;
 import net.raphimc.audiomixer.soundmodifier.impl.VolumeModifier;
+import net.raphimc.audiomixer.util.MathUtil;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.managers.other.Asset;
@@ -31,7 +32,7 @@ public class AudioManager {
             throw new RuntimeException("This class can only create one instance!");
         }
 
-        AudioFormat format = new AudioFormat(48000, 16, 2, true, false);
+        final AudioFormat format = new AudioFormat(48000, 16, 2, true, false);
         try {
             this.mixer = new SourceDataLineAudioMixer(AudioSystem.getSourceDataLine(format));
         } catch (LineUnavailableException e) {
@@ -59,12 +60,14 @@ public class AudioManager {
         VolumeModifier modifier = new VolumeModifier(fade ? 0 : sound.maxVolume());
         stereoSound.getSoundModifiers().append(modifier);
 
-        final CachedSound cache = new CachedSound(stereoSound, modifier, sound);
+        final CachedSound cache = new CachedSound(stereoSound, modifier, asset.asset().format());
         if (fade) {
             cache.fadeIn = AnimationUtils.build(fadeIn, 0, sound.maxVolume(), EasingFunction.LINEAR);
         }
-        source.setPosition(start);
+        source.setPosition(MathUtil.millisToFrameCount(asset.asset().format(), start * 1000f));
         cache.loop = sound.loop();
+
+//        System.out.println(MathUtil.frameCountToMillis(cache.format, source.getSampleCount()) / 1000f);
 
         CachedSound old = this.cachedSounds.get(sound.id());
         if (old != null) {
@@ -122,9 +125,11 @@ public class AudioManager {
                 continue;
             }
 
+            final StereoStaticPcmSource pcmSource = ((StereoStaticPcmSource)cache.stereoSound.getPcmSource());
+
             if (cache.stereoSound.isFinished()) {
                 if (cache.loop) {
-                    ((StereoStaticPcmSource)cache.stereoSound.getPcmSource()).setPosition(0);
+                    pcmSource.setPosition(0);
                     cache.resume();
                 } else if (cache.fadeOut == null) {
                     cache.stop();
@@ -162,7 +167,8 @@ public class AudioManager {
     private static class CachedSound {
         private final StereoSound stereoSound;
         private final VolumeModifier modifier;
-        private final Sound sound;
+        private final AudioFormat format;
+//        private final Sound sound;
         private DynamicAnimation fadeOut, fadeIn;
         private DynamicAnimation fade;
         private boolean loop;

@@ -142,7 +142,7 @@ public class AssetsManager implements AssetsManagerApi {
 
             this.currentlyLoadingAssets.add(info.hashCode(scenario));
             float[] samples = AudioIO.readSamples(audioInputStream, new PcmFloatAudioFormat(48000, 2));
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AudioAsset(samples, (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
+            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new AudioAsset(samples, audioInputStream.getFormat(), (long) MathUtil.sampleCountToMillis(new PcmFloatAudioFormat(audioInputStream.getFormat()), samples.length))));
             this.currentlyLoadingAssets.remove(info.hashCode(scenario));
             return true;
         } catch (Exception ignored) {
