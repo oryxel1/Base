@@ -24,7 +24,7 @@ public class TextSegment {
         if (o == null || getClass() != o.getClass()) return false;
         TextSegment that = (TextSegment) o;
         return Objects.equals(text, that.text) && Objects.equals(font, that.font) &&
-                Objects.equals(font, that.font) && Objects.equals(color, that.color) &&
+                Objects.equals(color, that.color) &&
                 Objects.equals(outline, that.outline) && toFlags() == that.toFlags();
     }
 
