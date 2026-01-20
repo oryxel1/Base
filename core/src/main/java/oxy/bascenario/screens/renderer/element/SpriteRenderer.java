@@ -9,8 +9,10 @@ import imgui.ImGui;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.managers.other.AssetType;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.ScenarioScreen;
@@ -63,7 +65,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = new TextureAtlas(FileUtils.toHandle(scenario.getName(), element.atlas()));
+        this.atlas = Base.instance().assetsManager().get(scenario.getName(), element.atlas(), AssetType.ATLAS);
         // Not a good fix but it is a fix....
         new Thread(() -> {
             SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
@@ -183,8 +185,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }
 
-    @Override
-    public void dispose() {
-        this.atlas.dispose();
-    }
+//    @Override
+//    public void dispose() {
+//        this.atlas.dispose();
+//    }
 }

@@ -1,5 +1,6 @@
 package oxy.bascenario.managers;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import lombok.SneakyThrows;
 import net.raphimc.audiomixer.io.AudioIO;
 import net.raphimc.audiomixer.io.mp3.Mp3InputStream;
@@ -8,7 +9,7 @@ import net.raphimc.audiomixer.util.MathUtil;
 import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.api.managers.AssetsManagerApi;
-import oxy.bascenario.api.render.elements.Dummy;
+import oxy.bascenario.api.managers.other.AssetType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
@@ -65,12 +66,12 @@ public class AssetsManager implements AssetsManagerApi {
 
     public Texture2D texture(String scenario, FileInfo info) {
         try {
-            return ((TextureAsset)assets(scenario, info).asset()).get();
+            return ((TextureAsset)assets(scenario, info, AssetType.TEXTURE).asset()).get();
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);
                 INVALID_TEXTURE_KEY = invalidTexture.hashCode(null);
-                load(null, invalidTexture);
+                load(null, invalidTexture, AssetType.TEXTURE);
             }
 
             return ((TextureAsset)this.assets.get(INVALID_TEXTURE_KEY).asset()).get();
@@ -78,10 +79,10 @@ public class AssetsManager implements AssetsManagerApi {
     }
 
     @Override
-    public <T> Asset<T> assets(String scenario, FileInfo info) {
+    public <T> Asset<T> assets(String scenario, FileInfo info, AssetType type) {
         Asset<?> asset = this.assets.get(info.hashCode(scenario));
         if (asset == null) {
-            load(scenario, info);
+            load(scenario, info, type);
             asset = this.assets.get(info.hashCode(scenario));
         }
 
@@ -89,40 +90,42 @@ public class AssetsManager implements AssetsManagerApi {
     }
 
     @Override
-    public <T> T get(String scenario, FileInfo info) {
-        return (T) assets(info).asset();
-    }
-
-    public void load(String scenario, FileInfo info) {
-        load(scenario, info, true);
+    public <T> T get(String scenario, FileInfo info, AssetType type) {
+        return (T) assets(scenario, info, type).asset();
     }
 
     @SneakyThrows
-    private void load(String scenario, FileInfo info, boolean audio) {
+    public void load(String scenario, FileInfo info, AssetType type) {
         if (this.currentlyLoadingAssets.contains(info.hashCode(scenario))) {
             return;
         }
 
-        this.currentlyLoadingAssets.add(info.hashCode(scenario));
-        final InputStream stream = FileUtils.toStream(scenario, info);
-        if (audio && loadAudio(scenario, stream, info)) {
-            return;
-        }
-
-        final String path = info.path().toLowerCase(Locale.ROOT);
-        if (path.endsWith(".gif")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new GifAsset(stream.readAllBytes())));
-        } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAsset(stream.readAllBytes())));
-        } else if (path.endsWith(".ttf")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
-        } else if (path.endsWith(".ttf")) {
-            this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
-        } else {
-            if (!path.endsWith(".mp3") && !path.endsWith(".ogg") && !path.endsWith(".wav")) {
-                this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new Dummy()));
+        // Try to find the asset type if it's not defined...
+        if (type == AssetType.UNKNOWN) {
+            final String path = info.path().toLowerCase(Locale.ROOT);
+            if (path.endsWith(".mp3") || path.endsWith(".ogg") || path.endsWith(".wav")) {
+                type = AssetType.AUDIO;
+            }else if (path.endsWith(".gif")) {
+                type = AssetType.GIF;
+            } else if (path.endsWith(".png") || path.endsWith(".jpg")) {
+                type = AssetType.TEXTURE;
+            } else if (path.endsWith(".ttf")) {
+                type = AssetType.TTF;
             }
         }
+
+        this.currentlyLoadingAssets.add(info.hashCode(scenario));
+
+        final InputStream stream = FileUtils.toStream(scenario, info);
+        switch (type) {
+            case AUDIO -> loadAudio(scenario, stream, info);
+            case GIF -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new GifAsset(stream.readAllBytes())));
+            case TEXTURE -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAsset(stream.readAllBytes())));
+            case TTF -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
+            case ATLAS -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAtlas(FileUtils.toHandle(scenario, info))));
+            default -> stream.close();
+        }
+
         this.currentlyLoadingAssets.remove(info.hashCode(scenario));
     }
 
