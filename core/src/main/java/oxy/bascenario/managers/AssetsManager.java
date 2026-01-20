@@ -1,6 +1,10 @@
 package oxy.bascenario.managers;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.esotericsoftware.spine.SkeletonBinary;
+import com.esotericsoftware.spine.SkeletonData;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import net.raphimc.audiomixer.io.AudioIO;
 import net.raphimc.audiomixer.io.mp3.Mp3InputStream;
@@ -15,6 +19,7 @@ import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
 import oxy.bascenario.managers.other.GifAsset;
 import oxy.bascenario.managers.other.TextureAsset;
+import oxy.bascenario.serializers.Types;
 import oxy.bascenario.utils.files.FileUtils;
 
 import javax.sound.sampled.AudioInputStream;
@@ -116,14 +121,23 @@ public class AssetsManager implements AssetsManagerApi {
 
         this.currentlyLoadingAssets.add(info.hashCode(scenario));
 
-        final InputStream stream = FileUtils.toStream(scenario, info);
+        final InputStream stream = type == AssetType.UNKNOWN || type == AssetType.SKELETON ? null : FileUtils.toStream(scenario, info);
         switch (type) {
             case AUDIO -> loadAudio(scenario, stream, info);
             case GIF -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new GifAsset(stream.readAllBytes())));
             case TEXTURE -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAsset(stream.readAllBytes())));
             case TTF -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, stream.readAllBytes()));
             case ATLAS -> this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, new TextureAtlas(FileUtils.toHandle(scenario, info))));
-            default -> stream.close();
+            case SKELETON -> {
+                final JsonObject object = JsonParser.parseString(info.path().trim()).getAsJsonObject();
+                final FileInfo atlas = Types.FILE_INFO_TYPE.read(object.get("first"));
+                final FileInfo skeleton = Types.FILE_INFO_TYPE.read(object.get("second"));
+
+                SkeletonData skeletonData = new SkeletonBinary((TextureAtlas) get(scenario, atlas, AssetType.ATLAS))
+                        .readSkeletonData(FileUtils.toHandle(scenario, skeleton));
+
+                this.assets.put(info.hashCode(scenario), new Asset<>(scenario, info, skeletonData));
+            }
         }
 
         this.currentlyLoadingAssets.remove(info.hashCode(scenario));

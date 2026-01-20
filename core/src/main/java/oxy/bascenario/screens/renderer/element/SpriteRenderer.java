@@ -15,6 +15,7 @@ import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.managers.other.AssetType;
 import oxy.bascenario.api.render.elements.Sprite;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.files.FileUtils;
@@ -34,7 +35,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
     private PolygonSpriteBatch batch;
     private SkeletonRenderer renderer;
 
-    private TextureAtlas atlas;
+//    private TextureAtlas atlas;
     private Skeleton skeleton;
     private AnimationState state;
     private AnimationStateData stateData;
@@ -65,14 +66,16 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.renderer = new SkeletonRenderer();
 
-        this.atlas = Base.instance().assetsManager().get(scenario.getName(), element.atlas(), AssetType.ATLAS);
-        // Not a good fix but it is a fix....
-        new Thread(() -> {
-            SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(FileUtils.toHandle(scenario.getName(), element.skeleton()));
-            this.skeleton = new Skeleton(skeletonData);
-            this.stateData = new AnimationStateData(skeletonData);
-            this.state = new AnimationState(this.stateData);
-        }).start();
+        if (element.atlas() == null || element.skeleton() == null) {
+            return;
+        }
+
+        final FileInfo combined = FileUtils.combine(element.atlas(), element.skeleton());
+        SkeletonData skeletonData = Base.instance().assetsManager().get(scenario.getName(), combined, AssetType.SKELETON);
+
+        this.skeleton = new Skeleton(skeletonData);
+        this.stateData = new AnimationStateData(skeletonData);
+        this.state = new AnimationState(this.stateData);
     }
 
     @Override
