@@ -119,10 +119,6 @@ public class Inspector {
         };
 
         boolean objectEquals = !old.equals(object.object);
-        if (objectEquals && old instanceof StartDialogueEvent) {
-            System.out.println("doesn't equals");
-        }
-
         if (objectEquals || requireWait != object.requireWait || object.layer != layer || !Objects.equals(vec2, object.vec2)) {
             object.requireWait = requireWait;
             object.layer = layer;
