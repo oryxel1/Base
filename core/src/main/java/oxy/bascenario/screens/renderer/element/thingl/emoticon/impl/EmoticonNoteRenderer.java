@@ -35,7 +35,7 @@ public class EmoticonNoteRenderer extends EmoticonRenderer {
                 this.since = TimeUtils.currentTimeMillis();
             }
             if (this.since != -2 && TimeUtils.currentTimeMillis() - this.since >= duration) {
-                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since - this.duration);
 
                 this.since = -2;
                 this.opacity = AnimationUtils.build(600, distance, 1, 0, EasingFunction.LINEAR);

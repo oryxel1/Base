@@ -51,7 +51,7 @@ public class EmoticonAnxietyRenderer extends EmoticonRenderer {
         }
 
         if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity instanceof AnimationUtils.DummyAnimation) {
-            long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+            long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since - this.duration);
             this.opacity = AnimationUtils.build(800, distance, 1, 0, EasingFunction.LINEAR);
             this.since = -2;
         }

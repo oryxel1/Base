@@ -43,7 +43,7 @@ public class EmoticonDotBubbleRenderer extends EmoticonRenderer {
             }
 
             if (TimeUtils.currentTimeMillis() - this.since >= this.duration) {
-                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since) - this.duration;
+                long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since - this.duration);
                 this.opacity = AnimationUtils.build(600 / 3, distance, 1, 0 , EasingFunction.LINEAR);
             }
         }
