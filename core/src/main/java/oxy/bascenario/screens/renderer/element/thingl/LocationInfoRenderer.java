@@ -22,7 +22,8 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
     private static final float Y = 200, HEIGH = 64.8F, SEPARATOR_Y = 216.2f, SEPARATOR_HEIGH = HEIGH / 2f;
 
     private final long start = TimeUtils.currentTimeMillis();
-    private DynamicAnimation box = AnimationUtils.dummy(0), text = AnimationUtils.dummy(0);
+    private final DynamicAnimation box = AnimationUtils.build(element.fade(), 0, 0.78f, EasingFunction.LINEAR);
+    private final DynamicAnimation text = AnimationUtils.build(element.fade(), 0, 1, EasingFunction.LINEAR);
 
     public LocationInfoRenderer(LocationInfo element, RenderLayer layer) {
         super(element, layer);
@@ -30,10 +31,6 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
 
     @Override
     protected void render() {
-        if (this.box instanceof AnimationUtils.DummyAnimation) {
-            this.box = AnimationUtils.build(element.fade(), 0, 0.78f, EasingFunction.LINEAR);
-            this.text = AnimationUtils.build(element.fade(), 0, 1, EasingFunction.LINEAR);
-        }
         if (TimeUtils.currentTimeMillis() - this.start >= element.duration()) {
             long distance = (TimeUtils.currentTimeMillis() - this.start) - element.duration();
             this.box.setTarget(0f, TimeUtils.currentTimeMillis() - distance);

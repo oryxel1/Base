@@ -35,17 +35,13 @@ public class EmoticonMainRenderer extends ThinGLElementRenderer<Emoticon> {
             case ANXIETY -> new EmoticonAnxietyRenderer(element.duration());
             case TWINKLE -> new EmoticonTwinkleRenderer(element.duration());
         };
+
+        this.renderer.init();
     }
 
-    private boolean init;
     @Override
     protected void renderThinGL() {
-        if (!init) {
-            renderer.init();
-            init = true;
-        }
-
-        renderer.render();
+        this.renderer.render();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         this.scenario = scenario;
     }
 
-    private DynamicAnimation borderFade = AnimationUtils.dummy(0);
+    private final DynamicAnimation borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
     private DynamicAnimation titleBoxPopup = AnimationUtils.dummy(0), titleBoxFade = AnimationUtils.dummy(0);
     private DynamicAnimation titlePopup = AnimationUtils.dummy(0), titleFade = AnimationUtils.dummy(0);
 
@@ -45,9 +45,6 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
     @Override
     protected void renderThinGL() {
         // Ehmmm... It's hardcoded yes.... I know but it works!
-        if (borderFade instanceof AnimationUtils.DummyAnimation) {
-            borderFade = AnimationUtils.build(420, 0, 100, EasingFunction.LINEAR);
-        }
         if (borderFade.getValue() > 20 && titleBoxPopup instanceof AnimationUtils.DummyAnimation) {
             long distance = TimeUtils.currentTimeMillis() - borderFade.resolve(20);
 

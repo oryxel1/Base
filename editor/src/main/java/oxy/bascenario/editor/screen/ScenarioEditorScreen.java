@@ -90,26 +90,24 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         screen.getTimestamps().addAll(TrackParser.parse(timeline.getObjects()));
         screen.setPlaying(false);
 
-        long lastDuration = 0, last = 0;
+        long start = System.currentTimeMillis();
+        TimeUtils.fakeTimeMillis = start - timeline.getTimestamp();
+        long lastDuration = 0, last = 0, prev = 0;
         for (ObjectOrEvent object : this.timeline.getObjects()) {
             if (object.start > timeline.getTimestamp()) {
                 break;
             }
 
             long duration = object.duration;
-            long distance;
-            if (timeline.getTimestamp() > object.start + duration) {
-                distance = duration + (timeline.getTimestamp() - (object.start + duration));
-            } else {
-                distance = duration - ((object.start + duration) - timeline.getTimestamp());
-            }
-
             screen.sinceDialogue = screen.sincePoll = lastDuration + (object.start - last);
-            TimeUtils.fakeTimeMillis = System.currentTimeMillis() - distance;
+
+            TimeUtils.fakeTimeMillis += object.start - prev;
             screen.pollEvents(true);
+//            renderScenarioWindow();
 
             lastDuration = duration;
             last = object.start + duration;
+            prev = object.start;
 
             if (object.object instanceof StartDialogueEvent && timeline.getTimestamp() > object.start + duration) {
                 screen.setBusyDialogue(false);
