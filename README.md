@@ -36,6 +36,7 @@ or alternatively in [releases](https://github.com/oryxel1/Base/releases) section
 ## Usage and examples
 Download **Java 21** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
 <br><br> For example of how to use the program, you can look at the [wiki](https://github.com/oryxel1/Base/wiki).
+<br>Feels free to download and test the [example/demo scenario](Demo.zip).
 
 ### Sharing scenarios
 You can do this through zipping the scenario you want to share that located at whenever your system 
