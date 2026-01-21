@@ -131,7 +131,7 @@ public class OptionsRenderer {
             float buttonY = 540 - (totalHeight / 2f) - BUTTON_HEIGHT + 14.9796f + ((BUTTON_HEIGHT + DISTANCE_BETWEEN) * i);
             if (mouseX >= buttonX && mouseX <= buttonX + BUTTON_WIDTH && mouseY >= buttonY && mouseY <= buttonY + BUTTON_HEIGHT) {
                 this.clicked = text;
-                this.scale.setTarget(92 / 96f);
+                this.scale.setTarget(0.94f);
                 screen.getDialogueRenderer().setCurrentIndex(this.options.get(text));
                 AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
                 break;
