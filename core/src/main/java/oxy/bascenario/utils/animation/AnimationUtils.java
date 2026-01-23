@@ -3,7 +3,6 @@ package oxy.bascenario.utils.animation;
 import lombok.experimental.UtilityClass;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.animation.easing.EasingMode;
-import oxy.bascenario.api.animation.AnimationValue;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;

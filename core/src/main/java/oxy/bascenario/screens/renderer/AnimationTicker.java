@@ -1,8 +1,6 @@
 package oxy.bascenario.screens.renderer;
 
-import oxy.bascenario.api.animation.Animation;
-import oxy.bascenario.api.animation.AnimationTimeline;
-import oxy.bascenario.api.animation.AnimationValue;
+import oxy.bascenario.api.animation.api.Animation;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.api.utils.math.Vec3;
 import oxy.bascenario.screens.ScenarioScreen;
