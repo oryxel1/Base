@@ -115,6 +115,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
                     screen.setBusyDialogue(false);
                 } else if (object.object instanceof ShowOptionsEvent) {
                     screen.getOptionsRenderer().setOptions(null, null);
+                    screen.setBusyOptions(false);
                 }
             }
         }
