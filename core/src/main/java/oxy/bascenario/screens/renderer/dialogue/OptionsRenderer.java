@@ -33,6 +33,7 @@ public class OptionsRenderer {
     private FontType type;
     private Map<String, Integer> options;
     public void setOptions(FontType type, Map<String, Integer> options) {
+        this.clicked = null;
         this.type = type;
         this.options = options;
         this.flipped = false;
@@ -57,7 +58,10 @@ public class OptionsRenderer {
 
         if (flipped && this.flash.getValue() == 0 && !this.scale.isRunning() && this.clicked != null) {
             this.options = null;
+            this.type = null;
             screen.setBusyOptions(false);
+            this.scale = new AnimationUtils.DummyAnimation(1);
+            this.flash = new AnimationUtils.DummyAnimation(1);
             return;
         }
 

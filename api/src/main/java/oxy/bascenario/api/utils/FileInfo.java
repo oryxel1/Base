@@ -8,6 +8,14 @@ public record FileInfo(String path, boolean direct, boolean internal) {
         return new FileInfo(file, false, false);
     }
 
+    public static FileInfo internal(String file) {
+        return new FileInfo(file, false, true);
+    }
+
+    public static FileInfo direct(String file) {
+        return new FileInfo(file, true, false);
+    }
+
     public int hashCode(String scenario) {
         return Objects.hash(scenario, path, direct, internal);
     }
