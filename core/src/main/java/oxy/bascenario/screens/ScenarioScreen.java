@@ -83,6 +83,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
             final long duration = peek.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
             if (peek.waitForDialogue() && (this.busyDialogue || this.busyOptions)) {
+                this.sinceDialogue = 0;
                 break;
             }
 
@@ -125,6 +126,8 @@ public class ScenarioScreen extends ExtendableScreen {
         boolean busyOptions = this.busyOptions && !(this.optionsRenderer.getScale().isRunning() && this.optionsRenderer.getScale().getTarget() == 1);
         if (!busyDialogue && !busyOptions) {
             this.sinceDialogue += timeDelta;
+        } else {
+            this.sinceDialogue = 0;
         }
 
         this.sinceRender = TimeUtils.currentTimeMillis();
