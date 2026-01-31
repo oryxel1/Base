@@ -119,7 +119,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             ThinGL.programs().getColorTweak().render(-width, -height, width, height);
             ThinGL.programs().getColorTweak().clearInput();
 
-            if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+            if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
                 ThinGL.programs().getColorTweak().bindInput();
 
                 this.batch.begin();
