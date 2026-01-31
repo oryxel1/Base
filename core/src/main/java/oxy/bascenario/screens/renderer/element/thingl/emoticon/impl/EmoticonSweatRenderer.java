@@ -34,7 +34,7 @@ public class EmoticonSweatRenderer extends EmoticonRenderer {
 
     @Override
     public void render() {
-        if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.opacity instanceof AnimationUtils.DummyAnimation) {
+        if (TimeUtils.currentTimeMillis() - this.since >= this.duration && this.since != -2) {
             long distance = TimeUtils.currentTimeMillis() - (TimeUtils.currentTimeMillis() - this.since - this.duration);
 
             this.opacity = AnimationUtils.build(800, distance, 1, 0, EasingFunction.LINEAR);
@@ -55,6 +55,6 @@ public class EmoticonSweatRenderer extends EmoticonRenderer {
 
     @Override
     public boolean finished() {
-        return TimeUtils.currentTimeMillis() - this.since >= this.duration && this.since == -2 && !this.opacity.isRunning();
+        return this.since == -2 && !this.opacity.isRunning();
     }
 }
