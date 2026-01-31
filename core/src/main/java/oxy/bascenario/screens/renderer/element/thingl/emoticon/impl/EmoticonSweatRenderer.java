@@ -55,6 +55,6 @@ public class EmoticonSweatRenderer extends EmoticonRenderer {
 
     @Override
     public boolean finished() {
-        return this.since > 0 && !this.opacity.isRunning();
+        return TimeUtils.currentTimeMillis() - this.since >= this.duration && this.since == -2 && !this.opacity.isRunning();
     }
 }
