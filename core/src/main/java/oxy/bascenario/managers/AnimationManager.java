@@ -78,11 +78,22 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
                 "bascenarioengine:hangry",
                 Animation.builder()
                         .name("Default Angry")
-                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-108"}, "0.2", Easing.LINEAR)).build())
-                        .put(0.2f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.2", Easing.LINEAR)).build())
-                        .put(0.4f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-108"}, "0.2", Easing.LINEAR)).build())
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f * 2, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
                         .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
-                        .maxDuration(0.6f)
+                        .maxDuration(0.17f * 3)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "bascenarioengine:jump",
+                Animation.builder()
+                        .name("Default Jump")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.17", Easing.LINEAR)).build())
+                        .maxDuration(0.17f * 2)
                         .resetWhenFinish(true)
                         .build()
         );
