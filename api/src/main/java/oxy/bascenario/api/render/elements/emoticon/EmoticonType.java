@@ -19,7 +19,8 @@ public enum EmoticonType {
     QUESTION_MARK("Question Mark", "SFX_Emoticon_Motion_Question.wav"),
     SHY("Shy", "SFX_Emoticon_Motion_Shy.wav"),
     ANXIETY("Anxiety", "SFX_Emoticon_Motion_Upset.wav"),
-    TWINKLE("Twinkle", "SFX_Emoticon_Motion_Twinkle.wav");
+    TWINKLE("Twinkle", "SFX_Emoticon_Motion_Twinkle.wav"),
+    IDEA("Idea", "SFX_Emoticon_Motion_Bulb.wav");
 
     private final String name, sfx;
 

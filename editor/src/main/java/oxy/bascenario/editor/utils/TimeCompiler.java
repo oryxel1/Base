@@ -96,7 +96,7 @@ public class TimeCompiler {
             case LocationInfo info -> info.duration() + info.fade();
             case Emoticon emoticon -> switch (emoticon.type()) {
                 case NOTE -> 2600 + emoticon.duration();
-                case RESPOND, ANGRY, SWEAT, CHAT, EXCLAMATION_MARK, HEART, SHY, SURPRISED, QUESTION_MARK, ANXIETY -> 800 + emoticon.duration();
+                case RESPOND, ANGRY, SWEAT, CHAT, EXCLAMATION_MARK, HEART, SHY, SURPRISED, QUESTION_MARK, ANXIETY, IDEA -> 800 + emoticon.duration();
                 case TWINKLE -> emoticon.duration();
                 case THINKING, HESITATED -> 600L * 3 + (600L / 3);
             };

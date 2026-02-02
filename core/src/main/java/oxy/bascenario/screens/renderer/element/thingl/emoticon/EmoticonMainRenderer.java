@@ -34,6 +34,7 @@ public class EmoticonMainRenderer extends ThinGLElementRenderer<Emoticon> {
             case SHY -> new EmoticonShyOrHeartRenderer(element.duration(), true);
             case ANXIETY -> new EmoticonAnxietyRenderer(element.duration());
             case TWINKLE -> new EmoticonTwinkleRenderer(element.duration());
+            case IDEA -> new EmoticonIdeaRenderer(element.duration());
         };
 
         this.renderer.init();
