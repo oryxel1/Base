@@ -138,6 +138,10 @@ public class TrackParser {
                     result.add(objectOrEvent);
 
                     occupies.computeIfAbsent(track, i -> new HashMap<>()).put(time, new Pair<>(time, time + duration));
+
+                    if (other instanceof StartDialogueEvent || other instanceof AddDialogueEvent || other instanceof ShowOptionsEvent) {
+                        time += TimeCompiler.compileTime(other);
+                    }
                 }
             }}
         }
