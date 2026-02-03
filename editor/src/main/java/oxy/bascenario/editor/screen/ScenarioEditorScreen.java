@@ -5,6 +5,7 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.editor.timeline.ObjectOrEvent;
@@ -111,7 +112,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
             prev = object.start;
 
             if (timeline.getTimestamp() > object.start + duration) {
-                if (object.object instanceof StartDialogueEvent) {
+                if (object.object instanceof StartDialogueEvent || object.object instanceof AddDialogueEvent) {
                     screen.setBusyDialogue(false);
                 } else if (object.object instanceof ShowOptionsEvent) {
                     screen.getOptionsRenderer().setOptions(null, null);
@@ -120,9 +121,9 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
             }
         }
 
+        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
         renderScenarioWindow();
 
-        TimeUtils.fakeTimeMillis = timeline.isPlaying() ? null : System.currentTimeMillis();
         screen.setPlaying(timeline.isPlaying());
         screen.sinceDialogue = screen.sincePoll = timeline.getTimestamp() - (last - lastDuration);
     }

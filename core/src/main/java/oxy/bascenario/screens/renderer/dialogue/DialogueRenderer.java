@@ -26,18 +26,12 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.scenario = scenario;
     }
 
-    private long time, last;
     public void add(int index, boolean newLine, Dialogue... dialogues) {
         if (index != this.currentIndex) {
             return;
         }
 
-        if (time == 0) {
-            time = TimeUtils.currentTimeMillis();
-            last = TimeUtils.currentTimeMillis();
-        }
-
-        long time = 0;
+        this.finished = false;
         for (Dialogue dialogue : dialogues) {
             final List<TextBuilder> texts = new ArrayList<>();
             texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
@@ -66,30 +60,26 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 }
             }
 
-            final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
+//            final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
             int i = 0;
             for (final TextBuilder builder : texts) {
-                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time, text.size(), i != 0 || newLine));
-                time += msPerWord * builder.builder.length();
+                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), text.size(), i != 0 || newLine));
+//                time += msPerWord * builder.builder.length();
                 i++;
             }
         }
-
-        last = TimeUtils.currentTimeMillis();
-        this.finished = false;
     }
 
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
     private record DialogueText(List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
-                                long distance, int size, boolean newLine) {
+                                long time, int size, boolean newLine) {
     }
 
     @Override
     public void stop() {
         super.stop();
         this.texts.clear();
-        last = time = 0;
     }
 
     @Override
@@ -108,7 +98,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            long words = Math.min((TimeUtils.currentTimeMillis() - time - text.distance) / msPerWord, text.allSegments.size() - 1);
+            long words = Math.min((TimeUtils.currentTimeMillis() - text.time()) / msPerWord, text.allSegments.size() - 1);
 
             finished = words == text.allSegments.size() - 1;
             if (finished) {
