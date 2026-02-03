@@ -4,6 +4,9 @@ import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.api.Event;
+import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
+import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
@@ -42,8 +45,18 @@ public class TrackParser {
             long delay = time - last;
             last = time;
 
+            long max = 0;
+            for (Event event : entry.getValue().right()) {
+                if (event instanceof StartDialogueEvent || event instanceof AddDialogueEvent || event instanceof ShowOptionsEvent) {
+                    max = Math.max(max, TimeCompiler.compileTime(event));
+                }
+            }
+            last += max;
+
             timestamps.add(new Timestamp(entry.getValue().left(), (int) delay, entry.getValue().right()));
         }
+
+//        System.out.println(Arrays.toString(timestamps.toArray()));
 
         return timestamps;
     }
