@@ -27,7 +27,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     }
 
     private long time, last;
-    public void add(int index, Dialogue... dialogues) {
+    public void add(int index, boolean newLine, Dialogue... dialogues) {
         if (index != this.currentIndex) {
             return;
         }
@@ -36,7 +36,6 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             time = TimeUtils.currentTimeMillis();
             last = TimeUtils.currentTimeMillis();
         }
-
 
         long time = 0;
         for (Dialogue dialogue : dialogues) {
@@ -68,9 +67,11 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
+            int i = 0;
             for (final TextBuilder builder : texts) {
-                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time, text.size()));
+                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), (TimeUtils.currentTimeMillis() - last) + time, text.size(), i != 0 || newLine));
                 time += msPerWord * builder.builder.length();
+                i++;
             }
         }
 
@@ -81,7 +82,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
     private record DialogueText(List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
-                                long distance, int size) {
+                                long distance, int size, boolean newLine) {
     }
 
     @Override
@@ -97,17 +98,14 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             return;
         }
 
-        float y = SEPARATOR_Y + 2;
-
         int done = 0;
         boolean finished = true;
+
+        final List<TextLineCache> lines = new ArrayList<>();
         for (DialogueText text : this.texts) {
             if (!finished) {
                 break;
             }
-
-            // This will break with some font, but it works best sooo.
-            y += (text.size / 42f) * 57 + 5;
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
             long words = Math.min((TimeUtils.currentTimeMillis() - time - text.distance) / msPerWord, text.allSegments.size() - 1);
@@ -140,11 +138,22 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 }
             }
 
-            final TextLine line = new TextLine(segments);
-            TextUtils.textLine(text.size(), line, SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
-//            y += TextUtils.getLogicalHeight(text.size(), line.shape()) + 5;
+            if (lines.isEmpty() || text.newLine()) {
+                lines.add(new TextLineCache(segments, text.size()));
+            } else {
+                lines.getLast().segments.addAll(segments);
+            }
+        }
+
+        float y = SEPARATOR_Y + 2;
+        for (TextLineCache line : lines) {
+            y += (line.size / 42f) * 57 + 5;
+            TextUtils.textLine(line.size(), new TextLine(line.segments()), SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
         this.finished = done == this.texts.size();
+    }
+
+    public record TextLineCache(List<TextRun> segments, float size) {
     }
 }

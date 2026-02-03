@@ -11,7 +11,7 @@ public class FunctionAddDialogue extends FunctionEvent<AddDialogueEvent> {
 
     @Override
     public void run(ScenarioScreen screen) {
-        screen.getDialogueRenderer().add(event.index(), event.dialogues());
+        screen.getDialogueRenderer().add(event.index(), event.newLine(), event.dialogues());
         screen.setBusyDialogue(true);
     }
 }

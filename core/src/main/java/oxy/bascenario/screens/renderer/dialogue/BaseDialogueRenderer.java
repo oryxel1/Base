@@ -47,10 +47,10 @@ public abstract class BaseDialogueRenderer {
         this.stop();
         this.playing = true;
         this.background = background;
-        add(index, dialogues);
+        add(index, true, dialogues);
     }
 
-    public abstract void add(int dIndex, Dialogue... dialogues);
+    public abstract void add(int dIndex, boolean newLine, Dialogue... dialogues);
     public abstract void renderDialogues();
 
     public void stop() {

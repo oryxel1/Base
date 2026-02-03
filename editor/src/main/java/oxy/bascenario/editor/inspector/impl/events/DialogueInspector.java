@@ -23,6 +23,8 @@ public class DialogueInspector {
         AddDialogueEvent.Builder builder = event.toBuilder();
 
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.index()));
+        builder.newLine(ImGuiUtils.checkbox("New Line", event.newLine()));
+
         final List<Dialogue> list = new ArrayList<>();
         if (ImGui.button("New dialogue!##" + ImGuiUtils.COUNTER++)) {
             list.add(Dialogue.builder().build());

@@ -47,6 +47,9 @@ public class DialogueRenderTest {
 
         scenario.add(true, 1, new StartDialogueEvent(FontType.NotoSans, 0, "Name", "Association", false, Dialogue.builder().add("Also this dialogue should play very fast.").playSpeed(3).build()));
 
+        scenario.add(true, 1, new StartDialogueEvent(FontType.NotoSans, 0, "Name", "Association", false, Dialogue.builder().add("Now also, ").build()));
+        scenario.add(true, 1000, new AddDialogueEvent(0, false, Dialogue.builder().add("there should be a slight delay playing this dialogue!").build()));
+
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
 }
