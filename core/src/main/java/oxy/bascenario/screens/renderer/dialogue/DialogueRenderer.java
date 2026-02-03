@@ -60,11 +60,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 }
             }
 
-//            final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
             int i = 0;
             for (final TextBuilder builder : texts) {
                 this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), text.size(), i != 0 || newLine));
-//                time += msPerWord * builder.builder.length();
                 i++;
             }
         }

@@ -84,6 +84,7 @@ public class ScenarioScreen extends ExtendableScreen {
             final long duration = peek.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
             if (peek.waitForDialogue() && (this.busyDialogue || this.busyOptions)) {
                 this.sinceDialogue = 0;
+                this.sincePoll = 0;
                 break;
             }
 
