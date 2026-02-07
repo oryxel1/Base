@@ -23,7 +23,7 @@ public class ImageRenderer extends ThinGLElementRenderer<Image> {
     protected void renderThinGL() {
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), color.color());
 
-        if (overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (overlayColor.color().getAlpha() != 0) {
             ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, 0, 0, element.width(), element.height(), overlayColor.color());
         }
     }

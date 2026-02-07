@@ -36,7 +36,7 @@ public class TextRenderer extends ThinGLElementRenderer<Text> {
     protected void renderThinGL() {
         TextUtils.textLine(size, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
 
-        if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (this.overlayColor.color().getAlpha() != 0) {
             ThinGL.programs().getColorTweak().bindInput();
 
             TextUtils.textLine(size, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);

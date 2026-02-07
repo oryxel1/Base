@@ -22,7 +22,7 @@ public class CircleRenderer extends ThinGLElementRenderer<Circle> {
             ThinGL.renderer2D().filledCircle(GLOBAL_RENDER_STACK, 0, 0, element.radius(), color.color());
         }
 
-        if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (this.overlayColor.color().getAlpha() != 0) {
             if (element.outlineOnly()) {
                 ThinGL.renderer2D().outlinedCircle(GLOBAL_RENDER_STACK, 0, 0, element.radius(), this.overlayColor.color(), 1);
             } else {

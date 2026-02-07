@@ -22,7 +22,7 @@ public class RectangleRenderer extends ThinGLElementRenderer<Rectangle> {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, element.width(), element.height(), color.color());
         }
 
-        if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (this.overlayColor.color().getAlpha() != 0) {
             if (element.outlineOnly()) {
                 ThinGL.renderer2D().outlinedRectangle(GLOBAL_RENDER_STACK, 0, 0, element.width(), element.height(), this.overlayColor.color(), 1);
             } else {

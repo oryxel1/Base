@@ -18,7 +18,7 @@ public class TriangleRenderer extends ThinGLElementRenderer<Triangle> {
     protected void renderThinGL() {
         ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, element.x1(), element.y1(), element.x2(), element.y2(), element.x3(), element.y3(), color.color());
 
-        if (this.overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (this.overlayColor.color().getAlpha() != 0) {
             ThinGL.renderer2D().filledTriangle(GLOBAL_RENDER_STACK, element.x1(), element.y1(), element.x2(), element.y2(), element.x3(), element.y3(), this.overlayColor.color());
         }
     }

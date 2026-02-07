@@ -46,7 +46,7 @@ public class AnimatedImageRenderer extends ThinGLElementRenderer<AnimatedImage> 
         ThinGL.renderer2D().textureArrayLayer(GLOBAL_RENDER_STACK, texture, this.texture.getFrameIndex(time), 0, 0, element.width(), element.height()/*, element.color()*/);
         ThinGL.globalUniforms().setColorModifier(Color.WHITE);
 
-        if (overlayColor.color().toRGBA() != Color.TRANSPARENT.toRGBA()) {
+        if (overlayColor.color().getAlpha() != 0) {
             ThinGL.globalUniforms().setColorModifier(overlayColor.color());
             ThinGL.renderer2D().textureArrayLayer(GLOBAL_RENDER_STACK, texture, this.texture.getFrameIndex(time), 0, 0, element.width(), element.height()/*, element.color()*/);
             ThinGL.globalUniforms().setColorModifier(Color.WHITE);
