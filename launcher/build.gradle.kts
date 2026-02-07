@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.lwjgl.glfw)
     implementation(libs.lwjgl.nfd)
 
-    implementation(libs.raphimc.thingl)
+    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
     implementation(libs.raphimc.audiomixer)
 
     implementation(libs.commons.animations)

@@ -10,7 +10,7 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":serializer"))
 
-    implementation(libs.raphimc.thingl)
+    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
     implementation(libs.commons.animations)
     implementation(libs.unnamed.mocha)
 
