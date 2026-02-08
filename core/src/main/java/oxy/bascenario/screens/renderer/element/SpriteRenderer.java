@@ -18,6 +18,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
+import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.files.FileUtils;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
@@ -78,6 +79,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.state = new AnimationState(this.stateData);
     }
 
+    private long last = TimeUtils.currentTimeMillis();
     @Override
     protected void render() {
         if (this.skeleton == null || this.state == null) {
@@ -95,7 +97,9 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
 
-        this.state.update(Gdx.graphics.getDeltaTime());
+        this.state.update((TimeUtils.currentTimeMillis() - this.last) / 1000f);
+        last = TimeUtils.currentTimeMillis();
+
         updateSkeleton(this.skeleton);
 
         this.camera.position.set(Gdx.graphics.getWidth() / 2f, 0, 0);

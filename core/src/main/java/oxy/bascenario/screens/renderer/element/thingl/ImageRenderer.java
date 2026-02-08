@@ -1,6 +1,5 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
-import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.Base;
