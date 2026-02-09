@@ -106,10 +106,10 @@ public class Timeline {
             if (mouse.x < pos.x + size.x / 4) {
                 this.verticalScroll = Math.max(0, this.verticalScroll - (int)scroll);
             } else if (ImGui.getIO().getKeyCtrl()) {
-                if (scroll > 0 || this.scale > Math.abs(scroll)) {
-                    this.scale += scroll;
+                if (scroll > 0) {
+                    this.scale += 0.05f * this.scale;
                 } else if (scroll < 0) {
-                    this.scale *= (Math.abs(scroll) * 0.9f);
+                    this.scale = Math.max(0.001f, this.scale - 0.05f * this.scale);
                 }
             } else {
                 this.scroll = Math.max(0, this.scroll + scroll);
