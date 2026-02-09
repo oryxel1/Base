@@ -50,12 +50,10 @@ public class Timeline {
     }
     public void undo() {
         if (undo.isEmpty()) {
-            System.out.println("Nothin left to Undo!");
             return;
         }
 
         undo.pollLast().run();
-        System.out.println("Undo!");
         this.queueUpdate = true;
 //        this.redo =
     }
