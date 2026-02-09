@@ -120,13 +120,10 @@ public class Inspector {
 
         boolean objectEquals = !old.equals(object.object);
         if (objectEquals || requireWait != object.requireWait || object.layer != layer || !Objects.equals(vec2, object.vec2)) {
-            object.requireWait = requireWait;
-            object.layer = layer;
-            object.vec2 = vec2;
-
+            final int oldTrack = object.track;
+            long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
             if (objectEquals) {
                 long duration = object.object instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(object.object);
-                long oldDuration = old instanceof SoundAsElement sound ? AudioUtils.toDuration(screen.getScenario().name(), sound) : TimeCompiler.compileTime(old);
                 if (duration == Long.MAX_VALUE) {
                     duration = 0;
                 }
@@ -139,7 +136,22 @@ public class Inspector {
                 object.track = findNonOccupiedSlot(object.track, object.start, object.duration, object);
             }
 
-            timeline.queueUpdate = true;
+            final boolean oldWait = object.requireWait;
+            final RenderLayer oldLayer = object.layer;
+            final Vec2 oldVec2 = object.vec2;
+            final long oldTime = oldDuration == Long.MAX_VALUE ? 0 : oldDuration;
+            timeline.queueUndo(() -> {
+                object.object = old;
+                object.duration = oldTime;
+                object.requireWait = oldWait;
+                object.layer = oldLayer;
+                object.vec2 = oldVec2;
+                object.track = oldTrack;
+            });
+
+            object.requireWait = requireWait;
+            object.layer = layer;
+            object.vec2 = vec2;
         }
 
         ImGui.end();

@@ -5,6 +5,7 @@ import imgui.ImGui;
 import imgui.ImGuiViewport;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiDockNodeFlags;
+import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiWindowFlags;
 import lombok.Getter;
 import net.raphimc.thingl.ThinGL;
@@ -55,6 +56,11 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
         renderScenarioWindow();
         ImGui.end();
+
+        boolean control = ImGui.isKeyDown(ImGuiKey.RightCtrl) || ImGui.isKeyDown(ImGuiKey.LeftCtrl);
+        if ((control) && ImGui.isKeyReleased(ImGuiKey.Z)) {
+            timeline.undo();
+        }
     }
 
     public void update() {
@@ -83,6 +89,13 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
             }
             if (ImGui.menuItem("Pause", false, timeline.isPlaying())) {
                 setPlaying(false);
+            }
+            ImGui.endMenu();
+        }
+
+        if (ImGui.beginMenu("Edit")) {
+            if (ImGui.menuItem("Undo", "Ctrl+Z", false, timeline.canUndo())) {
+                timeline.undo();
             }
             ImGui.endMenu();
         }

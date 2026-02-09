@@ -139,6 +139,8 @@ public class ObjectRenderer {
                 public void accept() {
                     final ImVec2 pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
 
+                    final long oldStart = object.start;
+                    final int oldTrack = object.track;
                     if (second) {
                         object.start = nearestTime + 1;
                     } else {
@@ -147,7 +149,10 @@ public class ObjectRenderer {
                     }
                     object.track = trackFromY(timeline, object.renderer.y);
 
-                    timeline.queueUpdate = true;
+                    timeline.queueUndo(() -> {
+                        object.start = oldStart;
+                        object.track = oldTrack;
+                    });
                 }
             });
 
@@ -185,11 +190,18 @@ public class ObjectRenderer {
             }
 
             if (TimeCompiler.canResize(object.object)) {
+                final long oldDuration = object.duration;
+                final Object oldObject = object;
+                final float oldWidth = this.width;
                 object.duration = Math.max(0, object.duration + duration);
                 object.object = TimeCompiler.addTime(object.object, (int) duration);
 
                 this.width = ((float) object.duration / (Timeline.DEFAULT_MAX_TIME * timeline.getScale())) * (size.x - size.x / 4);
-                timeline.queueUpdate = true;
+                timeline.queueUndo(() -> {
+                    this.width = oldWidth;
+                    this.object.duration = oldDuration;
+                    this.object.object = oldObject;
+                });
             }
 
             resizing = ImGui.isMouseDown(0);

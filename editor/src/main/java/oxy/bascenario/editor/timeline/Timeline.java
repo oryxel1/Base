@@ -14,7 +14,9 @@ import oxy.bascenario.utils.ImGuiUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 // Shit code but whatever.
 public class Timeline {
@@ -30,10 +32,34 @@ public class Timeline {
         this.objects.add(objectOrEvent);
         this.objects.sort(Comparator.comparingLong(o -> o.start));
 
-        this.queueUpdate = true;
+        queueUndo(() -> this.objects.remove(objectOrEvent));
         this.setSelectedObject(objectOrEvent);
     }
 
+    // Undo and Redo
+    private final Deque<Runnable> undo = new ConcurrentLinkedDeque<>();
+    public void queueUndo(Runnable run) {
+        this.queueUpdate = true;
+        undo.add(run);
+        if (undo.size() > 30) {
+            undo.poll();
+        }
+    }
+    public boolean canUndo() {
+        return !undo.isEmpty();
+    }
+    public void undo() {
+        if (undo.isEmpty()) {
+            System.out.println("Nothin left to Undo!");
+            return;
+        }
+
+        undo.pollLast().run();
+        System.out.println("Undo!");
+        this.queueUpdate = true;
+//        this.redo =
+    }
+//    private Runnable redo;
 
     @Getter @Setter
     private ObjectOrEvent selectedObject;
@@ -47,7 +73,7 @@ public class Timeline {
         return this.draggingObject != null && object == this.draggingObject.object;
     }
 
-    public boolean queueUpdate;
+    private boolean queueUpdate;
 
     public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
         this.screen = screen;
@@ -129,9 +155,10 @@ public class Timeline {
         drawTimelineCursor(size.x / 4, pos, size);
 
         if (ImGui.isWindowFocused() && this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+            final ObjectOrEvent old = this.selectedObject;
+            queueUndo(() -> this.objects.add(old));
             this.objects.remove(this.selectedObject);
             this.selectedObject = null;
-            this.queueUpdate = true;
         }
 
         if (ImGui.isWindowFocused() && ImGui.isKeyPressed(ImGuiKey.Space)) {
