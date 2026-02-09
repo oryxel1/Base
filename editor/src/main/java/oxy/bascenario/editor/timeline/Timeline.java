@@ -83,7 +83,7 @@ public class Timeline {
         scroll = Math.max(0, scroll);
 
         ImGui.begin("Timeline");
-        if (ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused()) {
+        if (ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused() && draggingObject == null) {
             onMouseDown(ImGui.getIO().getMousePos());
         }
         if (playing || ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused()) {
