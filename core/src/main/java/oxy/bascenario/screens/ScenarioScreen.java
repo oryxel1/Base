@@ -51,16 +51,22 @@ public class ScenarioScreen extends ExtendableScreen {
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
     }
 
-    private FileInfo background;
+    private FileInfo background, targetBackground;
     private DynamicAnimation backgroundFade = AnimationUtils.dummy(0);
 
     public void clearBackground(long duration) {
         this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue(), 0, EasingFunction.LINEAR);
+        this.targetBackground = null;
     }
 
     public void background(FileInfo file, long duration) {
-        this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue() == 1 ? 0 : this.backgroundFade.getValue(), 1, EasingFunction.LINEAR);
-        this.background = file;
+        if (this.background != null) {
+            this.targetBackground = file;
+            this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue(), 0, EasingFunction.LINEAR);
+        } else {
+            this.background = file;
+            this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue() == 1 ? 0 : this.backgroundFade.getValue(), 1, EasingFunction.LINEAR);
+        }
     }
 
     public long sinceDialogue, sincePoll;
@@ -157,8 +163,16 @@ public class ScenarioScreen extends ExtendableScreen {
         pollEvents(false);
 
         if (this.backgroundFade.getValue() == 0 && !this.backgroundFade.isRunning()) {
-            this.background = null;
+            this.background = this.targetBackground;
+            if (this.targetBackground != null) {
+                this.backgroundFade = AnimationUtils.dummy(1);
+            }
+            this.targetBackground = null;
         }
+        if (this.targetBackground != null) {
+            ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.targetBackground), Color.WHITE.withAlphaF(1 - this.backgroundFade.getValue()));
+        }
+
         if (this.background != null) {
             ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.background), Color.WHITE.withAlphaF(this.backgroundFade.getValue()));
         } else {
