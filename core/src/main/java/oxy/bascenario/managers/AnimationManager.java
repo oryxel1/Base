@@ -117,5 +117,16 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
                         .name("Dev Loop Test")
                         .rotation(new AnimationValue(new String[] {"0", "0", "57.29577951308232 * (math.mod(q.currentTimeMillis, 500) / 500 * math.pi * 2)"}, "0", Easing.LINEAR)).build()
         );
+
+        this.put(
+                "bascenarioengine:dizzy",
+                Animation.builder()
+                        .name("Dizzy")
+                        .put(0, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "-5"}, "0.3", Easing.LINEAR)).build())
+                        .put(0.3f, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "5"}, "0.3", Easing.LINEAR)).build())
+                        .put(0.3f * 3, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "0"}, "0.3", Easing.LINEAR)).build())
+//                        .maxDuration(0.2f * 4)
+                        .build()
+        );
     }
 }

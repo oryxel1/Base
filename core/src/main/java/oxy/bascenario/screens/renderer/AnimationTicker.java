@@ -71,7 +71,7 @@ public final class AnimationTicker {
         query.setFunction("present", (v) -> screen.getElements().get((int) v) == null ? 0 : 1);
         query.setFunction("offset", (i) -> i == 0 ? this.renderer.getOffset().x() : this.renderer.getOffset().y());
         query.setFunction("scale", (i) -> i == 0 ? this.renderer.getScale().x() : this.renderer.getScale().y());
-        query.setFunction("rotation", (i) -> i == 0 ? this.renderer.getRotation().x() : this.renderer.getRotation().y());
+        query.setFunction("rotation", (i) -> i == 0 ? this.renderer.getRotation().x() : i == 1 ? this.renderer.getRotation().y() : this.renderer.getRotation().z());
 
         if (this.start == -1) {
             this.start = TimeUtils.currentTimeMillis();
