@@ -16,6 +16,7 @@ import oxy.bascenario.api.event.dialogue.RedirectDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
+import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
@@ -113,6 +114,8 @@ public class Inspector {
 
             case SetBackgroundEvent event -> BackgroundInspector.render(event);
             case ClearBackgroundEvent event -> BackgroundInspector.render(event);
+
+            case FocusElementEvent event -> new FocusElementEvent(ImGuiUtils.inputInt("Track Id", event.id()));
 
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
             default -> old;

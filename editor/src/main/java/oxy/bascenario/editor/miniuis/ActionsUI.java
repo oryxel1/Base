@@ -20,6 +20,8 @@ import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
+import oxy.bascenario.api.event.element.focus.FocusElementEvent;
+import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
@@ -127,6 +129,14 @@ public class ActionsUI {
         add("Set Color",
                 "Like color overlay, but instead of overlaying color it change the object color itself.",
                 new SetColorEvent(0, 500, Color.WHITE));
+
+        add("Focus Object",
+                "Focus on a object and un-focus everything else.",
+                new FocusElementEvent(0));
+
+        add("Unfocus Objects",
+                "Un-focus any currently focused object.",
+                new UnfocusElementEvent());
 
         ImGui.separatorText("Background");
 

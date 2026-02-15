@@ -12,6 +12,8 @@ import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.*;
+import oxy.bascenario.api.event.element.focus.FocusElementEvent;
+import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
@@ -30,6 +32,8 @@ import oxy.bascenario.event.impl.color.FunctionSetColor;
 import oxy.bascenario.event.impl.dialogue.*;
 import oxy.bascenario.event.impl.element.*;
 import oxy.bascenario.event.impl.color.FunctionColorOverlay;
+import oxy.bascenario.event.impl.element.focus.FunctionFocusElement;
+import oxy.bascenario.event.impl.element.focus.FunctionUnfocusElement;
 import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
 import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
@@ -64,6 +68,9 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(RotateElementEvent.class, FunctionRotateElement.class);
 
         EVENT_TO_FUNCTION.put(ElementEffectEvent.class, FunctionElementEffect.class);
+
+        EVENT_TO_FUNCTION.put(FocusElementEvent.class, FunctionFocusElement.class);
+        EVENT_TO_FUNCTION.put(UnfocusElementEvent.class, FunctionUnfocusElement.class);
 
         EVENT_TO_FUNCTION.put(PlayAnimationEvent.class, FunctionPlayAnimation.class);
         EVENT_TO_FUNCTION.put(StopAnimationEvent.class, FunctionStopAnimation.class);

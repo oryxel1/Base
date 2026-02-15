@@ -15,6 +15,8 @@ import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.*;
+import oxy.bascenario.api.event.element.focus.FocusElementEvent;
+import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.*;
@@ -31,6 +33,8 @@ import oxy.bascenario.serializers.types.event.impl.color.ColorOverlayType;
 import oxy.bascenario.serializers.types.event.impl.color.SetColorType;
 import oxy.bascenario.serializers.types.event.impl.dialogue.*;
 import oxy.bascenario.serializers.types.event.impl.element.*;
+import oxy.bascenario.serializers.types.event.impl.element.focus.FocusElementType;
+import oxy.bascenario.serializers.types.event.impl.element.focus.UnfocusElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.PositionElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
@@ -70,6 +74,9 @@ public class EventTypes implements Type<Event> {
 
         put(ColorOverlayEvent.class, new ColorOverlayType());
         put(SetColorEvent.class, new SetColorType());
+
+        put(FocusElementEvent.class, new FocusElementType());
+        put(UnfocusElementEvent.class, new UnfocusElementType());
 
         put(StopAnimationEvent.class, new StopAnimationType());
         put(SpriteAnimationEvent.class, new SpriteAnimationType());
