@@ -61,9 +61,15 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             int i = 0;
+
+            final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / dialogue.getPlaySpeed()) * 1);
+
+            long prev = 0;
             for (final TextBuilder builder : texts) {
-                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), text.size(), i != 0 || newLine));
+                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), prev, text.size(), i != 0 || newLine));
                 i++;
+
+                prev += msPerWord * builder.builder.length();
             }
         }
     }
@@ -71,7 +77,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
     private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
     private record DialogueText(List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
-                                long time, int size, boolean newLine) {
+                                long time, long prev, int size, boolean newLine) {
     }
 
     @Override
@@ -96,7 +102,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            long words = Math.min((TimeUtils.currentTimeMillis() - text.time()) / msPerWord, text.allSegments.size() - 1);
+            long words = Math.min(Math.max(0, (TimeUtils.currentTimeMillis() - text.time() - text.prev()) / msPerWord), text.allSegments.size() - 1);
 
             finished = words == text.allSegments.size() - 1;
             if (finished) {
