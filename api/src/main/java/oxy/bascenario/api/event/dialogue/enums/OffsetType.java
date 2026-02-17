@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 public enum OffsetType {
     Center("Center"),
     Left("Left"),
-    Right("Right");
+    Right("Right"),
+    Custom("Custom");
 
     private final String name;
 

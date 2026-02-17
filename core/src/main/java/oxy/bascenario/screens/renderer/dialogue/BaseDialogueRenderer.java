@@ -7,6 +7,7 @@ import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
@@ -36,8 +37,8 @@ public abstract class BaseDialogueRenderer {
     }
 
     private FontType font;
-    protected OffsetType offset;
-    public final void start(OffsetType offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
+    protected TextOffset offset;
+    public final void start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
         if (index != currentIndex) {
             return;
         }

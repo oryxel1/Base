@@ -7,6 +7,7 @@ import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.RedirectDialogueEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.editor.inspector.impl.objects.TextInspector;
@@ -48,7 +49,16 @@ public class DialogueInspector {
 
     public static StartDialogueEvent render(Scenario.Builder scenario, StartDialogueEvent event) {
         StartDialogueEvent.Builder builder = event.toBuilder();
-        builder.offset(OffsetType.values()[ImGuiUtils.combo("Text Offset", event.offset().ordinal(), OffsetType.getAlls())]);
+
+        OffsetType offsetType = OffsetType.values()[ImGuiUtils.combo("Text Offset", event.offset().type().ordinal(), OffsetType.getAlls())];
+        float offset = event.offset().offset();
+        if (offsetType == OffsetType.Custom) {
+            offset = ImGuiUtils.sliderFloat("Offset X", offset, 0, 1920);
+        }
+        builder.offset(new TextOffset(offsetType, offset));
+
+        ImGui.separatorText("");
+
         builder.type(FontType.values()[ImGuiUtils.combo("Font Type", event.type().ordinal(), FontType.getAlls())]);
         builder.index(ImGuiUtils.inputInt("Dialogue Index", event.index()));
         builder.name(ImGuiUtils.inputText("Name", event.name()));

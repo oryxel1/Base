@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.serializers.Types;
@@ -24,7 +25,7 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
     @Override
     public JsonElement write(StartDialogueEvent event) {
         final JsonObject object = new JsonObject();
-        object.add("offset", ElementTypes.OFFSET_TYPE.write(event.offset()));
+        object.add("offset", ElementTypes.TEXT_OFFSET_TYPE.write(event.offset()));
         object.add("font", ElementTypes.FONT_TYPE_TYPE.write(event.type()));
         object.addProperty("index", event.index());
         object.addProperty("name", event.name());
@@ -47,7 +48,7 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
             dialogues.add(Types.DIALOGUE_TYPE.read(dialogue));
         }
         return new StartDialogueEvent(
-                ElementTypes.OFFSET_TYPE.read(object.get("offset")),
+                ElementTypes.TEXT_OFFSET_TYPE.read(object.get("offset")),
                 ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), object.get("index").getAsInt(), object.get("name").getAsString(), object.get("association").getAsString(),
                 object.get("background").getAsBoolean(), dialogues.toArray(new Dialogue[0])
         );
@@ -55,7 +56,7 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
 
     @Override
     public void write(StartDialogueEvent event, ByteBuf buf) {
-        ElementTypes.OFFSET_TYPE.write(event.offset(), buf);
+        ElementTypes.TEXT_OFFSET_TYPE.write(event.offset(), buf);
         ElementTypes.FONT_TYPE_TYPE.write(event.type(), buf);
         buf.writeInt(event.index());
         Types.STRING_TYPE.write(event.name(), buf);
@@ -70,7 +71,7 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
 
     @Override
     public StartDialogueEvent read(ByteBuf buf) {
-        OffsetType offset = ElementTypes.OFFSET_TYPE.read(buf);
+        TextOffset offset = ElementTypes.TEXT_OFFSET_TYPE.read(buf);
         FontType type = ElementTypes.FONT_TYPE_TYPE.read(buf);
         int index = buf.readInt();
         String name = Types.STRING_TYPE.read(buf), association = Types.STRING_TYPE.read(buf);

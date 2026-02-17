@@ -130,7 +130,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 if (segments.isEmpty()) {
                     segments.add(newRun);
                 } else {
-                    final TextRun last = segments.get(segments.size() - 1);
+                    final TextRun last = segments.getLast();
                     // Probably not the best idea to do this... But who cares!
                     boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
                     if (same) {
@@ -158,10 +158,11 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         for (TextLineCache line : lines) {
             y += (line.size / 42f) * 57 + 5;
 
-            float x = switch (offset) {
+            float x = switch (offset.type()) {
                 case Left -> SEPARATOR_X + 10;
                 case Center -> (1920 / 2f) - (TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape()) / 2f);
                 case Right -> SEPARATOR_X + SEPARATOR_WIDTH - 10 - TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape());
+                case Custom -> offset.offset();
             };
 
             TextUtils.textLine(line.size(), new TextLine(line.segments()),
