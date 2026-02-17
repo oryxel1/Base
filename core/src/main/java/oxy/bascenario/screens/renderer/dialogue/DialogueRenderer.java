@@ -149,6 +149,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             if (lines.isEmpty() || text.newLine()) {
                 lines.add(new TextLineCache(segments, all, text.size()));
             } else {
+                lines.getLast().allSegments.addAll(all);
                 lines.getLast().segments.addAll(segments);
             }
         }
