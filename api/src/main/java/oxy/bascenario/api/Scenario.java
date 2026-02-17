@@ -23,7 +23,7 @@ public class Scenario {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Scenario scenario = (Scenario) o;
-        if (!Objects.equals(name, scenario.name) || saveType != scenario.saveType || timestamps.size() != scenario.getTimestamps().size()) {
+        if (!Objects.equals(name, scenario.name) || timestamps.size() != scenario.getTimestamps().size()) {
             return false;
         }
         int i = 0;

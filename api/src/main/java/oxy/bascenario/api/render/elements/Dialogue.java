@@ -21,18 +21,20 @@ public class Dialogue {
 
     private Text dialogue;
     private float playSpeed;
+    private float offset;
 
     public static Builder builder() {
         return new Builder();
     }
 
     public Builder toBuilder() {
-        return builder().dialogue(this.dialogue).playSpeed(this.playSpeed);
+        return builder().dialogue(this.dialogue).playSpeed(this.playSpeed).offset(this.offset);
     }
 
     public static final class Builder {
         private Text dialogue = new Text(new ArrayList<>(), 42);
         private float playSpeed = 1;
+        private float offset;
 
         private Builder() {}
 
@@ -89,10 +91,20 @@ public class Dialogue {
             return this;
         }
 
+        public float offset() {
+            return this.offset;
+        }
+
+        public Builder offset(float offset) {
+            this.offset = offset;
+            return this;
+        }
+
         public Dialogue build() {
             Dialogue dialogue = new Dialogue();
             dialogue.dialogue = this.dialogue;
             dialogue.playSpeed = this.playSpeed;
+            dialogue.offset = this.offset;
             return dialogue;
         }
     }

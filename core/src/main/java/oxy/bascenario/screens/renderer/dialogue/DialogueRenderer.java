@@ -34,7 +34,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.finished = false;
         for (Dialogue dialogue : dialogues) {
             final List<TextBuilder> texts = new ArrayList<>();
-            texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
+            texts.add(new TextBuilder(dialogue.getOffset(), new StringBuilder(), new ArrayList<>()));
 
             final Text text = dialogue.getDialogue();
 
@@ -45,7 +45,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                     final String next = texts.get(texts.size() - 1).builder().toString() + c;
                     final TextRun run = new TextRun(font, new net.raphimc.thingl.text.TextSegment(next, Color.WHITE, segment.toFlags()));
                     if (TextUtils.getVisualWidth(text.size(), run.shape()) >= SEPARATOR_WIDTH - 5 || c == '\n') {
-                        texts.add(new TextBuilder(new StringBuilder(), new ArrayList<>()));
+                        texts.add(new TextBuilder(dialogue.getOffset(), new StringBuilder(), new ArrayList<>()));
                         if (c == '\n') {
                             continue;
                         }
@@ -66,7 +66,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
             long prev = 0;
             for (final TextBuilder builder : texts) {
-                this.texts.add(new DialogueText(builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), prev, text.size(), i != 0 || newLine));
+                this.texts.add(new DialogueText(builder.offset, builder.segments(), dialogue.getPlaySpeed(), TimeUtils.currentTimeMillis(), prev, text.size(), i != 0 || newLine));
                 i++;
 
                 prev += msPerWord * builder.builder.length();
@@ -74,9 +74,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
     }
 
-    private record TextBuilder(StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
+    private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
-    private record DialogueText(List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
+    private record DialogueText(float offset, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
                                 long time, long prev, int size, boolean newLine) {
     }
 
@@ -147,7 +147,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             if (lines.isEmpty() || text.newLine()) {
-                lines.add(new TextLineCache(segments, all, text.size()));
+                lines.add(new TextLineCache(text.offset, segments, all, text.size()));
             } else {
                 lines.getLast().allSegments.addAll(all);
                 lines.getLast().segments.addAll(segments);
@@ -158,7 +158,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         for (TextLineCache line : lines) {
             y += (line.size / 42f) * 57 + 5;
 
-            float x = switch (offset.type()) {
+            float x = line.offset + switch (offset.type()) {
                 case Left -> SEPARATOR_X + 10;
                 case Center -> (1920 / 2f) - (TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape()) / 2f);
                 case Right -> SEPARATOR_X + SEPARATOR_WIDTH - 10 - TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape());
@@ -172,6 +172,6 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.finished = done == this.texts.size();
     }
 
-    public record TextLineCache(List<TextRun> segments, List<TextRun> allSegments, float size) {
+    public record TextLineCache(float offset, List<TextRun> segments, List<TextRun> allSegments, float size) {
     }
 }

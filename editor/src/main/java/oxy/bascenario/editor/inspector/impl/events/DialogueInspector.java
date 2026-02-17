@@ -88,6 +88,7 @@ public class DialogueInspector {
 
     public static Dialogue render(Scenario.Builder scenario, Dialogue dialogue) {
         Dialogue.Builder builder = dialogue.toBuilder();
+        builder.offset(ImGuiUtils.sliderFloat("Text Offset", builder.offset(), -1920, 1920));
         builder.playSpeed(ImGuiUtils.sliderFloat("Play Speed", builder.playSpeed(), 0.01f, 50));
         builder.dialogue(TextInspector.render(scenario, dialogue.getDialogue()));
         return builder.build();

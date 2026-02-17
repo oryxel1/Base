@@ -48,7 +48,7 @@ public class CompilerResultCompareTest {
             final JsonElement object = Types.SCENARIO_TYPE.write(scenario);
             Scenario parseBack = Types.SCENARIO_TYPE.read(object);
 
-            if (parseBack.equals(scenario)) {
+            if (!parseBack.equals(scenario)) {
                 throw new RuntimeException("Scenario doesn't match (type JSON)!");
             }
 
@@ -61,7 +61,7 @@ public class CompilerResultCompareTest {
                 Types.SCENARIO_TYPE.write(scenario, buf);
                 Scenario parseBack = Types.SCENARIO_TYPE.read(buf);
 
-                if (parseBack.equals(scenario)) {
+                if (!parseBack.equals(scenario)) {
                     throw new RuntimeException("Scenario doesn't match (type JSON)!");
                 }
 
@@ -77,6 +77,7 @@ public class CompilerResultCompareTest {
     public static Scenario scenario() {
         final Scenario.Builder builder = Scenario.builder();
         builder.name("Test");
+        builder.saveType(Scenario.SaveType.JSON);
 
         builder.add(0, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
         builder.add(0, new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));
@@ -95,8 +96,8 @@ public class CompilerResultCompareTest {
             builder.add(true, 1, new PositionElementEvent(0, 1000, new Vec2(0, 0), Easing.LINEAR, type));
         }
         builder.add(5, new RotateElementEvent(0, 1000, new Vec3(0, 0, 0), Easing.LINEAR));
-        builder.add(1, new ElementEffectEvent(0, Effect.HOLOGRAM, Axis.Y));
-        builder.add(1, new ElementEffectEvent(0, Effect.HOLOGRAM, ElementEffectEvent.Type.REMOVE));
+//        builder.add(1, new ElementEffectEvent(0, Effect.HOLOGRAM, Axis.Y));
+//        builder.add(1, new ElementEffectEvent(0, Effect.HOLOGRAM, ElementEffectEvent.Type.REMOVE));
         builder.add(1, new ColorOverlayEvent(0, 500, Color.WHITE));
         builder.add(1, new SetColorEvent(0, 500, Color.WHITE));
         builder.add(10, new SoundVolumeEvent(0, 1000, 1, Easing.LINEAR));

@@ -13,23 +13,26 @@ public class DialogueType implements Type<Dialogue> {
         final JsonObject object = new JsonObject();
         object.add("text", ElementTypes.TEXT_TYPE.write(dialogue.getDialogue()));
         object.addProperty("play-speed", dialogue.getPlaySpeed());
+        object.addProperty("text-offset", dialogue.getOffset());
         return object;
     }
 
     @Override
     public Dialogue read(JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
-        return Dialogue.builder().dialogue(ElementTypes.TEXT_TYPE.read(object.get("text"))).playSpeed(object.get("play-speed").getAsFloat()).build();
+        return Dialogue.builder().dialogue(ElementTypes.TEXT_TYPE.read(object.get("text")))
+                .playSpeed(object.get("play-speed").getAsFloat()).offset(object.get("text-offset").getAsFloat()).build();
     }
 
     @Override
     public void write(Dialogue dialogue, ByteBuf buf) {
         ElementTypes.TEXT_TYPE.write(dialogue.getDialogue(), buf);
         buf.writeFloat(dialogue.getPlaySpeed());
+        buf.writeFloat(dialogue.getOffset());
     }
 
     @Override
     public Dialogue read(ByteBuf buf) {
-        return Dialogue.builder().dialogue(ElementTypes.TEXT_TYPE.read(buf)).playSpeed(buf.readFloat()).build();
+        return Dialogue.builder().dialogue(ElementTypes.TEXT_TYPE.read(buf)).playSpeed(buf.readFloat()).offset(buf.readFloat()).build();
     }
 }
