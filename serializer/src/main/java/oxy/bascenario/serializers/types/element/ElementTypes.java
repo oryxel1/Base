@@ -3,6 +3,7 @@ package oxy.bascenario.serializers.types.element;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
+import oxy.bascenario.api.event.dialogue.enums.OffsetType;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.Sprite;
@@ -40,6 +41,8 @@ public class ElementTypes implements Type<Object> {
     public static final Type<FontStyle> FONT_STYLE_TYPE = new EnumType<>(FontStyle.class, FontStyle.values());
     public static final Type<FontType> FONT_TYPE_TYPE = new EnumType<>(FontType.class, FontType.values());
     public static final Type<Font> FONT_TYPE = new oxy.bascenario.serializers.types.element.impl.text.font.FontType();
+
+    public static final Type<OffsetType> OFFSET_TYPE = new EnumType<>(OffsetType.class, OffsetType.values());
 
     public static final Type<Set<TextStyle>> TEXT_STYLES_TYPE = new TextStylesType();
     public static final Type<TextSegment> TEXT_SEGMENT_TYPE = new TextSegmentType();

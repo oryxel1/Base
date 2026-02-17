@@ -96,9 +96,18 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         boolean finished = true;
 
         final List<TextLineCache> lines = new ArrayList<>();
+
         for (DialogueText text : this.texts) {
             if (!finished) {
-                break;
+                if (lines.isEmpty() || text.newLine()) {
+                    break;
+                } else {
+                    for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+                        lines.getLast().allSegments.add(new TextRun(pair.right(), pair.left()));
+                    }
+                }
+
+                continue;
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
@@ -132,8 +141,13 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 }
             }
 
+            final List<TextRun> all = new ArrayList<>();
+            for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+                all.add(new TextRun(pair.right(), pair.left()));
+            }
+
             if (lines.isEmpty() || text.newLine()) {
-                lines.add(new TextLineCache(segments, text.size()));
+                lines.add(new TextLineCache(segments, all, text.size()));
             } else {
                 lines.getLast().segments.addAll(segments);
             }
@@ -142,12 +156,20 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         float y = SEPARATOR_Y + 2;
         for (TextLineCache line : lines) {
             y += (line.size / 42f) * 57 + 5;
-            TextUtils.textLine(line.size(), new TextLine(line.segments()), SEPARATOR_X + 10, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+
+            float x = switch (offset) {
+                case Left -> SEPARATOR_X + 10;
+                case Center -> (1920 / 2f) - (TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape()) / 2f);
+                case Right -> SEPARATOR_X + SEPARATOR_WIDTH - 10 - TextUtils.getVisualWidth(line.size(), new TextLine(line.allSegments).shape());
+            };
+
+            TextUtils.textLine(line.size(), new TextLine(line.segments()),
+                    x, y, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
         }
 
         this.finished = done == this.texts.size();
     }
 
-    public record TextLineCache(List<TextRun> segments, float size) {
+    public record TextLineCache(List<TextRun> segments, List<TextRun> allSegments, float size) {
     }
 }
