@@ -20,7 +20,9 @@ public enum EmoticonType {
     SHY("Shy", "SFX_Emoticon_Motion_Shy.wav"),
     ANXIETY("Anxiety", "SFX_Emoticon_Motion_Upset.wav"),
     TWINKLE("Twinkle", "SFX_Emoticon_Motion_Twinkle.wav"),
-    IDEA("Idea", "SFX_Emoticon_Motion_Bulb.wav");
+    IDEA("Idea", "SFX_Emoticon_Motion_Bulb.wav"),
+    SIGH("Sigh", "SFX_Emoticon_Motion_Sigh.wav")
+    ;
 
     private final String name, sfx;
 

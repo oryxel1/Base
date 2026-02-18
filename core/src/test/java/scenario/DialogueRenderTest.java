@@ -3,6 +3,7 @@ package scenario;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.api.Scenario;
@@ -51,14 +52,14 @@ public class DialogueRenderTest {
         scenario.add(true, 1, new StartDialogueEvent(FontType.NotoSans, 0, "Name", "Association", false, Dialogue.builder().add("Now also, ").build()));
         scenario.add(3000, new AddDialogueEvent(0, false, Dialogue.builder().add("there should be a slight delay playing this dialogue!").build()));
 
-        scenario.add(true, 1, new StartDialogueEvent(OffsetType.Center, FontType.NotoSans, 0,
+        scenario.add(true, 1, new StartDialogueEvent(TextOffset.CENTER, FontType.NotoSans, 0,
                 "Name", "Association", false, Dialogue.builder().add("This should play in the center!").build()));
 
-        scenario.add(true, 1, new StartDialogueEvent(OffsetType.Right, FontType.NotoSans, 0,
+        scenario.add(true, 1, new StartDialogueEvent(TextOffset.RIGHT, FontType.NotoSans, 0,
                 "Name", "Association", false, Dialogue.builder().add("This should play on the right!").build()));
 
         // An actual dialogue in Vol Ex that plays on the right to see how it looks :P
-        scenario.add(true, 1, new StartDialogueEvent(OffsetType.Right, FontType.NotoSans, 0,
+        scenario.add(true, 1, new StartDialogueEvent(TextOffset.RIGHT, FontType.NotoSans, 0,
                 "", "", false, Dialogue.builder().add("Even if she isn't understood, Aris is fine with it.").build()));
 
         scenario.add(true, 1, new AddDialogueEvent(0, Dialogue.builder().add("That dialogue was for testing!").build()));

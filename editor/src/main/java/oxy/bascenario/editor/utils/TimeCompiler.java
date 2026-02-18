@@ -99,6 +99,7 @@ public class TimeCompiler {
                 case RESPOND, ANGRY, SWEAT, CHAT, EXCLAMATION_MARK, HEART, SHY, SURPRISED, QUESTION_MARK, ANXIETY, IDEA -> 800 + emoticon.duration();
                 case TWINKLE -> emoticon.duration();
                 case THINKING, HESITATED -> 600L * 3 + (600L / 3);
+                case SIGH -> 350 + 500L + emoticon.duration();
             };
 
             case StartDialogueEvent event -> compileTime(event.dialogues());

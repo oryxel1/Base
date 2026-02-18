@@ -31,7 +31,7 @@ public class EmoticonRenderTest {
 //        for (EmoticonType type : EmoticonType.values()) {
 //            scenario.add(1000, new AttachElementEvent(1, 0, new Emoticon(1000, type, true)));
 //        }
-        scenario.add(1000, new AttachElementEvent(1, 0, new Emoticon(1000, EmoticonType.IDEA, true)));
+        scenario.add(1000, new AttachElementEvent(1, 0, new Emoticon(1000, EmoticonType.SIGH, true)));
 
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
