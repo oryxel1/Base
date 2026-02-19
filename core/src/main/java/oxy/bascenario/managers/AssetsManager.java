@@ -42,6 +42,9 @@ public class AssetsManager implements AssetsManagerApi {
     public AssetsManager() {
         this.assets = new HashMap<>();
         this.currentlyLoadingAssets = Collections.synchronizedSet(new HashSet<>());
+
+        // Pre-load some stuff.
+        assets(null, FileInfo.internal("assets/base/sounds/click-sound.mp3"));
     }
 
     // We no longer do this, but I'll keep this here anyway.

@@ -20,7 +20,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
 
     public ScenarioEditorScreen(Screen screen, Scenario scenario, Scenario.Builder builder) {
         super(screen, builder);
-        this.screen = new ScenarioScreen(scenario);
+        this.screen = new ScenarioScreen(scenario, false);
         this.screen.setPlaying(false);
     }
 
@@ -86,7 +86,7 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
 
     @Override
     public void update() {
-        screen = new ScenarioScreen(screen.getScenario());
+        screen = new ScenarioScreen(screen.getScenario(), false);
         screen.show();
         screen.getTimestamps().clear();
         screen.getTimestamps().addAll(TrackParser.parse(timeline.getObjects()));

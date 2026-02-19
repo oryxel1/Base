@@ -16,6 +16,7 @@ import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
+import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
@@ -24,7 +25,6 @@ import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.thingl.ProgramsExtended;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
@@ -45,11 +45,19 @@ public class ScenarioScreen extends ExtendableScreen {
     private boolean playing = true;
 
     public static boolean RENDER_WITHIN_IMGUI = false;
-    public ScenarioScreen(Scenario scenario) {
+    private final boolean preload;
+    public ScenarioScreen(Scenario scenario, boolean preload) {
         this.timestamps.addAll(scenario.getTimestamps());
         this.scenario = scenario;
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
+
+        this.preload = preload;
     }
+
+    public ScenarioScreen(Scenario scenario) {
+        this(scenario, true);
+    }
+
 
     private FileInfo background, targetBackground;
     private DynamicAnimation backgroundFade = AnimationUtils.dummy(0);
@@ -149,6 +157,25 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Override
     public void show() {
+        // Load everything so that there won't be any tiny freezes when loading assets....
+        if (preload) {
+            final ScenarioScreen dummy = new ScenarioScreen(scenario, false);
+
+            AudioManager.FREEZE = true;
+
+            this.timestamps.forEach(timestamp -> {
+                timestamp.events().forEach(event -> {
+                    try {
+                        final FunctionEvent<?> function = EventRegistries.EVENT_TO_FUNCTION.get(event.getClass()).getDeclaredConstructor(event.getClass()).newInstance(event);
+                        function.run(dummy);
+                    } catch (Exception ignored) {
+                    }
+                });
+            });
+
+            AudioManager.FREEZE = false;
+        }
+
         int start = Integer.MIN_VALUE;
         for (RenderLayer layer : RenderLayer.values()) {
             this.elements.put(start++, new ColorOverlayRenderer(layer));

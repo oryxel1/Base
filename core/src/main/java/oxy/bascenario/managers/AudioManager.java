@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class AudioManager {
+    public static boolean FREEZE = false;
     private final SourceDataLineAudioMixer mixer;
 
     @Getter
@@ -52,6 +53,9 @@ public class AudioManager {
 
     @SneakyThrows
     public void play(String scenario, Sound sound, float start, long fadeIn) {
+        if (FREEZE) {
+            return;
+        }
         final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
         boolean fade = fadeIn > 0;
 
