@@ -14,6 +14,7 @@ import net.raphimc.audiomixer.util.PcmFloatAudioFormat;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.api.managers.AssetsManagerApi;
 import oxy.bascenario.api.managers.other.AssetType;
+import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.api.managers.other.Asset;
 import oxy.bascenario.managers.other.AudioAsset;
@@ -45,6 +46,10 @@ public class AssetsManager implements AssetsManagerApi {
 
         // Pre-load some stuff.
         assets(null, FileInfo.internal("assets/base/sounds/click-sound.mp3"));
+
+        for (EmoticonType type : EmoticonType.values()) {
+            assets(null, FileInfo.internal("assets/base/sounds/" + type.getSfx()));
+        }
     }
 
     // We no longer do this, but I'll keep this here anyway.
