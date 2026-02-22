@@ -136,12 +136,14 @@ public class ImGuiUtils {
     public static float sliderFloat(String name, float value, float min, float max) {
         float[] newValue = new float[] {value};
         ImGui.sliderFloat(name + "##" + COUNTER++, newValue, min, max);
-        return newValue[0];
+        ImGui.sameLine();
+        return inputFloat("", newValue[0]);
     }
 
     public static int sliderInt(String name, int value, int min, int max) {
         int[] newValue = new int[] {value};
         ImGui.sliderInt(name + "##" + COUNTER++, newValue, min, max);
-        return newValue[0];
+        ImGui.sameLine();
+        return inputInt("", newValue[0]);
     }
 }

@@ -1,4 +1,3 @@
-import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
