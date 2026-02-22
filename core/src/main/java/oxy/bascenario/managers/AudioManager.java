@@ -53,10 +53,10 @@ public class AudioManager {
 
     @SneakyThrows
     public void play(String scenario, Sound sound, float start, long fadeIn) {
+        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
         if (FREEZE) {
             return;
         }
-        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
         boolean fade = fadeIn > 0;
 
         final StereoStaticPcmSource source = new StereoStaticPcmSource(asset.asset().samples());
