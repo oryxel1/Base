@@ -1,7 +1,5 @@
 package oxy.bascenario.screens;
 
-import com.badlogic.gdx.Gdx;
-import imgui.ImGui;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -20,12 +18,13 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
-import oxy.bascenario.screens.renderer.RainRenderer;
+import oxy.bascenario.screens.renderer.weather.RainRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
+import oxy.bascenario.screens.renderer.weather.SnowRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
@@ -189,6 +188,7 @@ public class ScenarioScreen extends ExtendableScreen {
     @Setter
     private Weather weather = Weather.CLEAR;
     private final RainRenderer rainRenderer = new RainRenderer();
+    private final SnowRenderer snowRenderer = new SnowRenderer();
 
     @Setter
     private boolean showButtons;
@@ -240,11 +240,13 @@ public class ScenarioScreen extends ExtendableScreen {
                     RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
-
         if (weather == Weather.RAIN) {
             rainRenderer.render();
+        } else if (weather == Weather.SNOW) {
+            snowRenderer.render();
         }
+
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
         ThinGLUtils.end();
 

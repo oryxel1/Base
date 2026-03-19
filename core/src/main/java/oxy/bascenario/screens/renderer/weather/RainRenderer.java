@@ -1,6 +1,5 @@
-package oxy.bascenario.screens.renderer;
+package oxy.bascenario.screens.renderer.weather;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.RandomUtils;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -15,14 +14,14 @@ public class RainRenderer {
 
     public void render() {
         while (drops.size() < 10) {
-            drops.add(new RainDrop(RandomUtils.randomInt(200, 1000), RandomUtils.randomInt(0, 1920), RandomUtils.randomInt(80, 200)));
+            drops.add(new RainDrop(RandomUtils.randomInt(200, 1000), RandomUtils.randomInt(0, 1920), RandomUtils.randomInt(20, 200)));
         }
 
         drops.forEach(RainDrop::render);
         drops.removeIf(RainDrop::remove);
     }
 
-    public static class RainDrop {
+    private static class RainDrop {
         private final float height;
         private final float x;
         private final float speed;
