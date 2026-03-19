@@ -1,8 +1,6 @@
 package oxy.bascenario.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import imgui.ImGui;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +20,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screens.renderer.RainRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
@@ -185,22 +184,14 @@ public class ScenarioScreen extends ExtendableScreen {
         for (RenderLayer layer : RenderLayer.values()) {
             this.elements.put(start++, new ColorOverlayRenderer(layer));
         }
-
-        this.weatherBatch = new PolygonSpriteBatch();
-
-        rainEffect.load(Gdx.files.internal("assets/base/particle/rain.p"), Gdx.files.internal("assets/base/particle/"));
-        rainEffect.start();
     }
 
     @Setter
     private Weather weather = Weather.CLEAR;
-
-    private PolygonSpriteBatch weatherBatch;
-    private final ParticleEffect rainEffect = new ParticleEffect();
+    private final RainRenderer rainRenderer = new RainRenderer();
 
     @Setter
     private boolean showButtons;
-    private long prev = System.currentTimeMillis();
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -251,20 +242,11 @@ public class ScenarioScreen extends ExtendableScreen {
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
-        ThinGLUtils.end();
-
         if (weather == Weather.RAIN) {
-            this.rainEffect.setPosition(
-                    ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowPosX() + 200 : 200,
-                    ScenarioScreen.RENDER_WITHIN_IMGUI ? Gdx.graphics.getHeight() - ImGui.getWindowPosY() : Gdx.graphics.getHeight()
-            );
-
-            this.weatherBatch.begin();
-            this.rainEffect.draw(this.weatherBatch, (TimeUtils.currentTimeMillis() - prev) / 1000f);
-            this.weatherBatch.end();
+            rainRenderer.render();
         }
 
-        prev = TimeUtils.currentTimeMillis();
+        ThinGLUtils.end();
 
         elements.removeIf(ElementRenderer::selfDestruct);
         elements.forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
