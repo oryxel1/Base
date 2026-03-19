@@ -1,5 +1,9 @@
 package oxy.bascenario.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import imgui.ImGui;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -10,6 +14,7 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
@@ -180,10 +185,22 @@ public class ScenarioScreen extends ExtendableScreen {
         for (RenderLayer layer : RenderLayer.values()) {
             this.elements.put(start++, new ColorOverlayRenderer(layer));
         }
+
+        this.weatherBatch = new PolygonSpriteBatch();
+
+        rainEffect.load(Gdx.files.internal("assets/base/particle/rain.p"), Gdx.files.internal("assets/base/particle/"));
+        rainEffect.start();
     }
 
     @Setter
+    private Weather weather = Weather.CLEAR;
+
+    private PolygonSpriteBatch weatherBatch;
+    private final ParticleEffect rainEffect = new ParticleEffect();
+
+    @Setter
     private boolean showButtons;
+    private long prev = System.currentTimeMillis();
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -235,6 +252,19 @@ public class ScenarioScreen extends ExtendableScreen {
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
         ThinGLUtils.end();
+
+        if (weather == Weather.RAIN) {
+            this.rainEffect.setPosition(
+                    ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowPosX() + 200 : 200,
+                    ScenarioScreen.RENDER_WITHIN_IMGUI ? Gdx.graphics.getHeight() - ImGui.getWindowPosY() : Gdx.graphics.getHeight()
+            );
+
+            this.weatherBatch.begin();
+            this.rainEffect.draw(this.weatherBatch, (TimeUtils.currentTimeMillis() - prev) / 1000f);
+            this.weatherBatch.end();
+        }
+
+        prev = TimeUtils.currentTimeMillis();
 
         elements.removeIf(ElementRenderer::selfDestruct);
         elements.forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));

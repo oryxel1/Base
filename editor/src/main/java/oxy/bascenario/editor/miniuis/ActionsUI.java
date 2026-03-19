@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.SetWeatherEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
@@ -159,6 +161,10 @@ public class ActionsUI {
 //        add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));
 
         ImGui.separatorText("Others");
+
+        add("Set Weather",
+                "Set the current weather",
+                new SetWeatherEvent(Weather.RAIN));
 
         add("Screen Color",
                 "This will cover the entire screen with a color you choose on a render layer that you also choose.",
