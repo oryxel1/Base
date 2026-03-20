@@ -89,7 +89,7 @@ public class CompilerResultCompareTest {
             final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
             map.put("Yes", 0);
             map.put("No", 0);
-            builder.add(300, new ShowOptionsEvent(FontType.NotoSans, map));
+            builder.add(300, new ShowOptionsEvent(map));
         }
 
         for (PositionElementEvent.Type type : PositionElementEvent.Type.values()) {

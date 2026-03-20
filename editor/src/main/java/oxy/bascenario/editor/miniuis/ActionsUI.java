@@ -90,7 +90,7 @@ public class ActionsUI {
             map.put("No", 0);
             add("Show Options",
                     "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
-                    new ShowOptionsEvent(FontType.NotoSans, map));
+                    new ShowOptionsEvent(map));
         }
         add("Close Options", "Close any currently present options", new CloseOptionsEvent());
 

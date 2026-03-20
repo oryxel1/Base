@@ -14,8 +14,6 @@ public class OptionsInspector {
     public static ShowOptionsEvent render(ShowOptionsEvent event) {
         final Map<String, Integer> options = new LinkedHashMap<>();
 
-        FontType type = FontType.values()[ImGuiUtils.combo("Font Type", event.type().ordinal(), FontType.getAlls())];
-
         boolean add = ImGui.button("New option!");
 
         for (Map.Entry<String, Integer> entry : event.options().entrySet()) {
@@ -35,6 +33,6 @@ public class OptionsInspector {
             options.put("", 0);
         }
 
-        return new ShowOptionsEvent(type, options);
+        return new ShowOptionsEvent(options);
     }
 }
