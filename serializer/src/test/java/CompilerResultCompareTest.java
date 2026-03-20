@@ -1,6 +1,6 @@
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import io.netty.buffer.Unpooled;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;

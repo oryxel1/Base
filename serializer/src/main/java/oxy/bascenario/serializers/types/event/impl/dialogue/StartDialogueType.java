@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.event.impl.dialogue;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
 import oxy.bascenario.api.event.dialogue.enums.TextOffset;

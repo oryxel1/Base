@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.event.impl.color;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;

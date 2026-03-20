@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.element.impl.shapes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;

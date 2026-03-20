@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.event.impl.animation;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;

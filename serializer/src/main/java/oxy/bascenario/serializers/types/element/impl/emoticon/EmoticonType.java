@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.element.impl.emoticon;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.serializers.base.TypeWithName;
 

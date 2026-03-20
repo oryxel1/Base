@@ -2,8 +2,6 @@ package oxy.bascenario.managers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import oxy.bascenario.Base;
@@ -25,12 +23,10 @@ import java.util.Map;
 public class ScenarioManager implements ScenarioManagerApi {
     public static final File SAVE_DIR = new File(Base.SAVE_DIR, "scenarios");
 
+    @Getter
     private final Map<String, Scenario> scenarios = new HashMap<>();
     public void put(String name, Scenario scenario) {
         this.scenarios.put(name, scenario);
-    }
-    public Collection<Scenario> scenarios() {
-        return scenarios.values();
     }
 
     @SneakyThrows

@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.primitive;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.serializers.base.Type;
 
 public record NullableType<T>(Type<T> type) implements Type<T> {

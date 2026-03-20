@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.scenario;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
 import oxy.bascenario.serializers.Types;

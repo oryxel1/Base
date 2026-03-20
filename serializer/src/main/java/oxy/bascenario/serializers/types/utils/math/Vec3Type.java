@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.utils.math;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.utils.math.Vec3;
 import oxy.bascenario.serializers.base.Type;
 

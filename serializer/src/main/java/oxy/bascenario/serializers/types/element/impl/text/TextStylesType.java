@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.element.impl.text;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.render.elements.text.TextStyle;
 import oxy.bascenario.serializers.base.Type;
 

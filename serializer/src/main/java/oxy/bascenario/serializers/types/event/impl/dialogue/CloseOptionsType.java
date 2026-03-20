@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.event.impl.dialogue;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.dialogue.CloseDialogueEvent;
 import oxy.bascenario.api.event.dialogue.CloseOptionsEvent;
 import oxy.bascenario.serializers.base.TypeWithName;

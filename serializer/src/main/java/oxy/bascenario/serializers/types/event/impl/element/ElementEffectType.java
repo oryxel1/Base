@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.utils.math.Axis;
