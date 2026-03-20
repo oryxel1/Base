@@ -21,13 +21,9 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
 
     @Override
     public JsonElement write(ShowOptionsEvent event) {
-        final JsonObject object = new JsonObject();
-        object.add("font", ElementTypes.FONT_TYPE_TYPE.write(event.type()));
-
         final JsonObject options = new JsonObject();
         event.options().forEach(options::addProperty);
-        object.add("options", options);
-        return object;
+        return options;
     }
 
     @Override
@@ -35,17 +31,15 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
         final JsonObject object = element.getAsJsonObject();
         final Map<String, Integer> map = new LinkedHashMap<>();
 
-        final JsonObject o = object.getAsJsonObject("options");
-        for (String key : o.keySet()) {
-            map.put(key, o.get(key).getAsInt());
+        for (String key : object.keySet()) {
+            map.put(key, object.get(key).getAsInt());
         }
 
-        return new ShowOptionsEvent(ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), map);
+        return new ShowOptionsEvent(map);
     }
 
     @Override
     public void write(ShowOptionsEvent event, ByteBuf buf) {
-        ElementTypes.FONT_TYPE_TYPE.write(event.type(), buf);
         buf.writeInt(event.options().size());
         event.options().forEach((k, v) -> {
             Types.STRING_TYPE.write(k, buf);
@@ -55,12 +49,11 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
 
     @Override
     public ShowOptionsEvent read(ByteBuf buf) {
-        FontType type = ElementTypes.FONT_TYPE_TYPE.read(buf);
         final Map<String, Integer> map = new LinkedHashMap<>();
         int length = buf.readInt();
         for (int i = 0; i < length; i++) {
             map.put(Types.STRING_TYPE.read(buf), buf.readInt());
         }
-        return new ShowOptionsEvent(type, map);
+        return new ShowOptionsEvent(map);
     }
 }

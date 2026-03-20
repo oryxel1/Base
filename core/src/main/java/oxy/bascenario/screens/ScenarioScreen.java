@@ -107,7 +107,7 @@ public class ScenarioScreen extends ExtendableScreen {
             }
             timestamps.poll();
             if (bypass && this.isBusyOptions()) {
-                this.optionsRenderer.setOptions(null, null);
+                this.optionsRenderer.setOptions(null);
             }
 
             peek.events().forEach(event -> {

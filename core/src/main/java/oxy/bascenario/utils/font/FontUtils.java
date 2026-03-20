@@ -23,6 +23,10 @@ public class FontUtils {
         return NAME_TO_FONTS.get(type.toName(style));
     }
 
+    public static Font font(String name) {
+        return NAME_TO_FONTS.get(name);
+    }
+
     public static Font toFont(Scenario scenario, TextSegment segment) {
         Font font;
         if (segment.font().file() != null) {
@@ -39,6 +43,7 @@ public class FontUtils {
 
     public static void loadFonts() {
         // Cache these font, so I can use them dynamically later.
+        loadFont("MalgunGothic", "/assets/base/fonts/MALGUN.ttf");
 
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");

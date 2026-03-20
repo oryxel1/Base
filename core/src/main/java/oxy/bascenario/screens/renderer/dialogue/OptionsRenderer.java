@@ -4,8 +4,6 @@ import lombok.Getter;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.api.render.elements.text.font.FontStyle;
-import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.animation.DynamicAnimation;
@@ -30,11 +28,9 @@ public class OptionsRenderer {
     private static final Color TEXT_COLOR = Color.fromRGB(44, 67, 90);
     private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1345, DISTANCE_BETWEEN = 35;
 
-    private FontType type;
     private Map<String, Integer> options;
-    public void setOptions(FontType type, Map<String, Integer> options) {
+    public void setOptions(Map<String, Integer> options) {
         this.clicked = null;
-        this.type = type;
         this.options = options;
         this.flipped = false;
         if (this.options != null) {
@@ -58,7 +54,6 @@ public class OptionsRenderer {
 
         if (flipped && this.flash.getValue() == 0 && !this.scale.isRunning() && this.clicked != null) {
             this.options = null;
-            this.type = null;
             screen.setBusyOptions(false);
             this.scale = new AnimationUtils.DummyAnimation(1);
             this.flash = new AnimationUtils.DummyAnimation(1);
@@ -90,19 +85,18 @@ public class OptionsRenderer {
             GLOBAL_RENDER_STACK.popMatrix();
 
             float textScale = 1;
-            // For fuck’s sake, I don't fucking know what the actual font is, It's slightly thinner than noto sans regular that for sure.
-            TextRun textRun = TextRun.fromString(FontUtils.font(FontStyle.REGULAR, type), text, TEXT_COLOR.withAlphaF(alpha));
+            TextRun textRun = TextRun.fromString(FontUtils.font("MalgunGothic"), text, TEXT_COLOR.withAlphaF(alpha));
             if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
-                textScale = Math.min((buttonWidth - 100) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
+                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
             }
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
-            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getLogicalHeight(44, textRun.shape()) * textScale * scale) / 2;
+            float textY = buttonY + (buttonHeight / 2) + (TextUtils.getVisualHeight(44, textRun.shape()) * textScale * scale) / 2 - 5;
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textX + 7, textY, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
             GLOBAL_RENDER_STACK.scale(scale);
-            TextUtils.textRun(44, textRun, 0, 0, RendererText.VerticalOrigin.LOGICAL_TOP, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+            TextUtils.textRun(44, textRun, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
 
             i++;
