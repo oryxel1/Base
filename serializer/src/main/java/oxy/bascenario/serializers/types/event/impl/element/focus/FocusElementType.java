@@ -21,14 +21,4 @@ public class FocusElementType implements TypeWithName<FocusElementEvent> {
     public FocusElementEvent read(JsonElement element) {
         return new FocusElementEvent(element.getAsInt());
     }
-
-    @Override
-    public void write(FocusElementEvent focusElementEvent, ByteBuf buf) {
-        buf.writeInt(focusElementEvent.id());
-    }
-
-    @Override
-    public FocusElementEvent read(ByteBuf buf) {
-        return new FocusElementEvent(buf.readInt());
-    }
 }

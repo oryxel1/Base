@@ -30,18 +30,4 @@ public class SpriteAnimationType implements TypeWithName<SpriteAnimationEvent> {
         return new SpriteAnimationEvent(object.get("id").getAsInt(),
                 object.get("mixTime").getAsFloat(), object.get("name").getAsString(), object.get("trackIndex").getAsInt(), object.get("loop").getAsBoolean());
     }
-
-    @Override
-    public void write(SpriteAnimationEvent stopAnimationEvent, ByteBuf buf) {
-        buf.writeInt(stopAnimationEvent.id());
-        buf.writeFloat(stopAnimationEvent.mixTime());
-        Types.STRING_TYPE.write(stopAnimationEvent.animationName(), buf);
-        buf.writeInt(stopAnimationEvent.trackIndex());
-        buf.writeBoolean(stopAnimationEvent.loop());
-    }
-
-    @Override
-    public SpriteAnimationEvent read(ByteBuf buf) {
-        return new SpriteAnimationEvent(buf.readInt(), buf.readFloat(), Types.STRING_TYPE.read(buf), buf.readInt(), buf.readBoolean());
-    }
 }

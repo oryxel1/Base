@@ -15,14 +15,4 @@ public record EnumType<T extends Enum<T>>(Class<T> enumClass, T[] values) implem
     public T read(JsonElement element) {
         return Enum.valueOf(enumClass, element.getAsString());
     }
-
-    @Override
-    public void write(T t, ByteBuf buf) {
-        buf.writeByte(t.ordinal());
-    }
-
-    @Override
-    public T read(ByteBuf buf) {
-        return values[buf.readByte()];
-    }
 }

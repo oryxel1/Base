@@ -26,15 +26,4 @@ public class SetBackgroundType implements TypeWithName<SetBackgroundEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new SetBackgroundEvent(Types.FILE_INFO_TYPE.read(object.get("background")), object.get("duration").getAsInt());
     }
-
-    @Override
-    public void write(SetBackgroundEvent setBackgroundEvent, ByteBuf buf) {
-        Types.FILE_INFO_TYPE.write(setBackgroundEvent.background(), buf);
-        buf.writeInt(setBackgroundEvent.duration());
-    }
-
-    @Override
-    public SetBackgroundEvent read(ByteBuf buf) {
-        return new SetBackgroundEvent(Types.FILE_INFO_TYPE.read(buf), buf.readInt());
-    }
 }

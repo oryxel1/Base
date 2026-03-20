@@ -99,26 +99,4 @@ public class ElementTypes implements Type<Object> {
 
         return type.read(object.get("element"));
     }
-
-    @Override
-    public void write(Object o, ByteBuf buf) {
-        final TypeWithName<?> type = CLASS_TO_TYPE.get(o.getClass());
-        if (type == null) {
-            throw new RuntimeException("Invalid element class type: " + o.getClass() + "!");
-        }
-
-        buf.writeInt(type.type().hashCode());
-        type.writeElement(o, buf);
-    }
-
-    @Override
-    public Object read(ByteBuf buf) {
-        final int id = buf.readInt();
-        final TypeWithName<?> type = ID_TO_TYPE.get(id);
-        if (type == null) {
-            throw new RuntimeException("Invalid element with id: " + id + "!");
-        }
-
-        return type.read(buf);
-    }
 }

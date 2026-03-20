@@ -22,13 +22,4 @@ public class CloseOptionsType implements TypeWithName<CloseOptionsEvent> {
     public CloseOptionsEvent read(JsonElement element) {
         return new CloseOptionsEvent();
     }
-
-    @Override
-    public void write(CloseOptionsEvent event, ByteBuf buf) {
-    }
-
-    @Override
-    public CloseOptionsEvent read(ByteBuf buf) {
-        return new CloseOptionsEvent();
-    }
 }

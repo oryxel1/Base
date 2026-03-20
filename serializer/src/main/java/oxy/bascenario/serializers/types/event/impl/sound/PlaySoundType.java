@@ -27,16 +27,4 @@ public class PlaySoundType implements TypeWithName<PlaySoundEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new PlaySoundEvent(Types.SOUND_TYPE.read(object.get("sound")), object.get("duration").getAsLong(), object.get("start").getAsFloat());
     }
-
-    @Override
-    public void write(PlaySoundEvent event, ByteBuf buf) {
-        Types.SOUND_TYPE.write(event.sound(), buf);
-        buf.writeLong(event.duration());
-        buf.writeFloat(event.start());
-    }
-
-    @Override
-    public PlaySoundEvent read(ByteBuf buf) {
-        return new PlaySoundEvent(Types.SOUND_TYPE.read(buf), buf.readLong(), buf.readFloat());
-    }
 }

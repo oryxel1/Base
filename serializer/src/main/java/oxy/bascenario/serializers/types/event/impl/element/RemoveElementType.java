@@ -26,15 +26,4 @@ public class RemoveElementType implements TypeWithName<RemoveElementEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new RemoveElementEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")));
     }
-
-    @Override
-    public void write(RemoveElementEvent removeElementEvent, ByteBuf buf) {
-        buf.writeInt(removeElementEvent.id());
-        Types.NULLABLE_INT.write(removeElementEvent.subId(), buf);
-    }
-
-    @Override
-    public RemoveElementEvent read(ByteBuf buf) {
-        return new RemoveElementEvent(buf.readInt(), Types.NULLABLE_INT.read(buf));
-    }
 }

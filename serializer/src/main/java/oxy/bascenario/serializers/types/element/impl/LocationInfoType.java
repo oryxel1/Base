@@ -26,19 +26,6 @@ public class LocationInfoType implements TypeWithName<LocationInfo> {
     }
 
     @Override
-    public void write(LocationInfo locationInfo, ByteBuf buf) {
-        ElementTypes.FONT_TYPE_TYPE.write(locationInfo.font(), buf);
-        Types.STRING_TYPE.write(locationInfo.location(), buf);
-        buf.writeInt(locationInfo.duration());
-        buf.writeInt(locationInfo.fade());
-    }
-
-    @Override
-    public LocationInfo read(ByteBuf buf) {
-        return new LocationInfo(ElementTypes.FONT_TYPE_TYPE.read(buf), Types.STRING_TYPE.read(buf), buf.readInt(), buf.readInt());
-    }
-
-    @Override
     public String type() {
         return "location-info";
     }

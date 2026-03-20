@@ -22,16 +22,4 @@ public class FileInfoType implements Type<FileInfo> {
         final JsonObject object = element.getAsJsonObject();
         return new FileInfo(object.get("path").getAsString(), object.get("direct").getAsBoolean(), object.get("internal").getAsBoolean());
     }
-
-    @Override
-    public void write(FileInfo fileInfo, ByteBuf buf) {
-        Types.STRING_TYPE.write(fileInfo.path(), buf);
-        buf.writeBoolean(fileInfo.direct());
-        buf.writeBoolean(fileInfo.internal());
-    }
-
-    @Override
-    public FileInfo read(ByteBuf buf) {
-        return new FileInfo(Types.STRING_TYPE.read(buf), buf.readBoolean(), buf.readBoolean());
-    }
 }

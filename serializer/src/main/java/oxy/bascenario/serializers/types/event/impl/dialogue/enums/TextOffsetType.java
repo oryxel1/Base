@@ -21,15 +21,4 @@ public class TextOffsetType implements Type<TextOffset> {
         final JsonObject object = element.getAsJsonObject();
         return new TextOffset(ElementTypes.OFFSET_TYPE.read(object.get("type")), object.get("offset").getAsFloat());
     }
-
-    @Override
-    public void write(TextOffset textOffset, ByteBuf buf) {
-        ElementTypes.OFFSET_TYPE.write(textOffset.type(), buf);
-        buf.writeFloat(textOffset.offset());
-    }
-
-    @Override
-    public TextOffset read(ByteBuf buf) {
-        return new TextOffset(ElementTypes.OFFSET_TYPE.read(buf), buf.readFloat());
-    }
 }

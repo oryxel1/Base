@@ -28,17 +28,4 @@ public class AddElementType implements TypeWithName<AddElementEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new AddElementEvent(object.get("id").getAsInt(), Types.VECTOR_2F_TYPE.read(object.get("position")), Types.ELEMENT_TYPE.read(object.get("object")), Types.RENDER_LAYER_TYPE.read(object.get("layer")));
     }
-
-    @Override
-    public void write(AddElementEvent addElementEvent, ByteBuf buf) {
-        buf.writeInt(addElementEvent.id());
-        Types.VECTOR_2F_TYPE.write(addElementEvent.position(), buf);
-        Types.ELEMENT_TYPE.write(addElementEvent.element(), buf);
-        Types.RENDER_LAYER_TYPE.write(addElementEvent.layer(), buf);
-    }
-
-    @Override
-    public AddElementEvent read(ByteBuf buf) {
-        return new AddElementEvent(buf.readInt(), Types.VECTOR_2F_TYPE.read(buf), Types.ELEMENT_TYPE.read(buf), Types.RENDER_LAYER_TYPE.read(buf));
-    }
 }

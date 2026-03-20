@@ -40,24 +40,4 @@ public class TextType implements TypeWithName<Text> {
 
         return new Text(segments, object.get("size").getAsInt());
     }
-
-    @Override
-    public void write(Text text, ByteBuf buf) {
-        buf.writeInt(text.segments().size());
-        for (TextSegment segment : text.segments()) {
-            ElementTypes.TEXT_SEGMENT_TYPE.write(segment, buf);
-        }
-        buf.writeInt(text.size());
-    }
-
-    @Override
-    public Text read(ByteBuf buf) {
-        final List<TextSegment> segments = new ArrayList<>();
-        int length = buf.readInt();
-        for (int i = 0; i < length; i++) {
-            segments.add(ElementTypes.TEXT_SEGMENT_TYPE.read(buf));
-        }
-
-        return new Text(segments, buf.readInt());
-    }
 }

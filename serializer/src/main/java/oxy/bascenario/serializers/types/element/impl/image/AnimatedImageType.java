@@ -35,19 +35,4 @@ public class AnimatedImageType implements TypeWithName<AnimatedImage> {
         final JsonArray size = object.getAsJsonArray("size");
         return new AnimatedImage(Types.NULLABLE_FILE_INFO_TYPE.read(object.get("file")), object.get("start").getAsLong(), object.get("loop").getAsBoolean(), Types.COLOR_TYPE.read(object.get("color")), size.get(0).getAsInt(), size.get(1).getAsInt());
     }
-
-    @Override
-    public void write(AnimatedImage image, ByteBuf buf) {
-        Types.NULLABLE_FILE_INFO_TYPE.write(image.file(), buf);
-        buf.writeLong(image.start());
-        buf.writeBoolean(image.loop());
-        Types.COLOR_TYPE.write(image.color(), buf);
-        buf.writeInt(image.width());
-        buf.writeInt(image.height());
-    }
-
-    @Override
-    public AnimatedImage read(ByteBuf buf) {
-        return new AnimatedImage(Types.NULLABLE_FILE_INFO_TYPE.read(buf), buf.readLong(), buf.readBoolean(), Types.COLOR_TYPE.read(buf), buf.readInt(), buf.readInt());
-    }
 }

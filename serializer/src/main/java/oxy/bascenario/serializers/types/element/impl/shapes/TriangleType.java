@@ -35,25 +35,6 @@ public class TriangleType implements TypeWithName<Triangle> {
     }
 
     @Override
-    public void write(Triangle triangle, ByteBuf buf) {
-        buf.writeFloat(triangle.x1());
-        buf.writeFloat(triangle.y1());
-        buf.writeFloat(triangle.x2());
-        buf.writeFloat(triangle.y2());
-        buf.writeFloat(triangle.x3());
-        buf.writeFloat(triangle.y3());
-        Types.COLOR_TYPE.write(triangle.color(), buf);
-    }
-
-    @Override
-    public Triangle read(ByteBuf buf) {
-        return new Triangle(
-                buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(),
-                Types.COLOR_TYPE.read(buf)
-        );
-    }
-
-    @Override
     public String type() {
         return "triangle";
     }

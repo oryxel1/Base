@@ -26,16 +26,4 @@ public class EmoticonType implements TypeWithName<Emoticon> {
         final JsonObject object = element.getAsJsonObject();
         return new Emoticon(object.get("duration").getAsInt(), oxy.bascenario.api.render.elements.emoticon.EmoticonType.valueOf(object.get("type").getAsString()), object.get("sound").getAsBoolean());
     }
-
-    @Override
-    public void write(Emoticon emoticon, ByteBuf buf) {
-        buf.writeInt(emoticon.duration());
-        buf.writeShort(emoticon.type().ordinal());
-        buf.writeBoolean(emoticon.sound());
-    }
-
-    @Override
-    public Emoticon read(ByteBuf buf) {
-        return new Emoticon(buf.readInt(), oxy.bascenario.api.render.elements.emoticon.EmoticonType.values()[buf.readShort()], buf.readBoolean());
-    }
 }

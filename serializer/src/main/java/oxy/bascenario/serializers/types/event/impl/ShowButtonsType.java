@@ -21,14 +21,4 @@ public class ShowButtonsType implements TypeWithName<ShowButtonsEvent> {
     public ShowButtonsEvent read(JsonElement element) {
         return new ShowButtonsEvent(element.getAsBoolean());
     }
-
-    @Override
-    public void write(ShowButtonsEvent showButtonsEvent, ByteBuf buf) {
-        buf.writeBoolean(showButtonsEvent.show());
-    }
-
-    @Override
-    public ShowButtonsEvent read(ByteBuf buf) {
-        return new ShowButtonsEvent(buf.readBoolean());
-    }
 }

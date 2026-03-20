@@ -27,16 +27,4 @@ public class SetColorType implements TypeWithName<SetColorEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new SetColorEvent(object.get("id").getAsInt(), object.get("duration").getAsInt(), Types.COLOR_TYPE.read(object.get("color")));
     }
-
-    @Override
-    public void write(SetColorEvent event, ByteBuf buf) {
-        buf.writeInt(event.id());
-        buf.writeInt(event.duration());
-        Types.COLOR_TYPE.write(event.color(), buf);
-    }
-
-    @Override
-    public SetColorEvent read(ByteBuf buf) {
-        return new SetColorEvent(buf.readInt(), buf.readInt(), Types.COLOR_TYPE.read(buf));
-    }
 }

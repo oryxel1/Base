@@ -31,26 +31,6 @@ public class ScenarioType implements Type<Scenario> {
             timestamps.add(Types.TIMESTAMP_TYPE.read(timestamp));
         }
 
-        return new Scenario(object.get("name").getAsString(), Scenario.SaveType.JSON, timestamps);
-    }
-
-    @Override
-    public void write(Scenario scenario, ByteBuf buf) {
-        Types.STRING_TYPE.write(scenario.getName(), buf);
-
-        buf.writeInt(scenario.getTimestamps().size());
-        scenario.getTimestamps().forEach(timestamp -> Types.TIMESTAMP_TYPE.write(timestamp, buf));
-    }
-
-    @Override
-    public Scenario read(ByteBuf buf) {
-        final String name = Types.STRING_TYPE.read(buf);
-        final List<Timestamp> timestamps = new ArrayList<>();
-        int length = buf.readInt();
-        for (int i = 0; i < length; i++) {
-            timestamps.add(Types.TIMESTAMP_TYPE.read(buf));
-        }
-
-        return new Scenario(name, Scenario.SaveType.BINARY, timestamps);
+        return new Scenario(object.get("name").getAsString(), timestamps);
     }
 }

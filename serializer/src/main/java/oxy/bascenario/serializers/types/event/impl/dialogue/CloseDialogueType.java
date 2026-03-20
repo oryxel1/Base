@@ -21,13 +21,4 @@ public class CloseDialogueType implements TypeWithName<CloseDialogueEvent> {
     public CloseDialogueEvent read(JsonElement element) {
         return new CloseDialogueEvent();
     }
-
-    @Override
-    public void write(CloseDialogueEvent closeDialogueEvent, ByteBuf buf) {
-    }
-
-    @Override
-    public CloseDialogueEvent read(ByteBuf buf) {
-        return new CloseDialogueEvent();
-    }
 }

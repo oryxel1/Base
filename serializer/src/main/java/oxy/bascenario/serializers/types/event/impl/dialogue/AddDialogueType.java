@@ -42,27 +42,4 @@ public class AddDialogueType implements TypeWithName<AddDialogueEvent> {
 
         return new AddDialogueEvent(object.get("index").getAsInt(), object.get("new-line").getAsBoolean(), dialogues.toArray(new Dialogue[0]));
     }
-
-    @Override
-    public void write(AddDialogueEvent event, ByteBuf buf) {
-        buf.writeInt(event.index());
-        buf.writeBoolean(event.newLine());
-        buf.writeInt(event.dialogues().length);
-        for (Dialogue dialogue : event.dialogues()) {
-            Types.DIALOGUE_TYPE.write(dialogue, buf);
-        }
-    }
-
-    @Override
-    public AddDialogueEvent read(ByteBuf buf) {
-        int index = buf.readInt();
-        boolean newLine = buf.readBoolean();
-        final List<Dialogue> dialogues = new ArrayList<>();
-        int length = buf.readInt();
-        for (int i = 0; i < length; i++) {
-            dialogues.add(Types.DIALOGUE_TYPE.read(buf));
-        }
-
-        return new AddDialogueEvent(index, newLine, dialogues.toArray(new Dialogue[0]));
-    }
 }

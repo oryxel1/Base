@@ -25,15 +25,4 @@ public class SoundEventType implements TypeWithName<SoundEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new SoundEvent(object.get("id").getAsInt(), SoundEvent.Event.valueOf(object.get("event").getAsString()));
     }
-
-    @Override
-    public void write(SoundEvent soundEvent, ByteBuf buf) {
-        buf.writeInt(soundEvent.id());
-        buf.writeByte(soundEvent.event().ordinal());
-    }
-
-    @Override
-    public SoundEvent read(ByteBuf buf) {
-        return new SoundEvent(buf.readInt(), SoundEvent.Event.values()[buf.readByte()]);
-    }
 }

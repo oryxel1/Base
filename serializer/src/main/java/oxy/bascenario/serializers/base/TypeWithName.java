@@ -10,7 +10,4 @@ public interface TypeWithName<T> extends Type<T> {
     default JsonElement writeElement(Object o) {
         return write((T) o);
     }
-    default void writeElement(Object t, ByteBuf buf) {
-        write((T) t, buf);
-    }
 }

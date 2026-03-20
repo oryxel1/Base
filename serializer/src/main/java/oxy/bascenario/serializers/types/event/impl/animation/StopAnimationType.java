@@ -26,15 +26,4 @@ public class StopAnimationType implements TypeWithName<StopAnimationEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new StopAnimationEvent(object.get("id").getAsInt(), object.get("name").getAsString());
     }
-
-    @Override
-    public void write(StopAnimationEvent stopAnimationEvent, ByteBuf buf) {
-        buf.writeInt(stopAnimationEvent.id());
-        Types.STRING_TYPE.write(stopAnimationEvent.name(), buf);
-    }
-
-    @Override
-    public StopAnimationEvent read(ByteBuf buf) {
-        return new StopAnimationEvent(buf.readInt(), Types.STRING_TYPE.read(buf));
-    }
 }

@@ -21,16 +21,4 @@ public class Vec3Type implements Type<Vec3> {
         final JsonArray array = element.getAsJsonArray();
         return new Vec3(array.get(0).getAsFloat(), array.get(1).getAsFloat(), array.get(2).getAsFloat());
     }
-
-    @Override
-    public void write(Vec3 vec3, ByteBuf buf) {
-        buf.writeFloat(vec3.x());
-        buf.writeFloat(vec3.y());
-        buf.writeFloat(vec3.z());
-    }
-
-    @Override
-    public Vec3 read(ByteBuf buf) {
-        return new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
-    }
 }

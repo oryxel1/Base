@@ -21,14 +21,4 @@ public class RedirectDialogueType implements TypeWithName<RedirectDialogueEvent>
     public RedirectDialogueEvent read(JsonElement element) {
         return new RedirectDialogueEvent(element.getAsInt());
     }
-
-    @Override
-    public void write(RedirectDialogueEvent redirectDialogueEvent, ByteBuf buf) {
-        buf.writeInt(redirectDialogueEvent.index());
-    }
-
-    @Override
-    public RedirectDialogueEvent read(ByteBuf buf) {
-        return new RedirectDialogueEvent(buf.readInt());
-    }
 }

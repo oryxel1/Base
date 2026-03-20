@@ -33,17 +33,4 @@ public class RectangleType implements TypeWithName<Rectangle> {
         final JsonArray array = object.getAsJsonArray("size");
         return new Rectangle(array.get(0).getAsInt(), array.get(1).getAsInt(), Types.COLOR_TYPE.read(object.get("color")), object.get("outline-only").getAsBoolean());
     }
-
-    @Override
-    public void write(Rectangle rectangle, ByteBuf buf) {
-        buf.writeInt(rectangle.width());
-        buf.writeInt(rectangle.height());
-        Types.COLOR_TYPE.write(rectangle.color(), buf);
-        buf.writeBoolean(rectangle.outlineOnly());
-    }
-
-    @Override
-    public Rectangle read(ByteBuf buf) {
-        return new Rectangle(buf.readInt(), buf.readInt(), Types.COLOR_TYPE.read(buf), buf.readBoolean());
-    }
 }

@@ -54,22 +54,6 @@ public class CompilerResultCompareTest {
 
             System.out.println("Finished, match!");
         }
-        System.out.println("Testing binary type serializer....");
-        {
-            final ByteBuf buf = Unpooled.buffer();
-            try {
-                Types.SCENARIO_TYPE.write(scenario, buf);
-                Scenario parseBack = Types.SCENARIO_TYPE.read(buf);
-
-                if (!parseBack.equals(scenario)) {
-                    throw new RuntimeException("Scenario doesn't match (type JSON)!");
-                }
-
-                System.out.println("Finished, match!");
-            } finally {
-                buf.release();
-            }
-        }
 
         System.out.println("All test passed!");
     }
@@ -77,7 +61,6 @@ public class CompilerResultCompareTest {
     public static Scenario scenario() {
         final Scenario.Builder builder = Scenario.builder();
         builder.name("Test");
-        builder.saveType(Scenario.SaveType.JSON);
 
         builder.add(0, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
         builder.add(0, new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));

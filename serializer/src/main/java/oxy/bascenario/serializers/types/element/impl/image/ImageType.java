@@ -33,17 +33,4 @@ public class ImageType implements TypeWithName<Image> {
         final JsonArray size = object.getAsJsonArray("size");
         return new Image(Types.NULLABLE_FILE_INFO_TYPE.read(object.get("file")), Types.COLOR_TYPE.read(object.get("color")), size.get(0).getAsInt(), size.get(1).getAsInt());
     }
-
-    @Override
-    public void write(Image image, ByteBuf buf) {
-        Types.NULLABLE_FILE_INFO_TYPE.write(image.file(), buf);
-        Types.COLOR_TYPE.write(image.color(), buf);
-        buf.writeInt(image.width());
-        buf.writeInt(image.height());
-    }
-
-    @Override
-    public Image read(ByteBuf buf) {
-        return new Image(Types.NULLABLE_FILE_INFO_TYPE.read(buf), Types.COLOR_TYPE.read(buf), buf.readInt(), buf.readInt());
-    }
 }

@@ -37,23 +37,4 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
 
         return new ShowOptionsEvent(map);
     }
-
-    @Override
-    public void write(ShowOptionsEvent event, ByteBuf buf) {
-        buf.writeInt(event.options().size());
-        event.options().forEach((k, v) -> {
-            Types.STRING_TYPE.write(k, buf);
-            buf.writeInt(v);
-        });
-    }
-
-    @Override
-    public ShowOptionsEvent read(ByteBuf buf) {
-        final Map<String, Integer> map = new LinkedHashMap<>();
-        int length = buf.readInt();
-        for (int i = 0; i < length; i++) {
-            map.put(Types.STRING_TYPE.read(buf), buf.readInt());
-        }
-        return new ShowOptionsEvent(map);
-    }
 }

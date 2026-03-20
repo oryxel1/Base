@@ -27,16 +27,4 @@ public class CircleType implements TypeWithName<Circle> {
         final JsonObject object = element.getAsJsonObject();
         return new Circle(object.get("radius").getAsInt(), Types.COLOR_TYPE.read(object.get("color")), object.get("outline-only").getAsBoolean());
     }
-
-    @Override
-    public void write(Circle circle, ByteBuf buf) {
-        buf.writeFloat(circle.radius());
-        Types.COLOR_TYPE.write(circle.color(), buf);
-        buf.writeBoolean(circle.outlineOnly());
-    }
-
-    @Override
-    public Circle read(ByteBuf buf) {
-        return new Circle(buf.readFloat(), Types.COLOR_TYPE.read(buf), buf.readBoolean());
-    }
 }

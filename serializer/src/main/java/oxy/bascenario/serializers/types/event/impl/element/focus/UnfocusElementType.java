@@ -23,13 +23,4 @@ public class UnfocusElementType implements TypeWithName<UnfocusElementEvent> {
     public UnfocusElementEvent read(JsonElement element) {
         return new UnfocusElementEvent();
     }
-
-    @Override
-    public void write(UnfocusElementEvent unfocusElementEvent, ByteBuf buf) {
-    }
-
-    @Override
-    public UnfocusElementEvent read(ByteBuf buf) {
-        return new UnfocusElementEvent();
-    }
 }

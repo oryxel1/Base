@@ -23,17 +23,6 @@ public class SpriteType implements TypeWithName<Sprite> {
     }
 
     @Override
-    public void write(Sprite sprite, ByteBuf buf) {
-        Types.FILE_INFO_TYPE.write(sprite.skeleton(), buf);
-        Types.FILE_INFO_TYPE.write(sprite.atlas(), buf);
-    }
-
-    @Override
-    public Sprite read(ByteBuf buf) {
-        return new Sprite(Types.FILE_INFO_TYPE.read(buf), Types.FILE_INFO_TYPE.read(buf));
-    }
-
-    @Override
     public String type() {
         return "sprite";
     }

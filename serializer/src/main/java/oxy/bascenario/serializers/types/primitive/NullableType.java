@@ -23,21 +23,4 @@ public record NullableType<T>(Type<T> type) implements Type<T> {
 
         return type.read(element);
     }
-
-    @Override
-    public void write(T t, ByteBuf buf) {
-        buf.writeBoolean(t != null);
-        if (t != null) {
-            type.write(t, buf);
-        }
-    }
-
-    @Override
-    public T read(ByteBuf buf) {
-        if (!buf.readBoolean()) {
-            return null;
-        }
-
-        return type.read(buf);
-    }
 }

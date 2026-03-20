@@ -36,16 +36,6 @@ public class Types {
         public Integer read(JsonElement element) {
             return element.getAsInt();
         }
-
-        @Override
-        public void write(Integer integer, ByteBuf buf) {
-            buf.writeInt(integer);
-        }
-
-        @Override
-        public Integer read(ByteBuf buf) {
-            return buf.readInt();
-        }
     });
 
     public static final Type<String> STRING_TYPE = new StringType();

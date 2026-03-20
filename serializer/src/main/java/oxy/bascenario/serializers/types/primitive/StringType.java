@@ -15,18 +15,4 @@ public final class StringType implements Type<String> {
     public String read(JsonElement object) {
         return object.getAsString();
     }
-
-    @Override
-    public void write(String s, ByteBuf buf) {
-        final byte[] bytes = s.getBytes();
-        buf.writeInt(bytes.length);
-        buf.writeBytes(bytes);
-    }
-
-    @Override
-    public String read(ByteBuf buf) {
-        final byte[] array = new byte[buf.readInt()];
-        buf.readBytes(array);
-        return new String(array);
-    }
 }

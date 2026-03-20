@@ -25,15 +25,4 @@ public class StopSoundType implements TypeWithName<StopSoundEvent> {
         final JsonObject object = element.getAsJsonObject();
         return new StopSoundEvent(object.get("id").getAsInt(), object.get("duration").getAsInt());
     }
-
-    @Override
-    public void write(StopSoundEvent event, ByteBuf buf) {
-        buf.writeInt(event.id());
-        buf.writeInt(event.duration());
-    }
-
-    @Override
-    public StopSoundEvent read(ByteBuf buf) {
-        return new StopSoundEvent(buf.readInt(), buf.readInt());
-    }
 }

@@ -32,18 +32,4 @@ public class RotateElementType implements TypeWithName<RotateElementEvent> {
                 Types.VECTOR_3F_TYPE.read(object.get("rotation")), Types.EASING_TYPE.read(object.get("easing"))
         );
     }
-
-    @Override
-    public void write(RotateElementEvent event, ByteBuf buf) {
-        buf.writeInt(event.id());
-        Types.NULLABLE_INT.write(event.subId(), buf);
-        buf.writeInt(event.duration());
-        Types.VECTOR_3F_TYPE.write(event.rotation(), buf);
-        Types.EASING_TYPE.write(event.easing(), buf);
-    }
-
-    @Override
-    public RotateElementEvent read(ByteBuf buf) {
-        return new RotateElementEvent(buf.readInt(), Types.NULLABLE_INT.read(buf), buf.readInt(), Types.VECTOR_3F_TYPE.read(buf), Types.EASING_TYPE.read(buf));
-    }
 }

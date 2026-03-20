@@ -6,7 +6,4 @@ import io.netty.buffer.ByteBuf;
 public interface Type<T> {
     JsonElement write(T t);
     T read(JsonElement element);
-
-    void write(T t, ByteBuf buf);
-    T read(ByteBuf buf);
 }

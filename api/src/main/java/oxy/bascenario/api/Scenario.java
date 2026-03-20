@@ -15,8 +15,6 @@ import java.util.Objects;
 @Getter
 public class Scenario {
     private final String name;
-    private final SaveType saveType;
-
     private final List<Timestamp> timestamps;
 
     @Override
@@ -39,7 +37,7 @@ public class Scenario {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, saveType, timestamps);
+        return Objects.hash(name, timestamps);
     }
 
     public static Builder builder() {
@@ -48,7 +46,6 @@ public class Scenario {
 
     public Builder toBuilder() {
         final Builder builder = new Builder(timestamps);
-        builder.saveType = saveType;
         builder.name = name;
         return builder;
     }
@@ -56,7 +53,6 @@ public class Scenario {
     @RequiredArgsConstructor
     public static final class Builder {
         private String name = "";
-        private SaveType saveType = SaveType.JSON;
         private final List<Timestamp> timestamps;
 
         public Builder() {
@@ -69,15 +65,6 @@ public class Scenario {
 
         public Builder name(String name) {
             this.name = name;
-            return this;
-        }
-
-        public SaveType saveType() {
-            return this.saveType;
-        }
-
-        public Builder saveType(SaveType saveType) {
-            this.saveType = saveType;
             return this;
         }
 
@@ -96,11 +83,7 @@ public class Scenario {
         }
 
         public Scenario build() {
-            return new Scenario(this.name, this.saveType, this.timestamps);
+            return new Scenario(this.name, this.timestamps);
         }
-    }
-
-    public enum SaveType {
-        BINARY, JSON
     }
 }

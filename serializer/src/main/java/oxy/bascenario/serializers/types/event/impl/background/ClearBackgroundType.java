@@ -21,14 +21,4 @@ public class ClearBackgroundType implements TypeWithName<ClearBackgroundEvent> {
     public ClearBackgroundEvent read(JsonElement element) {
         return new ClearBackgroundEvent(element.getAsInt());
     }
-
-    @Override
-    public void write(ClearBackgroundEvent clearBackgroundEvent, ByteBuf buf) {
-        buf.writeInt(clearBackgroundEvent.duration());
-    }
-
-    @Override
-    public ClearBackgroundEvent read(ByteBuf buf) {
-        return new ClearBackgroundEvent(buf.readInt());
-    }
 }
