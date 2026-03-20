@@ -30,8 +30,8 @@ which you can watch an [example video here](https://www.youtube.com/watch?v=eyiE
 Not Yet!
 
 ### Jar File
-If you want to download the jar file to run this, just download in [actions](https://github.com/oryxel1/Base/actions)
-or alternatively in [releases](https://github.com/oryxel1/Base/releases) sections.
+If you want to download the jar file to run this, just download in [releases](https://github.com/oryxel1/Base/releases)
+or alternatively in [actions](https://github.com/oryxel1/Base/actions) sections.
 
 ## Usage and examples
 Download **Java 21** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
