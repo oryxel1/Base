@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.event.impl.color;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
@@ -40,28 +40,5 @@ public class ColorOverlayType implements TypeWithName<ColorOverlayEvent> {
         }
 
         return new ColorOverlayEvent(Types.NULLABLE_INT.read(object.get("id")), object.get("duration").getAsInt(), Types.COLOR_TYPE.read(object.get("color")), layer);
-    }
-
-    @Override
-    public void write(ColorOverlayEvent event, ByteBuf buf) {
-        Types.NULLABLE_INT.write(event.id().orElse(null), buf);
-        buf.writeInt(event.duration());
-        Types.COLOR_TYPE.write(event.color(), buf);
-        if (event.id().isEmpty()) {
-            Types.RENDER_LAYER_TYPE.write(event.renderLayer(), buf);
-        }
-    }
-
-    @Override
-    public ColorOverlayEvent read(ByteBuf buf) {
-        final Integer id = Types.NULLABLE_INT.read(buf);
-        int duration = buf.readInt();
-        Color color = Types.COLOR_TYPE.read(buf);
-        RenderLayer layer = null;
-        if (id == null) {
-            layer = Types.RENDER_LAYER_TYPE.read(buf);
-        }
-
-        return new ColorOverlayEvent(id, duration, color, layer);
     }
 }

@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.event;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
@@ -112,27 +112,5 @@ public class EventTypes implements Type<Event> {
         }
 
         return (Event) type.read(object.get("event"));
-    }
-
-    @Override
-    public void write(Event o, ByteBuf buf) {
-        final TypeWithName<?> type = CLASS_TO_TYPE.get(o.getClass());
-        if (type == null) {
-            throw new RuntimeException("Invalid event class type: " + o.getClass() + "!");
-        }
-
-        buf.writeInt(type.type().hashCode());
-        type.writeElement(o, buf);
-    }
-
-    @Override
-    public Event read(ByteBuf buf) {
-        final int id = buf.readInt();
-        final TypeWithName<?> type = ID_TO_TYPE.get(id);
-        if (type == null) {
-            throw new RuntimeException("Invalid event with id: " + id + "!");
-        }
-
-        return (Event) type.read(buf);
     }
 }

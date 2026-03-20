@@ -101,9 +101,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         }
 
         if (ImGui.beginMenu("Save")) {
-            boolean asJson;
-            if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
-                scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
+            if (ImGui.menuItem("Save")) {
                 save();
             }
             ImGui.endMenu();
@@ -123,13 +121,13 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.endMainMenuBar();
 
         if (confirmExitAndDiscard) {
-            ImGui.openPopup("AreYouSureeeeeee");
+            ImGui.openPopup("AreYouSure");
             confirmExitAndDiscard = false;
         }
 
-        if (ImGui.beginPopupModal("AreYouSureeeeeee", ImGuiWindowFlags.NoResize)) {
-            ImGui.text("You rlly want to discard all that hard works? Are you sureeeeee?");
-            if (ImGui.button("Nevermine let's save and quit!")) {
+        if (ImGui.beginPopupModal("AreYouSure", ImGuiWindowFlags.NoResize)) {
+            ImGui.text("You really want to discard all that hard works? Are you sure?");
+            if (ImGui.button("Never mind let's save and quit!")) {
                 save();
                 Launcher.WINDOW.setScreen(prevScreen);
             }

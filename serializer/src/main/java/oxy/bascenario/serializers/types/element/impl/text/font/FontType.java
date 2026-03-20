@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.element.impl.text.font;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.render.elements.text.font.Font;
 import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.Type;
@@ -31,26 +31,5 @@ public class FontType implements Type<Font> {
         }
 
         return new Font(null, ElementTypes.FONT_STYLE_TYPE.read(object.get("style")), ElementTypes.FONT_TYPE_TYPE.read(object.get("type")));
-    }
-
-    @Override
-    public void write(Font font, ByteBuf buf) {
-        buf.writeBoolean(font.file() != null);
-        if (font.file() != null) {
-            Types.FILE_INFO_TYPE.write(font.file(), buf);
-            return;
-        }
-
-        ElementTypes.FONT_STYLE_TYPE.write(font.style(), buf);
-        ElementTypes.FONT_TYPE_TYPE.write(font.type(), buf);
-    }
-
-    @Override
-    public Font read(ByteBuf buf) {
-        if (buf.readBoolean()) {
-            return new Font(Types.FILE_INFO_TYPE.read(buf), null, null);
-        }
-
-        return new Font(null, ElementTypes.FONT_STYLE_TYPE.read(buf), ElementTypes.FONT_TYPE_TYPE.read(buf));
     }
 }

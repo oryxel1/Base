@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.element.impl.text;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.render.elements.text.TextStyle;
 import oxy.bascenario.serializers.base.Type;
 
@@ -26,31 +26,6 @@ public class TextStylesType implements Type<Set<TextStyle>> {
         final JsonArray array = element.getAsJsonArray();
         for (JsonElement element1 : array) {
             styles.add(TextStyle.valueOf(element1.getAsString()));
-        }
-
-        return styles;
-    }
-
-    @Override
-    public void write(Set<TextStyle> textStyles, ByteBuf buf) {
-        int flags = 0;
-        for (TextStyle style : textStyles) {
-            flags |= style.getValue();
-        }
-        buf.writeByte(flags);
-    }
-
-    @Override
-    public Set<TextStyle> read(ByteBuf buf) {
-        int flags = buf.readUnsignedByte();
-
-        final Set<TextStyle> styles = EnumSet.noneOf(TextStyle.class);
-        for (TextStyle style : TextStyle.values()) {
-            if ((flags & style.getValue()) == 0) {
-                continue;
-            }
-
-            styles.add(style);
         }
 
         return styles;

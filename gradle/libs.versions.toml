@@ -13,9 +13,12 @@ imgui = "1.90.0"
 audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
-netty = "4.2.9.Final"
+#netty = "4.2.9.Final"
+zt-zip = "1.17"
 
 [libraries]
+zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }
+
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 configurate-yaml = {  module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
@@ -54,5 +57,5 @@ unnamed-mocha = { module = "team.unnamed:mocha", version.ref = "mocha" }
 jcraft-jorbis = { module = "org.jcraft:jorbis", version.ref = "jorbis" }
 javazoom-jlayer = { module = "javazoom:jlayer", version.ref = "jlayer" }
 
-netty-buffer = { module = "io.netty:netty-buffer", version.ref = "netty" }
+#netty-buffer = { module = "io.netty:netty-buffer", version.ref = "netty" }
 #jthink-jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }

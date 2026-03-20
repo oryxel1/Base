@@ -3,7 +3,7 @@ package oxy.bascenario.serializers.types.event.impl.dialogue;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
 import oxy.bascenario.api.event.dialogue.enums.TextOffset;
@@ -52,37 +52,5 @@ public class StartDialogueType implements TypeWithName<StartDialogueEvent> {
                 ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), object.get("index").getAsInt(), object.get("name").getAsString(), object.get("association").getAsString(),
                 object.get("background").getAsBoolean(), dialogues.toArray(new Dialogue[0])
         );
-    }
-
-    @Override
-    public void write(StartDialogueEvent event, ByteBuf buf) {
-        ElementTypes.TEXT_OFFSET_TYPE.write(event.offset(), buf);
-        ElementTypes.FONT_TYPE_TYPE.write(event.type(), buf);
-        buf.writeInt(event.index());
-        Types.STRING_TYPE.write(event.name(), buf);
-        Types.STRING_TYPE.write(event.association(), buf);
-        buf.writeBoolean(event.background());
-
-        buf.writeInt(event.dialogues().length);
-        for (Dialogue dialogue : event.dialogues()) {
-            Types.DIALOGUE_TYPE.write(dialogue, buf);
-        }
-    }
-
-    @Override
-    public StartDialogueEvent read(ByteBuf buf) {
-        TextOffset offset = ElementTypes.TEXT_OFFSET_TYPE.read(buf);
-        FontType type = ElementTypes.FONT_TYPE_TYPE.read(buf);
-        int index = buf.readInt();
-        String name = Types.STRING_TYPE.read(buf), association = Types.STRING_TYPE.read(buf);
-        boolean background = buf.readBoolean();
-
-        final List<Dialogue> dialogues = new ArrayList<>();
-        int length = buf.readInt();
-        for (int i = 0; i < length; i++) {
-            dialogues.add(Types.DIALOGUE_TYPE.read(buf));
-        }
-
-        return new StartDialogueEvent(offset, type, index, name, association, background, dialogues.toArray(new Dialogue[0]));
     }
 }

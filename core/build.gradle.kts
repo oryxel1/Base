@@ -56,6 +56,4 @@ dependencies {
     }
 
     implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
-
-    implementation(libs.netty.buffer)
 }

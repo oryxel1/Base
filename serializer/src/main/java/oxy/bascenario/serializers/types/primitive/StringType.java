@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.primitive;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.serializers.base.Type;
 
 public final class StringType implements Type<String> {
@@ -14,19 +14,5 @@ public final class StringType implements Type<String> {
     @Override
     public String read(JsonElement object) {
         return object.getAsString();
-    }
-
-    @Override
-    public void write(String s, ByteBuf buf) {
-        final byte[] bytes = s.getBytes();
-        buf.writeInt(bytes.length);
-        buf.writeBytes(bytes);
-    }
-
-    @Override
-    public String read(ByteBuf buf) {
-        final byte[] array = new byte[buf.readInt()];
-        buf.readBytes(array);
-        return new String(array);
     }
 }

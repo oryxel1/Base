@@ -2,8 +2,6 @@ package oxy.bascenario.managers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import oxy.bascenario.Base;
@@ -25,12 +23,10 @@ import java.util.Map;
 public class ScenarioManager implements ScenarioManagerApi {
     public static final File SAVE_DIR = new File(Base.SAVE_DIR, "scenarios");
 
+    @Getter
     private final Map<String, Scenario> scenarios = new HashMap<>();
     public void put(String name, Scenario scenario) {
         this.scenarios.put(name, scenario);
-    }
-    public Collection<Scenario> scenarios() {
-        return scenarios.values();
     }
 
     @SneakyThrows
@@ -52,14 +48,6 @@ public class ScenarioManager implements ScenarioManagerApi {
                 final Scenario scenario = Types.SCENARIO_TYPE.read(object);
                 scenarios.put(scenario.getName(), scenario);
             } catch (Exception ignored) {
-                ByteBuf buf = Unpooled.wrappedBuffer(bytes);
-                try {
-                    Scenario scenario = Types.SCENARIO_TYPE.read(buf);
-                    scenarios.put(scenario.getName(), scenario);
-                } catch (Exception ignored1) {
-                } finally {
-                    buf.release();
-                }
             }
         }
     }
@@ -119,21 +107,8 @@ public class ScenarioManager implements ScenarioManagerApi {
         path.mkdirs();
 
         final File save = new File(path, "scenario.base");
-        if (scenario.getSaveType() == Scenario.SaveType.JSON) {
-            try (FileWriter writer = new FileWriter(save)) {
-                GsonUtils.getGson().toJson(Types.SCENARIO_TYPE.write(scenario), writer);
-            }
-        } else {
-            final ByteBuf buf = Unpooled.buffer();
-            try {
-                Types.SCENARIO_TYPE.write(scenario, buf);
-                final byte[] bytes = new byte[buf.readableBytes()];
-                buf.readBytes(bytes);
-
-                Files.write(save.toPath(), bytes);
-            } finally {
-                buf.release();
-            }
+        try (FileWriter writer = new FileWriter(save)) {
+            GsonUtils.getGson().toJson(Types.SCENARIO_TYPE.write(scenario), writer);
         }
     }
 }

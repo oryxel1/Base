@@ -22,6 +22,8 @@ dependencies {
     implementation(libs.raphimc.audiomixer)
 
     implementation(libs.commons.animations)
+
+    implementation(libs.zt.zip)
 }
 
 tasks {
