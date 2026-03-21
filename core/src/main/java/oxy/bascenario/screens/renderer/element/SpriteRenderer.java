@@ -167,7 +167,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
     private void updateSkeleton(Skeleton skeleton) {
         final WindowInterface window = ThinGL.windowInterface();
-        float width = ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = ScenarioScreen.RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 23) : window.getFramebufferHeight();
+        float width = ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = ScenarioScreen.RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 46) : window.getFramebufferHeight();
 
         float x = this.position.x() + this.offset.x(), y = this.position.y() + this.offset.y();
         
@@ -179,7 +179,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             posY /= ratio;
 
             posY += window.getFramebufferHeight() - height;
-            posY -= ImGui.getWindowPosY() + 23;
+            posY -= ImGui.getWindowPosY() + 46;
         }
 
         skeleton.setPosition(posX, posY);

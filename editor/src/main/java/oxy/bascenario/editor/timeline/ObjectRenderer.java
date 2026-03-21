@@ -132,7 +132,7 @@ public class ObjectRenderer {
         float length = ImGui.getMouseDragDelta().x * ImGui.getMouseDragDelta().x + ImGui.getMouseDragDelta().y * ImGui.getMouseDragDelta().y;
         if (ImGui.isMouseClicked(0) && over) {
             timeline.setSelectedObject(this.object); // Selected an element.
-        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 5 * 5) {
+        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 2 * 2) {
             // Start dragging an object if we can!
             timeline.setDraggingObject(new ObjectDragDrop(this.object) {
                 @Override
