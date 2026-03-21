@@ -94,11 +94,11 @@ public class ObjectRenderer {
         // This part check for object snapping.
         float endDis = Math.abs((this.x + this.width) - x), startDis = Math.abs(this.x - (x + width));
         if (endDis < 3) {
-            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x + this.width, ImGui.getWindowPosY() + 2), new ImVec2(this.x + this.width + 2, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
-            System.out.println("Pretty close to end.");
+            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x + this.width, ImGui.getWindowPosY()), new ImVec2(this.x + this.width + 1, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
+            dragging.renderer.draggingX = -((this.x + this.width + 0.01f) - ImGui.getMousePosX());
         } else if (startDis < 3) {
-            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x - 2, ImGui.getWindowPosY() + 2), new ImVec2(this.x, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
-            System.out.println("Pretty close to start.");
+            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x - 1, ImGui.getWindowPosY()), new ImVec2(this.x, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
+            dragging.renderer.draggingX = -((this.x - width - 0.01f) - ImGui.getMousePosX());
         }
 
         // This code part checks if the drag result is overlapping something else.
