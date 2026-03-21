@@ -122,12 +122,15 @@ public class ScenarioListScreen extends ExtendableScreen {
 //                }
 
                 if (ImGui.smallButton("Export##" + ImGuiUtils.COUNTER++)) {
-                    final File folder = new File(NFDUtils.pickFolder());
-                    final File path = new File(folder, scenario.getName() + ".zip");
-                    ZipUtil.pack(new File(ScenarioManager.SAVE_DIR, scenario.getName()), path);
-                    try {
-                        Desktop.getDesktop().open(folder);
-                    } catch (IOException ignored) {
+                    String folderS = NFDUtils.pickFolder();
+                    if (!folderS.isEmpty()) {
+                        final File folder = new File(folderS);
+                        final File path = new File(folder, scenario.getName() + ".zip");
+                        ZipUtil.pack(new File(ScenarioManager.SAVE_DIR, scenario.getName()), path);
+                        try {
+                            Desktop.getDesktop().open(folder);
+                        } catch (IOException ignored) {
+                        }
                     }
                 }
 
