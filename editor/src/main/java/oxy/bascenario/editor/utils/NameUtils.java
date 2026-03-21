@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.utils;
 
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -10,6 +11,8 @@ import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
+import oxy.bascenario.api.event.element.focus.FocusElementEvent;
+import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
@@ -62,6 +65,10 @@ public class NameUtils {
             case LocationInfo ignored -> "Location Info";
             case SoundAsElement ignored -> "Sound";
             case AnimatedImage ignored -> "Gif";
+
+            case ShowButtonsEvent ignored -> "Show Buttons";
+            case FocusElementEvent ignored -> "Focus Object";
+            case UnfocusElementEvent ignored -> "Un-focus Object";
 
             default -> object.getClass().getSimpleName();
         };
