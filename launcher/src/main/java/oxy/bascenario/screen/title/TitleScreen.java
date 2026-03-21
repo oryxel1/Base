@@ -59,13 +59,14 @@ public class TitleScreen extends ExtendableScreen {
         SkeletonData skeletonData = new SkeletonBinary(this.atlas).readSkeletonData(Gdx.files.internal("assets/base/uis/title/CH0086_home.skel"));
         this.skeleton = new Skeleton(skeletonData);
         this.state = new AnimationState(new AnimationStateData(skeletonData));
-        this.state.setAnimation(0, "Start_Idle_01", false);
-        this.state.addAnimation(0, "Idle_01", true, this.state.getTracks().get(0).getTrackComplete());
+//        this.state.setAnimation(0, "Start_Idle_01", false);
+        //        this.state.addAnimation(0, "Idle_01", true, this.state.getTracks().get(0).getTrackComplete());
+        this.state.setAnimation(0, "Idle_01", true);
         this.state.setAnimation(1, "Snow_00_R", true);
 
-        Sound sound = Sound.sound(new FileInfo("assets/base/sounds/Track_67_KARUT_Someday,_sometime.ogg", false, true), true);
-        id = sound.id();
-        AudioManager.getInstance().play(sound, 1000L);
+//        Sound sound = Sound.sound(new FileInfo("assets/base/sounds/Track_67_KARUT_Someday,_sometime.ogg", false, true), true);
+//        id = sound.id();
+//        AudioManager.getInstance().play(sound, 1000L);
 
         initComponents();
     }
@@ -129,6 +130,10 @@ public class TitleScreen extends ExtendableScreen {
 
     @Override
     public void mouseClicked(double mouseX, double mouseY, int button) {
+        if (buttonsBounceIn.isRunning()) {
+            return;
+        }
+
         this.buttons.forEach(b -> b.mouseClicked(mouseX, mouseY, button));
     }
 
