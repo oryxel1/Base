@@ -169,7 +169,10 @@ public class Timeline {
         }
 
         // Render dragging separately on top of everything...
-        this.draggingObject.object.renderer.render();
+        if (this.draggingObject != null) {
+            this.draggingObject.object.renderer.render();
+        }
+
         if (this.draggingObject == null || !this.draggingObject.isWaiting()) {
             ImGui.end();
             return;
