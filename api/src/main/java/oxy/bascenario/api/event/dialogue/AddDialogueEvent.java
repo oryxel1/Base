@@ -16,6 +16,6 @@ public record AddDialogueEvent(int index, boolean newLine, Dialogue... dialogues
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         AddDialogueEvent that = (AddDialogueEvent) o;
-        return index == that.index && Objects.deepEquals(dialogues, that.dialogues);
+        return index == that.index && newLine == that.newLine && Objects.deepEquals(dialogues, that.dialogues);
     }
 }
