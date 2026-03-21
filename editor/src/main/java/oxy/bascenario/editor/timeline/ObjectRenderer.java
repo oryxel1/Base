@@ -64,7 +64,7 @@ public class ObjectRenderer {
 
         // This part actually draw the object, nothing crazy here...
         final ImDrawList drawList = ImGui.getWindowDrawList();
-        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(75, 114, 180), 5f);
+        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(0.24f, 0.34f, 0.44f), 5f);
         if (timeline.getSelectedObject() == this.object) {
             drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(255, 255, 255), 5f);
         }
@@ -132,7 +132,7 @@ public class ObjectRenderer {
         float length = ImGui.getMouseDragDelta().x * ImGui.getMouseDragDelta().x + ImGui.getMouseDragDelta().y * ImGui.getMouseDragDelta().y;
         if (ImGui.isMouseClicked(0) && over) {
             timeline.setSelectedObject(this.object); // Selected an element.
-        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 2 * 2) {
+        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 1) {
             // Start dragging an object if we can!
             timeline.setDraggingObject(new ObjectDragDrop(this.object) {
                 @Override

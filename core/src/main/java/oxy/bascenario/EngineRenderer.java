@@ -83,6 +83,8 @@ public final class EngineRenderer extends Game {
             }
         }
 
+        ImGuiUtils.setupTheme();
+
         FontUtils.loadFonts();
 
         this.setScreen(this.initialScreen);
