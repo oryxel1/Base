@@ -44,31 +44,34 @@ public class ScenarioListScreen extends ExtendableScreen {
             popupNewScenario = true;
         }
         if (ImGui.menuItem("Import Scenario")) {
-            final File file = new File(NFDUtils.pickFile("zip,rar"));
-            if (!ZipUtil.containsEntry(file, "scenario.base")) {
-                importingFailed = "Import scenario failed, is this the correct format?";
-                popupImportingFailed = true;
-            } else {
-                Scenario scenario = null;
-                final byte[] bytes = ZipUtil.unpackEntry(file, "scenario.base");
-                try {
-                    JsonObject object = JsonParser.parseString(new String(bytes)).getAsJsonObject();
-                    scenario = Types.SCENARIO_TYPE.read(object);
-                } catch (Exception ignored) {
-                }
-                if (scenario == null) {
-                    importingFailed = "Import scenario failed, failed to read scenario!";
+            String fileS = NFDUtils.pickFile("zip,rar");
+            if (!fileS.isEmpty()) {
+                final File file = new File(fileS);
+                if (!ZipUtil.containsEntry(file, "scenario.base")) {
+                    importingFailed = "Import scenario failed, is this the correct format?";
                     popupImportingFailed = true;
                 } else {
-                    File path = new File(ScenarioManager.SAVE_DIR, scenario.getName());
-                    if (path.exists()) {
-                        importingFailed = "File/Scenario Folder with this name already exist, please delete/rename it first";
+                    Scenario scenario = null;
+                    final byte[] bytes = ZipUtil.unpackEntry(file, "scenario.base");
+                    try {
+                        JsonObject object = JsonParser.parseString(new String(bytes)).getAsJsonObject();
+                        scenario = Types.SCENARIO_TYPE.read(object);
+                    } catch (Exception ignored) {
+                    }
+                    if (scenario == null) {
+                        importingFailed = "Import scenario failed, failed to read scenario!";
                         popupImportingFailed = true;
                     } else {
-                        path.mkdirs();
+                        File path = new File(ScenarioManager.SAVE_DIR, scenario.getName());
+                        if (path.exists()) {
+                            importingFailed = "File/Scenario Folder with this name already exist, please delete/rename it first";
+                            popupImportingFailed = true;
+                        } else {
+                            path.mkdirs();
 
-                        ZipUtil.unpack(file, path);
-                        Base.instance().scenarioManager().put(scenario.getName(), scenario);
+                            ZipUtil.unpack(file, path);
+                            Base.instance().scenarioManager().put(scenario.getName(), scenario);
+                        }
                     }
                 }
             }
@@ -122,12 +125,15 @@ public class ScenarioListScreen extends ExtendableScreen {
 //                }
 
                 if (ImGui.smallButton("Export##" + ImGuiUtils.COUNTER++)) {
-                    final File folder = new File(NFDUtils.pickFolder());
-                    final File path = new File(folder, scenario.getName() + ".zip");
-                    ZipUtil.pack(new File(ScenarioManager.SAVE_DIR, scenario.getName()), path);
-                    try {
-                        Desktop.getDesktop().open(folder);
-                    } catch (IOException ignored) {
+                    String folderS = NFDUtils.pickFolder();
+                    if (!folderS.isEmpty()) {
+                        final File folder = new File(folderS);
+                        final File path = new File(folder, scenario.getName() + ".zip");
+                        ZipUtil.pack(new File(ScenarioManager.SAVE_DIR, scenario.getName()), path);
+                        try {
+                            Desktop.getDesktop().open(folder);
+                        } catch (IOException ignored) {
+                        }
                     }
                 }
 

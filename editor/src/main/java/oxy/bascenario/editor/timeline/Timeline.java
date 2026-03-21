@@ -30,6 +30,7 @@ public class Timeline {
     public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait, Vec2 vec2) {
         final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait, vec2);
         this.objects.add(objectOrEvent);
+        this.objects.sort(Comparator.comparingInt(o -> o.track));
         this.objects.sort(Comparator.comparingLong(o -> o.start));
 
         queueUndo(() -> this.objects.remove(objectOrEvent));
@@ -141,6 +142,7 @@ public class Timeline {
         }
 
         if (this.queueUpdate) {
+            this.objects.sort(Comparator.comparingInt(o -> o.track));
             this.objects.sort(Comparator.comparingLong(o -> o.start));
             this.screen.update();
             this.queueUpdate = false;
@@ -169,7 +171,10 @@ public class Timeline {
         }
 
         // Render dragging separately on top of everything...
-        this.draggingObject.object.renderer.render();
+        if (this.draggingObject != null) {
+            this.draggingObject.object.renderer.render();
+        }
+
         if (this.draggingObject == null || !this.draggingObject.isWaiting()) {
             ImGui.end();
             return;

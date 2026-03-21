@@ -5,6 +5,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiTableColumnFlags;
 import imgui.flag.ImGuiTableFlags;
 import imgui.flag.ImGuiTreeNodeFlags;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.editor.timeline.Timeline;
@@ -112,31 +113,40 @@ public class AssetsUI {
                 ImGui.tableNextRow();
                 ImGui.tableNextColumn();
                 if (ImGui.treeNodeEx(folder.getKey(), ImGuiTreeNodeFlags.SpanAllColumns | ImGuiTreeNodeFlags.DefaultOpen)) {
-                    renderAssets(timeline, folder.getValue(), consumer, true);
+                    renderAssets(scenario.name(), timeline, folder.getValue(), consumer, true);
                     ImGui.treePop();
                 }
             }
 
-            renderAssets(timeline, noFolders, consumer, false);
+            renderAssets(scenario.name(), timeline, noFolders, consumer, false);
 
             ImGui.endTable();
         }
     }
 
-    private static void renderAssets(Timeline timeline, List<FileInfo> files, Consumer<FileInfo> consumer, boolean split) {
+    private static void renderAssets(String scenario, Timeline timeline, List<FileInfo> files, Consumer<FileInfo> consumer, boolean split) {
         for (FileInfo file : files) {
             ImGui.tableNextRow();
             ImGui.tableNextColumn();
-            if (ImGui.selectable(split ? file.path().split("\\\\")[1] : file.path())) {
-                if (consumer != null) {
-                    if (object == timeline.getSelectedObject()) {
-                        consumer.accept(file);
-                    }
-                    AssetsUI.consumer = null;
-                }
 
-                ImGui.closeCurrentPopup();
-                filter = null;
+            if (consumer == null && filter == null) {
+                ImGui.text(split ? file.path().split("\\\\")[1] : file.path());
+                ImGui.sameLine();
+                if (ImGui.smallButton("Delete##" + ImGuiUtils.COUNTER++)) {
+                    Base.instance().scenarioManager().file(scenario, file).delete();
+                }
+            } else {
+                if (ImGui.selectable(split ? file.path().split("\\\\")[1] : file.path())) {
+                    if (consumer != null) {
+                        if (object == timeline.getSelectedObject()) {
+                            consumer.accept(file);
+                        }
+                        AssetsUI.consumer = null;
+                    }
+
+                    ImGui.closeCurrentPopup();
+                    filter = null;
+                }
             }
         }
     }

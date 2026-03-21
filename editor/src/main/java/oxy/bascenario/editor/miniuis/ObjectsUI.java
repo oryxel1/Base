@@ -37,7 +37,6 @@ public class ObjectsUI {
 
     public void render() {
         ImGui.begin("Objects");
-
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
         add("Preview",
