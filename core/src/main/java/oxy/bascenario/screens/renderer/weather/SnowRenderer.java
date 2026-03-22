@@ -14,8 +14,8 @@ public class SnowRenderer {
     private final Queue<SnowDrop> snows = new ConcurrentLinkedQueue<>();
 
     private long time = System.currentTimeMillis();
-    public void render() {
-        if (System.currentTimeMillis() - time > 200) {
+    public void render(boolean add) {
+        if (System.currentTimeMillis() - time > 200 && add) {
             snows.add(new SnowDrop(RandomUtils.randomInt(20, 120), RandomUtils.randomInt(0, 1920), RandomUtils.randomInt(1, 4)));
             time = System.currentTimeMillis();
         }

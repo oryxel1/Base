@@ -12,9 +12,11 @@ import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 public class RainRenderer {
     private final Queue<RainDrop> drops = new ConcurrentLinkedQueue<>();
 
-    public void render() {
-        while (drops.size() < 10) {
-            drops.add(new RainDrop(RandomUtils.randomInt(200, 1000), RandomUtils.randomInt(0, 1920), RandomUtils.randomInt(20, 200)));
+    public void render(boolean add) {
+        if (add) {
+            while (drops.size() < 10) {
+                drops.add(new RainDrop(RandomUtils.randomInt(200, 1000), RandomUtils.randomInt(0, 1920), RandomUtils.randomInt(20, 200)));
+            }
         }
 
         drops.forEach(RainDrop::render);

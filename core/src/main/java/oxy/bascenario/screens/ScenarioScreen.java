@@ -240,11 +240,8 @@ public class ScenarioScreen extends ExtendableScreen {
                     RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
-        if (weather == Weather.RAIN) {
-            rainRenderer.render();
-        } else if (weather == Weather.SNOW) {
-            snowRenderer.render();
-        }
+        rainRenderer.render(weather == Weather.RAIN);
+        snowRenderer.render(weather == Weather.SNOW);
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
