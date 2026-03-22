@@ -53,7 +53,15 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         AssetsUI.render(timeline, scenario);
 
         ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0, 0, 0, 0);
-        ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground);
+        ImGui.begin("Scenario View", ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.MenuBar);
+        ImGui.beginMenuBar();
+        if (ImGui.menuItem("Play", false, !timeline.isPlaying())) {
+            setPlaying(true);
+        }
+        if (ImGui.menuItem("Pause", false, timeline.isPlaying())) {
+            setPlaying(false);
+        }
+        ImGui.endMenuBar();
         renderScenarioWindow();
         ImGui.end();
 
@@ -70,8 +78,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
         ThinGLUtils.GLOBAL_RENDER_STACK.pushMatrix();
         ThinGLUtils.GLOBAL_RENDER_STACK.scale(1 / x, 1080F / ThinGL.windowInterface().getFramebufferHeight(), x);
-        ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 23, 0);
-        ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 23) / 1080f, ImGui.getWindowSizeX() / 1920f);
+        ThinGLUtils.GLOBAL_RENDER_STACK.translate(ImGui.getWindowPosX(), ImGui.getWindowPosY() + 46, 0);
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(ImGui.getWindowSizeX() / 1920f, (ImGui.getWindowSizeY() - 46) / 1080f, ImGui.getWindowSizeX() / 1920f);
         renderScenario();
         ThinGLUtils.GLOBAL_RENDER_STACK.popMatrix();
     }
@@ -84,7 +92,7 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.beginMainMenuBar();
 
         if (ImGui.beginMenu("Timeline")) {
-            if (ImGui.menuItem("Play")) {
+            if (ImGui.menuItem("Play", false, !timeline.isPlaying())) {
                 setPlaying(true);
             }
             if (ImGui.menuItem("Pause", false, timeline.isPlaying())) {
@@ -100,13 +108,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
             ImGui.endMenu();
         }
 
-        if (ImGui.beginMenu("Save")) {
-            boolean asJson;
-            if ((asJson = ImGui.menuItem("As Json")) || ImGui.menuItem("As Binary")) {
-                scenario.saveType(asJson ? Scenario.SaveType.JSON : Scenario.SaveType.BINARY);
-                save();
-            }
-            ImGui.endMenu();
+        if (ImGui.menuItem("Save")) {
+            save();
         }
 
         if (ImGui.beginMenu("Exit")) {
@@ -123,13 +126,13 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
         ImGui.endMainMenuBar();
 
         if (confirmExitAndDiscard) {
-            ImGui.openPopup("AreYouSureeeeeee");
+            ImGui.openPopup("AreYouSure");
             confirmExitAndDiscard = false;
         }
 
-        if (ImGui.beginPopupModal("AreYouSureeeeeee", ImGuiWindowFlags.NoResize)) {
-            ImGui.text("You rlly want to discard all that hard works? Are you sureeeeee?");
-            if (ImGui.button("Nevermine let's save and quit!")) {
+        if (ImGui.beginPopupModal("AreYouSure", ImGuiWindowFlags.NoResize)) {
+            ImGui.text("You really want to discard all that hard works? Are you sure?");
+            if (ImGui.button("Never mind let's save and quit!")) {
                 save();
                 Launcher.WINDOW.setScreen(prevScreen);
             }

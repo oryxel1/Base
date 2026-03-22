@@ -2,7 +2,7 @@ package oxy.bascenario.serializers.types.element;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.event.dialogue.enums.OffsetType;
 import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.LocationInfo;
@@ -98,27 +98,5 @@ public class ElementTypes implements Type<Object> {
         }
 
         return type.read(object.get("element"));
-    }
-
-    @Override
-    public void write(Object o, ByteBuf buf) {
-        final TypeWithName<?> type = CLASS_TO_TYPE.get(o.getClass());
-        if (type == null) {
-            throw new RuntimeException("Invalid element class type: " + o.getClass() + "!");
-        }
-
-        buf.writeInt(type.type().hashCode());
-        type.writeElement(o, buf);
-    }
-
-    @Override
-    public Object read(ByteBuf buf) {
-        final int id = buf.readInt();
-        final TypeWithName<?> type = ID_TO_TYPE.get(id);
-        if (type == null) {
-            throw new RuntimeException("Invalid element with id: " + id + "!");
-        }
-
-        return type.read(buf);
     }
 }

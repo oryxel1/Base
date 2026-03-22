@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
+
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.utils.math.Axis;
@@ -68,54 +68,5 @@ public class ElementEffectType implements TypeWithName<ElementEffectEvent> {
         ElementEffectEvent.Type type = ElementEffectEvent.Type.valueOf(object.get("type").getAsString());
         return new ElementEffectEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), Types.EFFECT_TYPE.read(object.get("effect")),
                 type, values.isEmpty() ? null : values.toArray());
-    }
-
-    @Override
-    public void write(ElementEffectEvent event, ByteBuf buf) {
-        buf.writeInt(event.id());
-        Types.NULLABLE_INT.write(event.subId(), buf);
-        Types.EFFECT_TYPE.write(event.effect(), buf);
-        buf.writeByte(event.type().ordinal());
-
-        if (event.type() == ElementEffectEvent.Type.REMOVE) {
-            return;
-        }
-        switch (event.effect()) {
-            case BLUR -> buf.writeInt((Integer) event.values()[0]);
-            case HOLOGRAM -> Types.AXIS_TYPE.write((Axis) event.values()[0], buf);
-            case RAINBOW -> {
-                Types.AXIS_TYPE.write((Axis) event.values()[0], buf);
-                buf.writeFloat((Float) event.values()[1]);
-            }
-            case OUTLINE -> {
-                buf.writeInt((Integer) event.values()[0]);
-                buf.writeByte((Integer) event.values()[1]);
-            }
-        }
-    }
-
-    @Override
-    public ElementEffectEvent read(ByteBuf buf) {
-        int id = buf.readInt();
-        Integer subId = Types.NULLABLE_INT.read(buf);
-        Effect effect = Types.EFFECT_TYPE.read(buf);
-        ElementEffectEvent.Type type = ElementEffectEvent.Type.values()[buf.readByte()];
-        final Object[] values;
-        if (type == ElementEffectEvent.Type.REMOVE) {
-            values = null;
-        } else {
-            values = switch (effect) {
-                case BLUR -> new Object[] {buf.readInt()};
-                case HOLOGRAM -> new Object[] {Types.AXIS_TYPE.read(buf)};
-                case RAINBOW -> {
-                    final Axis axis = Types.AXIS_TYPE.read(buf);
-                    final float distance = buf.readFloat();
-                    yield new Object[] {axis, distance};
-                }
-                case OUTLINE -> new Object[] {buf.readInt(), (int) buf.readByte()};
-            };
-        }
-
-        return new ElementEffectEvent(id, subId, effect, type, values);
     }
 }

@@ -30,18 +30,12 @@ which you can watch an [example video here](https://www.youtube.com/watch?v=eyiE
 Not Yet!
 
 ### Jar File
-If you want to download the jar file to run this, just download in [actions](https://github.com/oryxel1/Base/actions)
-or alternatively in [releases](https://github.com/oryxel1/Base/releases) sections.
+If you want to download the jar file to run this, just download in [releases](https://github.com/oryxel1/Base/releases)
+or alternatively in [actions](https://github.com/oryxel1/Base/actions) sections.
 
 ## Usage and examples
 Download **Java 21** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
 <br><br> For example of how to use the program, you can look at the [wiki](https://github.com/oryxel1/Base/wiki).
-<br>Feels free to download and test the [example/demo scenario](Demo.zip).
-
-### Sharing scenarios
-You can do this through zipping the scenario you want to share that located at whenever your system 
-save your user profile and go into Base, for e.g. on windows: `C:\Users\%username%\Base\scenarios\` and
-find your scenario, then zip it and share that zip file, the other person just have to extract it.
 
 ## Contact
 If you encounter any issues, please report them on the [issue tracker](https://github.com/oryxel1/Base/issues).<br>

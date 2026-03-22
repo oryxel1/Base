@@ -64,7 +64,7 @@ public class ObjectRenderer {
 
         // This part actually draw the object, nothing crazy here...
         final ImDrawList drawList = ImGui.getWindowDrawList();
-        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(75, 114, 180), 5f);
+        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(0.24f, 0.34f, 0.44f), 5f);
         if (timeline.getSelectedObject() == this.object) {
             drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(255, 255, 255), 5f);
         }
@@ -80,17 +80,32 @@ public class ObjectRenderer {
     }
 
     private void handleDraggingResult() {
-        // This handle the current dragging object see if it overlaps.
-        if (timeline.isDragging(this.object) || !timeline.isDragging() || !timeline.getDraggingObject().isWaiting()) {
+        // This handle the current dragging object see if it overlaps and other stuff.
+        if (timeline.isDragging(this.object) || !timeline.isDragging()) {
             return;
         }
 
         final ObjectOrEvent dragging = timeline.getDraggingObject().object;
-
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
         float x = Math.max(ImGui.getMousePosX() - dragging.renderer.draggingX, pos.x + size.x / 4);
         float y = Math.max(ImGui.getMousePosY() - dragging.renderer.draggingY, pos.y + 80);
-        float width = (object.duration / (Timeline.DEFAULT_MAX_TIME * timeline.getScale())) * (size.x - (size.x / 4));
+        float width = dragging.renderer.width;
+
+        // This part check for object snapping.
+        float endDis = Math.abs((this.x + this.width) - x), startDis = Math.abs(this.x - (x + width));
+        if (endDis < 3) {
+            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x + this.width, ImGui.getWindowPosY()), new ImVec2(this.x + this.width + 1, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
+            dragging.renderer.draggingX = -((this.x + this.width + 0.01f) - ImGui.getMousePosX());
+        } else if (startDis < 3) {
+            ImGui.getWindowDrawList().addRectFilled(new ImVec2(this.x - 1, ImGui.getWindowPosY()), new ImVec2(this.x, ImGui.getWindowPosY() + ImGui.getWindowSizeY()), ImColor.rgb(255, 255, 255));
+            dragging.renderer.draggingX = -((this.x - width - 0.01f) - ImGui.getMousePosX());
+        }
+
+        // This code part checks if the drag result is overlapping something else.
+        if (!timeline.getDraggingObject().isWaiting()) {
+            return;
+        }
+
         int track = trackFromY(timeline, y);
         if (track != this.object.track) {
             return; // Not the same track, skip!
@@ -99,6 +114,7 @@ public class ObjectRenderer {
         if (!timeline.getDraggingObject().second) {
             final float ratio = (object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
             long time = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * timeline.getScroll() + ratio * Timeline.DEFAULT_MAX_TIME * timeline.getScale());
+            // Determine the close object time to snap to.
             timeline.getDraggingObject().time(time, object.start + object.duration);
         } else {
             long min = timeline.getDraggingObject().nearestTime + 1, max = min + object.duration;
@@ -109,7 +125,7 @@ public class ObjectRenderer {
         }
 
         // Overlap! This result should not be valid.
-        if (x + width >= this.x && x <= this.x + width) {
+        if (x + width >= this.x && x <= this.x + this.width) {
             timeline.getDraggingObject().reject();
         }
     }
@@ -132,7 +148,7 @@ public class ObjectRenderer {
         float length = ImGui.getMouseDragDelta().x * ImGui.getMouseDragDelta().x + ImGui.getMouseDragDelta().y * ImGui.getMouseDragDelta().y;
         if (ImGui.isMouseClicked(0) && over) {
             timeline.setSelectedObject(this.object); // Selected an element.
-        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 5 * 5) {
+        } else if (ImGui.isMouseDown(0) && !timeline.isDragging() && over && length > 1) {
             // Start dragging an object if we can!
             timeline.setDraggingObject(new ObjectDragDrop(this.object) {
                 @Override

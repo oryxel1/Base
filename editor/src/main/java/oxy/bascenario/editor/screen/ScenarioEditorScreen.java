@@ -67,10 +67,10 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
         mouseX *= (ThinGL.windowInterface().getFramebufferWidth() / 1920F);
         mouseY *= (ThinGL.windowInterface().getFramebufferHeight() / 1080F);
         mouseX -= windowPos.x;
-        mouseY -= windowPos.y + 23;
+        mouseY -= windowPos.y + 46;
 
         mouseX /= (windowSize.x / 1920f);
-        mouseY /= ((windowSize.y - 23) / 1080f);
+        mouseY /= ((windowSize.y - 46) / 1080f);
 
         screen.mouseClicked(mouseX, mouseY, button);
     }

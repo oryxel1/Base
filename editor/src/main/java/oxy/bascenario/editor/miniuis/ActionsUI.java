@@ -51,51 +51,90 @@ public class ActionsUI {
     // TODO...
     public void render() {
         ImGui.begin("Actions");
-
         ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
-        ImGui.separatorText("Animations");
+        ImGui.beginTabBar("actions_tab_bar");
 
-        add("Play Animation",
-                "Play an defined animation, default or custom with an element on the selected track.",
-                new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
-
-        add("Play Sprite Animation",
-                "Play an animation that is defined in the spine (.skel) file you imported to a sprite character on the selected track.",
-                new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));
-
-        add("Stop Animation",
-                "Stop any defined animation, (note) not sprite animation.",
-                new StopAnimationEvent(0, "bascenarioengine:default-shake"));
-
-
-        ImGui.separatorText("Dialogues");
-
-        add("Start Dialogue",
-                "Start a dialogue like in game, with values like name, association or should this render background, and of course dialogues.",
-                new StartDialogueEvent(FontType.NotoSans, 0, "", "", true, DUMMY_DIALOGUE));
-
-        add("Add Dialogue",
-                "Add a new dialogue (text) onto any existing playing dialogue, allows for playing a certain dialogue text a bit late.",
-                new AddDialogueEvent(0, DUMMY_DIALOGUE));
-
-        add("Redirect Dialogue",
-                "Set the dialogue index to a whole number you choose.",
-                new RedirectDialogueEvent(0));
-
-        add("Close Dialogue", "Close any currently present dialogue", new CloseDialogueEvent());
-        {
-            final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-            map.put("Yes", 0);
-            map.put("No", 0);
-            add("Show Options",
-                    "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
-                    new ShowOptionsEvent(map));
+        if (ImGui.beginTabItem("All")){
+            animationTab();
+            dialogueTab();
+            objectTab();
+            backgroundTab();
+            soundTab();
+            otherTab();
+            ImGui.endTabItem();
         }
-        add("Close Options", "Close any currently present options", new CloseOptionsEvent());
 
-        ImGui.separatorText("Objects");
+        if (ImGui.beginTabItem("Animations")){
+            animationTab();
+            ImGui.endTabItem();
+        }
 
+        if (ImGui.beginTabItem("Dialogues")){
+            dialogueTab();
+            ImGui.endTabItem();
+        }
+
+        if (ImGui.beginTabItem("Objects")){
+            objectTab();
+            ImGui.endTabItem();
+        }
+
+        if (ImGui.beginTabItem("Background")){
+            backgroundTab();
+            ImGui.endTabItem();
+        }
+
+        if (ImGui.beginTabItem("Sounds")){
+            soundTab();
+            ImGui.endTabItem();
+        }
+
+        if (ImGui.beginTabItem("Others")){
+            otherTab();
+            ImGui.endTabItem();
+        }
+
+        ImGui.endTabBar();
+
+        ImGui.end();
+    }
+
+    private void otherTab() {
+        add("Screen Color",
+                "This will cover the entire screen with a color you choose on a render layer that you also choose.",
+                new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
+
+        add("Lock Click",
+                "This lock or unlock the mouse click button to interact with the options or dialogue.",
+                new LockClickEvent(false));
+
+        add("Show Buttons",
+                "Choose to hide/show the auto/menu button at the top right of the screen.",
+                new ShowButtonsEvent(true));
+
+        add("Set Weather",
+                "Set the current weather",
+                new SetWeatherEvent(Weather.RAIN));
+    }
+
+    private void soundTab() {
+        add("Sound Volume",
+                "Change a playing sound volume.",
+                new SoundVolumeEvent(0, 1000, 1, Easing.LINEAR));
+    }
+
+    private void backgroundTab() {
+        add("Set Background",
+                "A simple way to change the background with fade duration.",
+                new SetBackgroundEvent(new FileInfo("assets/base/black.png", false, true), 500));
+
+        add("Clear Background",
+                "Clear the current background and fade it to black!",
+                new ClearBackgroundEvent(500));
+    }
+
+    private void objectTab() {
         add("Move Object",
                 "This move an object.",
                 new PositionElementEvent(0, 1000, new Vec2(0, 0), Easing.LINEAR, PositionElementEvent.Type.POSITION));
@@ -139,46 +178,45 @@ public class ActionsUI {
         add("Unfocus Objects",
                 "Un-focus any currently focused object.",
                 new UnfocusElementEvent());
+    }
 
-        ImGui.separatorText("Background");
+    private void dialogueTab() {
+        add("Start Dialogue",
+                "Start a dialogue like in game, with values like name, association or should this render background, and of course dialogues.",
+                new StartDialogueEvent(FontType.NotoSans, 0, "", "", true, DUMMY_DIALOGUE));
 
-        add("Set Background",
-                "A simple way to change the background with fade duration.",
-                new SetBackgroundEvent(new FileInfo("assets/base/black.png", false, true), 500));
+        add("Add Dialogue",
+                "Add a new dialogue (text) onto any existing playing dialogue, allows for playing a certain dialogue text a bit late.",
+                new AddDialogueEvent(0, DUMMY_DIALOGUE));
 
-        add("Clear Background",
-                "Clear the current background and fade it to black!",
-                new ClearBackgroundEvent(500));
+        add("Redirect Dialogue",
+                "Set the dialogue index to a whole number you choose.",
+                new RedirectDialogueEvent(0));
 
-        ImGui.separatorText("Sounds");
+        add("Close Dialogue", "Close any currently present dialogue", new CloseDialogueEvent());
+        {
+            final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+            map.put("Yes", 0);
+            map.put("No", 0);
+            add("Show Options",
+                    "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
+                    new ShowOptionsEvent(map));
+        }
+        add("Close Options", "Close any currently present options", new CloseOptionsEvent());
+    }
 
-//        add("Play Sound", new PlaySoundEvent(new Sound(0, null, 1, true), -1, 0));
-//        add("Stop Sound", new StopSoundEvent(0, 100));
-        add("Sound Volume",
-                "Change a playing sound volume.",
-                new SoundVolumeEvent(0, 1000, 1, Easing.LINEAR));
-//        add("Pause Sound", new SoundEvent(0, SoundEvent.Event.PAUSE));
-//        add("Resume Sound", new SoundEvent(0, SoundEvent.Event.RESUME));
+    private void animationTab() {
+        add("Play Animation",
+                "Play an defined animation, default or custom with an element on the selected track.",
+                new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
 
-        ImGui.separatorText("Others");
+        add("Play Sprite Animation",
+                "Play an animation that is defined in the spine (.skel) file you imported to a sprite character on the selected track.",
+                new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));
 
-        add("Set Weather",
-                "Set the current weather",
-                new SetWeatherEvent(Weather.RAIN));
-
-        add("Screen Color",
-                "This will cover the entire screen with a color you choose on a render layer that you also choose.",
-                new ColorOverlayEvent(RenderLayer.TOP, 500, Color.WHITE));
-
-        add("Lock Click",
-                "This lock or unlock the mouse click button to interact with the options or dialogue.",
-                new LockClickEvent(false));
-
-        add("Show Buttons",
-                "Choose to hide/show the auto/menu button at the top right of the screen.",
-                new ShowButtonsEvent(true));
-
-        ImGui.end();
+        add("Stop Animation",
+                "Stop any defined animation, (note) not sprite animation.",
+                new StopAnimationEvent(0, "bascenarioengine:default-shake"));
     }
 
     private void add(String label, String tooltip, Event event) {

@@ -104,6 +104,7 @@ public class FontUtils {
         rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
         if (full) {
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesCyrillic());
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseFull());
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseSimplifiedCommon());
             rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
