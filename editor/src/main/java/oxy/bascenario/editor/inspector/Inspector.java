@@ -3,6 +3,8 @@ package oxy.bascenario.editor.inspector;
 import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.effects.Weather;
+import oxy.bascenario.api.event.SetWeatherEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
@@ -118,6 +120,8 @@ public class Inspector {
             case FocusElementEvent event -> new FocusElementEvent(ImGuiUtils.inputInt("Track Id", event.id()));
 
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
+
+            case SetWeatherEvent event -> new SetWeatherEvent(Weather.values()[ImGuiUtils.combo("Weather", event.weather().ordinal(), Weather.getAlls())]);
             default -> old;
         };
 

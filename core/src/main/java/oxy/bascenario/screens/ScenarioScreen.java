@@ -10,6 +10,7 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
@@ -17,11 +18,13 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screens.renderer.weather.RainRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
+import oxy.bascenario.screens.renderer.weather.SnowRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.ExtendableScreen;
@@ -183,6 +186,11 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Setter
+    private Weather weather = Weather.CLEAR;
+    private final RainRenderer rainRenderer = new RainRenderer();
+    private final SnowRenderer snowRenderer = new SnowRenderer();
+
+    @Setter
     private boolean showButtons;
     @Override
     public void render(float delta) {
@@ -231,6 +239,9 @@ public class ScenarioScreen extends ExtendableScreen {
                     30 + (60 / 2f) + (TextUtils.getVisualHeight(36, menu.shape()) / 2f) + 2,
                     RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
+
+        rainRenderer.render(weather == Weather.RAIN);
+        snowRenderer.render(weather == Weather.SNOW);
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
 
