@@ -45,6 +45,8 @@ public class BaseScenarioEditorScreen extends ExtendableScreen {
     public void render(float delta) {
         ImGui.dockSpaceOverViewport(0, new ImGuiViewport(0), ImGuiDockNodeFlags.PassthruCentralNode);
 
+        ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0.098f, 0.098f, 0.098f, 1f);
+
         renderMenuBar();
         timeline.render();
         objectsUI.render();

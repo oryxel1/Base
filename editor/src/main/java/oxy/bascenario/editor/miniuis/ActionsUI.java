@@ -4,6 +4,7 @@ import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiHoveredFlags;
+import imgui.flag.ImGuiStyleVar;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
@@ -49,7 +50,6 @@ public class ActionsUI {
     // TODO...
     public void render() {
         ImGui.begin("Actions");
-        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
         ImGui.beginTabBar("actions_tab_bar");
 

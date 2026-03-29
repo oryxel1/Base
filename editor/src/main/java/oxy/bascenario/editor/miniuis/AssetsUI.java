@@ -37,7 +37,6 @@ public class AssetsUI {
 
     public static void render(Timeline timeline, Scenario.Builder scenario) {
         ImGui.begin("Assets");
-        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
         render(timeline, scenario, null);
         ImGui.end();
 
