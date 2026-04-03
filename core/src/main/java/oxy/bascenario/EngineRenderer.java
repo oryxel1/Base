@@ -44,6 +44,8 @@ public final class EngineRenderer extends Game {
         ThinGL.config().setRestoreVertexArrayBinding(true);
         ThinGL.config().setRestoreProgramBinding(true);
 
+//        GLFW.glfwSetWindowAspectRatio(windowHandle, 16, 9);
+
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
             if (window != windowHandle) {
                 return;
@@ -117,17 +119,16 @@ public final class EngineRenderer extends Game {
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
-//        if (System.currentTimeMillis() - time >= 500L) {
+//        if (GLFW.glfwGetWindowAttrib(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle(), GLFW.GLFW_MAXIMIZED) == 1) {
 //            int width = ThinGL.windowInterface().getFramebufferWidth(), height = ThinGL.windowInterface().getFramebufferHeight();
-//            System.out.println(width/(float)height);
+////            System.out.println(width/(float)height);
 //            if (width/(float)height != 16/9f) {
 //                boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
-//                int fixedWidth = widthLargerHeight ? width : (int) (height * 16/9f);
-//                int fixedHeight = widthLargerHeight ? (int) (width * (9/16f)) : height;
+//                int fixedWidth = !widthLargerHeight ? width : (int) (height * 16/9f);
+//                int fixedHeight = !widthLargerHeight ? (int) (width * (9/16f)) : height;
 //
 //                Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
 //            }
-//            time = System.currentTimeMillis();
 //        }
 
         if (ImGui.isKeyReleased(ImGuiKey.F11)) {

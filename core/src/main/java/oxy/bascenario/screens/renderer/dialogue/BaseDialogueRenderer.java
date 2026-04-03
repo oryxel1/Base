@@ -38,9 +38,9 @@ public abstract class BaseDialogueRenderer {
 
     private FontType font;
     protected TextOffset offset;
-    public final void start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
+    public final boolean start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
         if (index != currentIndex) {
-            return;
+            return false;
         }
 
         this.offset = offset;
@@ -53,9 +53,10 @@ public abstract class BaseDialogueRenderer {
         this.playing = true;
         this.background = background;
         add(index, true, dialogues);
+        return true;
     }
 
-    public abstract void add(int dIndex, boolean newLine, Dialogue... dialogues);
+    public abstract boolean add(int dIndex, boolean newLine, Dialogue... dialogues);
     public abstract void renderDialogues();
 
     public void stop() {

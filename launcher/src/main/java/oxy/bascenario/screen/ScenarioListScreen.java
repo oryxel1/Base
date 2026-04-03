@@ -4,10 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import imgui.ImColor;
 import imgui.ImGui;
-import imgui.flag.ImGuiKey;
-import imgui.flag.ImGuiTableColumnFlags;
-import imgui.flag.ImGuiTableFlags;
-import imgui.flag.ImGuiWindowFlags;
+import imgui.flag.*;
 import org.zeroturnaround.zip.ZipUtil;
 import org.zeroturnaround.zip.commons.FileUtils;
 import oxy.bascenario.Base;
@@ -36,6 +33,8 @@ public class ScenarioListScreen extends ExtendableScreen {
 
     @Override
     public void render(float delta) {
+        ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0.098f, 0.098f, 0.098f, 1f);
+
         ImGui.beginMainMenuBar();
         if (ImGui.menuItem("Exit")) {
             Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
@@ -81,8 +80,6 @@ public class ScenarioListScreen extends ExtendableScreen {
         ImGui.setNextWindowPos(0, 23);
         ImGui.setNextWindowSize(ImGui.getIO().getDisplaySize());
         ImGui.begin("Main", ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoResize);
-
-        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
 
         if (ImGui.button("Open Saved Location##" + ImGuiUtils.COUNTER++)) {
             try {

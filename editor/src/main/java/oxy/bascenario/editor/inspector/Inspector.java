@@ -54,7 +54,6 @@ public class Inspector {
     @SuppressWarnings("ALL")
     public void render() {
         ImGui.begin("Inspector");
-        ImGui.getWindowDrawList().addRectFilled(ImGui.getWindowPos(), ImGui.getWindowPos().plus(ImGui.getWindowSize()), ImColor.rgb(25, 25, 25));
         final ObjectOrEvent object = timeline.getSelectedObject();
         if (object == null) {
             ImGui.end();

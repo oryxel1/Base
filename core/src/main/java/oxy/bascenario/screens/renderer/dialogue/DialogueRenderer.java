@@ -26,9 +26,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.scenario = scenario;
     }
 
-    public void add(int index, boolean newLine, Dialogue... dialogues) {
+    public boolean add(int index, boolean newLine, Dialogue... dialogues) {
         if (index != this.currentIndex) {
-            return;
+            return false;
         }
 
         this.finished = false;
@@ -72,6 +72,8 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
                 prev += msPerWord * builder.builder.length();
             }
         }
+
+        return true;
     }
 
     private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
