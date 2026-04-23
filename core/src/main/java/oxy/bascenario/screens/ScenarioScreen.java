@@ -68,6 +68,11 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     public void background(FileInfo file, long duration) {
+        if (file == null) {
+            clearBackground(duration);
+            return;
+        }
+
         if (this.background != null) {
             this.targetBackground = file;
             this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue(), 0, EasingFunction.LINEAR);
@@ -207,12 +212,12 @@ public class ScenarioScreen extends ExtendableScreen {
         }
 
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
 
         this.dialogueRenderer.render();
 
         // TODO: Should the above dialogue render layer above the options as well?
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.renderAll(this));
 
         this.optionsRenderer.render(this);
 
@@ -232,7 +237,7 @@ public class ScenarioScreen extends ExtendableScreen {
                     RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
 
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(e -> e.renderAll(this));
 
         ThinGLUtils.end();
 

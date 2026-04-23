@@ -81,7 +81,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
     private long last = TimeUtils.currentTimeMillis();
     @Override
-    protected void render() {
+    protected void render(ScenarioScreen screen) {
         if (this.skeleton == null || this.state == null) {
             return;
         }
@@ -161,7 +161,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
-        this.subElements.values().forEach(ElementRenderer::renderAll);
+        this.subElements.values().forEach(e -> e.renderAll(screen));
         GLOBAL_RENDER_STACK.popMatrix();
     }
 

@@ -3,6 +3,7 @@ package oxy.bascenario.screens.renderer.element.base;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
 import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
@@ -15,7 +16,7 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
     }
 
     @Override
-    protected final void render() {
+    protected final void render(ScenarioScreen screen) {
         ThinGL.programs().getMsaa().bindInput();
 
         GLOBAL_RENDER_STACK.pushMatrix();
@@ -31,10 +32,10 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
 
         // TODO: The offsetting wouldn't works with Sprite Rendering, but welp, if they put sprite inside an element, they're fucking crazy.
-        this.subElements.values().forEach(ElementRenderer::renderAll);
+        this.subElements.values().forEach(e -> e.renderAll(screen));
 
         if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
-            renderThinGL();
+            renderThinGL(screen);
         }
 
         ThinGLUtils.renderEffect(this::renderThinGL, this.effects);
@@ -46,4 +47,7 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
     }
 
     protected abstract void renderThinGL();
+    protected void renderThinGL(ScenarioScreen screen) {
+        renderThinGL();
+    }
 }

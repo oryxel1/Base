@@ -1,9 +1,9 @@
 package oxy.bascenario.editor.inspector;
 
-import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -117,6 +117,8 @@ public class Inspector {
             case FocusElementEvent event -> new FocusElementEvent(ImGuiUtils.inputInt("Track Id", event.id()));
 
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
+
+            case ScreenTransitionEvent event -> TransitionInspector.render(event);
             default -> old;
         };
 

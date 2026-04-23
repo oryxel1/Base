@@ -4,6 +4,7 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
@@ -14,7 +15,7 @@ public class ColorOverlayRenderer extends ElementRenderer<ColorOverlayEvent> {
     }
 
     @Override
-    protected void render() {
+    protected void render(ScenarioScreen screen) {
         ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, overlayColor.color());
     }
 }

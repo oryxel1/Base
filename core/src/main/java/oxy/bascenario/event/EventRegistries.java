@@ -2,6 +2,7 @@ package oxy.bascenario.event;
 
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -40,6 +41,7 @@ import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundVolumeEvent;
 import oxy.bascenario.event.impl.sound.FunctionStopSoundEvent;
+import oxy.bascenario.event.impl.transition.FunctionScreenTransition;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -87,6 +89,8 @@ public class EventRegistries {
 
         EVENT_TO_FUNCTION.put(LockClickEvent.class, FunctionLockClick.class);
         EVENT_TO_FUNCTION.put(ShowButtonsEvent.class, FunctionShowButtons.class);
+
+        EVENT_TO_FUNCTION.put(ScreenTransitionEvent.class, FunctionScreenTransition.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }

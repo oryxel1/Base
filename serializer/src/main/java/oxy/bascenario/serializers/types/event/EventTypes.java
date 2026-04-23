@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
@@ -38,6 +39,7 @@ import oxy.bascenario.serializers.types.event.impl.element.focus.UnfocusElementT
 import oxy.bascenario.serializers.types.event.impl.element.values.PositionElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
+import oxy.bascenario.serializers.types.event.impl.transition.ScreenTransitionType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,6 +89,8 @@ public class EventTypes implements Type<Event> {
 
         put(LockClickEvent.class, new LockClickType());
         put(ShowButtonsEvent.class, new ShowButtonsType());
+
+        put(ScreenTransitionEvent.class, new ScreenTransitionType());
     }
 
     @Override

@@ -49,6 +49,7 @@ public class Types {
 
     public static final Type<Easing> EASING_TYPE = new EnumType<>(Easing.class, Easing.values());
     public static final Type<Effect> EFFECT_TYPE = new EnumType<>(Effect.class, Effect.values());
+    public static final Type<TransitionType> TRANSITION_TYPE_TYPE = new EnumType<>(TransitionType.class, TransitionType.values());
     public static final Type<Sound> SOUND_TYPE = new SoundType();
 
     public static final Type<RenderLayer> RENDER_LAYER_TYPE = new EnumType<>(RenderLayer.class, RenderLayer.values());
