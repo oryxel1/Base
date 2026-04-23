@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
@@ -24,6 +25,11 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
     public DialogueRenderer(Scenario scenario) {
         this.scenario = scenario;
+    }
+
+    @Override
+    public void finishAll() {
+        this.texts.forEach(t -> t.forceFinished = true);
     }
 
     public boolean add(int index, boolean newLine, Dialogue... dialogues) {
@@ -78,8 +84,34 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
     private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
-    private record DialogueText(float offset, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
-                                long time, long prev, int size, boolean newLine) {
+
+    @RequiredArgsConstructor
+    private static final class DialogueText {
+        private final float offset;
+        private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
+        private final float speed;
+        private final long time;
+        private final long prev;
+        private final int size;
+        private final boolean newLine;
+
+        public boolean forceFinished;
+
+        public long time() {
+            return time;
+        }
+
+        public long prev() {
+            return prev;
+        }
+
+        public int size() {
+            return size;
+        }
+
+        public boolean newLine() {
+            return newLine;
+        }
     }
 
     @Override
@@ -113,7 +145,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            long words = Math.min(Math.max(0, (TimeUtils.currentTimeMillis() - text.time() - text.prev()) / msPerWord), text.allSegments.size() - 1);
+            long words = text.forceFinished ? text.allSegments.size() - 1 : Math.min(Math.max(0, (TimeUtils.currentTimeMillis() - text.time() - text.prev()) / msPerWord), text.allSegments.size() - 1);
 
             finished = words == text.allSegments.size() - 1;
             if (finished) {

@@ -253,8 +253,12 @@ public class ScenarioScreen extends ExtendableScreen {
             return;
         }
 
-        if (!this.dialogueRenderer.isBusy() && this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
-            this.busyDialogue = false;
+        if (this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
+            if (!this.dialogueRenderer.isBusy()) {
+                this.busyDialogue = false;
+            } else {
+                this.dialogueRenderer.finishAll();
+            }
         }
     }
 

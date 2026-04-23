@@ -36,6 +36,9 @@ public abstract class BaseDialogueRenderer {
         return mouseX >= 0 && mouseX <= 1920 && mouseY >= 720 && mouseY <= 1080;
     }
 
+    public void finishAll() {
+    }
+
     private FontType font;
     protected TextOffset offset;
     public final boolean start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {

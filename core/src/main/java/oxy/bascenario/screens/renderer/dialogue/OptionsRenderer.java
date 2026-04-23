@@ -33,6 +33,7 @@ public class OptionsRenderer {
         this.clicked = null;
         this.options = options;
         this.flipped = false;
+        this.releasedalready = false;
         if (this.options != null) {
             this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.CUBIC);
         }
@@ -103,15 +104,13 @@ public class OptionsRenderer {
         }
     }
 
-    private boolean sound;
+    private boolean releasedalready;
     public void mouseRelease() {
-        if (this.clicked != null) {
-            if (!sound) {
-                AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
-                sound = true;
-            }
+        if (!releasedalready) {
+            AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
 
             this.scale = AnimationUtils.build(400, this.scale.getValue(), SCALE_SIZE, EasingFunction.CUBIC);
+            releasedalready = true;
         }
     }
 
