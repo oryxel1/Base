@@ -106,7 +106,7 @@ public class OptionsRenderer {
 
     private boolean releasedalready;
     public void mouseRelease() {
-        if (!releasedalready) {
+        if (!releasedalready && clicked != null) {
             AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
 
             this.scale = AnimationUtils.build(400, this.scale.getValue(), SCALE_SIZE, EasingFunction.CUBIC);
