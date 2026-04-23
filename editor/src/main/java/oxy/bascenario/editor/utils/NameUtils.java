@@ -1,6 +1,7 @@
 package oxy.bascenario.editor.utils;
 
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.SetWeatherEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -69,6 +70,8 @@ public class NameUtils {
             case ShowButtonsEvent ignored -> "Show Buttons";
             case FocusElementEvent ignored -> "Focus Object";
             case UnfocusElementEvent ignored -> "Un-focus Object";
+
+            case SetWeatherEvent ignored -> "Set Weather";
 
             default -> object.getClass().getSimpleName();
         };

@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.SetWeatherEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
@@ -110,6 +112,10 @@ public class ActionsUI {
         add("Show Buttons",
                 "Choose to hide/show the auto/menu button at the top right of the screen.",
                 new ShowButtonsEvent(true));
+
+        add("Set Weather",
+                "Set the current weather",
+                new SetWeatherEvent(Weather.RAIN));
     }
 
     private void soundTab() {
