@@ -21,6 +21,7 @@ import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.*;
+import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.event.impl.LockClickType;
@@ -40,6 +41,7 @@ import oxy.bascenario.serializers.types.event.impl.element.values.PositionElemen
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
 import oxy.bascenario.serializers.types.event.impl.transition.ScreenTransitionType;
+import oxy.bascenario.serializers.types.event.impl.utility.CheckForDialogueType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +93,7 @@ public class EventTypes implements Type<Event> {
         put(ShowButtonsEvent.class, new ShowButtonsType());
 
         put(ScreenTransitionEvent.class, new ScreenTransitionType());
+        put(CheckForDialogueEvent.class, new CheckForDialogueType());
     }
 
     @Override

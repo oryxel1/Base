@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -24,7 +25,7 @@ public abstract class BaseDialogueRenderer {
 
     protected String name, association;
     private boolean background;
-    @Setter
+    @Setter @Getter
     protected int currentIndex;
 
     protected boolean playing, finished;
