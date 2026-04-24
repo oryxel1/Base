@@ -56,8 +56,8 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
                 "bascenarioengine:default-shake",
                 Animation.builder()
                         .name("Default Shake")
-                        .offset(new AnimationValue(new String[] {"math.abs(query.offset(0) + 19.2) <= 0.0001 ? 19.2 : -19.2", "0"}, "0.08", Easing.LINEAR))
-                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.08", Easing.LINEAR))
+                        .offset(new AnimationValue(new String[] {"math.abs(query.offset(0) + 19.2) <= 0.0001 ? 19.2 : -19.2", "query.offset(1)"}, "0.08", Easing.LINEAR))
+                        .defaultOffset(new AnimationValue(new String[]{"0", "query.offset(1)"}, "0.08", Easing.LINEAR))
                         .maxDuration(0.26f)
                         .resetWhenFinish(true)
                         .build()
