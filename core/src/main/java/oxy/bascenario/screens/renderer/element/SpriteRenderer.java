@@ -137,7 +137,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             }
         }
 
-        if (!this.effects.isEmpty()) {
+        if (!this.effects.isEmpty() && this.color.alpha() != 0) {
             ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, 1920, 1080, 0F, -1000F, 1000F);
 
             ThinGLUtils.renderEffect(() -> {

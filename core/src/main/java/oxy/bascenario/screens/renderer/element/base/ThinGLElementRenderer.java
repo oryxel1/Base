@@ -38,7 +38,9 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
             renderThinGL(screen);
         }
 
-        ThinGLUtils.renderEffect(this::renderThinGL, this.effects);
+        if (this.color.alpha() != 0) {
+            ThinGLUtils.renderEffect(this::renderThinGL, this.effects);
+        }
         GLOBAL_RENDER_STACK.popMatrix();
 
         ThinGL.programs().getMsaa().unbindInput();
