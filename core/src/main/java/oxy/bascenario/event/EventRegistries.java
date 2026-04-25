@@ -1,6 +1,7 @@
 package oxy.bascenario.event;
 
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
@@ -24,6 +25,7 @@ import oxy.bascenario.api.event.sound.StopSoundEvent;
 import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.FunctionLockClick;
+import oxy.bascenario.event.impl.FunctionPopup;
 import oxy.bascenario.event.impl.FunctionShowButtons;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
 import oxy.bascenario.event.impl.animation.FunctionSpriteAnimation;
@@ -95,6 +97,8 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(ScreenTransitionEvent.class, FunctionScreenTransition.class);
 
         EVENT_TO_FUNCTION.put(CheckForDialogueEvent.class, FunctionCheckForDialogue.class);
+
+        EVENT_TO_FUNCTION.put(PopupEvent.class, FunctionPopup.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }

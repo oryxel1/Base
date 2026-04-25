@@ -6,6 +6,7 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
+import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
@@ -17,6 +18,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.managers.other.TextureAsset;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
@@ -188,6 +190,9 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Setter
+    private FileInfo popup;
+
+    @Setter
     private boolean showButtons;
     @Override
     public void render(float delta) {
@@ -215,6 +220,13 @@ public class ScenarioScreen extends ExtendableScreen {
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
 
         this.dialogueRenderer.render();
+
+        if (popup != null) {
+            Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get();
+            final int width = (int) (texture2D.getWidth() * 0.65f), height = (int) (texture2D.getHeight() * 0.65f);
+
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
+        }
 
         // TODO: Should the above dialogue render layer above the options as well?
         elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.renderAll(this));

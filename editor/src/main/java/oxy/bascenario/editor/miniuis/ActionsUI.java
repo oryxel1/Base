@@ -9,6 +9,7 @@ import oxy.bascenario.api.effects.Easing;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.effects.TransitionType;
 import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
@@ -114,6 +115,10 @@ public class ActionsUI {
         add("Screen Transition",
                 "Transition the screen (to another background if wanted)",
                 new ScreenTransitionEvent(null, TransitionType.HORIZONTAL_SWIPE_LR, 1000, 700, 700));
+
+        add("Image Popup",
+                "Show an image popup on the screen",
+                new PopupEvent(PopupEvent.Type.SET, null));
     }
 
     private void soundTab() {

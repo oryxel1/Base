@@ -2,6 +2,7 @@ package oxy.bascenario.editor.inspector;
 
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
@@ -119,6 +120,7 @@ public class Inspector {
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
 
             case ScreenTransitionEvent event -> TransitionInspector.render(event);
+            case PopupEvent event -> ImageInspector.render(event);
             default -> old;
         };
 
