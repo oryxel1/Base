@@ -77,6 +77,9 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.skeleton = new Skeleton(skeletonData);
         this.stateData = new AnimationStateData(skeletonData);
         this.state = new AnimationState(this.stateData);
+
+        // Always use last skin for cute and funni reason.
+        this.skeleton.setSkin(skeletonData.getSkins().get(skeletonData.getSkins().size - 1));
     }
 
     private long last = TimeUtils.currentTimeMillis();
