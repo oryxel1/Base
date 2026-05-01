@@ -15,6 +15,6 @@ public class ScenarioPreviewTest {
         scenario.add(0, new AddElementEvent(0, new Preview(FontType.NotoSans, "Scenario Preview Test", "Episode: 1",
                 FileInfo.internal("BG_BlackMarket.jpg")), RenderLayer.TOP));
 
-        Launcher.launch(new ScenarioScreen(scenario.build()), false);
+        Launcher.launch(new ScenarioScreen(scenario.build()), true);
     }
 }
