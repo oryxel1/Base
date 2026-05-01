@@ -77,7 +77,7 @@ public class ScenarioListScreen extends ExtendableScreen {
         }
         ImGui.endMainMenuBar();
 
-        ImGui.setNextWindowPos(0, 23);
+        ImGui.setNextWindowPos(0, 23 * ImGui.getStyle().getFontScaleDpi());
         ImGui.setNextWindowSize(ImGui.getIO().getDisplaySize());
         ImGui.begin("Main", ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoResize);
 

@@ -33,7 +33,7 @@ public class ObjectRenderer {
 
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
         float trackX = pos.x + size.x / 4, trackWidth = size.x - (size.x / 4);
-        float trackY = pos.y + 80 + ((object.track - timeline.getVerticalScroll()) * 50);
+        float trackY = pos.y + 80 * ImGui.getStyle().getFontScaleDpi() + ((object.track - timeline.getVerticalScroll()) * 50 * ImGui.getStyle().getFontScaleDpi());
 
         this.width = (object.duration / maxTime) * trackWidth;
         if (!timeline.isDragging(this.object)) { // Fixed the position if not dragging....
@@ -64,13 +64,13 @@ public class ObjectRenderer {
 
         // This part actually draw the object, nothing crazy here...
         final ImDrawList drawList = ImGui.getWindowDrawList();
-        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(0.24f, 0.34f, 0.44f), 5f);
+        drawList.addRectFilled(new ImVec2(x, y), new ImVec2(x + width, y + 50 * ImGui.getStyle().getFontScaleDpi()), ImColor.rgb(0.24f, 0.34f, 0.44f), 5f);
         if (timeline.getSelectedObject() == this.object) {
-            drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50), ImColor.rgb(255, 255, 255), 5f);
+            drawList.addRect(new ImVec2(x, y), new ImVec2(x + width, y + 50 * ImGui.getStyle().getFontScaleDpi()), ImColor.rgb(255, 255, 255), 5f);
         }
 
         String s = NameUtils.name(object.object);
-        float width = TextUtils.getVisualWidth(17, TextRun.fromString(FontUtils.DEFAULT, s).shape());
+        float width = TextUtils.getVisualWidth(17 * ImGui.getStyle().getFontScaleDpi(), TextRun.fromString(FontUtils.DEFAULT, s).shape());
         if (width == 0) {
             return;
         }
@@ -88,7 +88,7 @@ public class ObjectRenderer {
         final ObjectOrEvent dragging = timeline.getDraggingObject().object;
         final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
         float x = Math.max(ImGui.getMousePosX() - dragging.renderer.draggingX, pos.x + size.x / 4);
-        float y = Math.max(ImGui.getMousePosY() - dragging.renderer.draggingY, pos.y + 80);
+        float y = Math.max(ImGui.getMousePosY() - dragging.renderer.draggingY, pos.y + 80 * ImGui.getStyle().getFontScaleDpi());
         float width = dragging.renderer.width;
 
         // This part check for object snapping.
@@ -136,13 +136,13 @@ public class ObjectRenderer {
             return;
         }
 
-        final boolean over = ImGui.isMouseHoveringRect(new ImVec2(x, y), new ImVec2(x + width, y + 50));
+        final boolean over = ImGui.isMouseHoveringRect(new ImVec2(x, y), new ImVec2(x + width, y + 50 * ImGui.getStyle().getFontScaleDpi()));
         final ImVec2 mouse = ImGui.getMousePos(), pos = ImGui.getWindowPos(), size = ImGui.getWindowSize();
 
         boolean dragging = timeline.isDragging(this.object);
         if (dragging && !timeline.getDraggingObject().isWaiting()) {
             this.x = Math.max(mouse.x - this.draggingX, pos.x + size.x / 4);
-            this.y = Math.max(mouse.y - this.draggingY, pos.y + 80);
+            this.y = Math.max(mouse.y - this.draggingY, pos.y + 80 * ImGui.getStyle().getFontScaleDpi());
         }
 
         float length = ImGui.getMouseDragDelta().x * ImGui.getMouseDragDelta().x + ImGui.getMouseDragDelta().y * ImGui.getMouseDragDelta().y;
@@ -191,7 +191,7 @@ public class ObjectRenderer {
         }
 
         final ImVec2 mouse = ImGui.getMousePos(), size = ImGui.getWindowSize();
-        final boolean yMatch = mouse.y >= y && mouse.y <= y + 50;
+        final boolean yMatch = mouse.y >= y && mouse.y <= y + (50 * ImGui.getStyle().getFontScaleDpi());
         if (resizing && yMatch) { // If we're already resizing. we can't check for x axis xD.
             float ratio = (mouse.x - (x + width)) / (size.x - size.x / 4);
             long duration = (long) (Timeline.DEFAULT_MAX_TIME * timeline.getScale() * ratio);
@@ -230,10 +230,10 @@ public class ObjectRenderer {
             return false;
         }
 
-        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_HRESIZE_CURSOR));
         if (!ImGui.isMouseDown(0)) {
             return false;
         }
+//        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_HRESIZE_CURSOR));
 
         timeline.setDraggingObject(null);
         resizing = true;
@@ -241,11 +241,11 @@ public class ObjectRenderer {
     }
 
     private static int trackFromY(Timeline timeline, float y) {
-        float approximateTrack = (y - (ImGui.getWindowPosY() + 80)) / 50f;
+        float approximateTrack = (y - (ImGui.getWindowPosY() + 80)) / (50f * ImGui.getStyle().getFontScaleDpi());
         int ceil = MathUtils.ceil(approximateTrack), floor = MathUtils.floor(approximateTrack);
         // See if floor or ceil is closer...
         int trackId;
-        if (Math.abs(y - (ImGui.getWindowPosY() + 80 + (50 * ceil))) > Math.abs(y - (ImGui.getWindowPosY() + 80 + (50 * floor)))) {
+        if (Math.abs(y - (ImGui.getWindowPosY() + 80 * ImGui.getStyle().getFontScaleDpi() + (50 * ImGui.getStyle().getFontScaleDpi() * ceil))) > Math.abs(y - (ImGui.getWindowPosY() + 80 * ImGui.getStyle().getFontScaleDpi() + (50 * ImGui.getStyle().getFontScaleDpi() * floor)))) {
             trackId = floor;
         } else {
             trackId = ceil;
