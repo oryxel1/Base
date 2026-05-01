@@ -222,7 +222,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.dialogueRenderer.render();
 
         if (popup != null) {
-            Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get();
+            Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get(false);
             final int width = (int) (texture2D.getWidth() * 0.65f), height = (int) (texture2D.getHeight() * 0.65f);
 
             ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
@@ -235,8 +235,10 @@ public class ScenarioScreen extends ExtendableScreen {
 
         // TODO: Properly render shadow?
         if (showButtons) {
-            ThinGLUtils.renderTriangleRectangle(1526, 30, 160, 60, 12, 5, Color.fromRGB(244, 245, 246));
-            ThinGLUtils.renderTriangleRectangle(1526 + 160 + 30, 32, 160, 60 - 2, 12, 5, Color.fromRGB(244, 245, 246));
+            // Render texture is cheaper than whatever we were doing before.
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/automenu.png", true), 0, 0, 1920, 1080);
+//            ThinGLUtils.renderTriangleRectangle(1526, 30, 160, 60, 12, 5, Color.fromRGB(244, 245, 246));
+//            ThinGLUtils.renderTriangleRectangle(1526 + 160 + 30, 32, 160, 60 - 2, 12, 5, Color.fromRGB(244, 245, 246));
 
             final TextRun auto = TextRun.fromString(FontUtils.font(FontStyle.BOLD, FontType.NotoSans), "Auto", Color.fromRGB(45, 70, 99), 1 << 2);
             TextUtils.textRun(36, auto, 1526 + 12 + (160 / 2f) - (TextUtils.getVisualWidth(36, auto.shape()) / 2f) - 3,
