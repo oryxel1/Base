@@ -18,7 +18,7 @@ import oxy.bascenario.utils.font.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DialogueRenderer extends BaseDialogueRenderer {
+public class DialogueRenderer extends BaseDialogueRenderer {
     private final Scenario scenario;
 
     private final List<DialogueText> texts = new ArrayList<>();
@@ -37,6 +37,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             return false;
         }
 
+        this.playing = true;
         this.finished = false;
         for (Dialogue dialogue : dialogues) {
             final List<TextBuilder> texts = new ArrayList<>();
@@ -188,9 +189,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
         }
 
-        float y = SEPARATOR_Y + 2;
+        float y = renderYOffset();
         for (TextLineCache line : lines) {
-            y += (line.size / 42f) * 57 + 5;
+            y += (line.size / 42f) * textYDistance() + 5;
 
             float x = line.offset + switch (offset.type()) {
                 case Left -> SEPARATOR_X + 10;
@@ -204,6 +205,14 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
 
         this.finished = done == this.texts.size();
+    }
+
+    public float textYDistance() {
+        return 57;
+    }
+
+    public float renderYOffset() {
+        return SEPARATOR_Y + 2;
     }
 
     public record TextLineCache(float offset, List<TextRun> segments, List<TextRun> allSegments, float size) {

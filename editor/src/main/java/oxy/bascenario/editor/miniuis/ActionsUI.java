@@ -21,11 +21,14 @@ import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
+import oxy.bascenario.api.event.element.ClearLogEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
@@ -71,6 +74,11 @@ public class ActionsUI {
 
         if (ImGui.beginTabItem("Dialogues")){
             dialogueTab();
+            ImGui.endTabItem();
+        }
+
+        if (ImGui.beginTabItem("Logs")){
+            logTab();
             ImGui.endTabItem();
         }
 
@@ -181,6 +189,16 @@ public class ActionsUI {
         add("Unfocus Objects",
                 "Un-focus any currently focused object.",
                 new UnfocusElementEvent());
+    }
+
+    private void logTab() {
+        add("Add Log",
+                "Start a log which is similar to a dialogue, but will play on the screen instead of bottom of the screen.",
+                new AddLogEvent(AddLogEvent.Type.CLEAR, 0, TextOffset.LEFT, DUMMY_DIALOGUE));
+
+        add("Clear Log",
+                "Clear any kind of log that is on the screen.",
+                new ClearLogEvent());
     }
 
     private void dialogueTab() {

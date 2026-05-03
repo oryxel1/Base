@@ -18,6 +18,7 @@ import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
@@ -40,6 +41,8 @@ import oxy.bascenario.event.impl.element.focus.FunctionFocusElement;
 import oxy.bascenario.event.impl.element.focus.FunctionUnfocusElement;
 import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
 import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
+import oxy.bascenario.event.impl.log.FunctionAddLog;
+import oxy.bascenario.event.impl.log.FunctionClearLog;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundVolumeEvent;
@@ -88,6 +91,9 @@ public class EventRegistries {
 
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
         EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseOptions.class);
+
+        EVENT_TO_FUNCTION.put(AddLogEvent.class, FunctionAddLog.class);
+        EVENT_TO_FUNCTION.put(ClearLogEvent.class, FunctionClearLog.class);
 
         EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
 

@@ -69,7 +69,7 @@ public final class AnimationTicker {
         final MutableObjectBinding query = new MutableObjectBinding();
 
         query.setFunction("present", (v) -> screen.getElements().get((int) v) == null ? 0 : 1);
-        query.setFunction("offset", (i) -> i == 0 ? this.renderer.getOffset().x() : this.renderer.getOffset().y());
+        query.setFunction("offset", (i) -> i == 0 ? this.renderer.getAnimationOffset().x() : this.renderer.getAnimationOffset().y());
         query.setFunction("scale", (i) -> i == 0 ? this.renderer.getScale().x() : this.renderer.getScale().y());
         query.setFunction("rotation", (i) -> i == 0 ? this.renderer.getRotation().x() : i == 1 ? this.renderer.getRotation().y() : this.renderer.getRotation().z());
 
@@ -161,7 +161,7 @@ public final class AnimationTicker {
             } else {
                 Vec2 vec2 = AnimationUtils.evalVec2(this.scope.copy(), value, true);
                 if (vec2 != null) {
-                    final Vec2Animations vec2Animations = ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getOffset());
+                    final Vec2Animations vec2Animations = ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getAnimationOffset());
                     if (timelineType == AnimationTimeline.Type.SET) {
                         vec2Animations.set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
                     } else {

@@ -40,8 +40,8 @@ public abstract class BaseDialogueRenderer {
     public void finishAll() {
     }
 
-    private FontType font;
-    protected TextOffset offset;
+    protected FontType font;
+    protected TextOffset offset = TextOffset.LEFT;
     public final boolean start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
         if (index != currentIndex) {
             return false;
@@ -80,7 +80,7 @@ public abstract class BaseDialogueRenderer {
         renderDialogues();
     }
 
-    private void renderDetails() {
+    public void renderDetails() {
         final TextRun name = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.name, Color.WHITE, 0, OUTLINE_COLOR));
         TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         final float nameTextWidth = TextUtils.getVisualWidth(58, name.shape());
@@ -89,7 +89,7 @@ public abstract class BaseDialogueRenderer {
         TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 25, SEPARATOR_Y - 23, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 
-    private void renderBackground() {
+    public void renderBackground() {
         final Color color = Color.fromRGBA(13, 31, 45, 220);
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 1080 - NON_GRADIENT_PART, 1920, 1080, color);
 

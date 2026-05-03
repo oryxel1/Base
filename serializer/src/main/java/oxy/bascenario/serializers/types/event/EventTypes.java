@@ -21,6 +21,7 @@ import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.*;
 import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.serializers.base.Type;
@@ -41,6 +42,8 @@ import oxy.bascenario.serializers.types.event.impl.element.focus.FocusElementTyp
 import oxy.bascenario.serializers.types.event.impl.element.focus.UnfocusElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.PositionElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
+import oxy.bascenario.serializers.types.event.impl.log.AddLogType;
+import oxy.bascenario.serializers.types.event.impl.log.ClearLogType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
 import oxy.bascenario.serializers.types.event.impl.transition.ScreenTransitionType;
 import oxy.bascenario.serializers.types.event.impl.utility.CheckForDialogueType;
@@ -77,6 +80,9 @@ public class EventTypes implements Type<Event> {
         put(CloseDialogueEvent.class, new CloseDialogueType());
         put(AddDialogueEvent.class, new AddDialogueType());
         put(RedirectDialogueEvent.class, new RedirectDialogueType());
+
+        put(AddLogEvent.class, new AddLogType());
+        put(ClearLogEvent.class, new ClearLogType());
 
         put(ColorOverlayEvent.class, new ColorOverlayType());
         put(SetColorEvent.class, new SetColorType());

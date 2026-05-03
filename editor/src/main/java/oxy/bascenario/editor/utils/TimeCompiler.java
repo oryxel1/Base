@@ -11,6 +11,7 @@ import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
@@ -110,6 +111,7 @@ public class TimeCompiler {
 
             case StartDialogueEvent event -> compileTime(event.dialogues());
             case AddDialogueEvent event -> compileTime(event.dialogues());
+            case AddLogEvent event -> compileTime(event.dialogues());
 
             case Dialogue[] dialogues -> compileTime(dialogues);
             case Dialogue dialogue -> compileTime(dialogue);

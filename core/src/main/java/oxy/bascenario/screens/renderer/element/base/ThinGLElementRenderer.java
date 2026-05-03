@@ -23,11 +23,14 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
 
         GLOBAL_RENDER_STACK.translate(this.pivot.x(), this.pivot.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
         GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
         GLOBAL_RENDER_STACK.translate(-this.offset.x(), -this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.animationOffset.x(), -this.animationOffset.y(), 0);
         GLOBAL_RENDER_STACK.translate(-this.pivot.x(), -this.pivot.y(), 0);
 
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
 

@@ -12,11 +12,13 @@ import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
+import oxy.bascenario.api.event.element.ClearLogEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
@@ -74,6 +76,9 @@ public class NameUtils {
 
             case PopupEvent ignored -> "Image Popup";
             case ScreenTransitionEvent ignored -> "Screen Transition";
+
+            case AddLogEvent ignored -> "Add Log";
+            case ClearLogEvent ignored -> "Clear Log";
 
             default -> object.getClass().getSimpleName();
         };

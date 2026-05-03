@@ -20,6 +20,7 @@ import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
@@ -92,6 +93,8 @@ public class Inspector {
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case RedirectDialogueEvent event -> DialogueInspector.render(event);
+
+            case AddLogEvent event -> LogInspector.render(screen.getScenario(), event);
 
             case ShowOptionsEvent event -> OptionsInspector.render(event);
 

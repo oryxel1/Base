@@ -19,6 +19,7 @@ import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.managers.other.TextureAsset;
+import oxy.bascenario.screens.renderer.dialogue.LogRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
@@ -52,6 +53,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.timestamps.addAll(scenario.getTimestamps());
         this.scenario = scenario;
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
+        this.logRenderer = new LogRenderer(this.scenario);
 
         this.preload = preload;
     }
@@ -160,6 +162,8 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final BaseDialogueRenderer dialogueRenderer;
     @Getter
+    private final LogRenderer logRenderer;
+    @Getter
     private final OptionsRenderer optionsRenderer = new OptionsRenderer();
 
     @Override
@@ -194,6 +198,7 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Setter
     private boolean showButtons;
+
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -215,6 +220,8 @@ public class ScenarioScreen extends ExtendableScreen {
         } else {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
         }
+
+        this.logRenderer.render();
 
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
