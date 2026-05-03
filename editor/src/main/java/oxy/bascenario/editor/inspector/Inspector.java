@@ -31,6 +31,7 @@ import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.inspector.impl.events.*;
@@ -84,6 +85,7 @@ public class Inspector {
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(screen.getScenario(), text);
+            case AnimatedText text -> TextInspector.render(screen.getScenario(), text);
             case AnimatedImage image -> ImageInspector.render(image);
             case Image image -> ImageInspector.render(image);
             case Circle circle -> ShapeInspector.render(circle);

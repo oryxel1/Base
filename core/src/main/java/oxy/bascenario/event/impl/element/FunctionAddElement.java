@@ -10,8 +10,9 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
-import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.event.element.AddElementEvent;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
+import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.thingl.*;
@@ -21,6 +22,8 @@ import oxy.bascenario.screens.renderer.element.thingl.emoticon.EmoticonMainRende
 import oxy.bascenario.screens.renderer.element.thingl.shape.CircleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.RectangleRenderer;
 import oxy.bascenario.screens.renderer.element.thingl.shape.TriangleRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.text.AnimatedTextRenderer;
+import oxy.bascenario.screens.renderer.element.thingl.text.TextRenderer;
 
 public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
     public FunctionAddElement(AddElementEvent event) {
@@ -43,6 +46,7 @@ public class FunctionAddElement extends FunctionEvent<AddElementEvent> {
             case AnimatedImage image -> new AnimatedImageRenderer(scenario, image, layer);
             case Image image -> new ImageRenderer(image, layer, scenario);
             case Text text -> new TextRenderer(text, layer, scenario);
+            case AnimatedText text -> new AnimatedTextRenderer(text, layer, scenario);
             case Rectangle rectangle -> new RectangleRenderer(rectangle, layer);
             case Circle circle -> new CircleRenderer(circle, layer);
             case Triangle triangle -> new TriangleRenderer(triangle, layer);

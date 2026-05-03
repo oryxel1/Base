@@ -22,6 +22,7 @@ import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 
 public class NameUtils {
     public static String name(Object object) {
@@ -67,6 +68,8 @@ public class NameUtils {
             case LockClickEvent ignored -> "Lock Click";
 
             case LocationInfo ignored -> "Location Info";
+            case AnimatedText ignored -> "Typing Text";
+
             case SoundAsElement ignored -> "Sound";
             case AnimatedImage ignored -> "Gif";
 

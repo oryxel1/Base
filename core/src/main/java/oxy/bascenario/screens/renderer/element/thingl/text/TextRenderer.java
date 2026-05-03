@@ -1,4 +1,4 @@
-package oxy.bascenario.screens.renderer.element.thingl;
+package oxy.bascenario.screens.renderer.element.thingl.text;
 
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
@@ -8,8 +8,9 @@ import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
 import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
+import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;

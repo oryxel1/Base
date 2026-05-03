@@ -14,6 +14,7 @@ import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.shape.Triangle;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.font.Font;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.Text;
@@ -61,6 +62,7 @@ public class ElementTypes implements Type<Object> {
 
     static {
         put(Text.class, TEXT_TYPE);
+        put(AnimatedText.class, new AnimatedTextType());
         put(Sprite.class, new SpriteType());
         put(Preview.class, new PreviewType());
         put(LocationInfo.class, new LocationInfoType());
