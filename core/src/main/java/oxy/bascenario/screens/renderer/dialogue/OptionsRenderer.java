@@ -87,8 +87,8 @@ public class OptionsRenderer {
 
             float textScale = 1;
             TextRun textRun = TextRun.fromString(FontUtils.font("MalgunGothic"), text, TEXT_COLOR.withAlphaF(alpha));
-            if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
-                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
+            if (TextUtils.getVisualWidth(44 * scale, textRun.shape()) > buttonWidth - 100) {
+                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44 * scale, textRun.shape()), 1);
             }
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
