@@ -20,7 +20,7 @@ public class AnimatedTextRenderer extends ThinGLElementRenderer<AnimatedText> {
         this.renderer = new DialogueRenderer(scenario) {
             @Override
             public float renderYOffset() {
-                return position.y();
+                return -((element.size() / 42f) * textYDistance() + 5);
             }
 
             @Override
