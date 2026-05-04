@@ -1,6 +1,5 @@
 package oxy.bascenario.editor.miniuis;
 
-import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiHoveredFlags;
@@ -15,6 +14,7 @@ import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.api.render.elements.text.font.FontType;
@@ -61,6 +61,10 @@ public class ObjectsUI {
         add("Text",
                 "A text with defined size with multiple segments, each segments with customizable font, color, etc.",
                 new Text(new ArrayList<>(List.of(TextSegment.builder().text("Hello World!").build())), 42));
+
+        add("Typing Text",
+                "Same as text but with typing animation.",
+                new AnimatedText(1, new ArrayList<>(List.of(TextSegment.builder().text("Hello World!").build())), 42));
 
         add("Circle",
                 "round round we go.",

@@ -114,9 +114,17 @@ public final class EngineRenderer extends Game {
         imGuiGlfw.newFrame();
         ImGui.newFrame();
 
+        if (ImGui.getStyle().getFontScaleDpi() != 1) {
+            ImGui.pushFont(FontUtils.IM_FONT_REGULAR, 17);
+        }
         super.render();
 
+        if (ImGui.getStyle().getFontScaleDpi() != 1) {
+            ImGui.popFont();
+        }
+
         ImGui.render();
+
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
 //        if (GLFW.glfwGetWindowAttrib(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle(), GLFW.GLFW_MAXIMIZED) == 1) {
@@ -138,6 +146,11 @@ public final class EngineRenderer extends Game {
                 Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
             }
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
     }
 
     @Override

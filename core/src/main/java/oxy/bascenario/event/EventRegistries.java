@@ -2,7 +2,9 @@ package oxy.bascenario.event;
 
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.SetWeatherEvent;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -17,13 +19,16 @@ import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
+import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.FunctionLockClick;
 import oxy.bascenario.event.impl.FunctionSetWeather;
+import oxy.bascenario.event.impl.FunctionPopup;
 import oxy.bascenario.event.impl.FunctionShowButtons;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
 import oxy.bascenario.event.impl.animation.FunctionSpriteAnimation;
@@ -38,10 +43,14 @@ import oxy.bascenario.event.impl.element.focus.FunctionFocusElement;
 import oxy.bascenario.event.impl.element.focus.FunctionUnfocusElement;
 import oxy.bascenario.event.impl.element.values.FunctionPositionElement;
 import oxy.bascenario.event.impl.element.values.FunctionRotateElement;
+import oxy.bascenario.event.impl.log.FunctionAddLog;
+import oxy.bascenario.event.impl.log.FunctionClearLog;
 import oxy.bascenario.event.impl.sound.FunctionPlaySoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundVolumeEvent;
 import oxy.bascenario.event.impl.sound.FunctionStopSoundEvent;
+import oxy.bascenario.event.impl.transition.FunctionScreenTransition;
+import oxy.bascenario.event.impl.utility.FunctionCheckForDialogue;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,12 +94,20 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
         EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseOptions.class);
 
+        EVENT_TO_FUNCTION.put(AddLogEvent.class, FunctionAddLog.class);
+        EVENT_TO_FUNCTION.put(ClearLogEvent.class, FunctionClearLog.class);
+
         EVENT_TO_FUNCTION.put(SpriteAnimationEvent.class, FunctionSpriteAnimation.class);
 
         EVENT_TO_FUNCTION.put(LockClickEvent.class, FunctionLockClick.class);
         EVENT_TO_FUNCTION.put(ShowButtonsEvent.class, FunctionShowButtons.class);
 
         EVENT_TO_FUNCTION.put(SetWeatherEvent.class, FunctionSetWeather.class);
+        EVENT_TO_FUNCTION.put(ScreenTransitionEvent.class, FunctionScreenTransition.class);
+
+        EVENT_TO_FUNCTION.put(CheckForDialogueEvent.class, FunctionCheckForDialogue.class);
+
+        EVENT_TO_FUNCTION.put(PopupEvent.class, FunctionPopup.class);
 
         EVENT_TO_FUNCTION = Collections.unmodifiableMap(EVENT_TO_FUNCTION);
     }

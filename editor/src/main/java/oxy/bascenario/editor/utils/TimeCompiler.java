@@ -1,5 +1,6 @@
 package oxy.bascenario.editor.utils;
 
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -10,6 +11,7 @@ import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
@@ -79,13 +81,18 @@ public class TimeCompiler {
                 builder.duration(event.duration() + duration);
                 yield builder.build();
             }
+            case ScreenTransitionEvent event -> {
+                ScreenTransitionEvent.Builder builder = event.toBuilder();
+                builder.waitDuration(event.waitDuration() + duration);
+                yield builder.build();
+            }
             default -> object;
         };
     }
 
     public static boolean canResize(final Object object) {
         return compileTime(object) == Long.MAX_VALUE || object instanceof LocationInfo || object instanceof Emoticon ||
-                object instanceof PositionElementEvent || object instanceof RotateElementEvent ||
+                object instanceof PositionElementEvent || object instanceof RotateElementEvent || object instanceof ScreenTransitionEvent ||
                 object instanceof PlaySoundEvent || object instanceof SoundVolumeEvent || object instanceof StopSoundEvent ||
                 object instanceof ColorOverlayEvent || object instanceof SetColorEvent || object instanceof ClearBackgroundEvent || object instanceof SetBackgroundEvent;
     }
@@ -104,6 +111,7 @@ public class TimeCompiler {
 
             case StartDialogueEvent event -> compileTime(event.dialogues());
             case AddDialogueEvent event -> compileTime(event.dialogues());
+            case AddLogEvent event -> compileTime(event.dialogues());
 
             case Dialogue[] dialogues -> compileTime(dialogues);
             case Dialogue dialogue -> compileTime(dialogue);
@@ -124,6 +132,7 @@ public class TimeCompiler {
             case SetColorEvent event -> Math.max(100, event.duration());
             case ClearBackgroundEvent event -> Math.max(100, event.duration());
             case SetBackgroundEvent event -> Math.max(100, event.duration());
+            case ScreenTransitionEvent event -> Math.max(100, event.inDuration() + event.outDuration() + event.waitDuration());
 
             default -> 100L; // has to be something for it to show up in the editor.
         };

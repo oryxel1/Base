@@ -17,7 +17,7 @@ public class FontUtils {
     public static Font DEFAULT, SEMI_BOLD;
     private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
 
-    public static ImFont IM_FONT_SEMI_BOLD_20, IM_FONT_SEMI_BOLD_30, IM_FONT_REGULAR_35, CHILLGOTHIC_17;
+    public static ImFont IM_FONT_SEMI_BOLD, IM_FONT_REGULAR, CHILLGOTHIC_17;
 
     public static Font font(FontStyle style, FontType type) {
         return NAME_TO_FONTS.get(type.toName(style));
@@ -70,16 +70,16 @@ public class FontUtils {
         loadFont("NotoSansTCSemiBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-SemiBold.ttf");
         loadFont("NotoSansTCBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-Bold.ttf");
 
-        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 17, false));
-
         DEFAULT = NAME_TO_FONTS.get("ChillRoundRegular");
         SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
 
-        IM_FONT_SEMI_BOLD_20 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 20, false);
-        IM_FONT_SEMI_BOLD_30 = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 30, false);
-        IM_FONT_REGULAR_35 = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 35, false);
+        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 18, false));
+        IM_FONT_REGULAR = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 50, false);
+        IM_FONT_SEMI_BOLD = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 50, false);
+        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 50, true);
 
-        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 17, true);
+        ImGui.getIO().setConfigDpiScaleFonts(true);
+        ImGui.getIO().setConfigDpiScaleViewports(true);
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font) {

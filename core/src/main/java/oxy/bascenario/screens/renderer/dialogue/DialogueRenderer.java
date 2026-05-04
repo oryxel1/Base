@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.dialogue;
 
+import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.resource.font.Font;
@@ -17,7 +18,7 @@ import oxy.bascenario.utils.font.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DialogueRenderer extends BaseDialogueRenderer {
+public class DialogueRenderer extends BaseDialogueRenderer {
     private final Scenario scenario;
 
     private final List<DialogueText> texts = new ArrayList<>();
@@ -26,11 +27,17 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         this.scenario = scenario;
     }
 
+    @Override
+    public void finishAll() {
+        this.texts.forEach(t -> t.forceFinished = true);
+    }
+
     public boolean add(int index, boolean newLine, Dialogue... dialogues) {
         if (index != this.currentIndex) {
             return false;
         }
 
+        this.playing = true;
         this.finished = false;
         for (Dialogue dialogue : dialogues) {
             final List<TextBuilder> texts = new ArrayList<>();
@@ -78,8 +85,34 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
 
     private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
     }
-    private record DialogueText(float offset, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments, float speed,
-                                long time, long prev, int size, boolean newLine) {
+
+    @RequiredArgsConstructor
+    private static final class DialogueText {
+        private final float offset;
+        private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
+        private final float speed;
+        private final long time;
+        private final long prev;
+        private final int size;
+        private final boolean newLine;
+
+        public boolean forceFinished;
+
+        public long time() {
+            return time;
+        }
+
+        public long prev() {
+            return prev;
+        }
+
+        public int size() {
+            return size;
+        }
+
+        public boolean newLine() {
+            return newLine;
+        }
     }
 
     @Override
@@ -113,7 +146,7 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final long msPerWord = (long) (Dialogue.MS_PER_WORD * (1 / text.speed) * 1);
-            long words = Math.min(Math.max(0, (TimeUtils.currentTimeMillis() - text.time() - text.prev()) / msPerWord), text.allSegments.size() - 1);
+            long words = text.forceFinished ? text.allSegments.size() - 1 : Math.min(Math.max(0, (TimeUtils.currentTimeMillis() - text.time() - text.prev()) / msPerWord), text.allSegments.size() - 1);
 
             finished = words == text.allSegments.size() - 1;
             if (finished) {
@@ -156,9 +189,9 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
             }
         }
 
-        float y = SEPARATOR_Y + 2;
+        float y = renderYOffset();
         for (TextLineCache line : lines) {
-            y += (line.size / 42f) * 57 + 5;
+            y += (line.size / 42f) * textYDistance() + 5;
 
             float x = line.offset + switch (offset.type()) {
                 case Left -> SEPARATOR_X + 10;
@@ -172,6 +205,14 @@ public final class DialogueRenderer extends BaseDialogueRenderer {
         }
 
         this.finished = done == this.texts.size();
+    }
+
+    public float textYDistance() {
+        return 57;
+    }
+
+    public float renderYOffset() {
+        return SEPARATOR_Y + 2;
     }
 
     public record TextLineCache(float offset, List<TextRun> segments, List<TextRun> allSegments, float size) {

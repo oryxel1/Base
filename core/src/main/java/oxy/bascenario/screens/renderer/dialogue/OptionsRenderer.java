@@ -33,6 +33,7 @@ public class OptionsRenderer {
         this.clicked = null;
         this.options = options;
         this.flipped = false;
+        this.releasedalready = false;
         if (this.options != null) {
             this.scale = AnimationUtils.build(250, 0.7F, 1F, EasingFunction.CUBIC);
         }
@@ -86,8 +87,8 @@ public class OptionsRenderer {
 
             float textScale = 1;
             TextRun textRun = TextRun.fromString(FontUtils.font("MalgunGothic"), text, TEXT_COLOR.withAlphaF(alpha));
-            if (TextUtils.getVisualWidth(44, textRun.shape()) > buttonWidth - 100) {
-                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44, textRun.shape()), 1);
+            if (TextUtils.getVisualWidth(44 * scale, textRun.shape()) > buttonWidth - 100) {
+                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44 * scale, textRun.shape()), 1);
             }
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
@@ -103,15 +104,13 @@ public class OptionsRenderer {
         }
     }
 
-    private boolean sound;
+    private boolean releasedalready;
     public void mouseRelease() {
-        if (this.clicked != null) {
-            if (!sound) {
-                AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
-                sound = true;
-            }
+        if (!releasedalready && clicked != null) {
+            AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
 
             this.scale = AnimationUtils.build(400, this.scale.getValue(), SCALE_SIZE, EasingFunction.CUBIC);
+            releasedalready = true;
         }
     }
 

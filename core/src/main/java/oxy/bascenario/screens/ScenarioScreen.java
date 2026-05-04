@@ -6,6 +6,7 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
+import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
@@ -19,6 +20,8 @@ import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.screens.renderer.weather.RainRenderer;
+import oxy.bascenario.managers.other.TextureAsset;
+import oxy.bascenario.screens.renderer.dialogue.LogRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
 import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
@@ -53,6 +56,7 @@ public class ScenarioScreen extends ExtendableScreen {
         this.timestamps.addAll(scenario.getTimestamps());
         this.scenario = scenario;
         this.dialogueRenderer = new DialogueRenderer(this.scenario);
+        this.logRenderer = new LogRenderer(this.scenario);
 
         this.preload = preload;
     }
@@ -71,6 +75,11 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     public void background(FileInfo file, long duration) {
+        if (file == null) {
+            clearBackground(duration);
+            return;
+        }
+
         if (this.background != null) {
             this.targetBackground = file;
             this.backgroundFade = AnimationUtils.build(duration, this.backgroundFade.getValue(), 0, EasingFunction.LINEAR);
@@ -156,6 +165,8 @@ public class ScenarioScreen extends ExtendableScreen {
     @Getter
     private final BaseDialogueRenderer dialogueRenderer;
     @Getter
+    private final LogRenderer logRenderer;
+    @Getter
     private final OptionsRenderer optionsRenderer = new OptionsRenderer();
 
     @Override
@@ -189,9 +200,13 @@ public class ScenarioScreen extends ExtendableScreen {
     private Weather weather = Weather.CLEAR;
     private final RainRenderer rainRenderer = new RainRenderer();
     private final SnowRenderer snowRenderer = new SnowRenderer();
+    
+    @Setter
+    private FileInfo popup;
 
     @Setter
     private boolean showButtons;
+
     @Override
     public void render(float delta) {
         ThinGLUtils.start();
@@ -214,20 +229,31 @@ public class ScenarioScreen extends ExtendableScreen {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
         }
 
+        this.logRenderer.render();
+
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
 
         this.dialogueRenderer.render();
 
+        if (popup != null) {
+            Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get(false);
+            final int width = (int) (texture2D.getWidth() * 0.65f), height = (int) (texture2D.getHeight() * 0.65f);
+
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
+        }
+
         // TODO: Should the above dialogue render layer above the options as well?
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.ABOVE_DIALOGUE).forEach(e -> e.renderAll(this));
 
         this.optionsRenderer.render(this);
 
         // TODO: Properly render shadow?
         if (showButtons) {
-            ThinGLUtils.renderTriangleRectangle(1526, 30, 160, 60, 12, 5, Color.fromRGB(244, 245, 246));
-            ThinGLUtils.renderTriangleRectangle(1526 + 160 + 30, 32, 160, 60 - 2, 12, 5, Color.fromRGB(244, 245, 246));
+            // Render texture is cheaper than whatever we were doing before.
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/automenu.png", true), 0, 0, 1920, 1080);
+//            ThinGLUtils.renderTriangleRectangle(1526, 30, 160, 60, 12, 5, Color.fromRGB(244, 245, 246));
+//            ThinGLUtils.renderTriangleRectangle(1526 + 160 + 30, 32, 160, 60 - 2, 12, 5, Color.fromRGB(244, 245, 246));
 
             final TextRun auto = TextRun.fromString(FontUtils.font(FontStyle.BOLD, FontType.NotoSans), "Auto", Color.fromRGB(45, 70, 99), 1 << 2);
             TextUtils.textRun(36, auto, 1526 + 12 + (160 / 2f) - (TextUtils.getVisualWidth(36, auto.shape()) / 2f) - 3,
@@ -243,7 +269,7 @@ public class ScenarioScreen extends ExtendableScreen {
         rainRenderer.render(weather == Weather.RAIN);
         snowRenderer.render(weather == Weather.SNOW);
 
-        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(ElementRenderer::renderAll);
+        elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(e -> e.renderAll(this));
 
         ThinGLUtils.end();
 
@@ -264,8 +290,12 @@ public class ScenarioScreen extends ExtendableScreen {
             return;
         }
 
-        if (!this.dialogueRenderer.isBusy() && this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
-            this.busyDialogue = false;
+        if (this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
+            if (!this.dialogueRenderer.isBusy()) {
+                this.busyDialogue = false;
+            } else {
+                this.dialogueRenderer.finishAll();
+            }
         }
     }
 

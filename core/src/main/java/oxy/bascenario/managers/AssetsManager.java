@@ -70,16 +70,28 @@ public class AssetsManager implements AssetsManagerApi {
 //    }
 
     public Texture2D texture(String path) {
-        return texture(null, new FileInfo(path, false, true));
+        return texture(null, new FileInfo(path, false, true), false);
     }
 
     public Texture2D texture(FileInfo info) {
-        return texture(null, info);
+        return texture(null, info, false);
+    }
+
+    public Texture2D texture(String path, boolean filter) {
+        return texture(null, new FileInfo(path, false, true), filter);
+    }
+
+    public Texture2D texture(FileInfo info, boolean filter) {
+        return texture(null, info, filter);
     }
 
     public Texture2D texture(String scenario, FileInfo info) {
+        return texture(scenario, info, false);
+    }
+
+    public Texture2D texture(String scenario, FileInfo info, boolean filter) {
         try {
-            return ((TextureAsset)assets(scenario, info, AssetType.TEXTURE).asset()).get();
+            return ((TextureAsset)assets(scenario, info, AssetType.TEXTURE).asset()).get(filter);
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);
@@ -87,7 +99,7 @@ public class AssetsManager implements AssetsManagerApi {
                 load(null, invalidTexture, AssetType.TEXTURE);
             }
 
-            return ((TextureAsset)this.assets.get(INVALID_TEXTURE_KEY).asset()).get();
+            return ((TextureAsset)this.assets.get(INVALID_TEXTURE_KEY).asset()).get(false);
         }
     }
 

@@ -116,18 +116,18 @@ public class ImGuiUtils {
     }
 
     public static String inputText(String name, String value) {
-        ImGui.pushFont(FontUtils.CHILLGOTHIC_17);
+//        ImGui.pushFont(FontUtils.CHILLGOTHIC_17, 17);
         final ImString imString = new ImString(value);
         ImGui.inputText(name + "##" + COUNTER++, imString, ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackResize);
-        ImGui.popFont();
+//        ImGui.popFont();
         return imString.get();
     }
 
     public static String inputMultiLineText(String name, String value) {
-        ImGui.pushFont(FontUtils.CHILLGOTHIC_17);
+//        ImGui.pushFont(FontUtils.CHILLGOTHIC_17, 17);
         final ImString imString = new ImString(value);
         ImGui.inputTextMultiline(name + "##" + COUNTER++, imString, ImGuiInputTextFlags.CallbackResize);
-        ImGui.popFont();
+//        ImGui.popFont();
         return imString.get();
     }
 

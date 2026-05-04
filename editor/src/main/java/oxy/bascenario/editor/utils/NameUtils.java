@@ -2,6 +2,8 @@ package oxy.bascenario.editor.utils;
 
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.SetWeatherEvent;
+import oxy.bascenario.api.event.PopupEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
@@ -11,14 +13,17 @@ import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
+import oxy.bascenario.api.event.element.ClearLogEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.image.AnimatedImage;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 
 public class NameUtils {
     public static String name(Object object) {
@@ -64,6 +69,8 @@ public class NameUtils {
             case LockClickEvent ignored -> "Lock Click";
 
             case LocationInfo ignored -> "Location Info";
+            case AnimatedText ignored -> "Typing Text";
+
             case SoundAsElement ignored -> "Sound";
             case AnimatedImage ignored -> "Gif";
 
@@ -72,6 +79,11 @@ public class NameUtils {
             case UnfocusElementEvent ignored -> "Un-focus Object";
 
             case SetWeatherEvent ignored -> "Set Weather";
+            case PopupEvent ignored -> "Image Popup";
+            case ScreenTransitionEvent ignored -> "Screen Transition";
+
+            case AddLogEvent ignored -> "Add Log";
+            case ClearLogEvent ignored -> "Clear Log";
 
             default -> object.getClass().getSimpleName();
         };

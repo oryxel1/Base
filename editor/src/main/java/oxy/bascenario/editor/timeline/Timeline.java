@@ -204,20 +204,22 @@ public class Timeline {
     private void drawTimelineSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
-        float y = pos.y + 80;
+        float yScale = 80 * ImGui.getStyle().getFontScaleDpi();
+        float y = pos.y + yScale;
 
 //        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
 
-        for (int i = verticalScroll; i <= ((size.y - 80) / 50) + verticalScroll; i++) {
-            drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + 50), ImColor.rgb(33, 33, 33));
+        float segmentY = 50 * ImGui.getStyle().getFontScaleDpi();
+        for (int i = verticalScroll; i <= ((size.y - yScale) / segmentY) + verticalScroll; i++) {
+            drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + segmentY), ImColor.rgb(33, 33, 33));
 
-            ImGui.pushFont(FontUtils.IM_FONT_REGULAR_35);
+            ImGui.pushFont(FontUtils.IM_FONT_REGULAR, 35);
             drawList.addText(new ImVec2(pos.x + 10, y), ImColor.rgb(255, 255, 255), "Track " + i);
             ImGui.popFont();
 
             drawList.addRect(new ImVec2(pos.x, y), new ImVec2(pos.x + size.x, y + 0.5f), ImColor.rgb(50, 50, 50));
 
-            y += 50;
+            y += segmentY;
         }
 
         this.objects.forEach(object -> {
@@ -232,12 +234,12 @@ public class Timeline {
 
         drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y), new ImVec2(pos.x + size.x, pos.y + size.y), ImColor.rgb(20, 19, 24));
         for (int i = 0; i <= 5; i++) {
-            ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD_20);
+            ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD, 20);
             long time = (long) ((DEFAULT_MAX_TIME * scale * scroll) + (DEFAULT_MAX_TIME * scale * (i / 5f)));
             float segmentX = timestampToPosition(time, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
 
             drawList.addRect(new ImVec2(segmentX, pos.y), new ImVec2(segmentX + 0.5f, pos.y + size.y), ImColor.rgb(50, 50, 50));
-            drawList.addText(segmentX + 5, pos.y + 30, ImColor.rgb(255, 255, 255), format(time));
+            drawList.addText(segmentX + 5, pos.y + 30 * ImGui.getStyle().getFontScaleDpi(), ImColor.rgb(255, 255, 255), format(time));
 
             ImGui.popFont();
         }
@@ -246,10 +248,15 @@ public class Timeline {
     private void drawElapsedTime(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
         final ImDrawList drawList = ImGui.getWindowDrawList();
 
-        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth, pos.y + 80), ImColor.rgb(50, 50, 50));
-        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + 80), ImColor.rgb(50, 50, 50));
-        ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD_30);
-        drawList.addText(pos.x + 20, pos.y + 21, ImColor.rgb(255, 255, 255), format(timestamp));
+        float yScale = 80 * ImGui.getStyle().getFontScaleDpi();
+
+        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth,
+                pos.y + yScale), ImColor.rgb(50, 50, 50));
+
+        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + yScale), ImColor.rgb(50, 50, 50));
+
+        ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD, 30);
+        drawList.addText(pos.x + 20, pos.y + 21 * ImGui.getStyle().getFontScaleDpi(), ImColor.rgb(255, 255, 255), format(timestamp));
         ImGui.popFont();
 
         long millis = timestamp % 1000;
@@ -257,7 +264,7 @@ public class Timeline {
         long minute = (timestamp / (1000 * 60)) % 60;
         long hour = (timestamp / (1000 * 60 * 60)) % 24;
         ImGui.pushItemWidth(timelineManagerWidth - 15);
-        ImGui.setCursorPos(5, 55);
+        ImGui.setCursorPos(5, 55 * ImGui.getStyle().getFontScaleDpi());
         int[] time = new int[] {Math.toIntExact(hour), Math.toIntExact(minute), Math.toIntExact(second), Math.toIntExact(millis)};
         ImGuiUtils.inputInt4("", time);
         ImGui.popItemWidth();
@@ -277,7 +284,7 @@ public class Timeline {
             return;
         }
 
-        drawList.addRect(new ImVec2(cursorX, pos.y), new ImVec2(cursorX + 1, pos.y + size.y), ImColor.rgb(255, 255, 255));
+        drawList.addRect(new ImVec2(cursorX, pos.y), new ImVec2(cursorX + ImGui.getStyle().getFontScaleDpi(), pos.y + size.y), ImColor.rgb(255, 255, 255));
     }
 
     private void onMouseDown(ImVec2 vec2) {
@@ -292,7 +299,7 @@ public class Timeline {
         }
 
         if (vec2.x < pos.x + size.x / 4) {
-            if (vec2.y > pos.y + 80) {
+            if (vec2.y > pos.y + 80 * ImGui.getStyle().getFontScaleDpi()) {
                 final float distance = pos.x + size.x / 4 - vec2.x;
                 final float ratio = distance / (size.x - size.x / 4);
                 final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
@@ -303,7 +310,7 @@ public class Timeline {
             return;
         }
 
-        if (vec2.y > pos.y + 80) {
+        if (vec2.y > pos.y + 80 * ImGui.getStyle().getFontScaleDpi()) {
             return;
         }
 

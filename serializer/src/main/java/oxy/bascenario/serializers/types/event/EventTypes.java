@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.SetWeatherEvent;
+import oxy.bascenario.api.event.PopupEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
@@ -20,11 +22,14 @@ import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.*;
+import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.event.impl.LockClickType;
 import oxy.bascenario.serializers.types.event.impl.SetWeatherType;
+import oxy.bascenario.serializers.types.event.impl.PopupType;
 import oxy.bascenario.serializers.types.event.impl.ShowButtonsType;
 import oxy.bascenario.serializers.types.event.impl.animation.PlayAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.SpriteAnimationType;
@@ -39,7 +44,11 @@ import oxy.bascenario.serializers.types.event.impl.element.focus.FocusElementTyp
 import oxy.bascenario.serializers.types.event.impl.element.focus.UnfocusElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.PositionElementType;
 import oxy.bascenario.serializers.types.event.impl.element.values.RotateElementType;
+import oxy.bascenario.serializers.types.event.impl.log.AddLogType;
+import oxy.bascenario.serializers.types.event.impl.log.ClearLogType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
+import oxy.bascenario.serializers.types.event.impl.transition.ScreenTransitionType;
+import oxy.bascenario.serializers.types.event.impl.utility.CheckForDialogueType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +83,9 @@ public class EventTypes implements Type<Event> {
         put(AddDialogueEvent.class, new AddDialogueType());
         put(RedirectDialogueEvent.class, new RedirectDialogueType());
 
+        put(AddLogEvent.class, new AddLogType());
+        put(ClearLogEvent.class, new ClearLogType());
+
         put(ColorOverlayEvent.class, new ColorOverlayType());
         put(SetColorEvent.class, new SetColorType());
 
@@ -91,6 +103,9 @@ public class EventTypes implements Type<Event> {
         put(ShowButtonsEvent.class, new ShowButtonsType());
 
         put(SetWeatherEvent.class, new SetWeatherType());
+        put(ScreenTransitionEvent.class, new ScreenTransitionType());
+        put(CheckForDialogueEvent.class, new CheckForDialogueType());
+        put(PopupEvent.class, new PopupType());
     }
 
     @Override

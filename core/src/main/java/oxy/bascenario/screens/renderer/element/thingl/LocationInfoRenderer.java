@@ -2,6 +2,7 @@ package oxy.bascenario.screens.renderer.element.thingl;
 
 import oxy.bascenario.Base;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -30,7 +31,7 @@ public class LocationInfoRenderer extends ElementRenderer<LocationInfo> {
     }
 
     @Override
-    protected void render() {
+    protected void render(ScenarioScreen screen) {
         if (TimeUtils.currentTimeMillis() - this.start >= element.duration()) {
             long distance = (TimeUtils.currentTimeMillis() - this.start) - element.duration();
             this.box.setTarget(0f, TimeUtils.currentTimeMillis() - distance);

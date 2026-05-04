@@ -3,7 +3,7 @@ plugins {
 }
 
 var lwjgl = "3.3.6"
-var lwjglStd = "3.4.0-SNAPSHOT"
+var lwjglStd = "3.4.0"
 var libGdx = "1.13.1"
 
 dependencies {

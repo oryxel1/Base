@@ -1,37 +1,14 @@
-import imgui.ImGui;
-import net.lenni0451.commons.color.Color;
-import oxy.bascenario.Base;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.utils.ExtendableScreen;
+import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.thingl.ThinGLUtils;
-import oxy.bascenario.utils.thingl.other.TilingSprite;
 
 public class DummyTest {
     public static void main(String[] args) {
-        Launcher.launch(new ExtendableScreen() {
-            private TilingSprite sprite;
-            @Override
-            public void show() {
-                sprite = new TilingSprite(Base.instance().assetsManager().texture("FX_TEX_Smoke_Scroll_23.png"));
-                sprite.scale = 4;
-                sprite.color = 0x4c413f;
-                sprite.setTilePosition(0, 240);
-                sprite.rotation = 0.55f;
-            }
+        final Scenario.Builder scenario = new Scenario.Builder();
 
-            @Override
-            public void render(float delta) {
-                ThinGLUtils.start();
+        scenario.add(0, new ShowButtonsEvent(true));
 
-                sprite.width = 2000;
-                sprite.height = 512;
-
-                sprite.render(0, 1080 - 512 * 1.6f);
-                sprite.addTileOffset(1, 0);
-
-                ThinGLUtils.end();
-            }
-        }, false);
+        Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }
 }

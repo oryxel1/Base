@@ -1,11 +1,12 @@
 package oxy.bascenario.editor.inspector;
 
-import imgui.ImColor;
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
 import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.event.SetWeatherEvent;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -21,6 +22,7 @@ import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.LocationInfo;
@@ -31,6 +33,7 @@ import oxy.bascenario.api.render.elements.image.AnimatedImage;
 import oxy.bascenario.api.render.elements.image.Image;
 import oxy.bascenario.api.render.elements.shape.Circle;
 import oxy.bascenario.api.render.elements.shape.Rectangle;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.utils.math.Vec2;
 import oxy.bascenario.editor.inspector.impl.events.*;
@@ -84,6 +87,7 @@ public class Inspector {
             case Emoticon emoticon -> EmoticonInspector.render(emoticon);
             case LocationInfo info -> LocationInfoInspector.render(info);
             case Text text -> TextInspector.render(screen.getScenario(), text);
+            case AnimatedText text -> TextInspector.render(screen.getScenario(), text);
             case AnimatedImage image -> ImageInspector.render(image);
             case Image image -> ImageInspector.render(image);
             case Circle circle -> ShapeInspector.render(circle);
@@ -93,6 +97,8 @@ public class Inspector {
             case StartDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case AddDialogueEvent event -> DialogueInspector.render(screen.getScenario(), event);
             case RedirectDialogueEvent event -> DialogueInspector.render(event);
+
+            case AddLogEvent event -> LogInspector.render(screen.getScenario(), event);
 
             case ShowOptionsEvent event -> OptionsInspector.render(event);
 
@@ -121,6 +127,8 @@ public class Inspector {
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
 
             case SetWeatherEvent event -> new SetWeatherEvent(Weather.values()[ImGuiUtils.combo("Weather", event.weather().ordinal(), Weather.getAlls())]);
+            case ScreenTransitionEvent event -> TransitionInspector.render(event);
+            case PopupEvent event -> ImageInspector.render(event);
             default -> old;
         };
 

@@ -6,6 +6,7 @@ import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.AnimationTicker;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.animation.math.ColorAnimations;
@@ -25,7 +26,7 @@ public abstract class ElementRenderer<T> {
 
     protected final Map<String, AnimationTicker> animations = new HashMap<>();
 
-    protected final Vec2Animations position = new Vec2Animations(), offset = new Vec2Animations(), pivot = new Vec2Animations();
+    protected final Vec2Animations position = new Vec2Animations(), offset = new Vec2Animations(), animationOffset = new Vec2Animations(), pivot = new Vec2Animations();
     protected final Vec2Animations scale = new Vec2Animations(EasingFunction.LINEAR, new Vec2(1, 1));
     protected final ColorAnimations overlayColor = new ColorAnimations(Color.TRANSPARENT), color = new ColorAnimations(Color.WHITE);
     protected final Vec3Animations rotation = new Vec3Animations();
@@ -36,14 +37,14 @@ public abstract class ElementRenderer<T> {
     // However, I will allow users to bypass that using the api, since well if they go that far, why not?
     protected final Map<Integer, ElementRenderer<?>> subElements = new HashMap<>();
 
-    public final void renderAll() {
-        render();
+    public final void renderAll(ScenarioScreen screen) {
+        render(screen);
 
         this.animations.values().forEach(AnimationTicker::tick);
         this.animations.values().removeIf(AnimationTicker::safeToRemove);
     }
 
-    protected abstract void render();
+    protected abstract void render(ScenarioScreen screen);
     public boolean selfDestruct() {
         return false; // Allow the element to automatically delete itself :D
     }

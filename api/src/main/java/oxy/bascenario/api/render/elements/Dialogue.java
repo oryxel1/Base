@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 public class Dialogue {
     private static final Color DEFAULT_OUTLINE_COLOR = Color.fromRGB(41, 65, 90);
-    public static long MS_PER_WORD = 50L;
+    public static long MS_PER_WORD = 35L;
 
     private Text dialogue;
     private float playSpeed;

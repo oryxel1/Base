@@ -168,6 +168,15 @@ public final class ThinGLUtils {
         ThinGL.globalUniforms().getViewMatrix().popMatrix();
     }
 
+    public static void fullScreenBlur(int strength) {
+        ThinGL.programs().getGaussianBlur().bindInput();
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.WHITE);
+        ThinGL.programs().getGaussianBlur().unbindInput();
+        ThinGL.programs().getGaussianBlur().configureParameters(strength);
+        ThinGL.programs().getGaussianBlur().renderFullscreen();
+        ThinGL.programs().getGaussianBlur().clearInput();
+    }
+
     public static void blurRectangle(float x, float y, float width, float height, int strength) {
         ThinGL.programs().getGaussianBlur().bindInput();
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x, y, x + width, y + height, Color.WHITE);

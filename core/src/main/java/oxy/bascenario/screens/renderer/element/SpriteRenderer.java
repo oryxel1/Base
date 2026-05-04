@@ -77,11 +77,14 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         this.skeleton = new Skeleton(skeletonData);
         this.stateData = new AnimationStateData(skeletonData);
         this.state = new AnimationState(this.stateData);
+
+        // Always use last skin for cute and funni reason.
+        this.skeleton.setSkin(skeletonData.getSkins().get(skeletonData.getSkins().size - 1));
     }
 
     private long last = TimeUtils.currentTimeMillis();
     @Override
-    protected void render() {
+    protected void render(ScenarioScreen screen) {
         if (this.skeleton == null || this.state == null) {
             return;
         }
@@ -137,7 +140,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             }
         }
 
-        if (!this.effects.isEmpty()) {
+        if (!this.effects.isEmpty() && this.color.alpha() != 0) {
             ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, 1920, 1080, 0F, -1000F, 1000F);
 
             ThinGLUtils.renderEffect(() -> {
@@ -161,7 +164,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
-        this.subElements.values().forEach(ElementRenderer::renderAll);
+        this.subElements.values().forEach(e -> e.renderAll(screen));
         GLOBAL_RENDER_STACK.popMatrix();
     }
 

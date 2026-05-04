@@ -1,10 +1,8 @@
 package oxy.bascenario.editor.miniuis;
 
-import imgui.ImColor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiHoveredFlags;
-import imgui.flag.ImGuiStyleVar;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.effects.Easing;
@@ -12,7 +10,11 @@ import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.event.LockClickEvent;
 import oxy.bascenario.api.event.SetWeatherEvent;
+import oxy.bascenario.api.effects.TransitionType;
+import oxy.bascenario.api.event.LockClickEvent;
+import oxy.bascenario.api.event.PopupEvent;
 import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -22,11 +24,14 @@ import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.*;
+import oxy.bascenario.api.event.dialogue.enums.TextOffset;
+import oxy.bascenario.api.event.element.ClearLogEvent;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.focus.UnfocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
+import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.Dialogue;
@@ -75,6 +80,11 @@ public class ActionsUI {
             ImGui.endTabItem();
         }
 
+        if (ImGui.beginTabItem("Logs")){
+            logTab();
+            ImGui.endTabItem();
+        }
+
         if (ImGui.beginTabItem("Objects")){
             objectTab();
             ImGui.endTabItem();
@@ -116,6 +126,14 @@ public class ActionsUI {
         add("Set Weather",
                 "Set the current weather",
                 new SetWeatherEvent(Weather.RAIN));
+      
+        add("Screen Transition",
+                "Transition the screen (to another background if wanted)",
+                new ScreenTransitionEvent(null, TransitionType.HORIZONTAL_SWIPE_LR, 1000, 700, 700));
+
+        add("Image Popup",
+                "Show an image popup on the screen",
+                new PopupEvent(PopupEvent.Type.SET, null));
     }
 
     private void soundTab() {
@@ -178,6 +196,16 @@ public class ActionsUI {
         add("Unfocus Objects",
                 "Un-focus any currently focused object.",
                 new UnfocusElementEvent());
+    }
+
+    private void logTab() {
+        add("Add Log",
+                "Start a log which is similar to a dialogue, but will play on the screen instead of bottom of the screen.",
+                new AddLogEvent(AddLogEvent.Type.CLEAR, 0, TextOffset.LEFT, DUMMY_DIALOGUE));
+
+        add("Clear Log",
+                "Clear any kind of log that is on the screen.",
+                new ClearLogEvent());
     }
 
     private void dialogueTab() {
