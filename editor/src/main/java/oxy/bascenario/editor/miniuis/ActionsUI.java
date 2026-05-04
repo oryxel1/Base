@@ -5,16 +5,9 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiHoveredFlags;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.effects.Easing;
-import oxy.bascenario.api.effects.Effect;
-import oxy.bascenario.api.effects.Weather;
+import oxy.bascenario.api.effects.*;
+import oxy.bascenario.api.event.*;
 import oxy.bascenario.api.event.LockClickEvent;
-import oxy.bascenario.api.event.SetWeatherEvent;
-import oxy.bascenario.api.effects.TransitionType;
-import oxy.bascenario.api.event.LockClickEvent;
-import oxy.bascenario.api.event.PopupEvent;
-import oxy.bascenario.api.event.ShowButtonsEvent;
-import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -126,6 +119,10 @@ public class ActionsUI {
         add("Set Weather",
                 "Set the current weather",
                 new SetWeatherEvent(Weather.RAIN));
+
+        add("Screen Effect",
+                "Add or remove an effect on the screen.",
+                new ScreenEffectEvent(ScreenEffectEvent.Type.ADD, ScreenEffect.GRAY_FILTER));
       
         add("Screen Transition",
                 "Transition the screen (to another background if wanted)",

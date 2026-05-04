@@ -11,6 +11,7 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.effects.ScreenEffect;
 import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
@@ -30,7 +31,6 @@ import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.screens.renderer.weather.SnowRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
-import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
-public class ScenarioScreen extends ExtendableScreen {
+public class ScenarioScreen extends ScreenEffectScreen {
     @Getter
     private final Scenario scenario;
 
@@ -171,6 +171,8 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Override
     public void show() {
+        super.show();
+
         // Load everything so that there won't be any tiny freezes when loading assets....
         if (preload) {
             final ScenarioScreen dummy = new ScenarioScreen(scenario, false);
@@ -268,6 +270,8 @@ public class ScenarioScreen extends ExtendableScreen {
 
         rainRenderer.render(weather == Weather.RAIN);
         snowRenderer.render(weather == Weather.SNOW);
+
+        super.render(delta);
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(e -> e.renderAll(this));
 

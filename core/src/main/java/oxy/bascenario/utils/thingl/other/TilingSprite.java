@@ -58,6 +58,7 @@ public class TilingSprite {
             while (newX > texture2D.getWidth()) {
                 newX -= texture2D.getWidth();
             }
+            System.out.println(newX);
             x = newX * Math.signum(x);
         }
 
