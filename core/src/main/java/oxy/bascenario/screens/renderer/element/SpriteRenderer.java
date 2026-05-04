@@ -158,9 +158,12 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         GLOBAL_RENDER_STACK.pushMatrix();
         GLOBAL_RENDER_STACK.translate(this.pivot.x(), this.pivot.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
         GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
         GLOBAL_RENDER_STACK.translate(-this.pivot.x(), -this.pivot.y(), 0);
         GLOBAL_RENDER_STACK.translate(-this.offset.x(), -this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.animationOffset.x(), -this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
         GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
         GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
@@ -172,7 +175,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
         final WindowInterface window = ThinGL.windowInterface();
         float width = ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = ScenarioScreen.RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 46) : window.getFramebufferHeight();
 
-        float x = this.position.x() + this.offset.x(), y = this.position.y() + this.offset.y();
+        float x = this.position.x() + this.offset.x() + this.animationOffset.x(), y = this.position.y() + this.offset.y() + this.animationOffset.y();
         
         float posX = (x / 1920) * width, posY = (y / 1080) * -height;
         if (ScenarioScreen.RENDER_WITHIN_IMGUI) {
