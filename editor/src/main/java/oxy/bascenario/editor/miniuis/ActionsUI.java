@@ -5,13 +5,9 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiHoveredFlags;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.effects.Easing;
-import oxy.bascenario.api.effects.Effect;
-import oxy.bascenario.api.effects.TransitionType;
+import oxy.bascenario.api.effects.*;
+import oxy.bascenario.api.event.*;
 import oxy.bascenario.api.event.LockClickEvent;
-import oxy.bascenario.api.event.PopupEvent;
-import oxy.bascenario.api.event.ShowButtonsEvent;
-import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -120,6 +116,14 @@ public class ActionsUI {
                 "Choose to hide/show the auto/menu button at the top right of the screen.",
                 new ShowButtonsEvent(true));
 
+        add("Set Weather",
+                "Set the current weather",
+                new SetWeatherEvent(Weather.RAIN));
+
+        add("Screen Effect",
+                "Add or remove an effect on the screen.",
+                new ScreenEffectEvent(ScreenEffectEvent.Type.ADD, ScreenEffect.GRAY_FILTER));
+      
         add("Screen Transition",
                 "Transition the screen (to another background if wanted)",
                 new ScreenTransitionEvent(null, TransitionType.HORIZONTAL_SWIPE_LR, 1000, 700, 700));

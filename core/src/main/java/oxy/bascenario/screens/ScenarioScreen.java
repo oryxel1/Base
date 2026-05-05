@@ -11,6 +11,8 @@ import net.raphimc.thingl.text.TextRun;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.Timestamp;
+import oxy.bascenario.api.effects.ScreenEffect;
+import oxy.bascenario.api.effects.Weather;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
@@ -18,6 +20,7 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screens.renderer.weather.RainRenderer;
 import oxy.bascenario.managers.other.TextureAsset;
 import oxy.bascenario.screens.renderer.dialogue.LogRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
@@ -25,9 +28,9 @@ import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
 import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
 import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
+import oxy.bascenario.screens.renderer.weather.SnowRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
-import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 import oxy.bascenario.utils.animation.AnimationUtils;
 import oxy.bascenario.utils.font.FontUtils;
@@ -38,7 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
-public class ScenarioScreen extends ExtendableScreen {
+public class ScenarioScreen extends ScreenEffectScreen {
     @Getter
     private final Scenario scenario;
 
@@ -168,6 +171,8 @@ public class ScenarioScreen extends ExtendableScreen {
 
     @Override
     public void show() {
+        super.show();
+
         // Load everything so that there won't be any tiny freezes when loading assets....
         if (preload) {
             final ScenarioScreen dummy = new ScenarioScreen(scenario, false);
@@ -194,6 +199,11 @@ public class ScenarioScreen extends ExtendableScreen {
     }
 
     @Setter
+    private Weather weather = Weather.CLEAR;
+    private final RainRenderer rainRenderer = new RainRenderer();
+    private final SnowRenderer snowRenderer = new SnowRenderer();
+    
+    @Setter
     private FileInfo popup;
 
     @Setter
@@ -219,6 +229,10 @@ public class ScenarioScreen extends ExtendableScreen {
             ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.background), Color.WHITE.withAlphaF(this.backgroundFade.getValue()));
         } else {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
+        }
+
+        if (this.getEffects().contains(ScreenEffect.SHINING)) {
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_SCN_Circle_Love.png"), 0, 0, 1920, 1080);
         }
 
         this.logRenderer.render();
@@ -257,6 +271,11 @@ public class ScenarioScreen extends ExtendableScreen {
                     30 + (60 / 2f) + (TextUtils.getVisualHeight(36, menu.shape()) / 2f) + 2,
                     RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
         }
+
+        rainRenderer.render(weather == Weather.RAIN);
+        snowRenderer.render(weather == Weather.SNOW);
+
+        super.render(delta);
 
         elements.stream().filter(element -> element.getLayer() == RenderLayer.TOP).forEach(e -> e.renderAll(this));
 

@@ -3,10 +3,7 @@ package oxy.bascenario.serializers.types.event;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import oxy.bascenario.api.event.LockClickEvent;
-import oxy.bascenario.api.event.PopupEvent;
-import oxy.bascenario.api.event.ScreenTransitionEvent;
-import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.*;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
@@ -26,9 +23,7 @@ import oxy.bascenario.api.event.sound.*;
 import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
-import oxy.bascenario.serializers.types.event.impl.LockClickType;
-import oxy.bascenario.serializers.types.event.impl.PopupType;
-import oxy.bascenario.serializers.types.event.impl.ShowButtonsType;
+import oxy.bascenario.serializers.types.event.impl.*;
 import oxy.bascenario.serializers.types.event.impl.animation.PlayAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.SpriteAnimationType;
 import oxy.bascenario.serializers.types.event.impl.animation.StopAnimationType;
@@ -100,8 +95,12 @@ public class EventTypes implements Type<Event> {
         put(LockClickEvent.class, new LockClickType());
         put(ShowButtonsEvent.class, new ShowButtonsType());
 
+        put(SetWeatherEvent.class, new SetWeatherType());
+        put(ScreenEffectEvent.class, new ScreenEffectType());
+
         put(ScreenTransitionEvent.class, new ScreenTransitionType());
         put(CheckForDialogueEvent.class, new CheckForDialogueType());
+
         put(PopupEvent.class, new PopupType());
     }
 

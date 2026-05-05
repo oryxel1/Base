@@ -1,9 +1,6 @@
 package oxy.bascenario.editor.utils;
 
-import oxy.bascenario.api.event.LockClickEvent;
-import oxy.bascenario.api.event.PopupEvent;
-import oxy.bascenario.api.event.ScreenTransitionEvent;
-import oxy.bascenario.api.event.ShowButtonsEvent;
+import oxy.bascenario.api.event.*;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -77,8 +74,10 @@ public class NameUtils {
             case FocusElementEvent ignored -> "Focus Object";
             case UnfocusElementEvent ignored -> "Un-focus Object";
 
+            case SetWeatherEvent ignored -> "Set Weather";
             case PopupEvent ignored -> "Image Popup";
             case ScreenTransitionEvent ignored -> "Screen Transition";
+            case ScreenEffectEvent ignored -> "Screen Effect";
 
             case AddLogEvent ignored -> "Add Log";
             case ClearLogEvent ignored -> "Clear Log";

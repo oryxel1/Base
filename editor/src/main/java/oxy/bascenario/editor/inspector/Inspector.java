@@ -2,9 +2,9 @@ package oxy.bascenario.editor.inspector;
 
 import imgui.ImGui;
 import lombok.RequiredArgsConstructor;
-import oxy.bascenario.api.event.PopupEvent;
-import oxy.bascenario.api.event.ShowButtonsEvent;
-import oxy.bascenario.api.event.ScreenTransitionEvent;
+import oxy.bascenario.api.effects.ScreenEffect;
+import oxy.bascenario.api.effects.Weather;
+import oxy.bascenario.api.event.*;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.color.ColorOverlayEvent;
@@ -123,6 +123,12 @@ public class Inspector {
             case FocusElementEvent event -> new FocusElementEvent(ImGuiUtils.inputInt("Track Id", event.id()));
 
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
+
+            case SetWeatherEvent event -> new SetWeatherEvent(Weather.values()[ImGuiUtils.combo("Weather", event.weather().ordinal(), Weather.getAlls())]);
+            case ScreenEffectEvent event -> new ScreenEffectEvent(
+                    ScreenEffectEvent.Type.values()[ImGuiUtils.combo("Type", event.type().ordinal(), ScreenEffectEvent.Type.getAlls())],
+                    ScreenEffect.values()[ImGuiUtils.combo("Effect", event.effect().ordinal(), ScreenEffect.getAlls())]
+            );
 
             case ScreenTransitionEvent event -> TransitionInspector.render(event);
             case PopupEvent event -> ImageInspector.render(event);
