@@ -57,7 +57,7 @@ public final class ThinGLUtils {
     }
 
     public static void renderBackground(Texture2D texture2D, Color color) {
-        Vector4f vec = MathUtils.findBackgroundRender(new Vector2f(1920, 1080), new Vector2f(texture2D.getWidth(), texture2D.getHeight()));
+        Vector4f vec = MathUtils.findBackgroundRender(new Vector2f(texture2D.getWidth(), texture2D.getHeight()));
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, texture2D, vec.x, vec.y, vec.z, vec.w, color);
     }
 
