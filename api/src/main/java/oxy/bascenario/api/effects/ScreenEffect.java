@@ -7,7 +7,8 @@ public enum ScreenEffect {
     GRAY_FILTER("Gray Filter"),
     SMOKE("Smoke"),
     SHINING("Shining"),
-    SHINING_NO_BG("Shining No Background");
+    SHINING_NO_BG("Shining No Background"),
+    FILM_GRAIN("Film Grain");
 
     private final String name;
 

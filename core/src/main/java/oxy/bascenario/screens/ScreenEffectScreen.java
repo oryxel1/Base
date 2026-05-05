@@ -5,6 +5,7 @@ import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.ScreenEffect;
+import oxy.bascenario.screens.renderer.effects.FilmGrainEffectRenderer;
 import oxy.bascenario.screens.renderer.effects.ShiningEffectRenderer;
 import oxy.bascenario.screens.renderer.effects.SmokeEffectRenderer;
 import oxy.bascenario.utils.ExtendableScreen;
@@ -20,22 +21,28 @@ public class ScreenEffectScreen extends ExtendableScreen {
 
     private final SmokeEffectRenderer smokeEffectRenderer = new SmokeEffectRenderer();
     private final ShiningEffectRenderer shiningEffectRenderer = new ShiningEffectRenderer();
+    private final FilmGrainEffectRenderer filmGrainEffectRenderer = new FilmGrainEffectRenderer();
 
     @Override
     public void show() {
         this.smokeEffectRenderer.init();
+        this.filmGrainEffectRenderer.init();
     }
 
     @Override
     public void render(float delta) {
-        this.smokeEffectRenderer.render(this.effects.contains(ScreenEffect.SMOKE));
+        this.smokeEffectRenderer.render(effects.contains(ScreenEffect.SMOKE));
         // Don't comment on this.
         if (effects.contains(ScreenEffect.GRAY_FILTER)) {
             ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_GT_Circle_Blur_inv.png"), 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.4f));
         }
 
-        if (this.effects.contains(ScreenEffect.SHINING) || this.effects.contains(ScreenEffect.SHINING_NO_BG)) {
-            shiningEffectRenderer.render(this.effects.contains(ScreenEffect.SHINING));
+        if (effects.contains(ScreenEffect.SHINING) || effects.contains(ScreenEffect.SHINING_NO_BG)) {
+            shiningEffectRenderer.render(effects.contains(ScreenEffect.SHINING));
+        }
+
+        if (effects.contains(ScreenEffect.FILM_GRAIN)) {
+            filmGrainEffectRenderer.render();
         }
     }
 }

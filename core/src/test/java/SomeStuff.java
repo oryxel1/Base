@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class SomeStuff {
     public static void main(String[] args) throws IOException {
-        BufferedImage image = ImageIO.read(new File("C:\\Users\\Computer\\BAAS\\Effects\\FX_TEX_SCN_Ring_02.png"));
+        BufferedImage image = ImageIO.read(new File("C:\\Users\\Computer\\BAAS\\FX_TEX_SCN_Noise_02.png"));
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
@@ -19,6 +19,6 @@ public class SomeStuff {
             }
         }
 
-        ImageIO.write(image, "png", new File("FX_TEX_SCN_Ring_02.png"));
+        ImageIO.write(image, "png", new File("FX_TEX_SCN_Noise_02.png"));
     }
 }
