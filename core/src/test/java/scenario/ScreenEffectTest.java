@@ -15,7 +15,7 @@ public class ScreenEffectTest {
         final Scenario.Builder scenario = new Scenario.Builder();
 
         scenario.add(0, new SetBackgroundEvent(FileInfo.internal("BG_BlackMarket.jpg"), 0));
-        scenario.add(0, new ScreenEffectEvent(ScreenEffectEvent.Type.ADD, ScreenEffect.SMOKE));
+        scenario.add(0, new ScreenEffectEvent(ScreenEffectEvent.Type.ADD, ScreenEffect.SHINING));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }

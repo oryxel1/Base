@@ -231,6 +231,10 @@ public class ScenarioScreen extends ScreenEffectScreen {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
         }
 
+        if (this.getEffects().contains(ScreenEffect.SHINING)) {
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_SCN_Circle_Love.png"), 0, 0, 1920, 1080);
+        }
+
         this.logRenderer.render();
 
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();

@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ScreenEffect {
-    GRAY_FILTER("Gray Filter"), SMOKE("Smoke");
+    GRAY_FILTER("Gray Filter"),
+    SMOKE("Smoke"),
+    SHINING("Shining"),
+    SHINING_NO_BG("Shining No Background");
 
     private final String name;
 
