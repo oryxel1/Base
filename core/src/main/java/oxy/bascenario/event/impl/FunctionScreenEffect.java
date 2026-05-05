@@ -13,7 +13,9 @@ public class FunctionScreenEffect extends FunctionEvent<ScreenEffectEvent> {
     public void run(ScenarioScreen screen) {
         if (event.type() == ScreenEffectEvent.Type.ADD) {
             screen.getEffects().add(event.effect());
-        } else {
+        } else if (event.type() == ScreenEffectEvent.Type.CLEAR_ALL) {
+            screen.getEffects().clear();
+        }else {
             screen.getEffects().remove(event.effect());
         }
     }

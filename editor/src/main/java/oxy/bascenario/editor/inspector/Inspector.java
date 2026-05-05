@@ -125,10 +125,15 @@ public class Inspector {
             case ShowButtonsEvent event -> new ShowButtonsEvent(ImGuiUtils.checkbox("Show", event.show()));
 
             case SetWeatherEvent event -> new SetWeatherEvent(Weather.values()[ImGuiUtils.combo("Weather", event.weather().ordinal(), Weather.getAlls())]);
-            case ScreenEffectEvent event -> new ScreenEffectEvent(
-                    ScreenEffectEvent.Type.values()[ImGuiUtils.combo("Type", event.type().ordinal(), ScreenEffectEvent.Type.getAlls())],
-                    ScreenEffect.values()[ImGuiUtils.combo("Effect", event.effect().ordinal(), ScreenEffect.getAlls())]
-            );
+            case ScreenEffectEvent event -> {
+                ScreenEffectEvent.Type type = ScreenEffectEvent.Type.values()[ImGuiUtils.combo("Type", event.type().ordinal(), ScreenEffectEvent.Type.getAlls())];
+                if (type == ScreenEffectEvent.Type.CLEAR_ALL) {
+                    yield new ScreenEffectEvent(ScreenEffectEvent.Type.CLEAR_ALL, ScreenEffect.GRAY_FILTER); // effect here is placeholder
+                } else {
+                    yield new ScreenEffectEvent(type,
+                            ScreenEffect.values()[ImGuiUtils.combo("Effect", event.effect().ordinal(), ScreenEffect.getAlls())]);
+                }
+            }
 
             case ScreenTransitionEvent event -> TransitionInspector.render(event);
             case PopupEvent event -> ImageInspector.render(event);

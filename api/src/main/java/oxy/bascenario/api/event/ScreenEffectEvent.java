@@ -9,7 +9,7 @@ import oxy.bascenario.api.event.api.Event;
 public record ScreenEffectEvent(Type type, ScreenEffect effect) implements Event {
     @RequiredArgsConstructor
     public enum Type {
-        REMOVE("Remove"), ADD("Add");
+        REMOVE("Remove"), ADD("Add"), CLEAR_ALL("Clear All");
 
         private final String name;
 
