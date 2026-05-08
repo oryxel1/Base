@@ -121,12 +121,16 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
                 this.renderer.draw(this.batch, this.skeleton);
                 this.batch.end();
             };
-            if (screen.getEffects().contains(ScreenEffect.NIGHT_VISION)) {
-                ThinGLUtils.nightVisionGlow(runnable);
-            } else if (screen.getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
-                ThinGLUtils.grayscale(runnable);
-            } else {
-                ThinGLUtils.colorTweak(runnable, this.color.color());
+            if (this.color.alpha() != 0) {
+                ThinGLUtils.colorTweak(() -> {
+                    if (screen.getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+                        ThinGLUtils.nightVisionGlow(runnable);
+                    } else if (screen.getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+                        ThinGLUtils.grayscale(runnable);
+                    } else {
+                        runnable.run();
+                    }
+                }, this.color.color());
             }
 
             if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
