@@ -11,7 +11,9 @@ public enum ScreenEffect {
     FILM_GRAIN("Film Grain"),
     FILM_GRAIN_NO_TONE("Film Grain No Tone"),
     BLACK_AND_WHITE("Black And White"),
-    NIGHT_VISION("Night Vision");
+    NIGHT_VISION("Night Vision"),
+    TV_NOISE("Tv Noise")
+    ;
 
     private final String name;
 

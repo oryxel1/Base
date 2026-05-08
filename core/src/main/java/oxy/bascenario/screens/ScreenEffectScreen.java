@@ -8,6 +8,7 @@ import oxy.bascenario.api.effects.ScreenEffect;
 import oxy.bascenario.screens.renderer.effects.FilmGrainEffectRenderer;
 import oxy.bascenario.screens.renderer.effects.ShiningEffectRenderer;
 import oxy.bascenario.screens.renderer.effects.SmokeEffectRenderer;
+import oxy.bascenario.screens.renderer.effects.TvNoiseEffectRenderer;
 import oxy.bascenario.utils.ExtendableScreen;
 
 import java.util.HashSet;
@@ -22,11 +23,13 @@ public class ScreenEffectScreen extends ExtendableScreen {
     private final SmokeEffectRenderer smokeEffectRenderer = new SmokeEffectRenderer();
     private final ShiningEffectRenderer shiningEffectRenderer = new ShiningEffectRenderer();
     private final FilmGrainEffectRenderer filmGrainEffectRenderer = new FilmGrainEffectRenderer();
+    private final TvNoiseEffectRenderer tvNoiseEffectRenderer = new TvNoiseEffectRenderer();
 
     @Override
     public void show() {
         this.smokeEffectRenderer.init();
         this.filmGrainEffectRenderer.init();
+        this.tvNoiseEffectRenderer.init();
     }
 
     @Override
@@ -43,6 +46,10 @@ public class ScreenEffectScreen extends ExtendableScreen {
 
         if (effects.contains(ScreenEffect.FILM_GRAIN) || effects.contains(ScreenEffect.FILM_GRAIN_NO_TONE)) {
             filmGrainEffectRenderer.render(effects.contains(ScreenEffect.FILM_GRAIN));
+        }
+
+        if (effects.contains(ScreenEffect.TV_NOISE)) {
+            tvNoiseEffectRenderer.render();
         }
     }
 }

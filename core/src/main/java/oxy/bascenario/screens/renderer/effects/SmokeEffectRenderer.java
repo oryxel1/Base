@@ -45,10 +45,10 @@ public class SmokeEffectRenderer {
         }
 
         if (add) {
-            sprite1.render(-400, 1080 - 100 * 1.6f);
+            sprite1.thisrendermethodsomehowworksandIdontknowwhy(-400, 1080 - 100 * 1.6f);
             sprite1.addTileOffset(1, 0);
 
-            sprite.render(0, 1080 - 512 * 1.6f);
+            sprite.thisrendermethodsomehowworksandIdontknowwhy(0, 1080 - 512 * 1.6f);
             sprite.addTileOffset(1, 0);
         }
 

@@ -1,7 +1,4 @@
-import imgui.ImGui;
-import net.lenni0451.commons.color.Color;
 import oxy.bascenario.Base;
-import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
@@ -37,10 +34,10 @@ public class DummyTest {
             public void render(float delta) {
                 ThinGLUtils.start();
 
-                sprite1.render(-400, 1080 - 100 * 1.6f);
+                sprite1.thisrendermethodsomehowworksandIdontknowwhy(-400, 1080 - 100 * 1.6f);
                 sprite1.addTileOffset(1, 0);
 
-                sprite.render(0, 1080 - 512 * 1.6f);
+                sprite.thisrendermethodsomehowworksandIdontknowwhy(0, 1080 - 512 * 1.6f);
                 sprite.addTileOffset(1, 0);
 
                 ThinGLUtils.end();

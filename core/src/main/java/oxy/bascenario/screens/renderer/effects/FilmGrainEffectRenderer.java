@@ -32,8 +32,8 @@ public class FilmGrainEffectRenderer {
             time = System.currentTimeMillis();
         }
 
-        this.noise2.render(0, 0);
-        this.noise1.render(0, 0);
+        this.noise2.thisrendermethodsomehowworksandIdontknowwhy(0, 0);
+        this.noise1.thisrendermethodsomehowworksandIdontknowwhy(0, 0);
 
         if (tone) {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGB(255, 247, 167).withAlphaF(0.15f));

@@ -19,7 +19,36 @@ public class TilingSprite {
     public int color = Color.WHITE.toRGB();
     public float rotation = 0;
 
-    public void render(float x, float y) {
+    public void thecorrectone(float x, float y) {
+        final float textureWidth = texture2D.getWidth(), textureHeight = texture2D.getHeight();
+
+        int totalTimesX = MathUtils.ceilInt(width / textureWidth);
+        int totalTimesY = MathUtils.ceilInt(height / textureHeight);
+
+        for (int i = 0; i < totalTimesX; i++) {
+            for (int n = 0; n < totalTimesY; n++) {
+                GLOBAL_RENDER_STACK.pushMatrix();
+                GLOBAL_RENDER_STACK.rotateZ(rotation);
+                float tileX = x + i * textureWidth, tileY = y + n * textureHeight;
+                GLOBAL_RENDER_STACK.translate(tileX, tileY, 0);
+                GLOBAL_RENDER_STACK.scale(scale);
+
+                ThinGL.renderer2D().coloredTextureWithRawTexCoord(GLOBAL_RENDER_STACK,
+                        texture2D, 0, 0, textureWidth - tilePosition.x(), textureHeight,
+                        tilePosition.x() / textureWidth, tilePosition.y() / textureHeight,
+                        (textureWidth - tilePosition.x()) / textureWidth, 1, Color.fromRGB(color));
+
+                ThinGL.renderer2D().coloredTextureWithRawTexCoord(GLOBAL_RENDER_STACK,
+                        texture2D, (textureWidth - tilePosition.x()), 0, tilePosition.x(), textureHeight,
+                        0, tilePosition.y() / textureHeight,
+                        tilePosition.x() / textureWidth, 1, Color.fromRGB(color));
+
+                GLOBAL_RENDER_STACK.popMatrix();
+            }
+        }
+    }
+
+    public void thisrendermethodsomehowworksandIdontknowwhy(float x, float y) {
         final float textureWidth = texture2D.getWidth(), textureHeight = texture2D.getHeight();
 
         int totalTimesX = MathUtils.ceilInt(width / textureWidth);
@@ -58,7 +87,6 @@ public class TilingSprite {
             while (newX > texture2D.getWidth()) {
                 newX -= texture2D.getWidth();
             }
-            System.out.println(newX);
             x = newX * Math.signum(x);
         }
 
