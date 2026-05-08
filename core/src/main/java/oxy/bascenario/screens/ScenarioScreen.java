@@ -221,18 +221,28 @@ public class ScenarioScreen extends ScreenEffectScreen {
             }
             this.targetBackground = null;
         }
-        if (this.targetBackground != null) {
-            ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.targetBackground), Color.WHITE.withAlphaF(1 - this.backgroundFade.getValue()));
-        }
+        Runnable backgroundRunnable = () -> {
+            if (this.targetBackground != null) {
+                ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.targetBackground),
+                        Color.WHITE.withAlphaF(1 - this.backgroundFade.getValue()));
+            }
 
-        if (this.background != null) {
-            ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.background), Color.WHITE.withAlphaF(this.backgroundFade.getValue()));
+            if (this.background != null) {
+                ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), this.background), Color.WHITE.withAlphaF(this.backgroundFade.getValue()));
+            } else {
+                ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
+            }
+
+            if (this.getEffects().contains(ScreenEffect.SHINING)) {
+                ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_SCN_Circle_Love.png"), 0, 0, 1920, 1080);
+            }
+        };
+        if (getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+            ThinGLUtils.nightVision(backgroundRunnable);
+        } else if (getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+            ThinGLUtils.grayscale(backgroundRunnable);
         } else {
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK);
-        }
-
-        if (this.getEffects().contains(ScreenEffect.SHINING)) {
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_SCN_Circle_Love.png"), 0, 0, 1920, 1080);
+            backgroundRunnable.run();
         }
 
         this.logRenderer.render();
@@ -242,11 +252,19 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
         this.dialogueRenderer.render();
 
-        if (popup != null) {
+        if (this.popup != null) {
             Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get(false);
             final int width = (int) (texture2D.getWidth() * 0.65f), height = (int) (texture2D.getHeight() * 0.65f);
 
-            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
+            Runnable popup = () -> ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
+
+            if (getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+                ThinGLUtils.nightVision(popup);
+            } else if (getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+                ThinGLUtils.grayscale(popup);
+            } else {
+                popup.run();
+            }
         }
 
         // TODO: Should the above dialogue render layer above the options as well?

@@ -2,6 +2,7 @@ package oxy.bascenario.screens.renderer.element.base;
 
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.effects.Effect;
+import oxy.bascenario.api.effects.ScreenEffect;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
@@ -38,7 +39,13 @@ public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
         this.subElements.values().forEach(e -> e.renderAll(screen));
 
         if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
-            renderThinGL(screen);
+            if (screen.getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+                ThinGLUtils.nightVisionGlow(() -> renderThinGL(screen));
+            } else if (screen.getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+                ThinGLUtils.grayscale(() -> renderThinGL(screen));
+            } else {
+                renderThinGL(screen);
+            }
         }
 
         if (this.color.alpha() != 0) {

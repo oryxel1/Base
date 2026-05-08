@@ -41,8 +41,8 @@ public class ScreenEffectScreen extends ExtendableScreen {
             shiningEffectRenderer.render(effects.contains(ScreenEffect.SHINING));
         }
 
-        if (effects.contains(ScreenEffect.FILM_GRAIN)) {
-            filmGrainEffectRenderer.render();
+        if (effects.contains(ScreenEffect.FILM_GRAIN) || effects.contains(ScreenEffect.FILM_GRAIN_NO_TONE)) {
+            filmGrainEffectRenderer.render(effects.contains(ScreenEffect.FILM_GRAIN));
         }
     }
 }

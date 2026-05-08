@@ -177,6 +177,41 @@ public final class ThinGLUtils {
         ThinGL.programs().getGaussianBlur().clearInput();
     }
 
+    public static void colorTweak(Runnable runnable, Color color) {
+        ThinGL.programs().getColorTweak().bindInput();
+        runnable.run();
+        ThinGL.programs().getColorTweak().unbindInput();
+        ThinGL.programs().getColorTweak().configureParameters(color);
+        ThinGL.programs().getColorTweak().renderFullscreen();
+        ThinGL.programs().getColorTweak().clearInput();
+    }
+
+    public static void grayscale(Runnable runnable) {
+        ThinGLExtended.get().getPrograms().getGrayscale().bindInput();
+        runnable.run();
+        ThinGLExtended.get().getPrograms().getGrayscale().unbindInput();
+        ThinGLExtended.get().getPrograms().getGrayscale().renderFullscreen();
+        ThinGLExtended.get().getPrograms().getGrayscale().clearInput();
+    }
+
+    public static void nightVisionGlow(Runnable runnable) {
+        ThinGLExtended.get().getPrograms().getNightVision().bindInput();
+        runnable.run();
+        ThinGLExtended.get().getPrograms().getNightVision().configureParameters(true);
+        ThinGLExtended.get().getPrograms().getNightVision().unbindInput();
+        ThinGLExtended.get().getPrograms().getNightVision().renderFullscreen();
+        ThinGLExtended.get().getPrograms().getNightVision().clearInput();
+    }
+
+    public static void nightVision(Runnable runnable) {
+        ThinGLExtended.get().getPrograms().getNightVision().bindInput();
+        runnable.run();
+        ThinGLExtended.get().getPrograms().getNightVision().configureParameters(false);
+        ThinGLExtended.get().getPrograms().getNightVision().unbindInput();
+        ThinGLExtended.get().getPrograms().getNightVision().renderFullscreen();
+        ThinGLExtended.get().getPrograms().getNightVision().clearInput();
+    }
+
     public static void blurRectangle(float x, float y, float width, float height, int strength) {
         ThinGL.programs().getGaussianBlur().bindInput();
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x, y, x + width, y + height, Color.WHITE);

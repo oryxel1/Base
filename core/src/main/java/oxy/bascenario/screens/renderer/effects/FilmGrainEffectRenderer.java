@@ -12,7 +12,6 @@ public class FilmGrainEffectRenderer {
     private long time;
 
     private TilingSprite noise2, noise1;
-    private int x, y;
 
     public void init() {
         this.noise2 = new TilingSprite(Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_SCN_Noise_02.png"));
@@ -26,7 +25,7 @@ public class FilmGrainEffectRenderer {
         this.noise1.scale = 7;
     }
 
-    public void render() {
+    public void render(boolean tone) {
         if (System.currentTimeMillis() - time > 90) {
             this.noise2.setTilePosition(RandomUtils.randomInt(0, 1024), RandomUtils.randomInt(0, 1024));
             this.noise1.setTilePosition(RandomUtils.randomInt(0, 1024), RandomUtils.randomInt(0, 1024));
@@ -36,7 +35,9 @@ public class FilmGrainEffectRenderer {
         this.noise2.render(0, 0);
         this.noise1.render(0, 0);
 
-        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGB(255, 247, 167).withAlphaF(0.15f));
+        if (tone) {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGB(255, 247, 167).withAlphaF(0.15f));
+        }
         ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_GT_Circle_Blur_inv.png"), 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.3f));
     }
 }

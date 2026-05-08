@@ -5,6 +5,8 @@ import net.raphimc.thingl.gl.program.Programs;
 import net.raphimc.thingl.gl.program.RegularProgram;
 import net.raphimc.thingl.gl.resource.shader.Shader;
 import net.raphimc.thingl.util.glsl.GlSlPreprocessor;
+import oxy.bascenario.utils.thingl.shaders.ColorProgram;
+import oxy.bascenario.utils.thingl.shaders.NightVisionProgram;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,20 +27,30 @@ public class ProgramsExtended extends Programs {
         program.setDebugName("sdf_text");
         return program;
     });
-//
-//    private final Lazy<OutlineGlowProgram> outlineGlow = Lazy.of(() -> {
-//        final OutlineGlowProgram program = new OutlineGlowProgram(this.getShader("post/post_processing", VERTEX), this.getBaseShader("outline_glow", FRAGMENT));
-//        program.setDebugName("outline_glow");
-//        return program;
-//    });
 
-//    public OutlineGlowProgram getOutlineGlow() {
-//        return outlineGlow.get();
-//    }
+    private final Lazy<ColorProgram> grayscale = Lazy.of(() -> {
+        final ColorProgram program = new ColorProgram(this.shaderLoader.get("post/post_processing", VERTEX), this.getBaseShader("black_and_white", FRAGMENT));
+        program.setDebugName("black_and_white");
+        return program;
+    });
+
+    private final Lazy<NightVisionProgram> nightVision = Lazy.of(() -> {
+        final NightVisionProgram program = new NightVisionProgram(this.shaderLoader.get("post/post_processing", VERTEX), this.getBaseShader("night_vision", FRAGMENT));
+        program.setDebugName("night_vision");
+        return program;
+    });
 
     @Override
     public RegularProgram getSdfText() {
         return sdfText.get();
+    }
+
+    public ColorProgram getGrayscale() {
+        return grayscale.get();
+    }
+
+    public NightVisionProgram getNightVision() {
+        return nightVision.get();
     }
 
     private Shader getBaseShader(final String name, final Shader.Type type) {
