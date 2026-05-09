@@ -2,6 +2,7 @@ package oxy.bascenario;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -32,6 +33,7 @@ public final class EngineRenderer extends Game {
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
     private final Screen initialScreen;
+    private final boolean initialFullScreen;
 
     public double mouseX, mouseY;
 
@@ -90,6 +92,10 @@ public final class EngineRenderer extends Game {
         FontUtils.loadFonts();
 
         this.setScreen(this.initialScreen);
+
+        if (this.initialFullScreen) {
+            someTempHackyBool = true;
+        }
     }
 
     @Override
@@ -99,6 +105,9 @@ public final class EngineRenderer extends Game {
         super.setScreen(screen);
     }
 
+    private boolean someTempHackyBool;
+
+    private boolean fullScreen;
     @Override
     public void render() {
         ScreenUtils.clear(0, 0, 0, 1, true);
@@ -139,12 +148,17 @@ public final class EngineRenderer extends Game {
 //            }
 //        }
 
-        if (ImGui.isKeyReleased(ImGuiKey.F11)) {
-            if (Gdx.graphics.isFullscreen()) {
+        if (ImGui.isKeyReleased(ImGuiKey.F11) || someTempHackyBool) {
+            if (this.fullScreen) {
+                Gdx.graphics.setUndecorated(false);
                 Gdx.graphics.setWindowedMode(1280, 720);
             } else {
-                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                Gdx.graphics.setUndecorated(true);
+                Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
+                Gdx.graphics.setWindowedMode(displayMode.width, displayMode.height + 1); // Height needs to be plus 1 to fix flickering
             }
+            this.fullScreen = !this.fullScreen;
+            this.someTempHackyBool = false;
         }
     }
 
