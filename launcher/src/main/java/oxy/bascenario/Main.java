@@ -11,6 +11,6 @@ public class Main {
             screen.setDone(true);
         }).start();
 
-        Launcher.launch(screen, true, true);
+        Launcher.launch(screen, false, true);
     }
 }
