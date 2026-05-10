@@ -1,6 +1,7 @@
 package scenario;
 
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.api.event.ShowButtonsEvent;
 import oxy.bascenario.api.event.background.SetBackgroundEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
@@ -17,8 +18,7 @@ import java.util.Map;
 public class OptionsTest {
     public static void main(String[] args) {
         final Scenario.Builder scenario = new Scenario.Builder();
-        scenario.add(0, new SetBackgroundEvent(FileInfo.internal("BG_ShoppingMall.jpg"), 0));
-
+        scenario.add(0, new SetBackgroundEvent(FileInfo.internal("BG_ShoppingMall.jpg"), 0), new ShowButtonsEvent(true));
 //        scenario.add(true, 1, new ShowOptionsEvent(Map.of("   ", 0, "        ", 0)));
 
         scenario.add(true, 0, new ShowOptionsEvent(Map.of("\"By the way, what did you bring?\"", 0)));
