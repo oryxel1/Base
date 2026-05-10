@@ -22,6 +22,7 @@ public class OptionsTest {
 //        scenario.add(true, 1, new ShowOptionsEvent(Map.of("   ", 0, "        ", 0)));
 
         scenario.add(true, 0, new ShowOptionsEvent(Map.of("\"By the way, what did you bring?\"", 0)));
+        scenario.add(true, 0, new ShowOptionsEvent(Map.of("\"Huh?\"", 0, "\"This is a multiple dialogue choice.\"", 0)));
 
 //        scenario.add(true, 1, new ShowOptionsEvent(Map.of("Insanely long option just to test how this actually looks. Yes this should works lol ABCDXYZOD721SDFDSFDFS.", 0)));
         scenario.add(true, 0, new ShowOptionsEvent(Map.of("The quick brown fox jump over the lazy dog", 0)));

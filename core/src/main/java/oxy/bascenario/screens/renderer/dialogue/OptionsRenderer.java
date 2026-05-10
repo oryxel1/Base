@@ -78,17 +78,21 @@ public class OptionsRenderer {
         float totalHeight = BUTTON_HEIGHT * this.options.size() + DISTANCE_BETWEEN * (options.size() - 1);
         int i = 0;
         for (String text : this.options.keySet()) {
-            float scale = this.clicked != null ? text.equals(this.clicked) ? this.scale.getValue() : 1 : this.scale.getValue();
-            float alpha = this.clicked != null ? text.equals(this.clicked) ? this.flash.getValue() : 1 : this.flash.getValue();
+            float scale = this.clicked != null ? text.equals(this.clicked) ? this.scale.getValue() : 1 : this.scale.getValue(),
+                    alpha = this.clicked != null ? text.equals(this.clicked) ? this.flash.getValue() : 1 : this.flash.getValue();
 
-            float buttonHeight = BUTTON_HEIGHT * scale, buttonWidth = BUTTON_WIDTH * scale;
-            float buttonY = 540 - (totalHeight / 2f) - buttonHeight + 14.9796f + ((buttonHeight + DISTANCE_BETWEEN) * i);
-            float buttonX = 1920 / 2f - buttonWidth / 2f;
-            GLOBAL_RENDER_STACK.pushMatrix();
-            GLOBAL_RENDER_STACK.translate(buttonX, buttonY, 0);
-            GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/dialogue_button.png"), 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Color.WHITE.withAlphaF(alpha));
-            GLOBAL_RENDER_STACK.popMatrix();
+            final float buttonHeight = BUTTON_HEIGHT * scale, buttonWidth = BUTTON_WIDTH * scale;
+
+            // Nothing to note, this is just basic math.
+            final float buttonX = 1920 / 2f - buttonWidth / 2f;
+
+            // We need to find the center of the button. Then we can use it so the button must be centered around it regardless of size.
+            float buttonY = 540 - (totalHeight / 2f) - BUTTON_HEIGHT + 14.9796f + ((BUTTON_HEIGHT + DISTANCE_BETWEEN) * i) + BUTTON_HEIGHT / 2;
+            buttonY -= buttonHeight / 2f;
+
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK,
+                    Base.instance().assetsManager().texture("assets/base/uis/buttons/dialogue_button.png"),
+                    buttonX, buttonY, BUTTON_WIDTH * scale, BUTTON_HEIGHT * scale, Color.WHITE.withAlphaF(alpha));
 
             float textScale = 1;
             TextRun textRun = TextRun.fromString(FontUtils.font(FontStyle.REGULAR, type), text, TEXT_COLOR.withAlphaF(alpha));
@@ -98,6 +102,7 @@ public class OptionsRenderer {
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
             float textY = buttonY + (buttonHeight / 2) - (TextUtils.getLogicalHeight(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
+
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textX, textY, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
