@@ -97,12 +97,12 @@ public class OptionsRenderer {
             }
 
             float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
-            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getVisualHeight(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
+            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getLogicalHeight(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
             GLOBAL_RENDER_STACK.pushMatrix();
-            GLOBAL_RENDER_STACK.translate(textX + 7, textY, 0);
+            GLOBAL_RENDER_STACK.translate(textX, textY, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
             GLOBAL_RENDER_STACK.scale(scale);
-            TextUtils.textRun(TEXT_SIZE, textRun, 0, 0, RendererText.VerticalOrigin.VISUAL_TOP, RendererText.HorizontalOrigin.VISUAL_LEFT);
+            TextUtils.textRun(TEXT_SIZE, textRun, 0, 0, RendererText.VerticalOrigin.LOGICAL_TOP, RendererText.HorizontalOrigin.VISUAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
 
             i++;
