@@ -109,10 +109,13 @@ public class OptionsRenderer {
         }
     }
 
+    private long sinceClicked;
     private boolean releasedalready;
     public void mouseRelease() {
         if (!releasedalready && clicked != null) {
-            AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
+            if (System.currentTimeMillis() - this.sinceClicked > 500) {
+                AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
+            }
 
             this.scale = AnimationUtils.build(400, this.scale.getValue(), SCALE_SIZE, EasingFunction.CUBIC);
             releasedalready = true;
@@ -135,6 +138,7 @@ public class OptionsRenderer {
                 this.clicked = text;
                 this.scale.setTarget(0.94f);
                 screen.getDialogueRenderer().setCurrentIndex(this.options.get(text));
+                this.sinceClicked = System.currentTimeMillis();
                 AudioManager.getInstance().play(Sound.sound(new FileInfo("assets/base/sounds/click-sound.mp3", false, true), false), -1);
                 break;
             }
