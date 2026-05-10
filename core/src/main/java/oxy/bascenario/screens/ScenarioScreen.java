@@ -119,7 +119,7 @@ public class ScenarioScreen extends ScreenEffectScreen {
             }
             timestamps.poll();
             if (bypass && this.isBusyOptions()) {
-                this.optionsRenderer.setOptions(null);
+                this.optionsRenderer.setOptions(null, null);
             }
 
             peek.events().forEach(event -> {

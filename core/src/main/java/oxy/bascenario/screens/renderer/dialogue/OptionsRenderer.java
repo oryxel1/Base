@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.effects.Sound;
+import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.managers.AudioManager;
 import oxy.bascenario.utils.animation.DynamicAnimation;
@@ -25,13 +27,16 @@ public class OptionsRenderer {
     private static final float SCALE_SIZE = 1.125f;
     private static final float FLASH_ALPHA = 0.5f;
 
-    private static final Color TEXT_COLOR = Color.fromRGB(44, 67, 90);
-    private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1345, DISTANCE_BETWEEN = 35;
+    private static final Color TEXT_COLOR = Color.fromRGB(45, 58, 71);
+    private static final float TEXT_SIZE = 40.5f;
+    private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1340, DISTANCE_BETWEEN = 35;
 
+    private FontType type;
     private Map<String, Integer> options;
-    public void setOptions(Map<String, Integer> options) {
+    public void setOptions(FontType type, Map<String, Integer> options) {
         this.clicked = null;
         this.options = options;
+        this.type = type;
         this.flipped = false;
         this.releasedalready = false;
         if (this.options != null) {
@@ -82,22 +87,22 @@ public class OptionsRenderer {
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(buttonX, buttonY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/button.png"), 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Color.WHITE.withAlphaF(alpha));
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/buttons/dialogue_button.png"), 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, Color.WHITE.withAlphaF(alpha));
             GLOBAL_RENDER_STACK.popMatrix();
 
             float textScale = 1;
-            TextRun textRun = TextRun.fromString(FontUtils.font("MalgunGothic"), text, TEXT_COLOR.withAlphaF(alpha));
-            if (TextUtils.getVisualWidth(44 * scale, textRun.shape()) > buttonWidth - 100) {
-                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(44 * scale, textRun.shape()), 1);
+            TextRun textRun = TextRun.fromString(FontUtils.font(FontStyle.REGULAR, type), text, TEXT_COLOR.withAlphaF(alpha));
+            if (TextUtils.getVisualWidth(TEXT_SIZE * scale, textRun.shape()) > buttonWidth - 100) {
+                textScale = Math.min((buttonWidth - 120) / TextUtils.getVisualWidth(TEXT_SIZE * scale, textRun.shape()), 1);
             }
 
-            float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(44, textRun.shape()) * textScale * scale) / 2;
-            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getVisualHeight(44, textRun.shape()) * textScale * scale) / 2;
+            float textX = buttonX + (buttonWidth / 2) - (TextUtils.getVisualWidth(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
+            float textY = buttonY + (buttonHeight / 2) - (TextUtils.getVisualHeight(TEXT_SIZE, textRun.shape()) * textScale * scale) / 2;
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textX + 7, textY, 0);
             GLOBAL_RENDER_STACK.scale(textScale);
             GLOBAL_RENDER_STACK.scale(scale);
-            TextUtils.textRun(44, textRun, 0, 0, RendererText.VerticalOrigin.VISUAL_TOP, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+            TextUtils.textRun(TEXT_SIZE, textRun, 0, 0, RendererText.VerticalOrigin.VISUAL_TOP, RendererText.HorizontalOrigin.VISUAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
 
             i++;

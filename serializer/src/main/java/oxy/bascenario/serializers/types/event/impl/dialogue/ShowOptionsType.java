@@ -1,12 +1,8 @@
 package oxy.bascenario.serializers.types.event.impl.dialogue;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.render.elements.text.font.FontType;
-import oxy.bascenario.serializers.Types;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.element.ElementTypes;
 
@@ -21,9 +17,13 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
 
     @Override
     public JsonElement write(ShowOptionsEvent event) {
+        final JsonObject object = new JsonObject();
+        object.add("font", ElementTypes.FONT_TYPE_TYPE.write(event.type()));
+
         final JsonObject options = new JsonObject();
         event.options().forEach(options::addProperty);
-        return options;
+        object.add("options", options);
+        return object;
     }
 
     @Override
@@ -31,10 +31,18 @@ public class ShowOptionsType implements TypeWithName<ShowOptionsEvent> {
         final JsonObject object = element.getAsJsonObject();
         final Map<String, Integer> map = new LinkedHashMap<>();
 
-        for (String key : object.keySet()) {
-            map.put(key, object.get(key).getAsInt());
+        if (!object.has("options")) {
+            for (String key : object.keySet()) {
+                map.put(key, object.get(key).getAsInt());
+            }
+            return new ShowOptionsEvent(map);
         }
 
-        return new ShowOptionsEvent(map);
+        final JsonObject o = object.getAsJsonObject("options");
+        for (String key : o.keySet()) {
+            map.put(key, o.get(key).getAsInt());
+        }
+
+        return new ShowOptionsEvent(ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), map);
     }
 }

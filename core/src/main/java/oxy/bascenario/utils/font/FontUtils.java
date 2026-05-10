@@ -42,9 +42,6 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
-        // Cache these font, so I can use them dynamically later.
-        loadFont("MalgunGothic", "/assets/base/fonts/MALGUN.ttf");
-
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");
