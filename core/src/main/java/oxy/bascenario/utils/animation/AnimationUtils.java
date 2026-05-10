@@ -33,6 +33,11 @@ public class AnimationUtils {
         return new DummyAnimation(value);
     }
 
+    public DynamicAnimation build(long duration, float start, float end, EasingFunction function, EasingMode mode) {
+        final DynamicAnimation animation = new DynamicAnimation(function, mode, Math.max(0, duration), start);
+        return animation.setTarget(end);
+    }
+
     public DynamicAnimation build(long duration, float start, float end, EasingFunction function) {
         final DynamicAnimation animation = new DynamicAnimation(function, EasingMode.EASE_IN_OUT, Math.max(0, duration), start);
         return animation.setTarget(end);

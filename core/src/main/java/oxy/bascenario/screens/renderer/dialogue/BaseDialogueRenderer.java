@@ -2,16 +2,20 @@ package oxy.bascenario.screens.renderer.dialogue;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.lenni0451.commons.animation.easing.EasingFunction;
+import net.lenni0451.commons.animation.easing.EasingMode;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
-import oxy.bascenario.api.event.dialogue.enums.OffsetType;
+import oxy.bascenario.Base;
 import oxy.bascenario.api.event.dialogue.enums.TextOffset;
 import oxy.bascenario.api.render.elements.Dialogue;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.api.render.elements.text.font.FontType;
+import oxy.bascenario.utils.animation.AnimationUtils;
+import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.font.TextUtils;
 
@@ -66,6 +70,8 @@ public abstract class BaseDialogueRenderer {
     public void stop() {
         this.finished = false;
         this.playing = false;
+
+        this.triangleAnimation = AnimationUtils.dummy(1000);
     }
 
     public void render() {
@@ -89,6 +95,7 @@ public abstract class BaseDialogueRenderer {
         TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 25, SEPARATOR_Y - 23, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
     }
 
+    private DynamicAnimation triangleAnimation = AnimationUtils.dummy(1000);
     public void renderBackground() {
         final Color color = Color.fromRGBA(13, 31, 45, 220);
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 1080 - NON_GRADIENT_PART, 1920, 1080, color);
@@ -103,5 +110,16 @@ public abstract class BaseDialogueRenderer {
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 1, Color.fromRGB(100, 103, 106));
         ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y + 2, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(100, 103, 106));
 
+        if (this.finished) {
+            if (!this.triangleAnimation.isRunning() && this.triangleAnimation.getTarget() != 980) {
+                this.triangleAnimation = AnimationUtils.build(800, this.triangleAnimation.getValue(), 980, EasingFunction.QUART, EasingMode.EASE_OUT);
+            }
+            if (!this.triangleAnimation.isRunning() && this.triangleAnimation.getTarget() != 1000) {
+                this.triangleAnimation = AnimationUtils.build(600, this.triangleAnimation.getValue(), 1000, EasingFunction.QUART, EasingMode.EASE_IN);
+            }
+
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK,
+                    Base.instance().assetsManager().texture("assets/base/uis/other/idkwhatthisis.png"), 1757, triangleAnimation.getValue());
+        }
     }
 }

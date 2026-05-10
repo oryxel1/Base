@@ -1,5 +1,7 @@
 package oxy.bascenario.screens;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -301,6 +303,14 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
         elements.removeIf(ElementRenderer::selfDestruct);
         elements.forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
+
+        if (ImGui.isKeyReleased(ImGuiKey.Space)) {
+            if (!this.dialogueRenderer.isBusy()) {
+                this.busyDialogue = false;
+            } else {
+                this.dialogueRenderer.finishAll();
+            }
+        }
     }
 
     @Setter
