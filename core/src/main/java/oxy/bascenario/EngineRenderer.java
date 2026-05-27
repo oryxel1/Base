@@ -24,7 +24,8 @@ import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
-import net.lenni0451.rivet.layout.fullsize.FullSizeLayout;
+import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
+import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.math.Size;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
@@ -95,7 +96,7 @@ public final class EngineRenderer extends Game {
 
         this.fontSet = new FontSet(new FreeTypeFont(EngineRenderer.class.getResourceAsStream("/assets/base/fonts/rivet/SFUIText-Regular.ttf").readAllBytes(), 40));
         this.backend = new ThinGLBackend(windowHandle, this.fontSet);
-        this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
+        this.rivet = new Rivet(this.backend, AnchorLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
         ImGui.createContext();
         ImPlot.createContext();
