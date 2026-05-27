@@ -73,13 +73,15 @@ public class RivetTest {
                 container.addChild(new Button(rivet, new Label(rivet, "Quit Game"), _ -> {}), button -> {
                     button.layoutOptions(new GridLayoutOptions(1, 4).withAnchor(GridAnchor.EAST).withWeightX(1).withFill(GridFill.HORIZONTAL).withPadding(Padding.EMPTY.withTop(20)));
                 });
-                container.addChild(new ComboBox(rivet, "Testing since 2k26", new DecoratedContainer(rivet, new SolidColor(rivet, solidColor -> {
-                    solidColor.color(Color.GREEN);
-                }), new ScrollContainer(rivet, new Container(rivet, new VerticalListLayout(5, true)), comboBoxContainer -> {
+                container.addChild(new ComboBox(rivet, "Testing since 2k26",
+                        new DecoratedContainer(rivet, new SolidColor(rivet, solidColor -> {solidColor.color(Color.GREEN);
+                }), new ScrollContainer(rivet, new Container(rivet, new VerticalListLayout(5, true)),
+                                comboBoxContainer -> {
                     for (int i = 0; i < 10; i++) {
                         comboBoxContainer.addChild(new Button(rivet, new Label(rivet, "Test " + i), _ -> {}));
                     }
-                }))), comboBox -> comboBox.layoutOptions(new GridLayoutOptions(0, 5).withAnchor(GridAnchor.WEST).withWeightX(1).withFill(GridFill.HORIZONTAL).withColumnSpan(2)));
+                }))), comboBox -> comboBox.layoutOptions(new GridLayoutOptions(0, 5).
+                        withAnchor(GridAnchor.WEST).withWeightX(1).withFill(GridFill.HORIZONTAL).withColumnSpan(2)));
                 container.addChild(new TextField(rivet), textField -> {
                     textField.layoutOptions(new GridLayoutOptions(0, 6).withAnchor(GridAnchor.WEST).withWeightX(1).withFill(GridFill.HORIZONTAL).withColumnSpan(2));
                     textField.keyDownListener().add(event -> {

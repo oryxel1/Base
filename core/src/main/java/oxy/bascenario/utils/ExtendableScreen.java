@@ -11,6 +11,9 @@ public class ExtendableScreen implements Screen {
     public void init(Rivet rivet) {
     }
 
+    public void renderBehindRivet() {
+    }
+
     @Override
     public void render(float delta) {
     }

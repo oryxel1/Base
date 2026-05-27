@@ -38,6 +38,9 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
+        // Editor UI
+        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf");
+
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");

@@ -18,6 +18,7 @@ import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
+import net.lenni0451.rivet.layout.fullsize.FullSizeLayout;
 import net.lenni0451.rivet.math.Size;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
@@ -26,7 +27,6 @@ import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import oxy.bascenario.managers.AudioManager;
-import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.thingl.ThinGLExtended;
@@ -80,7 +80,7 @@ public final class EngineRenderer extends Game {
         setupRivetCallbacks();
 
         this.backend = new ThinGLBackend(windowHandle, new FontSet(new FreeTypeFont(EngineRenderer.class.getResourceAsStream("/assets/base/fonts/rivet/SFUIText-Regular.ttf").readAllBytes(), 40)));
-        this.rivet = new Rivet(this.backend, AnchorLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
+        this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
         FontUtils.loadFonts();
 
@@ -112,16 +112,21 @@ public final class EngineRenderer extends Game {
 
         ThinGLUtils.GLOBAL_RENDER_STACK = new Matrix4fStack(8);
 
-        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
-        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
-
         ThinGLUtils.start();
+        if (screen != null && screen instanceof ExtendableScreen extendableScreen) {
+            extendableScreen.renderBehindRivet();
+        }
+
         ThinGL.programs().getMsaa().bindInput();
-        ThinGLRenderer.renderList(new Matrix4fStack(8), this.rivet.render());
+        ThinGLRenderer.renderList(ThinGLUtils.GLOBAL_RENDER_STACK, this.rivet.render());
         ThinGL.programs().getMsaa().unbindInput();
         ThinGL.programs().getMsaa().renderFullscreen();
         ThinGL.programs().getMsaa().clearInput();
         ThinGLUtils.end();
+
+        ThinGLUtils.GLOBAL_RENDER_STACK = new Matrix4fStack(8);
+        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
 
         super.render();
 
