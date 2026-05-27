@@ -6,13 +6,6 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.utils.ScreenUtils;
-import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.extension.implot.ImPlot;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.flag.ImGuiKey;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.lenni0451.rivet.Rivet;
@@ -24,7 +17,6 @@ import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.math.Size;
 import net.raphimc.thingl.ThinGL;
@@ -40,17 +32,10 @@ import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.thingl.ThinGLExtended;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
-import java.io.File;
-import java.io.IOException;
-
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
-    private FontSet fontSet;
     private ThinGLBackend backend;
     private Rivet rivet;
-
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
     private final Screen initialScreen;
     private final boolean initialFullScreen;
@@ -94,27 +79,8 @@ public final class EngineRenderer extends Game {
 
         setupRivetCallbacks();
 
-        this.fontSet = new FontSet(new FreeTypeFont(EngineRenderer.class.getResourceAsStream("/assets/base/fonts/rivet/SFUIText-Regular.ttf").readAllBytes(), 40));
-        this.backend = new ThinGLBackend(windowHandle, this.fontSet);
+        this.backend = new ThinGLBackend(windowHandle, new FontSet(new FreeTypeFont(EngineRenderer.class.getResourceAsStream("/assets/base/fonts/rivet/SFUIText-Regular.ttf").readAllBytes(), 40)));
         this.rivet = new Rivet(this.backend, AnchorLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
-
-        ImGui.createContext();
-        ImPlot.createContext();
-        final ImGuiIO data = ImGui.getIO();
-        data.setIniFilename("base.imgui");
-        data.setFontGlobalScale(1F);
-        data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
-        imGuiGlfw.init(windowHandle, true);
-        imGuiGl3.init();
-
-        if (!new File("base.imgui").exists()) {
-            try {
-                ImGui.loadIniSettingsFromMemory(new String(EngineRenderer.class.getResourceAsStream("/assets/base/base.imgui").readAllBytes()));
-            } catch (IOException ignored) {
-            }
-        }
-
-        ImGuiUtils.setupTheme();
 
         FontUtils.loadFonts();
 
@@ -127,7 +93,6 @@ public final class EngineRenderer extends Game {
 
     @Override
     public void setScreen(Screen screen) {
-        ScenarioScreen.RENDER_WITHIN_IMGUI = !(screen instanceof ScenarioScreen);
         TimeUtils.fakeTimeMillis = null;
         super.setScreen(screen);
 
@@ -158,39 +123,9 @@ public final class EngineRenderer extends Game {
         ThinGL.programs().getMsaa().clearInput();
         ThinGLUtils.end();
 
-        ImGuiUtils.COUNTER = 0;
-        imGuiGl3.newFrame();
-        imGuiGlfw.newFrame();
-        ImGui.newFrame();
-
-        if (ImGui.getStyle().getFontScaleDpi() != 1) {
-            ImGui.pushFont(FontUtils.IM_FONT_REGULAR, 17);
-        }
-
         super.render();
 
-
-        if (ImGui.getStyle().getFontScaleDpi() != 1) {
-            ImGui.popFont();
-        }
-
-        ImGui.render();
-
-        imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-//        if (GLFW.glfwGetWindowAttrib(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle(), GLFW.GLFW_MAXIMIZED) == 1) {
-//            int width = ThinGL.windowInterface().getFramebufferWidth(), height = ThinGL.windowInterface().getFramebufferHeight();
-////            System.out.println(width/(float)height);
-//            if (width/(float)height != 16/9f) {
-//                boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
-//                int fixedWidth = !widthLargerHeight ? width : (int) (height * 16/9f);
-//                int fixedHeight = !widthLargerHeight ? (int) (width * (9/16f)) : height;
-//
-//                Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
-//            }
-//        }
-
-        if (ImGui.isKeyReleased(ImGuiKey.F11) || someTempHackyBool) {
+        if (/*ImGui.isKeyReleased(ImGuiKey.F11) || */ someTempHackyBool) {
             if (this.fullScreen) {
                 Gdx.graphics.setUndecorated(false);
                 Gdx.graphics.setWindowedMode(1280, 720);
@@ -202,20 +137,6 @@ public final class EngineRenderer extends Game {
             this.fullScreen = !this.fullScreen;
             this.someTempHackyBool = false;
         }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        imGuiGlfw.shutdown();
-        imGuiGl3.shutdown();
-        ImPlot.destroyContext();
-        ImGui.destroyContext();
     }
 
     private void setupRivetCallbacks() {

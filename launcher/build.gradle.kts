@@ -12,9 +12,6 @@ dependencies {
     implementation(libs.gdx.base)
     implementation(libs.gdx.spine)
 
-    implementation(libs.imgui.binding)
-    implementation(libs.imgui.lwjgl3)
-
     implementation(libs.lwjgl.glfw)
     implementation(libs.lwjgl.nfd)
 

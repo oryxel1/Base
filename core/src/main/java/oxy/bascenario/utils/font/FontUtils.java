@@ -2,8 +2,6 @@ package oxy.bascenario.utils.font;
 
 import java.util.*;
 
-import imgui.*;
-import lombok.SneakyThrows;
 import net.raphimc.thingl.resource.font.Font;
 import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
 import oxy.bascenario.Base;
@@ -16,8 +14,6 @@ import oxy.bascenario.api.utils.FileInfo;
 public class FontUtils {
     public static Font DEFAULT, SEMI_BOLD;
     private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
-
-    public static ImFont IM_FONT_SEMI_BOLD, IM_FONT_REGULAR, CHILLGOTHIC_17;
 
     public static Font font(FontStyle style, FontType type) {
         return NAME_TO_FONTS.get(type.toName(style));
@@ -69,14 +65,6 @@ public class FontUtils {
 
         DEFAULT = NAME_TO_FONTS.get("ChillRoundRegular");
         SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
-
-        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 18, false));
-        IM_FONT_REGULAR = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 50, false);
-        IM_FONT_SEMI_BOLD = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 50, false);
-        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 50, true);
-
-        ImGui.getIO().setConfigDpiScaleFonts(true);
-        ImGui.getIO().setConfigDpiScaleViewports(true);
     }
 
     public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
@@ -91,28 +79,5 @@ public class FontUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @SneakyThrows
-    private static ImFont loadImFont(String font, int size, boolean full) {
-        final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
-
-        final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
-        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
-        if (full) {
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesCyrillic());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseFull());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseSimplifiedCommon());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
-
-            // Thanks ImGui :D, memory goin to be nice! and well imgui-java still on 1.90.0 so no dynamic render.
-            for (char c = '\u4e00'; c <= '\u9fff'; c++) {
-                rangesBuilder.addChar(c);
-            }
-        }
-
-        final ImGuiIO data = ImGui.getIO();
-        return data.getFonts().addFontFromMemoryTTF(fontData, size, new ImFontConfig(), rangesBuilder.buildRanges());
     }
 }

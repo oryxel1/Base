@@ -1,7 +1,5 @@
 package oxy.bascenario.screens;
 
-import imgui.ImGui;
-import imgui.flag.ImGuiKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -52,7 +50,6 @@ public class ScenarioScreen extends ScreenEffectScreen {
     @Setter
     private boolean playing = true;
 
-    public static boolean RENDER_WITHIN_IMGUI = false;
     private final boolean preload;
     public ScenarioScreen(Scenario scenario, boolean preload) {
         this.timestamps.addAll(scenario.getTimestamps());
@@ -304,13 +301,13 @@ public class ScenarioScreen extends ScreenEffectScreen {
         elements.removeIf(ElementRenderer::selfDestruct);
         elements.forEach(element -> element.getSubElements().values().removeIf(ElementRenderer::selfDestruct));
 
-        if (ImGui.isKeyReleased(ImGuiKey.Space)) {
-            if (!this.dialogueRenderer.isBusy()) {
-                this.busyDialogue = false;
-            } else {
-                this.dialogueRenderer.finishAll();
-            }
-        }
+//        if (ImGui.isKeyReleased(ImGuiKey.Space)) {
+//            if (!this.dialogueRenderer.isBusy()) {
+//                this.busyDialogue = false;
+//            } else {
+//                this.dialogueRenderer.finishAll();
+//            }
+//        }
     }
 
     @Setter
