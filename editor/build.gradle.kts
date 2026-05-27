@@ -13,11 +13,12 @@ dependencies {
     implementation(libs.lwjgl.glfw)
     implementation(libs.lwjgl.nfd)
 
-    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
+    implementation(libs.raphimc.thingl)
     implementation(libs.raphimc.audiomixer)
 
     implementation(libs.jcraft.jorbis)
     implementation(libs.javazoom.jlayer)
 
-//    implementation(libs.jthink.jaudiotagger)
+    implementation(libs.rivet.core)
+    implementation(libs.rivet.thingl.backend)
 }

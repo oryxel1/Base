@@ -1,11 +1,12 @@
 [versions]
-lombok = "1.18.38"
+lombok = "1.18.46"
 gson = "2.13.1"
 lwjgl = "3.4.0"
 lwjgl-sdl = "3.4.0"
 libgdx = "1.13.1"
 spine = "4.2.5"
 thingl = "0.1.1-SNAPSHOT"
+rivet = "0.0.1-SNAPSHOT"
 commons = "1.9.2"
 mocha = "3.0.1"
 configurate = "4.2.0"
@@ -13,7 +14,6 @@ imgui = "1.92.0"
 audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
-#netty = "4.2.9.Final"
 zt-zip = "1.17"
 
 [libraries]
@@ -48,6 +48,9 @@ gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = 
 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
 raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiomixer" }
+
+rivet-core = { module = "net.lenni0451.rivet:core", version.ref = "rivet" }
+rivet-thingl-backend = { module = "net.lenni0451.rivet:backend-thingl-glfw", version.ref = "rivet" }
 
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }

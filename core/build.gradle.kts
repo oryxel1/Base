@@ -10,7 +10,7 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":serializer"))
 
-    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
+    implementation(libs.raphimc.thingl)
     implementation(libs.commons.animations)
     implementation(libs.unnamed.mocha)
 
@@ -56,4 +56,7 @@ dependencies {
     }
 
     implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
+
+    implementation(libs.rivet.core)
+    implementation(libs.rivet.thingl.backend)
 }

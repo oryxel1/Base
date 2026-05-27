@@ -1,10 +1,14 @@
 package oxy.bascenario.utils;
 
 import com.badlogic.gdx.Screen;
+import net.lenni0451.rivet.Rivet;
 
 public class ExtendableScreen implements Screen {
     @Override
     public void show() {
+    }
+
+    public void init(Rivet rivet) {
     }
 
     @Override

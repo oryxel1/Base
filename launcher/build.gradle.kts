@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("com.gradleup.shadow") version("8.3.0")
+    id("com.gradleup.shadow") version("9.4.1")
 }
 
 dependencies {
@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.lwjgl.glfw)
     implementation(libs.lwjgl.nfd)
 
-    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
+    implementation(libs.raphimc.thingl)
     implementation(libs.raphimc.audiomixer)
 
     implementation(libs.commons.animations)
