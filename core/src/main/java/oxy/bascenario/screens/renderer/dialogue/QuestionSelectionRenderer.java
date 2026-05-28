@@ -43,6 +43,9 @@ public class QuestionSelectionRenderer {
         this.type = type;
         this.question = question;
 
+        this.flipped = false;
+        this.releasedalready = false;
+
         if (this.answers != null) {
             this.offset = AnimationUtils.build(400, -420, -86, EasingFunction.SINE);
         }
