@@ -12,10 +12,7 @@ import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
 import oxy.bascenario.api.event.color.SetColorEvent;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.RedirectDialogueEvent;
-import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
+import oxy.bascenario.api.event.dialogue.*;
 import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.focus.FocusElementEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
@@ -98,6 +95,7 @@ public class Inspector {
 
             case AddLogEvent event -> LogInspector.render(screen.getScenario(), event);
 
+            case ShowQuestionSelectionEvent event -> OptionsInspector.render(event);
             case ShowOptionsEvent event -> OptionsInspector.render(event);
 
             case ColorOverlayEvent event -> ColorInspector.render(event);

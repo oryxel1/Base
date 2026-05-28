@@ -76,6 +76,8 @@ public class EventTypes implements Type<Event> {
         put(AddDialogueEvent.class, new AddDialogueType());
         put(RedirectDialogueEvent.class, new RedirectDialogueType());
 
+        put(ShowQuestionSelectionEvent.class, new ShowQuestionSelectionType());
+
         put(AddLogEvent.class, new AddLogType());
         put(ClearLogEvent.class, new ClearLogType());
 

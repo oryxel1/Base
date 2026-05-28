@@ -6,6 +6,7 @@ import oxy.bascenario.api.effects.Sound;
 import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.ShowQuestionSelectionEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
 import oxy.bascenario.api.event.element.RemoveElementEvent;
@@ -47,7 +48,7 @@ public class TrackParser {
 
             long max = 0;
             for (Event event : entry.getValue().right()) {
-                if (event instanceof StartDialogueEvent || event instanceof AddDialogueEvent || event instanceof ShowOptionsEvent) {
+                if (event instanceof StartDialogueEvent || event instanceof AddDialogueEvent || event instanceof ShowOptionsEvent || event instanceof ShowQuestionSelectionEvent) {
                     max = Math.max(max, TimeCompiler.compileTime(event));
                 }
             }

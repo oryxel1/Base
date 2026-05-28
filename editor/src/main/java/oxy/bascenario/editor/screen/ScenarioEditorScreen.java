@@ -45,8 +45,10 @@ public final class ScenarioEditorScreen extends BaseScenarioEditorScreen {
     @Override
     public void render(float delta) {
         boolean busyDialogue = screen.isBusyDialogue() && !screen.getDialogueRenderer().isBusy();
-        boolean busyOptions = screen.isBusyOptions() && !(screen.getOptionsRenderer().getScale().isRunning() && screen.getOptionsRenderer().getScale().getTarget() == 1);
-        timeline.setTickTime(!busyDialogue && !busyOptions);
+        boolean busyOptions = screen.isBusyOptions() &&
+                !(screen.getOptionsRenderer().getScale().isRunning() && screen.getOptionsRenderer().getScale().getTarget() == 1);
+        boolean busyShowQuestions = screen.isBusyAnswerSelection() && !screen.getQuestionSelectionRenderer().getOffset().isRunning();
+        timeline.setTickTime(!busyDialogue && !busyOptions && !busyShowQuestions);
         super.render(delta);
     }
 

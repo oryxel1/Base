@@ -87,6 +87,8 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(ShowOptionsEvent.class, FunctionShowOptions.class);
         EVENT_TO_FUNCTION.put(CloseOptionsEvent.class, FunctionCloseOptions.class);
 
+        EVENT_TO_FUNCTION.put(ShowQuestionSelectionEvent.class, FunctionShowQuestionSelection.class);
+
         EVENT_TO_FUNCTION.put(AddLogEvent.class, FunctionAddLog.class);
         EVENT_TO_FUNCTION.put(ClearLogEvent.class, FunctionClearLog.class);
 

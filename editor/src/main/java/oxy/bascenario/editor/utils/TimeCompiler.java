@@ -8,6 +8,7 @@ import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.api.event.color.SetColorEvent;
 import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
+import oxy.bascenario.api.event.dialogue.ShowQuestionSelectionEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
@@ -125,6 +126,7 @@ public class TimeCompiler {
             case PositionElementEvent event -> Math.max(100, event.duration());
             case RotateElementEvent event -> Math.max(100, event.duration());
             case ShowOptionsEvent ignored -> 250L; // eh.
+            case ShowQuestionSelectionEvent ignored -> 400L;
             case PlaySoundEvent event -> Math.max(100, event.duration());
             case SoundVolumeEvent event -> Math.max(100, event.duration());
             case StopSoundEvent event -> Math.max(100, event.duration());

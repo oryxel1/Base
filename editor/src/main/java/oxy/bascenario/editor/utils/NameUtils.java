@@ -32,6 +32,7 @@ public class NameUtils {
             case StartDialogueEvent ignored -> "Start Dialogue";
             case AddDialogueEvent ignored -> "Add Dialogue";
             case ShowOptionsEvent ignored -> "Show Options";
+            case ShowQuestionSelectionEvent ignored -> "Show Question And Answers";
 
             case CloseDialogueEvent ignored -> "Close Dialogue";
             case CloseOptionsEvent ignored -> "Close Options";

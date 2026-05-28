@@ -219,6 +219,7 @@ public class ActionsUI {
                 new RedirectDialogueEvent(0));
 
         add("Close Dialogue", "Close any currently present dialogue", new CloseDialogueEvent());
+
         {
             final LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
             map.put("Yes", 0);
@@ -227,7 +228,18 @@ public class ActionsUI {
                     "Show options that the user could choose, result in a dialogue index that determine which dialogue to play.",
                     new ShowOptionsEvent(map));
         }
+
         add("Close Options", "Close any currently present options", new CloseOptionsEvent());
+
+
+        {
+            final List<ShowQuestionSelectionEvent.Answer> answers = new ArrayList<>();
+            answers.add(new ShowQuestionSelectionEvent.Answer(0, "This is grayed out.", true));
+            answers.add(new ShowQuestionSelectionEvent.Answer(0, "This is not.", false));
+            add("Show Question And Answer",
+                    "Like Show Options but decorated and have a question, allow for grayed out buttons.",
+                    new ShowQuestionSelectionEvent(FontType.NotoSans, "Which one is grayed out", answers));
+        }
     }
 
     private void animationTab() {
