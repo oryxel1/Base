@@ -1,28 +1,36 @@
 package oxy.bascenario.api;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import oxy.bascenario.api.event.api.Event;
 
 import java.util.List;
 import java.util.Objects;
 
+@Accessors(fluent = true)
+@Getter
+@Setter
 @ToString
 public class Timestamp {
     private boolean waitForDialogue;
+    private Integer dialogueIndex;
     private int time;
     private final List<Event> events;
 
-    public Timestamp(boolean waitForDialogue, int time, List<Event> events) {
+    public Timestamp(boolean waitForDialogue, Integer dialogueIndex, int time, List<Event> events) {
         this.waitForDialogue = waitForDialogue;
         this.time = time;
         this.events = events;
+        this.dialogueIndex = dialogueIndex;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Timestamp timestamp = (Timestamp) o;
-        if (waitForDialogue != timestamp.waitForDialogue && time != timestamp.time || events.size() != timestamp.events.size()) {
+        if (waitForDialogue != timestamp.waitForDialogue || Objects.equals(dialogueIndex, timestamp.dialogueIndex) || time != timestamp.time || events.size() != timestamp.events.size()) {
             return false;
         }
 
@@ -35,30 +43,5 @@ public class Timestamp {
         }
 
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(waitForDialogue, time, events);
-    }
-
-    public boolean waitForDialogue() {
-        return this.waitForDialogue;
-    }
-
-    public void waitForDialogue(boolean waitForDialogue) {
-        this.waitForDialogue = waitForDialogue;
-    }
-
-    public int time() {
-        return this.time;
-    }
-
-    public void time(int time) {
-        this.time = time;
-    }
-
-    public List<Event> events() {
-        return events;
     }
 }

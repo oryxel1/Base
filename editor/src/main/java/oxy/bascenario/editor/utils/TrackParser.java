@@ -54,7 +54,7 @@ public class TrackParser {
             }
             last += max;
 
-            timestamps.add(new Timestamp(entry.getValue().left(), (int) delay, entry.getValue().right()));
+            timestamps.add(new Timestamp(entry.getValue().left(), null, (int) delay, entry.getValue().right()));
         }
 
 //        System.out.println(Arrays.toString(timestamps.toArray()));

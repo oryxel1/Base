@@ -106,6 +106,11 @@ public class ScenarioScreen extends ScreenEffectScreen {
                 break;
             }
 
+            if (peek.dialogueIndex() != null && peek.dialogueIndex() != this.dialogueRenderer.getCurrentIndex()) {
+                timestamps.poll();
+                continue;
+            }
+
             final long duration = peek.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
             if (peek.waitForDialogue() && (this.busyDialogue || this.busyOptions || this.busyAnswerSelection)) {
                 this.sinceDialogue = 0;

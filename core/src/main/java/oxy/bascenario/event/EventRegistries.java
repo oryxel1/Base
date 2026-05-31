@@ -20,7 +20,6 @@ import oxy.bascenario.api.event.sound.PlaySoundEvent;
 import oxy.bascenario.api.event.sound.SoundEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;
 import oxy.bascenario.api.event.sound.StopSoundEvent;
-import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.impl.*;
 import oxy.bascenario.event.impl.animation.FunctionPlayAnimation;
@@ -43,7 +42,6 @@ import oxy.bascenario.event.impl.sound.FunctionSoundEvent;
 import oxy.bascenario.event.impl.sound.FunctionSoundVolumeEvent;
 import oxy.bascenario.event.impl.sound.FunctionStopSoundEvent;
 import oxy.bascenario.event.impl.transition.FunctionScreenTransition;
-import oxy.bascenario.event.impl.utility.FunctionCheckForDialogue;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,8 +99,6 @@ public class EventRegistries {
         EVENT_TO_FUNCTION.put(ScreenEffectEvent.class, FunctionScreenEffect.class);
 
         EVENT_TO_FUNCTION.put(ScreenTransitionEvent.class, FunctionScreenTransition.class);
-
-        EVENT_TO_FUNCTION.put(CheckForDialogueEvent.class, FunctionCheckForDialogue.class);
 
         EVENT_TO_FUNCTION.put(PopupEvent.class, FunctionPopup.class);
 
