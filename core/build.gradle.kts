@@ -6,6 +6,10 @@ var lwjgl = "3.3.6"
 var lwjglStd = "3.4.0"
 var libGdx = "1.13.1"
 
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
     implementation(project(":api"))
     implementation(project(":serializer"))
@@ -51,6 +55,6 @@ dependencies {
 
     implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
 
-    implementation(libs.rivet.core)
-    implementation(libs.rivet.thingl.backend)
+    implementation("com.github.Lenni0451.rivet:core:40c6f6c3a7")
+    implementation("com.github.Lenni0451.rivet:backend-thingl-glfw:40c6f6c3a7")
 }

@@ -6,7 +6,6 @@ lwjgl-sdl = "3.4.0"
 libgdx = "1.13.1"
 spine = "4.2.5"
 thingl = "0.1.1-SNAPSHOT"
-rivet = "0.0.1-20260530.162954-9"
 commons = "1.9.2"
 mocha = "3.0.1"
 configurate = "4.2.0"
@@ -41,9 +40,6 @@ gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = 
 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
 raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiomixer" }
-
-rivet-core = { module = "net.lenni0451.rivet:core", version.ref = "rivet" }
-rivet-thingl-backend = { module = "net.lenni0451.rivet:backend-thingl-glfw", version.ref = "rivet" }
 
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }

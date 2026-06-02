@@ -8,6 +8,7 @@ version = "1.0"
 allprojects {
     repositories {
         mavenCentral()
+        maven("https://jitpack.io")
         maven("https://maven.lenni0451.net/snapshots")
         maven("https://central.sonatype.com/repository/maven-snapshots")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
@@ -28,14 +29,3 @@ subprojects {
         implementation(rootProject.libs.configurate.yaml)
     }
 }
-//
-//dependencies {
-//    implementation(project(":editor"))
-//    implementation(project(":core"))
-//    implementation(project(":api"))
-//
-//    implementation(libs.gdx.base)
-//    implementation(libs.commons.core)
-//
-//    implementation(libs.imgui.binding)
-//}

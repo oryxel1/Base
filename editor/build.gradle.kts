@@ -2,6 +2,10 @@ plugins {
     id("java")
 }
 
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
     implementation(project(":api"))
     implementation(project(":core"))
@@ -16,6 +20,6 @@ dependencies {
     implementation(libs.jcraft.jorbis)
     implementation(libs.javazoom.jlayer)
 
-    implementation(libs.rivet.core)
-    implementation(libs.rivet.thingl.backend)
+    implementation("com.github.Lenni0451.rivet:core:40c6f6c3a7")
+    implementation("com.github.Lenni0451.rivet:backend-thingl-glfw:40c6f6c3a7")
 }
