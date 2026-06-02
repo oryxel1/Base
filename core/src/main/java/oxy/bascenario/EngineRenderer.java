@@ -14,6 +14,7 @@ import net.lenni0451.rivet.backend.thingl.render.ThinGLRenderer;
 import net.lenni0451.rivet.backend.thingl.util.GLFWMapper;
 import net.lenni0451.rivet.input.keyboard.CharEvent;
 import net.lenni0451.rivet.input.keyboard.KeyEvent;
+import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
@@ -31,6 +32,9 @@ import oxy.bascenario.utils.*;
 import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.thingl.ThinGLExtended;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public final class EngineRenderer extends Game {
@@ -144,12 +148,13 @@ public final class EngineRenderer extends Game {
         }
     }
 
+    private final Set<MouseButton> heldMouseButtons = EnumSet.noneOf(MouseButton.class);
     private void setupRivetCallbacks() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
         
         GLFW.glfwSetCursorPosCallback(windowHandle, (_, xpos, ypos) -> {
             float[] mouseScale = this.getMouseScale();
-            this.rivet.onMouseMove(new MouseMoveEvent((float) xpos * mouseScale[0], (float) ypos * mouseScale[1]));
+            this.rivet.onMouseMove(new MouseMoveEvent((float) xpos * mouseScale[0], (float) ypos * mouseScale[1], this.heldMouseButtons));
         });
         GLFW.glfwSetMouseButtonCallback(windowHandle, (window, button, action, mods) -> {
             float[] mouseScale = this.getMouseScale();
@@ -160,9 +165,11 @@ public final class EngineRenderer extends Game {
             MouseButtonEvent event = GLFWMapper.mapMouseButton((float) xpos[0] * mouseScale[0], (float) ypos[0] * mouseScale[1], button, mods);
             if (event != null) {
                 if (action == GLFW.GLFW_PRESS) {
+                    this.heldMouseButtons.add(event.button());
                     this.rivet.onMouseDown(event);
                 } else if (action == GLFW.GLFW_RELEASE) {
                     this.rivet.onMouseUp(event);
+                    this.heldMouseButtons.add(event.button());
                 }
             }
         });
@@ -200,6 +207,7 @@ public final class EngineRenderer extends Game {
         });
         GLFW.glfwSetWindowFocusCallback(windowHandle, (window, focused) -> {
             if (!focused) {
+                this.heldMouseButtons.clear();
                 this.rivet.unfocus();
             }
         });

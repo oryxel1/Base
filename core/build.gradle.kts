@@ -55,6 +55,6 @@ dependencies {
 
     implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
 
-    implementation("com.github.Lenni0451.rivet:core:40c6f6c3a7")
-    implementation("com.github.Lenni0451.rivet:backend-thingl-glfw:40c6f6c3a7")
+    implementation(libs.rivet.core)
+    implementation(libs.rivet.thingl.backend)
 }

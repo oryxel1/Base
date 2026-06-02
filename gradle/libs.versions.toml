@@ -13,6 +13,7 @@ audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
 zt-zip = "1.17"
+rivet = "5b1f772329"
 
 [libraries]
 zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }
@@ -40,6 +41,9 @@ gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = 
 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
 raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiomixer" }
+
+rivet-core = { module = "com.github.Lenni0451.rivet:core", version.ref = "rivet"}
+rivet-thingl-backend = { module = "com.github.Lenni0451.rivet:backend-thingl-glfw", version.ref = "rivet" }
 
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }

@@ -1,11 +1,12 @@
 package oxy.bascenario.editor.timeline;
 
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.container.Container;
+import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
@@ -33,6 +34,18 @@ public class TimelineContainer extends Container {
         drawTimelineCursor(renderer, bounds);
 
         super.render(renderer, bounds);
+    }
+
+    @Override
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Rectangle bounds) {
+        final float timelineX = bounds.width() * trackListSizeRatio;
+        if (event.x() > timelineX && event.x() < timelineX + (bounds.width() - timelineX) && event.y() < 35 && event.buttons().contains(MouseButton.LEFT)) {
+            final float ratio = (event.x() - timelineX) / (bounds.width() - timelineX);
+            long newTimestamp = (long) (DEFAULT_MAX_TIME * screen.scale() * screen.scroll() + ratio * DEFAULT_MAX_TIME * screen.scale());
+            screen.timestamp(newTimestamp);
+        }
+
+        return super.onComponentMouseMove(event, bounds);
     }
 
     @Override
