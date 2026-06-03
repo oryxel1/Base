@@ -3,10 +3,8 @@ package oxy.bascenario.screens.renderer.element;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.*;
 import imgui.ImGui;
-import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import oxy.bascenario.Base;
@@ -134,7 +132,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             }
 
             if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
-                ThinGLUtils.colorTweak(() -> {
+                ThinGLUtils.overlayColor(() -> {
                     this.batch.begin();
                     this.renderer.draw(this.batch, this.skeleton);
                     this.batch.end();

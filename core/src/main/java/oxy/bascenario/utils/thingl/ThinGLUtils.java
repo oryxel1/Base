@@ -177,6 +177,15 @@ public final class ThinGLUtils {
         ThinGL.programs().getGaussianBlur().clearInput();
     }
 
+    public static void overlayColor(Runnable runnable, Color color) {
+        ThinGLExtended.get().getPrograms().getColorOverlay().bindInput();
+        runnable.run();
+        ThinGLExtended.get().getPrograms().getColorOverlay().unbindInput();
+        ThinGLExtended.get().getPrograms().getColorOverlay().configureParameters(color);
+        ThinGLExtended.get().getPrograms().getColorOverlay().renderFullscreen();
+        ThinGLExtended.get().getPrograms().getColorOverlay().clearInput();
+    }
+
     public static void colorTweak(Runnable runnable, Color color) {
         ThinGL.programs().getColorTweak().bindInput();
         runnable.run();

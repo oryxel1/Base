@@ -2,7 +2,7 @@ package oxy.bascenario.utils.thingl;
 
 import net.lenni0451.commons.lazy.Lazy;
 import net.raphimc.thingl.gl.program.Programs;
-import net.raphimc.thingl.gl.program.RegularProgram;
+import net.raphimc.thingl.gl.program.post.impl.ColorTweakProgram;
 import net.raphimc.thingl.gl.resource.shader.Shader;
 import net.raphimc.thingl.util.glsl.GlSlPreprocessor;
 import oxy.bascenario.utils.thingl.shaders.ColorProgram;
@@ -33,6 +33,16 @@ public class ProgramsExtended extends Programs {
         program.setDebugName("night_vision");
         return program;
     });
+
+    private final Lazy<ColorTweakProgram> colorOverlay = Lazy.of(() -> {
+        final ColorTweakProgram program = new ColorTweakProgram(this.shaderLoader.get("post/post_processing", VERTEX), this.getBaseShader("color_overlay", FRAGMENT));
+        program.setDebugName("color_overlay");
+        return program;
+    });
+
+    public ColorTweakProgram getColorOverlay() {
+        return colorOverlay.get();
+    }
 
     public ColorProgram getGrayscale() {
         return grayscale.get();
