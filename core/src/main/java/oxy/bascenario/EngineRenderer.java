@@ -59,6 +59,9 @@ public final class EngineRenderer extends Game {
 //        GLFW.glfwSetWindowAspectRatio(windowHandle, 16, 9);
 
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
+            float[] mouseScale = this.getMouseScale();
+            this.rivet.onMouseMove(new MouseMoveEvent((float) x * mouseScale[0], (float) y * mouseScale[1], this.heldMouseButtons));
+
             if (window != windowHandle) {
                 return;
             }
@@ -67,6 +70,22 @@ public final class EngineRenderer extends Game {
             this.mouseY = y;
         });
         GLFW.glfwSetMouseButtonCallback(windowHandle, (window, button, action, mode) -> {
+            float[] mouseScale = this.getMouseScale();
+            final double[] xpos = new double[1];
+            final double[] ypos = new double[1];
+            GLFW.glfwGetCursorPos(window, xpos, ypos);
+
+            MouseButtonEvent event = GLFWMapper.mapMouseButton((float) xpos[0] * mouseScale[0], (float) ypos[0] * mouseScale[1], button, mode);
+            if (event != null) {
+                if (action == GLFW.GLFW_PRESS) {
+                    this.heldMouseButtons.add(event.button());
+                    this.rivet.onMouseDown(event);
+                } else if (action == GLFW.GLFW_RELEASE) {
+                    this.rivet.onMouseUp(event);
+                    this.heldMouseButtons.add(event.button());
+                }
+            }
+
             if (window != windowHandle || !(this.screen instanceof ExtendableScreen extendableScreen)) {
                 return;
             }
@@ -151,28 +170,7 @@ public final class EngineRenderer extends Game {
     private final Set<MouseButton> heldMouseButtons = EnumSet.noneOf(MouseButton.class);
     private void setupRivetCallbacks() {
         long windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
-        
-        GLFW.glfwSetCursorPosCallback(windowHandle, (_, xpos, ypos) -> {
-            float[] mouseScale = this.getMouseScale();
-            this.rivet.onMouseMove(new MouseMoveEvent((float) xpos * mouseScale[0], (float) ypos * mouseScale[1], this.heldMouseButtons));
-        });
-        GLFW.glfwSetMouseButtonCallback(windowHandle, (window, button, action, mods) -> {
-            float[] mouseScale = this.getMouseScale();
-            final double[] xpos = new double[1];
-            final double[] ypos = new double[1];
-            GLFW.glfwGetCursorPos(window, xpos, ypos);
 
-            MouseButtonEvent event = GLFWMapper.mapMouseButton((float) xpos[0] * mouseScale[0], (float) ypos[0] * mouseScale[1], button, mods);
-            if (event != null) {
-                if (action == GLFW.GLFW_PRESS) {
-                    this.heldMouseButtons.add(event.button());
-                    this.rivet.onMouseDown(event);
-                } else if (action == GLFW.GLFW_RELEASE) {
-                    this.rivet.onMouseUp(event);
-                    this.heldMouseButtons.add(event.button());
-                }
-            }
-        });
         GLFW.glfwSetScrollCallback(windowHandle, (window, xoffset, yoffset) -> {
             float[] mouseScale = this.getMouseScale();
             final double[] xpos = new double[1];
