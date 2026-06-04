@@ -5,7 +5,6 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
-import net.lenni0451.rivet.dragdrop.DragOverEvent;
 import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Rectangle;
@@ -18,7 +17,7 @@ public class TrackListContainer extends ScrollContainer {
     private final Container container;
 
     public TrackListContainer(TimelineContainer parent) {
-        super(container = new Container(new VerticalListLayout(3, false)));
+        super(container = new Container(new VerticalListLayout(3, false)), true, true);
         this.parent = parent;
     }
 
@@ -43,7 +42,7 @@ public class TrackListContainer extends ScrollContainer {
             return super.onComponentDrop(event, bounds);
         }
         if (event.x() > parent.trackListWidth() && event.x() < parent.trackListWidth() + bounds.width() && event.y() > 0 && event.y() < 60f) {
-            final TrackComponent component = new TrackComponent(parent);
+            final TrackContainer component = new TrackContainer(parent);
             container.addChild(component);
         }
 
