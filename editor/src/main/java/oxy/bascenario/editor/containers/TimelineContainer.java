@@ -1,5 +1,7 @@
 package oxy.bascenario.editor.containers;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
@@ -15,9 +17,11 @@ import oxy.bascenario.editor.containers.timeline.TrackListContainer;
 
 import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
 
+@Accessors(fluent = true)
 public class TimelineContainer extends Container {
     private static final Color TIMELINE_CURSOR_COLOR = Color.fromRGB(202, 74, 92);
 
+    @Getter
     private float trackListWidth = 200;
 
     private final ScenarioEditorScreen screen;
@@ -25,8 +29,8 @@ public class TimelineContainer extends Container {
         super(AbsoluteLayout.INSTANCE);
         this.screen = screen;
 
-        this.addChild(new TrackListContainer(), c ->
-                c.layoutOptions(new AbsoluteLayoutOptions(0, 35, trackListWidth, null)));
+        this.addChild(new TrackListContainer(this), c ->
+                c.layoutOptions(new AbsoluteLayoutOptions(0, 35, null, null)));
         this.addChild(new TimelineTimeSection(screen), c ->
                 c.layoutOptions(new AbsoluteLayoutOptions(trackListWidth, 0, null, 35f)));
     }
