@@ -6,8 +6,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
+import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
@@ -25,7 +27,7 @@ public class TrackContainer extends Container {
         super(AbsoluteLayout.INSTANCE);
         this.parent = parent;
 
-//        this.addChild(new Button("Test", c -> {}).layoutOptions(new AbsoluteLayoutOptions(1200, 0)));
+        this.addChild(new Button("Test", c -> {}).layoutOptions(new AbsoluteLayoutOptions(2000, 0)));
     }
 
     @Override
@@ -41,6 +43,7 @@ public class TrackContainer extends Container {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return children().isEmpty() ? new Size(constraints.width(), height) : super.computeIdealSize(new Size(constraints.width(), height));
+        Size idealSize = super.computeIdealSize(new Size(constraints.width(), height));
+        return new Size(Math.max(idealSize.width(), constraints.width()), height);
     }
 }
