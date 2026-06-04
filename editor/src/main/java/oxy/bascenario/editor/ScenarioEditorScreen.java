@@ -11,6 +11,7 @@ import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
+import oxy.bascenario.editor.containers.AOContainer;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.TimelineTabContainer;
 import oxy.bascenario.utils.ExtendableScreen;
@@ -41,8 +42,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     public void init(Rivet rivet) {
         Container container = new Container(AnchorLayout.INSTANCE);
 
-        container.addChild(new SolidColor(), c -> {
-            c.color(Color.fromRGB(35, 35, 35));
+        container.addChild(new AOContainer(), c -> {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.06f).withAnchorMaxX(0.2f).withAnchorMaxY(0.6f));
         });
 

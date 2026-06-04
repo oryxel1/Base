@@ -5,6 +5,8 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
+import net.lenni0451.rivet.dragdrop.DragOverEvent;
+import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
@@ -25,14 +27,27 @@ public class TrackListContainer extends ScrollContainer {
         renderer.fillRect(0, 0, parent.trackListWidth(), bounds.height(), Color.fromRGB(35, 35, 35));
 
         if (container.children().isEmpty()) {
-            renderer.fillRoundedRect(parent.trackListWidth(), 0, 300, 1/4f * bounds.height(), 5, Color.fromRGB(50, 50, 50));
+            renderer.fillRoundedRect(parent.trackListWidth(), 0, 300, 60f, 5, Color.fromRGB(50, 50, 50));
             renderer.scale(0.4f, () -> {
                 ShapedText text = this.rivet().backend().shapeText("Drop anything here to get started.", Color.WHITE);
-                renderer.text(text, parent.trackListWidth() + 350 ,1/4f * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.VISUAL_TOP);
+                renderer.text(text, parent.trackListWidth() + 350 ,(60f / 2f - (this.rivet().backend().getTextHeight() * 0.4f) / 2f) / 0.4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
             });
         }
 
         super.render(renderer, bounds);
+    }
+
+    @Override
+    protected boolean onComponentDrop(DropEvent event, Rectangle bounds) {
+        if (!container.children().isEmpty()) {
+            return super.onComponentDrop(event, bounds);
+        }
+        if (event.x() > parent.trackListWidth() && event.x() < parent.trackListWidth() + bounds.width() && event.y() > 0 && event.y() < 60f) {
+            final TrackComponent component = new TrackComponent(parent);
+            container.addChild(component);
+        }
+
+        return super.onComponentDrop(event, bounds);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class TrackComponent extends Component {
 
     @Setter @Getter
     private int index;
-    private float heightRatio = 1/4f;
+    private float height = 60f;
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
@@ -32,6 +32,6 @@ public class TrackComponent extends Component {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return new Size(constraints.width(), heightRatio * constraints.height());
+        return new Size(constraints.width(), height);
     }
 }
