@@ -51,6 +51,6 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return constraints;
+        return new Size(constraints.width() - parent.trackListWidth(), constraints.height());
     }
 }

@@ -7,6 +7,9 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.anchor.AnchorLayout;
+import net.lenni0451.rivet.layout.border.BorderLayout;
+import net.lenni0451.rivet.layout.border.BorderPosition;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
@@ -25,13 +28,11 @@ public class TimelineContainer extends Container {
     @Getter
     private final ScenarioEditorScreen screen;
     public TimelineContainer(ScenarioEditorScreen screen) {
-        super(AbsoluteLayout.INSTANCE);
+        super(BorderLayout.INSTANCE);
         this.screen = screen;
 
-        this.addChild(new TrackListContainer(this), c ->
-                c.layoutOptions(new AbsoluteLayoutOptions(0, 35, null, null)));
-        this.addChild(new TimelineTimeSection(this), c ->
-                c.layoutOptions(new AbsoluteLayoutOptions(trackListWidth, 0, null, 35f)));
+        this.addChild(new TimelineTimeSection(this), c -> c.layoutOptions(BorderPosition.TOP));
+//        this.addChild(new TrackListContainer(this), c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
     @Override
