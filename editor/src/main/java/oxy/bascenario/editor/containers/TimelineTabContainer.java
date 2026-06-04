@@ -21,7 +21,7 @@ public class TimelineTabContainer extends Container {
         slider.barHeight().set(5f);
         slider.thumbWidth().set(20f);
         slider.thumbHeight().set(20f);
-        slider.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.75f).withAnchorMaxX(0.95f).withAnchorMinY(0.5f).withPivotY(0.5f));
+        slider.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.78f).withAnchorMaxX(0.98f).withAnchorMinY(0.5f).withPivotY(0.5f));
         slider.showTooltip().set(false);
 
         slider.valueChangeListener().add(d -> screen.scale(d.floatValue()));
