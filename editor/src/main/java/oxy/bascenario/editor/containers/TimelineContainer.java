@@ -7,13 +7,11 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.layout.anchor.AnchorLayout;
-import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.timeline.TimelineTimeSection;
-import oxy.bascenario.editor.containers.timeline.TrackListContainer;
+import oxy.bascenario.editor.containers.track.TrackListContainer;
 
 import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
 
@@ -24,6 +22,7 @@ public class TimelineContainer extends Container {
     @Getter
     private float trackListWidth = 200;
 
+    @Getter
     private final ScenarioEditorScreen screen;
     public TimelineContainer(ScenarioEditorScreen screen) {
         super(AbsoluteLayout.INSTANCE);
@@ -31,7 +30,7 @@ public class TimelineContainer extends Container {
 
         this.addChild(new TrackListContainer(this), c ->
                 c.layoutOptions(new AbsoluteLayoutOptions(0, 35, null, null)));
-        this.addChild(new TimelineTimeSection(screen), c ->
+        this.addChild(new TimelineTimeSection(this), c ->
                 c.layoutOptions(new AbsoluteLayoutOptions(trackListWidth, 0, null, 35f)));
     }
 

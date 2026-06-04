@@ -24,7 +24,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario scenario;
 
     public static final long DEFAULT_MAX_TIME = 15000;
-    private long timestamp;
+    private long timestamp = 1000;
     private float scale = 1, scroll = 0;
 
     public ScenarioEditorScreen(Scenario scenario) {
