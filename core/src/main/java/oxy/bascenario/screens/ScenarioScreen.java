@@ -257,8 +257,17 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
         this.questionSelectionRenderer.render(this);
 
+        if (getEffects().contains(ScreenEffect.SMOKE)) {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGB(0x4c413f).withAlphaF(0.6f));
+        }
+        if (getEffects().contains(ScreenEffect.GRAY_FILTER)) {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.3f));
+        }
+
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
+
+        renderSmoke();
 
         this.dialogueRenderer.render();
 

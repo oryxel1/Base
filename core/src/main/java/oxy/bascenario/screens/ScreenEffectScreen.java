@@ -32,9 +32,12 @@ public class ScreenEffectScreen extends ExtendableScreen {
         this.tvNoiseEffectRenderer.init();
     }
 
+    protected void renderSmoke() {
+        this.smokeEffectRenderer.render(effects.contains(ScreenEffect.SMOKE));
+    }
+
     @Override
     public void render(float delta) {
-        this.smokeEffectRenderer.render(effects.contains(ScreenEffect.SMOKE));
         // Don't comment on this.
         if (effects.contains(ScreenEffect.GRAY_FILTER)) {
             ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_GT_Circle_Blur_inv.png"), 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.4f));
