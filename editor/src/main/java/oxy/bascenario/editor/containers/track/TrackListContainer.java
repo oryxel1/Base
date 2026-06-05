@@ -23,13 +23,11 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-        renderer.fillRect(0, 0, parent.trackListWidth(), bounds.height(), Color.fromRGB(35, 35, 35));
-
         if (container.children().isEmpty()) {
-            renderer.fillRoundedRect(parent.trackListWidth(), 0, 300, 60f, 5, Color.fromRGB(50, 50, 50));
+            renderer.fillRoundedRect(0, 0, 300, 60f, 5, Color.fromRGB(50, 50, 50));
             renderer.scale(0.4f, () -> {
                 ShapedText text = this.rivet().backend().shapeText("Drop anything here to get started.", Color.WHITE);
-                renderer.text(text, parent.trackListWidth() + 350 ,(60f / 2f - (this.rivet().backend().getTextHeight() * 0.4f) / 2f) / 0.4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
+                renderer.text(text, 50,(60f / 2f - (this.rivet().backend().getTextHeight() * 0.4f) / 2f) / 0.4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
             });
         }
 
@@ -41,7 +39,7 @@ public class TrackListContainer extends ScrollContainer {
         if (!container.children().isEmpty()) {
             return super.onComponentDrop(event, bounds);
         }
-        if (event.x() > parent.trackListWidth() && event.x() < parent.trackListWidth() + bounds.width() && event.y() > 0 && event.y() < 60f) {
+        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < 60f) {
             final TrackContainer component = new TrackContainer(parent);
             container.addChild(component);
         }
@@ -51,6 +49,6 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return new Size(constraints.width() - parent.trackListWidth(), constraints.height());
+        return constraints;
     }
 }

@@ -21,24 +21,22 @@ public class TimelineTimeSection extends Component {
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-        renderer.translate(parent.trackListWidth(), 0, () -> {
-            for (int i = 0; i <= 5; i++) {
-                long time = (long) ((DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll()) + (DEFAULT_MAX_TIME * parent.screen().scale() * (i / 5f)));
-                float segmentX = TimelineContainer.timestampToPosition(time, 0, bounds.width(), parent.screen().scale(), parent.screen().scroll());
+        for (int i = 0; i <= 5; i++) {
+            long time = (long) ((DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll()) + (DEFAULT_MAX_TIME * parent.screen().scale() * (i / 5f)));
+            float segmentX = TimelineContainer.timestampToPosition(time, 0, bounds.width(), parent.screen().scale(), parent.screen().scroll());
 
-                float seconds = time / 1000f;
-                ShapedText text = this.rivet().backend().shapeText(seconds + "s", Color.WHITE);
+            float seconds = time / 1000f;
+            ShapedText text = this.rivet().backend().shapeText(seconds + "s", Color.WHITE);
 
-                renderer.fillRect(segmentX, 0, 1, 10, Color.WHITE);
-                renderer.scale(0.4f, () -> renderer.text(text, segmentX / 0.4f, (25 / 35f) * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
-            }
-        });
+            renderer.fillRect(segmentX, 0, 1, 10, Color.WHITE);
+            renderer.scale(0.4f, () -> renderer.text(text, segmentX / 0.4f, (25 / 35f) * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+        }
     }
 
     @Override
     protected boolean onComponentMouseMove(MouseMoveEvent event, Rectangle bounds) {
-        if (event.x() > parent.trackListWidth() && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
-            final float ratio = Math.min((event.x() - parent.trackListWidth() - 1.25f) / (bounds.width() - parent.trackListWidth()), 1);
+        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
+            final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()), 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());
             parent.screen().timestamp(newTimestamp);
         }
@@ -48,8 +46,8 @@ public class TimelineTimeSection extends Component {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
-        if (event.x() > parent.trackListWidth() && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
-            final float ratio = Math.min((event.x() - parent.trackListWidth() - 1.25f) / (bounds.width() - parent.trackListWidth()) , 1);
+        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
+            final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()) , 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());
             parent.screen().timestamp(newTimestamp);
         }

@@ -26,7 +26,13 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
     public static final long DEFAULT_MAX_TIME = 15000;
     private long timestamp = 1000;
-    private float scale = 1, scroll = 0;
+    private float scale = 1;
+
+    private TimelineContainer timelineContainer;
+    public float scroll() {
+        float width = ThinGL.windowInterface().getFramebufferWidth();
+        return timelineContainer().scroll(0.99f * width - 0.15625f * width);
+    }
 
     public ScenarioEditorScreen(Scenario scenario) {
         this.scenario = scenario;
@@ -56,8 +62,13 @@ public class ScenarioEditorScreen extends ExtendableScreen {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.805f).withAnchorMinY(0.06f).withAnchorMaxX(0.99f).withAnchorMaxY(0.6f));
         });
 
-        container.addChild(new TimelineContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.655f).withAnchorMaxX(0.99f).withAnchorMaxY(0.99f));
+        container.addChild(new SolidColor(), c -> {
+            c.color(Color.RED);
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.655f).withAnchorMaxX(0.15625f).withAnchorMaxY(0.99f));
+        });
+
+        container.addChild(timelineContainer = new TimelineContainer(this), c -> {
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.15625f).withAnchorMinY(0.655f).withAnchorMaxX(0.99f).withAnchorMaxY(0.99f));
         });
 
         container.addChild(new TimelineTabContainer(this), c -> {

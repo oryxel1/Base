@@ -21,9 +21,7 @@ import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
 @Accessors(fluent = true)
 public class TimelineContainer extends Container {
     private static final Color TIMELINE_CURSOR_COLOR = Color.fromRGB(202, 74, 92);
-
-    @Getter
-    private float trackListWidth = 200;
+    private final TrackListContainer trackListContainer;
 
     @Getter
     private final ScenarioEditorScreen screen;
@@ -32,7 +30,11 @@ public class TimelineContainer extends Container {
         this.screen = screen;
 
         this.addChild(new TimelineTimeSection(this), c -> c.layoutOptions(BorderPosition.TOP));
-//        this.addChild(new TrackListContainer(this), c -> c.layoutOptions(BorderPosition.CENTER));
+        this.addChild(trackListContainer = new TrackListContainer(this), c -> c.layoutOptions(BorderPosition.CENTER));
+    }
+
+    public float scroll(float width) {
+        return trackListContainer.scrollX() / width;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class TimelineContainer extends Container {
     }
 
     private void drawTimelineCursor(Renderer renderer, Rectangle bounds) {
-        final float cursorX = timestampToPosition(screen.timestamp(), trackListWidth, bounds.width() - trackListWidth, screen.scale(), screen.scroll());
+        final float cursorX = timestampToPosition(screen.timestamp(), 0, bounds.width(), screen.scale(), screen.scroll());
 
         renderer.fillTriangle(cursorX + 1.25f - 10, 0, cursorX + 1.25f, 10, cursorX + 1.25f + 10, 0, TIMELINE_CURSOR_COLOR);
         renderer.fillRect(cursorX, 0, 2, bounds.height(), TIMELINE_CURSOR_COLOR.withAlphaF(0.8f));

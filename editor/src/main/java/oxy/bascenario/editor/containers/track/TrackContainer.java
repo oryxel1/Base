@@ -26,17 +26,13 @@ public class TrackContainer extends Container {
     public TrackContainer(TimelineContainer parent) {
         super(AbsoluteLayout.INSTANCE);
         this.parent = parent;
-
-        this.addChild(new Button("Test", c -> {}).layoutOptions(new AbsoluteLayoutOptions(2000, 0)));
     }
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-//        renderer.fillRect(0, 0, parent.trackListWidth(), bounds.height(), Color.RED); // here for now...
-
         renderer.scale(0.5f, () -> renderer.text(this.rivet().backend().shapeText("Track " + index, Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
-        renderer.fillRoundedRect(parent.trackListWidth(), 0, bounds.width() + 100, bounds.height(), 5, Color.fromRGB(50, 50, 50));
+        renderer.fillRoundedRect(0, 0, bounds.width() + 100, bounds.height(), 5, Color.fromRGB(50, 50, 50));
 
         super.render(renderer, bounds);
     }
