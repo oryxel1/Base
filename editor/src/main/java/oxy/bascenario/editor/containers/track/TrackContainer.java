@@ -1,39 +1,34 @@
 package oxy.bascenario.editor.containers.track;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
-import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.containers.TimelineContainer;
 
 @Accessors(fluent = true)
 public class TrackContainer extends Container {
-    private final TimelineContainer parent;
+    @Getter
+    private final TimelineContainer container;
 
     @Setter @Getter
     private int index;
+    @Getter
     private float height = 60f;
 
-    public TrackContainer(TimelineContainer parent) {
+    public TrackContainer(TimelineContainer container) {
         super(AbsoluteLayout.INSTANCE);
-        this.parent = parent;
+        this.container = container;
     }
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-        renderer.scale(0.5f, () -> renderer.text(this.rivet().backend().shapeText("Track " + index, Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
-
         renderer.fillRoundedRect(0, 0, bounds.width() + 100, bounds.height(), 5, Color.fromRGB(50, 50, 50));
-
         super.render(renderer, bounds);
     }
 

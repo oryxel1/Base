@@ -11,6 +11,7 @@ import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.containers.TimelineContainer;
+import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
 
 public class TrackListContainer extends ScrollContainer {
     private final TimelineContainer parent;
@@ -42,6 +43,8 @@ public class TrackListContainer extends ScrollContainer {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < 60f) {
             final TrackContainer component = new TrackContainer(parent);
             container.addChild(component);
+
+            parent.screen().trackTabContainer().addChild(new TrackTabContainer(component));
         }
 
         return super.onComponentDrop(event, bounds);
