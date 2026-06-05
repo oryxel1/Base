@@ -88,14 +88,14 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             return;
         }
 
-        try {
-            this.queueAnimations.forEach(animation -> {
-                stateData.setDefaultMix(animation.duration);
+        this.queueAnimations.forEach(animation -> {
+            try {
                 state.setAnimation(animation.index, animation.animation, animation.loop);
-            });
-            this.queueAnimations.clear();
-        } catch (Exception ignored) {
-        }
+                stateData.setDefaultMix(animation.duration);
+            } catch (Exception ignored) {
+            }
+        });
+        this.queueAnimations.clear();
 
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
 
