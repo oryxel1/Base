@@ -33,6 +33,14 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     private long timestamp = 1000;
     private float scale = 1;
 
+    public void scale(float scale) {
+        this.scale = scale;
+
+        float width = ThinGL.windowInterface().getFramebufferWidth();
+        timelineContainer.trackListContainer().resize(0.99f * width - 0.15625f * width);
+        timelineContainer.trackListContainer().requestLayoutRecalculation();
+    }
+
     private TimelineContainer timelineContainer;
     private Container trackTabContainer;
 
@@ -99,4 +107,9 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     @Override
     public void render(float delta) {
     }
+
+//    @Override
+//    public void resize(int width, int height) {
+//        timelineContainer.trackListContainer().
+//    }
 }

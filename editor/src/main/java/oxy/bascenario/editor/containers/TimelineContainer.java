@@ -21,6 +21,7 @@ import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
 @Accessors(fluent = true)
 public class TimelineContainer extends Container {
     private static final Color TIMELINE_CURSOR_COLOR = Color.fromRGB(202, 74, 92);
+    @Getter
     private final TrackListContainer trackListContainer;
 
     @Getter

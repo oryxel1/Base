@@ -28,13 +28,14 @@ public class TrackContainer extends Container {
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-        renderer.fillRoundedRect(0, 0, bounds.width() + 100, bounds.height(), 5, Color.fromRGB(50, 50, 50));
+        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(50, 50, 50));
         super.render(renderer, bounds);
     }
 
     @Override
     public Size computeIdealSize(Size constraints) {
         Size idealSize = super.computeIdealSize(new Size(constraints.width(), height));
+        // give some extra scroll by default.
         return new Size(Math.max(idealSize.width(), constraints.width()), height);
     }
 }
