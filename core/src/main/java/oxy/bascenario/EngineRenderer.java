@@ -222,4 +222,16 @@ public final class EngineRenderer extends Game {
         GLFW.glfwGetFramebufferSize(windowHandle, framebufferSizeX, framebufferSizeY);
         return new float[]{(float) framebufferSizeX[0] / windowSizeX[0], (float) framebufferSizeY[0] / windowSizeY[0]};
     }
+
+    @Override
+    public void resize(int width, int height) {
+        if (width <= 1920 && height <= 1080) {
+            this.rivet.scale(1);
+        } else {
+            float scale = (width + height) / (1920 + 1080f);
+            this.rivet.scale(scale);
+        }
+
+        super.resize(width, height);
+    }
 }
