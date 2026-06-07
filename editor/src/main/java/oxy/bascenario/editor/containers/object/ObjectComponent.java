@@ -1,23 +1,18 @@
 package oxy.bascenario.editor.containers.object;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.component.container.Button;
-import net.lenni0451.rivet.component.impl.Label;
+import net.lenni0451.rivet.input.keyboard.ModifierKey;
+import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
-import oxy.bascenario.api.render.elements.text.Text;
-import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
 import oxy.bascenario.util.NameUtils;
-
-import java.util.List;
 
 @Accessors(fluent = true)
 public class ObjectComponent extends Component {
@@ -40,6 +35,16 @@ public class ObjectComponent extends Component {
         renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
         this.parent.selectionManager().addIfIntersects(this, bounds);
+    }
+
+    @Override
+    protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
+        if (!event.modifiers().contains(ModifierKey.CONTROL)) {
+            this.parent.selectionManager().objects().clear();
+        }
+
+        this.parent.selectionManager().objects().add(this);
+        return true;
     }
 
     @Override

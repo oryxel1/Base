@@ -123,17 +123,18 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
-        if (event.button() == MouseButton.LEFT) {
+        boolean onComponent = super.onComponentMouseDown(event, bounds);
+
+        if (!onComponent && event.button() == MouseButton.LEFT) {
             this.selectionManager.x(event.x());
             this.selectionManager.y(event.y());
 
             this.selectionManager.x1(event.x());
             this.selectionManager.y1(event.y());
 
-            this.selectionManager.reset();
+            this.selectionManager.objects().clear();
         }
-
-        return super.onComponentMouseDown(event, bounds);
+        return onComponent;
     }
 
     @Override

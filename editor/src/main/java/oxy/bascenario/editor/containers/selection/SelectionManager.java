@@ -1,5 +1,6 @@
 package oxy.bascenario.editor.containers.selection;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
@@ -14,11 +15,8 @@ import java.util.Set;
 @Accessors(fluent = true)
 @Setter
 public class SelectionManager {
+    @Getter
     private Set<ObjectComponent> objects = new HashSet<>();
-    public void reset() {
-        this.objects.clear();
-    }
-
     public boolean isSelected(ObjectComponent component) {
         return objects.contains(component);
     }
