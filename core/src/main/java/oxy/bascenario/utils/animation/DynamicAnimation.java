@@ -108,8 +108,10 @@ public class DynamicAnimation {
     }
 
     public float getProgress() {
-        float progress = (float) (TimeUtils.currentTimeMillis() - this.startTime) / this.duration;
-        return this.easingMode.call(this.easingFunction, progress);
+        if (!this.isRunning()) {
+            return 1;
+        }
+        return (float) (TimeUtils.currentTimeMillis() - this.startTime) / this.duration;
     }
 
     // how long has passed since animation pass an X value...

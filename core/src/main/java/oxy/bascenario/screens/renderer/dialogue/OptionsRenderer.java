@@ -23,13 +23,13 @@ import java.util.Map;
 import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class OptionsRenderer {
-    private static final long FLASH_DURATION = 90L;
-    private static final float SCALE_SIZE = 1.125f;
-    private static final float FLASH_ALPHA = 0.5f;
+    public static final long FLASH_DURATION = 90L;
+    public static final float SCALE_SIZE = 1.125f;
+    public static final float FLASH_ALPHA = 0.5f;
 
-    private static final Color TEXT_COLOR = Color.fromRGB(45, 58, 71);
-    private static final float TEXT_SIZE = 40.5f;
-    private static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1340, DISTANCE_BETWEEN = 35;
+    public static final Color TEXT_COLOR = Color.fromRGB(45, 58, 71);
+    public static final float TEXT_SIZE = 40.5f;
+    public static final float BUTTON_HEIGHT = 97, BUTTON_WIDTH = 1340, DISTANCE_BETWEEN = 35;
 
     private FontType type;
     private Map<String, Integer> options;

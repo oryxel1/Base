@@ -20,7 +20,6 @@ import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.log.AddLogEvent;
 import oxy.bascenario.api.event.sound.*;
-import oxy.bascenario.api.event.utility.CheckForDialogueEvent;
 import oxy.bascenario.serializers.base.Type;
 import oxy.bascenario.serializers.base.TypeWithName;
 import oxy.bascenario.serializers.types.event.impl.*;
@@ -41,7 +40,6 @@ import oxy.bascenario.serializers.types.event.impl.log.AddLogType;
 import oxy.bascenario.serializers.types.event.impl.log.ClearLogType;
 import oxy.bascenario.serializers.types.event.impl.sound.*;
 import oxy.bascenario.serializers.types.event.impl.transition.ScreenTransitionType;
-import oxy.bascenario.serializers.types.event.impl.utility.CheckForDialogueType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +74,8 @@ public class EventTypes implements Type<Event> {
         put(AddDialogueEvent.class, new AddDialogueType());
         put(RedirectDialogueEvent.class, new RedirectDialogueType());
 
+        put(ShowQuestionSelectionEvent.class, new ShowQuestionSelectionType());
+
         put(AddLogEvent.class, new AddLogType());
         put(ClearLogEvent.class, new ClearLogType());
 
@@ -99,7 +99,6 @@ public class EventTypes implements Type<Event> {
         put(ScreenEffectEvent.class, new ScreenEffectType());
 
         put(ScreenTransitionEvent.class, new ScreenTransitionType());
-        put(CheckForDialogueEvent.class, new CheckForDialogueType());
 
         put(PopupEvent.class, new PopupType());
     }

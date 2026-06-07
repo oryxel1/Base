@@ -20,14 +20,11 @@ import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.event.base.FunctionEvent;
 import oxy.bascenario.event.EventRegistries;
 import oxy.bascenario.managers.AudioManager;
+import oxy.bascenario.screens.renderer.dialogue.*;
 import oxy.bascenario.screens.renderer.weather.RainRenderer;
 import oxy.bascenario.managers.other.TextureAsset;
-import oxy.bascenario.screens.renderer.dialogue.LogRenderer;
 import oxy.bascenario.screens.renderer.element.ColorOverlayRenderer;
-import oxy.bascenario.screens.renderer.dialogue.DialogueRenderer;
-import oxy.bascenario.screens.renderer.dialogue.OptionsRenderer;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
-import oxy.bascenario.screens.renderer.dialogue.BaseDialogueRenderer;
 import oxy.bascenario.screens.renderer.weather.SnowRenderer;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import oxy.bascenario.utils.TimeUtils;
@@ -92,7 +89,7 @@ public class ScenarioScreen extends ScreenEffectScreen {
     private long sinceRender;
 
     @Setter @Getter
-    private boolean busyDialogue, busyOptions;
+    private boolean busyDialogue, busyOptions, busyAnswerSelection;
     public void pollEvents(boolean bypass) {
         if (!playing && !bypass) {
             this.sinceRender = System.currentTimeMillis();
@@ -106,8 +103,13 @@ public class ScenarioScreen extends ScreenEffectScreen {
                 break;
             }
 
+            if (peek.dialogueIndex() != null && peek.dialogueIndex() != this.dialogueRenderer.getCurrentIndex()) {
+                timestamps.poll();
+                continue;
+            }
+
             final long duration = peek.waitForDialogue() ? this.sinceDialogue : this.sincePoll;
-            if (peek.waitForDialogue() && (this.busyDialogue || this.busyOptions)) {
+            if (peek.waitForDialogue() && (this.busyDialogue || this.busyOptions || this.busyAnswerSelection)) {
                 this.sinceDialogue = 0;
                 this.sincePoll = 0;
                 break;
@@ -117,8 +119,9 @@ public class ScenarioScreen extends ScreenEffectScreen {
                 break;
             }
             timestamps.poll();
-            if (bypass && this.isBusyOptions()) {
+            if (bypass) {
                 this.optionsRenderer.setOptions(null, null);
+                this.questionSelectionRenderer.setValues(null, null, null);
             }
 
             peek.events().forEach(event -> {
@@ -132,7 +135,7 @@ public class ScenarioScreen extends ScreenEffectScreen {
             this.sincePoll -= peek.time();
             this.sinceDialogue -= peek.time();
 
-            if ((this.busyDialogue || this.busyOptions) && !bypass) {
+            if ((this.busyDialogue || this.busyOptions || this.busyAnswerSelection) && !bypass) {
                 this.sinceDialogue = 0;
             }
         }
@@ -150,7 +153,8 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
         boolean busyDialogue = this.busyDialogue && this.dialogueRenderer.isBusy();
         boolean busyOptions = this.busyOptions && !(this.optionsRenderer.getScale().isRunning() && this.optionsRenderer.getScale().getTarget() == 1);
-        if (!busyDialogue && !busyOptions) {
+        boolean busyAnswerSelection = this.busyAnswerSelection && !this.questionSelectionRenderer.getOffset().isRunning();
+        if (!busyDialogue && !busyOptions && !busyAnswerSelection) {
             this.sinceDialogue += timeDelta;
         } else {
             this.sinceDialogue = 0;
@@ -167,6 +171,8 @@ public class ScenarioScreen extends ScreenEffectScreen {
     private final LogRenderer logRenderer;
     @Getter
     private final OptionsRenderer optionsRenderer = new OptionsRenderer();
+    @Getter
+    private final QuestionSelectionRenderer questionSelectionRenderer = new QuestionSelectionRenderer();
 
     @Override
     public void show() {
@@ -246,8 +252,19 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
         this.logRenderer.render();
 
+        this.questionSelectionRenderer.render(this);
+
+        if (getEffects().contains(ScreenEffect.SMOKE)) {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGB(0x4c413f).withAlphaF(0.6f));
+        }
+        if (getEffects().contains(ScreenEffect.GRAY_FILTER)) {
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.3f));
+        }
+
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
+
+        renderSmoke();
 
         this.dialogueRenderer.render();
 
@@ -323,6 +340,8 @@ public class ScenarioScreen extends ScreenEffectScreen {
             return;
         }
 
+        this.questionSelectionRenderer.mouseClicked(this, mouseX, mouseY);
+
         if (this.dialogueRenderer.hasClickedDialogue(mouseX, mouseY) && button == 0) {
             if (!this.dialogueRenderer.isBusy()) {
                 this.busyDialogue = false;
@@ -334,6 +353,8 @@ public class ScenarioScreen extends ScreenEffectScreen {
 
     @Override
     public void mouseRelease() {
+        this.questionSelectionRenderer.mouseRelease();
+
         if (this.optionsRenderer.isBusy()) {
             this.optionsRenderer.mouseRelease();
         }
