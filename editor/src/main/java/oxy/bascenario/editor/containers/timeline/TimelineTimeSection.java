@@ -38,7 +38,7 @@ public class TimelineTimeSection extends Component {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
             final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()), 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());
-            parent.screen().timestamp(newTimestamp);
+            parent.screen().timestamp(Math.max(0, newTimestamp));
         }
 
         return false;
@@ -49,7 +49,7 @@ public class TimelineTimeSection extends Component {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
             final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()) , 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());
-            parent.screen().timestamp(newTimestamp);
+            parent.screen().timestamp(Math.max(0, newTimestamp));
         }
 
         return false;

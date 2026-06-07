@@ -12,7 +12,12 @@ import net.lenni0451.rivet.layout.grid.GridLayoutOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
+import oxy.bascenario.api.render.elements.text.AnimatedText;
+import oxy.bascenario.api.render.elements.text.Text;
+import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.util.components.TypingLabel;
+
+import java.util.List;
 
 public class AoTextTab extends ScrollContainer {
     public AoTextTab() {
@@ -25,19 +30,34 @@ public class AoTextTab extends ScrollContainer {
             ghost.interactive(false);
             ghost.inactiveColor().set(Color.fromRGB(35, 35, 35).withAlphaF(0.5f));
 
-            // Start the drag with some payload
             rivet().dragAndDropManager().startDrag(
-                    "Default Text",
+                    new Text(List.of(TextSegment.builder().text("Default Text").build()), 42),
                     ghost,
                     new Size(bounds.width(), bounds.height()),
-                    -bounds.width() / 2f,
+                    0,
                     -bounds.height() / 2f
             );
             return true;
         });
 
         container.addChild(defaultText);
-        container.addChild(new Button(new TypingLabel("Typing Text").scale(0.7f), ignored -> {}));
+
+        final Button typingText = new Button(new TypingLabel("Typing Text").scale(0.7f), ignored -> {});
+        typingText.mouseDownListener().add((ignored, bounds) -> {
+            Button ghost = new Button(new TypingLabel("Typing Text").scale(0.7f), _ -> {});
+            ghost.interactive(false);
+            ghost.inactiveColor().set(Color.fromRGB(35, 35, 35).withAlphaF(0.5f));
+
+            rivet().dragAndDropManager().startDrag(
+                    new AnimatedText(1, List.of(TextSegment.builder().text("Typing Text").build()), 42),
+                    ghost,
+                    new Size(bounds.width(), bounds.height()),
+                    0,
+                    -bounds.height() / 2f
+            );
+            return true;
+        });
+        container.addChild(typingText);
     }
 
     @Override

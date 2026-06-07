@@ -9,6 +9,9 @@ import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
 import net.lenni0451.rivet.dragdrop.DropEvent;
+import net.lenni0451.rivet.input.mouse.MouseButton;
+import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Rectangle;
@@ -18,13 +21,18 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 import oxy.bascenario.editor.containers.object.ObjectOrEvent;
+import oxy.bascenario.editor.containers.selection.SelectionManager;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
+import oxy.bascenario.util.TimeCompiler;
 
 @Accessors(fluent = true)
 public class TrackListContainer extends ScrollContainer {
     @Getter
     private final TimelineContainer timelineContainer;
     private final Container container;
+
+    @Getter
+    private final SelectionManager selectionManager = new SelectionManager();
 
     public TrackListContainer(TimelineContainer timelineContainer) {
         super(container = new Container(new VerticalListLayout(3, false)), true, true);
@@ -51,6 +59,8 @@ public class TrackListContainer extends ScrollContainer {
         }
 
         super.render(renderer, bounds);
+
+        this.selectionManager.render(renderer, bounds);
     }
 
     @Override
@@ -64,7 +74,11 @@ public class TrackListContainer extends ScrollContainer {
 
             timelineContainer.screen().trackTabContainer().addChild(new TrackTabContainer(component));
 
-            add(bounds.width(), component, new ObjectOrEvent(9000, 1000, null, RenderLayer.TOP, true));
+            long duration = TimeCompiler.compileTime(event.dragData());
+            if (duration == Long.MAX_VALUE) {
+                duration = 1000L;
+            }
+            add(bounds.width(), component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
         }
 
         return super.onComponentDrop(event, bounds);
@@ -95,5 +109,40 @@ public class TrackListContainer extends ScrollContainer {
                 child.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
             }
         }
+    }
+
+    @Override
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Rectangle bounds) {
+        if (event.buttons().contains(MouseButton.LEFT)) {
+            this.selectionManager.x1(event.x());
+            this.selectionManager.y1(event.y());
+        }
+
+        return super.onComponentMouseMove(event, bounds);
+    }
+
+    @Override
+    protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
+        if (event.button() == MouseButton.LEFT) {
+            this.selectionManager.x(event.x());
+            this.selectionManager.y(event.y());
+
+            this.selectionManager.x1(event.x());
+            this.selectionManager.y1(event.y());
+
+            this.selectionManager.reset();
+        }
+
+        return super.onComponentMouseDown(event, bounds);
+    }
+
+    @Override
+    protected boolean onComponentMouseUp(MouseButtonEvent event, Rectangle bounds) {
+        if (event.button() == MouseButton.LEFT) {
+            this.selectionManager.x(0);
+            this.selectionManager.y(0);
+        }
+
+        return super.onComponentMouseUp(event, bounds);
     }
 }

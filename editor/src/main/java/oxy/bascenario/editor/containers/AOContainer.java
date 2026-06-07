@@ -1,27 +1,44 @@
 package oxy.bascenario.editor.containers;
 
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.ao.AOTabContainer;
+import oxy.bascenario.editor.containers.ao.tab.AoMediaTab;
+import oxy.bascenario.editor.containers.ao.tab.AoObjectTab;
 import oxy.bascenario.editor.containers.ao.tab.AoTextTab;
 
 // Object & Actions container
 @Accessors(fluent = true)
 public class AOContainer extends Container {
-    @Setter
-    private Tab tab = Tab.Media;
+    private final ScenarioEditorScreen screen;
+    private Component currentTab;
 
-    public AOContainer() {
+    public void tab(Tab tab) {
+        this.removeChild(currentTab);
+        currentTab = switch (tab) {
+            case Text -> new AoTextTab();
+            case Object -> new AoObjectTab(screen);
+            default -> null;
+        };
+
+        if (currentTab != null) {
+            this.addChild(currentTab, c -> c.layoutOptions(new AbsoluteLayoutOptions(10, 45)));
+        }
+    }
+
+    public AOContainer(ScenarioEditorScreen screen) {
         super(AbsoluteLayout.INSTANCE);
+        this.screen = screen;
 
         this.addChild(new AOTabContainer(this), c -> c.layoutOptions(new AbsoluteLayoutOptions(0, 0)));
-        this.addChild(new AoTextTab(), c -> c.layoutOptions(new AbsoluteLayoutOptions(10, 45)));
+        this.addChild(new AoMediaTab());
     }
 
     @Override

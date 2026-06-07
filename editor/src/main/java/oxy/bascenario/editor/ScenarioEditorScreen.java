@@ -63,7 +63,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     public void init(Rivet rivet) {
         Container container = new Container(AnchorLayout.INSTANCE);
 
-        container.addChild(new AOContainer(), c -> {
+        container.addChild(new AOContainer(this), c -> {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.06f).withAnchorMaxX(0.2f).withAnchorMaxY(0.6f));
         });
 
