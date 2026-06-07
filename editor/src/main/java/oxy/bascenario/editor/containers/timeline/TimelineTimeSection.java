@@ -52,7 +52,7 @@ public class TimelineTimeSection extends Component {
             parent.screen().timestamp(Math.max(0, newTimestamp));
         }
 
-        return false;
+        return super.onComponentMouseDown(event, bounds);
     }
 
     @Override

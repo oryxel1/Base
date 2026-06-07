@@ -5,12 +5,14 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
+import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.input.keyboard.ModifierKey;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
 import oxy.bascenario.util.NameUtils;
 
@@ -20,10 +22,13 @@ public class ObjectComponent extends Component {
 
     private final TrackListContainer parent;
     @Getter
+    private final TrackContainer parentTrack;
+    @Getter
     private final ObjectOrEvent object;
 
-    public ObjectComponent(TrackListContainer parent, ObjectOrEvent object) {
+    public ObjectComponent(TrackListContainer parent, TrackContainer parentTrack, ObjectOrEvent object) {
         this.parent = parent;
+        this.parentTrack = parentTrack;
         this.object = object;
     }
 

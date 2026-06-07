@@ -49,7 +49,7 @@ public class TrackContainer extends Container {
         }
 
         final ObjectOrEvent object = new ObjectOrEvent(time, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true);
-        this.addChild(new ObjectComponent(this.container.trackListContainer(), object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
+        this.addChild(new ObjectComponent(this.container.trackListContainer(), this, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
 
         return super.onComponentDrop(event, bounds);
     }

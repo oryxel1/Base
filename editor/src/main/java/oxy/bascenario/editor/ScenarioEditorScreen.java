@@ -7,8 +7,8 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.component.container.ScrollContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
+import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
@@ -23,11 +23,13 @@ import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
+import java.util.function.Predicate;
+
 @Accessors(fluent = true)
 @Getter
 @Setter
 public class ScenarioEditorScreen extends ExtendableScreen {
-    private final Scenario scenario;
+    private final Scenario.Builder scenario;
 
     public static final long DEFAULT_MAX_TIME = 15000;
     private long timestamp = 1000;
@@ -50,7 +52,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     }
 
     public ScenarioEditorScreen(Scenario scenario) {
-        this.scenario = scenario;
+        this.scenario = scenario.toBuilder();
         TimeUtils.fakeTimeMillis = System.currentTimeMillis();
     }
 
@@ -101,15 +103,12 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 //                        new Pair<>("Pause", () -> {})
 //                )
 //        );
+
         rivet.root().addChild(container);
     }
 
     @Override
     public void render(float delta) {
-    }
 
-//    @Override
-//    public void resize(int width, int height) {
-//        timelineContainer.trackListContainer().
-//    }
+    }
 }

@@ -1,7 +1,5 @@
 package oxy.bascenario.editor.containers.track.tab;
 
-import net.lenni0451.commons.color.Color;
-import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;

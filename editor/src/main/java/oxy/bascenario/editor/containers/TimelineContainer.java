@@ -5,9 +5,10 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.layout.anchor.AnchorLayout;
+import net.lenni0451.rivet.component.impl.SolidColor;
+import net.lenni0451.rivet.input.keyboard.Key;
+import net.lenni0451.rivet.input.keyboard.KeyEvent;
+import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
 import net.lenni0451.rivet.math.Rectangle;
@@ -40,7 +41,8 @@ public class TimelineContainer extends Container {
 
     @Override
     public void render(Renderer renderer, Rectangle bounds) {
-        renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35).darker());
+        System.out.println(rivet().focusedComponent() == null ? null : rivet().focusedComponent().getClass());
+
         renderer.fillRect(0, 0, bounds.width(), 35, Color.fromRGB(35, 35, 35));
 
         super.render(renderer, bounds);
@@ -57,10 +59,20 @@ public class TimelineContainer extends Container {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return Size.EMPTY;
+        return constraints;
     }
 
     public static float timestampToPosition(long timestamp, float offsetX, float size, float scale, float scroll) {
         return offsetX + ((timestamp - (DEFAULT_MAX_TIME * scale * scroll)) / (DEFAULT_MAX_TIME * scale)) * size;
+    }
+
+    @Override
+    protected boolean onComponentKeyUp(KeyEvent event) {
+        if (event.key() == Key.DELETE) {
+            trackListContainer.selectionManager().objects().forEach(component -> component.parentTrack().removeChild(component));
+            trackListContainer.selectionManager().objects().clear();
+        }
+
+        return false;
     }
 }
