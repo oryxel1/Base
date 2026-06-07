@@ -25,7 +25,7 @@ public class TextWithName extends Component {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(25, 25, 25));
         renderer.image(this.texture, 10, 10, 255, 141, Color.WHITE);
 
-        ShapedText text = this.rivet().backend().shapeText(name, Color.WHITE);
+        ShapedText text = this.rivet().backend().font().shapeText(name, Color.WHITE);
         renderer.scale(0.4f, () ->
                 renderer.text(text,
                         (277 / 2f - text.visualBounds().width() * .4f / 2f) / .4f, 160 / .4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.VISUAL_TOP

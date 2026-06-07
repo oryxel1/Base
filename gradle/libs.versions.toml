@@ -5,7 +5,7 @@ lwjgl = "3.4.0"
 lwjgl-sdl = "3.4.0"
 libgdx = "1.13.1"
 spine = "4.2.5"
-thingl = "0.1.1-SNAPSHOT"
+thingl = "0.2.0-SNAPSHOT"
 commons = "1.9.2"
 mocha = "3.0.1"
 configurate = "4.2.0"
@@ -13,7 +13,7 @@ audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
 zt-zip = "1.17"
-rivet = "8d7bc03154"
+rivet = "1d187fab05"
 
 [libraries]
 zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }

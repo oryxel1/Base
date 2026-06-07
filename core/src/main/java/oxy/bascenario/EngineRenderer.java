@@ -8,9 +8,11 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import net.lenni0451.commons.collections.Maps;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.thingl.ThinGLBackend;
 import net.lenni0451.rivet.backend.thingl.render.ThinGLRenderer;
+import net.lenni0451.rivet.backend.thingl.text.ThinGLFont;
 import net.lenni0451.rivet.backend.thingl.util.GLFWMapper;
 import net.lenni0451.rivet.input.keyboard.CharEvent;
 import net.lenni0451.rivet.input.keyboard.KeyEvent;
@@ -18,12 +20,14 @@ import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
-import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.fullsize.FullSizeLayout;
 import net.lenni0451.rivet.math.Size;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
-import net.raphimc.thingl.text.font.FontSet;
+import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
+import net.raphimc.thingl.resource.font.instance.FontInstance;
+import net.raphimc.thingl.resource.font.instance.FontInstanceSet;
+import net.raphimc.thingl.resource.font.instance.impl.FreeTypeFontInstance;
+import net.raphimc.thingl.text.util.GlyphPredicate;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -100,12 +104,13 @@ public final class EngineRenderer extends Game {
             }
         });
 
-        setupRivetCallbacks();
+        FontUtils.loadFonts();
 
-        this.backend = new ThinGLBackend(windowHandle, new FontSet(new FreeTypeFont(EngineRenderer.class.getResourceAsStream("/assets/base/fonts/rivet/SFUIText-Regular.ttf").readAllBytes(), 40)));
+        final FontInstance rivetFont = FontUtils.font("SFUIRegular");
+        this.backend = new ThinGLBackend(windowHandle, new ThinGLFont(new FontInstanceSet(Maps.linkedHashMap(rivetFont, GlyphPredicate.all()))));
         this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
-        FontUtils.loadFonts();
+        setupRivetCallbacks();
 
         this.setScreen(this.initialScreen);
 

@@ -2,8 +2,9 @@ package oxy.bascenario.utils.font;
 
 import java.util.*;
 
-import net.raphimc.thingl.resource.font.Font;
-import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
+import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
+import net.raphimc.thingl.resource.font.instance.FontInstance;
+import net.raphimc.thingl.resource.font.instance.impl.FreeTypeFontInstance;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
@@ -12,19 +13,19 @@ import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.api.utils.FileInfo;
 
 public class FontUtils {
-    public static Font DEFAULT, SEMI_BOLD;
-    private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
+    public static FontInstance DEFAULT, SEMI_BOLD;
+    private static final Map<String, FontInstance> NAME_TO_FONTS = new HashMap<>();
 
-    public static Font font(FontStyle style, FontType type) {
+    public static FontInstance font(FontStyle style, FontType type) {
         return NAME_TO_FONTS.get(type.toName(style));
     }
 
-    public static Font font(String name) {
+    public static FontInstance font(String name) {
         return NAME_TO_FONTS.get(name);
     }
 
-    public static Font toFont(Scenario scenario, TextSegment segment) {
-        Font font;
+    public static FontInstance toFont(Scenario scenario, TextSegment segment) {
+        FontInstance font;
         if (segment.font().file() != null) {
             font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().hashCode(scenario.getName())));
             if (font == null) {
@@ -39,7 +40,7 @@ public class FontUtils {
 
     public static void loadFonts() {
         // Editor UI
-        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf");
+        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf", 40);
 
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
@@ -70,15 +71,19 @@ public class FontUtils {
         SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
     }
 
-    public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
+    public static FontInstance loadSpecificFont(Scenario scenario, FileInfo font) {
         final byte[] fontData = (byte[]) Base.instance().assetsManager().assets(scenario.getName(), font).asset();
-        return new FreeTypeFont(fontData, 65);
+        return new FreeTypeFontInstance(new FreeTypeFontFace(fontData), 65);
     }
 
     private static void loadFont(String name, String font) {
+        loadFont(name, font, 65);
+    }
+
+    private static void loadFont(String name, String font, int size) {
         try {
             final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
-            NAME_TO_FONTS.put(name, new FreeTypeFont(fontData, 65));
+            NAME_TO_FONTS.put(name, new FreeTypeFontInstance(new FreeTypeFontFace(fontData), size));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

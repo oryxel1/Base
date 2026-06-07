@@ -26,7 +26,7 @@ public class TimelineTimeSection extends Component {
             float segmentX = TimelineContainer.timestampToPosition(time, 0, bounds.width(), parent.screen().scale(), parent.screen().scroll());
 
             float seconds = time / 1000f;
-            ShapedText text = this.rivet().backend().shapeText(seconds + "s", Color.WHITE);
+            ShapedText text = this.rivet().backend().font().shapeText(seconds + "s", Color.WHITE);
 
             renderer.fillRect(segmentX, 0, 1, 10, Color.WHITE);
             renderer.scale(0.4f, () -> renderer.text(text, segmentX / 0.4f, (25 / 35f) * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));

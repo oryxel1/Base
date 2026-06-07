@@ -22,12 +22,6 @@ import static net.raphimc.thingl.gl.resource.shader.Shader.Type.VERTEX;
 public class ProgramsExtended extends Programs {
     private final Map<String, Shader> customShaders = new HashMap<>();
 
-    private final Lazy<RegularProgram> sdfText = Lazy.of(() -> {
-        final RegularProgram program = new RegularProgram(this.shaderLoader.get("regular/sdf_text", VERTEX), this.getBaseShader("sdf_text", FRAGMENT));
-        program.setDebugName("sdf_text");
-        return program;
-    });
-
     private final Lazy<ColorProgram> grayscale = Lazy.of(() -> {
         final ColorProgram program = new ColorProgram(this.shaderLoader.get("post/post_processing", VERTEX), this.getBaseShader("black_and_white", FRAGMENT));
         program.setDebugName("black_and_white");
@@ -39,11 +33,6 @@ public class ProgramsExtended extends Programs {
         program.setDebugName("night_vision");
         return program;
     });
-
-    @Override
-    public RegularProgram getSdfText() {
-        return sdfText.get();
-    }
 
     public ColorProgram getGrayscale() {
         return grayscale.get();
