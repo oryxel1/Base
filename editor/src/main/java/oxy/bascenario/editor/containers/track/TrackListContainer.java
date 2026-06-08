@@ -7,10 +7,10 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.component.container.DecoratedContainer;
 import net.lenni0451.rivet.component.container.ScrollContainer;
-import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.dragdrop.DropEvent;
+import net.lenni0451.rivet.input.keyboard.Key;
+import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
@@ -37,8 +37,7 @@ public class TrackListContainer extends ScrollContainer {
     private final SelectionManager selectionManager = new SelectionManager();
 
     public TrackListContainer(TimelineContainer timelineContainer) {
-        final SolidColor color = new SolidColor(c -> c.color(Color.fromRGB(35, 35, 35).darker()));
-        super(new DecoratedContainer(color, container = new Container(new VerticalListLayout(3, false))), true, true);
+        super(container = new Container(new VerticalListLayout(3, false)), true, true);
         this.timelineContainer = timelineContainer;
     }
 
@@ -119,6 +118,7 @@ public class TrackListContainer extends ScrollContainer {
         if (event.buttons().contains(MouseButton.LEFT)) {
             this.selectionManager.x1(event.x());
             this.selectionManager.y1(event.y());
+            this.rivet().focusedComponent(this);
         }
 
         return super.onComponentMouseMove(event, bounds);
@@ -136,6 +136,8 @@ public class TrackListContainer extends ScrollContainer {
             this.selectionManager.y1(event.y());
 
             this.selectionManager.objects().clear();
+
+            this.rivet().focusedComponent(this);
         }
         return onComponent;
     }
@@ -148,5 +150,15 @@ public class TrackListContainer extends ScrollContainer {
         }
 
         return super.onComponentMouseUp(event, bounds);
+    }
+
+    @Override
+    protected boolean onComponentKeyUp(KeyEvent event) {
+        if (event.key() == Key.DELETE) {
+            selectionManager.objects().forEach(component -> component.parentTrack().removeChild(component));
+            selectionManager().objects().clear();
+        }
+
+        return false;
     }
 }

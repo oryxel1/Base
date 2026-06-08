@@ -79,13 +79,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.805f).withAnchorMinY(0.06f).withAnchorMaxX(0.99f).withAnchorMaxY(0.6f));
         });
 
-        container.addChild(new TrackTabListContainer(trackTabContainer = new Container(new VerticalListLayout(3, false))) {
-            @Override
-            public void render(Renderer renderer, Rectangle bounds) {
-                renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35));
-                super.render(renderer, bounds);
-            }
-        }, c -> {
+        container.addChild(new TrackTabListContainer(trackTabContainer = new Container(new VerticalListLayout(3, false))), c -> {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.655f).withAnchorMaxX(0.15625f).withAnchorMaxY(0.99f));
         });
 
