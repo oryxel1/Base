@@ -1,11 +1,8 @@
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import io.netty.buffer.Unpooled;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.api.effects.Easing;
-import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.event.animation.PlayAnimationEvent;
 import oxy.bascenario.api.event.animation.SpriteAnimationEvent;
 import oxy.bascenario.api.event.animation.StopAnimationEvent;
@@ -15,7 +12,6 @@ import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
 import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
 import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
 import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.event.element.ElementEffectEvent;
 import oxy.bascenario.api.event.element.values.PositionElementEvent;
 import oxy.bascenario.api.event.element.values.RotateElementEvent;
 import oxy.bascenario.api.event.sound.SoundVolumeEvent;

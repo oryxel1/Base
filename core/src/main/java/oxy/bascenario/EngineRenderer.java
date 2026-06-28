@@ -37,6 +37,7 @@ import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.thingl.ThinGLExtended;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -64,6 +65,7 @@ public final class EngineRenderer extends Game {
 
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
             float[] mouseScale = this.getMouseScale();
+            System.out.println();
             this.rivet.onMouseMove(new MouseMoveEvent((float) x * mouseScale[0], (float) y * mouseScale[1], this.heldMouseButtons));
 
             if (window != windowHandle) {
@@ -86,7 +88,7 @@ public final class EngineRenderer extends Game {
                     this.rivet.onMouseDown(event);
                 } else if (action == GLFW.GLFW_RELEASE) {
                     this.rivet.onMouseUp(event);
-                    this.heldMouseButtons.add(event.button());
+                    this.heldMouseButtons.remove(event.button());
                 }
             }
 

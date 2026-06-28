@@ -10,6 +10,6 @@ dependencies {
 
     implementation(libs.commons.core)
 
-    testImplementation(project(":core"))
+    testImplementation(project(":api"))
     testImplementation(libs.gdx.base)
 }

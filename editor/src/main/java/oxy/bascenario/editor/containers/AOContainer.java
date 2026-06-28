@@ -7,7 +7,7 @@ import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.math.Rectangle;
+import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.ao.AOTabContainer;
 import oxy.bascenario.editor.containers.ao.tab.AoMediaTab;
@@ -42,7 +42,7 @@ public class AOContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35));
         super.render(renderer, bounds);
     }

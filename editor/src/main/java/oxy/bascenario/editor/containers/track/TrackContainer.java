@@ -34,13 +34,13 @@ public class TrackContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(50, 50, 50));
         super.render(renderer, bounds);
     }
 
     @Override
-    protected boolean onComponentDrop(DropEvent event, Rectangle bounds) {
+    protected boolean onComponentDrop(DropEvent event, Size bounds) {
         long time = (long) ((ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale()) * (event.x() / bounds.width()));
 
         long duration = TimeCompiler.compileTime(event.dragData());

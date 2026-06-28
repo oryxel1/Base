@@ -33,17 +33,17 @@ public class ObjectComponent extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(30, 30, 30));
         renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, 2, parent.selectionManager().isSelected(this) ? Color.WHITE : OBJECT_COLOR);
 
         renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
-        this.parent.selectionManager().addIfIntersects(this, bounds);
+        this.parent.selectionManager().addIfIntersects(this, parentTrack.childBounds(this));
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
         if (!event.modifiers().contains(ModifierKey.CONTROL)) {
             this.parent.selectionManager().objects().clear();
         }

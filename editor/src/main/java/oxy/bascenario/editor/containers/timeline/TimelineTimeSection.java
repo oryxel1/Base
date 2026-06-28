@@ -20,7 +20,7 @@ public class TimelineTimeSection extends Component {
     private final TimelineContainer parent;
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         for (int i = 0; i <= 5; i++) {
             long time = (long) ((DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll()) + (DEFAULT_MAX_TIME * parent.screen().scale() * (i / 5f)));
             float segmentX = TimelineContainer.timestampToPosition(time, 0, bounds.width(), parent.screen().scale(), parent.screen().scroll());
@@ -34,7 +34,7 @@ public class TimelineTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
             final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()), 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());
@@ -45,7 +45,7 @@ public class TimelineTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
             final float ratio = Math.min((event.x() - 1.25f) / (bounds.width()) , 1);
             long newTimestamp = (long) (DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll() + ratio * DEFAULT_MAX_TIME * parent.screen().scale());

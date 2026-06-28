@@ -71,7 +71,7 @@ public class TypingLabel extends Component {
     }
 
     @Override
-    public void render(final Renderer renderer, final Rectangle bounds) {
+    public void render(final Renderer renderer, final Size bounds) {
         this.shapeText();
         float x = this.horizontalOrigin.offset(bounds.width() / this.scale);
         float y = this.verticalOrigin.offset(bounds.height() / this.scale);

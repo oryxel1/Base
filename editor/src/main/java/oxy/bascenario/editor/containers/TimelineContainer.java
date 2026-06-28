@@ -36,16 +36,14 @@ public class TimelineContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35).darker());
         renderer.fillRect(0, 0, bounds.width(), 35, Color.fromRGB(35, 35, 35));
-
         super.render(renderer, bounds);
-
         drawTimelineCursor(renderer, bounds);
     }
 
-    private void drawTimelineCursor(Renderer renderer, Rectangle bounds) {
+    private void drawTimelineCursor(Renderer renderer, Size bounds) {
         final float cursorX = timestampToPosition(screen.timestamp(), 0, bounds.width(), screen.scale(), screen.scroll());
 
         renderer.fillTriangle(cursorX + 1.25f - 10, 0, cursorX + 1.25f, 10, cursorX + 1.25f + 10, 0, TIMELINE_CURSOR_COLOR);

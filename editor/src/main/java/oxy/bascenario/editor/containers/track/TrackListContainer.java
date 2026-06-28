@@ -27,6 +27,8 @@ import oxy.bascenario.editor.containers.selection.SelectionManager;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
 import oxy.bascenario.util.TimeCompiler;
 
+import java.util.Arrays;
+
 @Accessors(fluent = true)
 public class TrackListContainer extends ScrollContainer {
     @Getter
@@ -44,7 +46,7 @@ public class TrackListContainer extends ScrollContainer {
     private float prevWidth;
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         if (prevWidth != bounds.width()) {
             resize(bounds.width());
             this.requestLayoutRecalculation();
@@ -62,11 +64,11 @@ public class TrackListContainer extends ScrollContainer {
 
         super.render(renderer, bounds);
 
-        this.selectionManager.render(renderer, bounds);
+        this.selectionManager.render(renderer, timelineContainer.childBounds(this));
     }
 
     @Override
-    protected boolean onComponentDrop(DropEvent event, Rectangle bounds) {
+    protected boolean onComponentDrop(DropEvent event, Size bounds) {
         if (!container.children().isEmpty()) {
             return super.onComponentDrop(event, bounds);
         }
@@ -114,21 +116,25 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
+        System.out.println("Breh: " + Arrays.toString(event.buttons().toArray()));
         if (event.buttons().contains(MouseButton.LEFT)) {
             this.selectionManager.x1(event.x());
             this.selectionManager.y1(event.y());
             this.rivet().focusedComponent(this);
+            System.out.println("continue");
         }
 
         return super.onComponentMouseMove(event, bounds);
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
         boolean onComponent = super.onComponentMouseDown(event, bounds);
 
+        System.out.println("xd->" + onComponent);
         if (!onComponent && event.button() == MouseButton.LEFT) {
+            System.out.println("start!");
             this.selectionManager.x(event.x());
             this.selectionManager.y(event.y());
 
@@ -143,7 +149,7 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Rectangle bounds) {
+    protected boolean onComponentMouseUp(MouseButtonEvent event, Size bounds) {
         if (event.button() == MouseButton.LEFT) {
             this.selectionManager.x(0);
             this.selectionManager.y(0);

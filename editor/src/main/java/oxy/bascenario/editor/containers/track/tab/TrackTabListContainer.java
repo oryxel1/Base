@@ -26,7 +26,7 @@ public class TrackTabListContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35));
         super.render(renderer, bounds);
     }

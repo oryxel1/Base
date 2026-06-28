@@ -19,7 +19,7 @@ public class TrackTabContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         renderer.scale(0.5f, () -> renderer.text(this.rivet().backend().font().shapeText("Track " + container.index(), Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
         super.render(renderer, bounds);

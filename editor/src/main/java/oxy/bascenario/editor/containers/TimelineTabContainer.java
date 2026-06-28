@@ -8,6 +8,7 @@ import net.lenni0451.rivet.component.impl.slider.Slider;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
+import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 
 public class TimelineTabContainer extends Container {
@@ -38,7 +39,7 @@ public class TimelineTabContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Rectangle bounds) {
+    public void render(Renderer renderer, Size bounds) {
         timeLabel.text(format(screen.timestamp()));
         renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35));
         super.render(renderer, bounds);
