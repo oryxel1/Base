@@ -23,7 +23,7 @@ public class AOContainer extends Container {
     public void tab(Tab tab) {
         this.removeChild(currentTab);
         currentTab = switch (tab) {
-            case Text -> new AoTextTab();
+            case Text -> new AoTextTab(screen);
             case Object -> new AoObjectTab(screen);
             default -> null;
         };
