@@ -65,7 +65,6 @@ public final class EngineRenderer extends Game {
 
         GLFW.glfwSetCursorPosCallback(windowHandle, (window, x, y) -> {
             float[] mouseScale = this.getMouseScale();
-            System.out.println();
             this.rivet.onMouseMove(new MouseMoveEvent((float) x * mouseScale[0], (float) y * mouseScale[1], this.heldMouseButtons));
 
             if (window != windowHandle) {

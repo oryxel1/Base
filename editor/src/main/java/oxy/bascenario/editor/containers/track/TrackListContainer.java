@@ -27,12 +27,11 @@ import oxy.bascenario.editor.containers.selection.SelectionManager;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
 import oxy.bascenario.util.TimeCompiler;
 
-import java.util.Arrays;
-
 @Accessors(fluent = true)
 public class TrackListContainer extends ScrollContainer {
     @Getter
     private final TimelineContainer timelineContainer;
+    @Getter
     private final Container container;
 
     @Getter
@@ -117,12 +116,10 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
-        System.out.println("Breh: " + Arrays.toString(event.buttons().toArray()));
         if (event.buttons().contains(MouseButton.LEFT)) {
             this.selectionManager.x1(event.x());
             this.selectionManager.y1(event.y());
             this.rivet().focusedComponent(this);
-            System.out.println("continue");
         }
 
         return super.onComponentMouseMove(event, bounds);
@@ -132,9 +129,7 @@ public class TrackListContainer extends ScrollContainer {
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
         boolean onComponent = super.onComponentMouseDown(event, bounds);
 
-        System.out.println("xd->" + onComponent);
         if (!onComponent && event.button() == MouseButton.LEFT) {
-            System.out.println("start!");
             this.selectionManager.x(event.x());
             this.selectionManager.y(event.y());
 
