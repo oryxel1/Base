@@ -11,6 +11,7 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11C;
 import oxy.bascenario.api.effects.Effect;
 import oxy.bascenario.api.utils.math.Axis;
+import oxy.bascenario.utils.ScreenUtils;
 import oxy.bascenario.utils.math.MathUtils;
 import oxy.bascenario.utils.TimeUtils;
 
@@ -170,7 +171,7 @@ public final class ThinGLUtils {
 
     public static void fullScreenBlur(int strength) {
         ThinGL.programs().getGaussianBlur().bindInput();
-        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.WHITE);
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, ScreenUtils.width(), ScreenUtils.height(), Color.WHITE);
         ThinGL.programs().getGaussianBlur().unbindInput();
         ThinGL.programs().getGaussianBlur().configureParameters(strength);
         ThinGL.programs().getGaussianBlur().renderFullscreen();

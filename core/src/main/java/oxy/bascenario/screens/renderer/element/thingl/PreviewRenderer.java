@@ -2,6 +2,7 @@ package oxy.bascenario.screens.renderer.element.thingl;
 
 import oxy.bascenario.Base;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
+import oxy.bascenario.utils.ScreenUtils;
 import oxy.bascenario.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
 import net.lenni0451.commons.color.Color;
@@ -89,7 +90,7 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
 
         // If there are no background to fade, then draw a black overlay on top of everything to fade away.
         if (element.background() == null) {
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(0, 0, 0, Math.round(255 * (1 - globalFade.getValue()))));
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, ScreenUtils.width(), ScreenUtils.height(), Color.fromRGBA(0, 0, 0, Math.round(255 * (1 - globalFade.getValue()))));
         }
     }
 
@@ -97,9 +98,9 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         if (element.background() != null) {
             ThinGLUtils.renderBackground(Base.instance().assetsManager().texture(scenario.getName(), element.background()), Color.WHITE);
             ThinGLUtils.fullScreenBlur(Math.round(10 * this.globalFade.getValue())); // Very nice blur thanks to ThinGL.
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, ScreenUtils.width(), ScreenUtils.height(), Color.fromRGBA(60, 60, 60, Math.round(100 * globalFade.getValue())));
         } else {
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.fromRGBA(22, 23, 26, 255));
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, ScreenUtils.width(), ScreenUtils.height(), Color.fromRGBA(22, 23, 26, 255));
         }
     }
 
@@ -119,13 +120,17 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             return;
         }
 
-        float sizeY = 1080 - (400 * (1 - titleBoxPopup.getValue()));
-        Color color = Color.fromRGBA(255, 255, 255, Math.round(255 * titleBoxFade.getValue()));
-        if (isDoingExitingFade()) {
-            color = color.withAlpha(Math.round(255 * globalFade.getValue()));
-        }
+        ScreenUtils.legacyScale(() -> {
+            float sizeY = 1080 - (400 * (1 - titleBoxPopup.getValue()));
+            Color color = Color.fromRGBA(255, 255, 255, Math.round(255 * titleBoxFade.getValue()));
+            if (isDoingExitingFade()) {
+                color = color.withAlpha(Math.round(255 * globalFade.getValue()));
+            }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"), 0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK,
+                    Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"),
+                    0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
+        });
     }
 
     private void renderTitle() {
@@ -136,19 +141,21 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             alpha = Math.round(255 * globalFade.getValue());
         }
 
+        final float widthScale = ScreenUtils.widthScale();
         final float scale = this.titlePopup.getValue();
         {
+            float fontSize = 76 * ScreenUtils.widthScale();
             final TextRun text = TextRun.fromString(FontUtils.font(FontStyle.SEMI_BOLD, element.type()), this.element.title(), Color.fromRGBA(70, 98, 150, alpha));
-            float textCenterX = Math.max(0, 1920 / 2F - (TextUtils.getVisualWidth(76, text.shape()) * scale / 2));
-            float textCenterY = Math.max(0, 1080 / 2F - (TextUtils.getVisualHeight(76, text.shape()) * scale / 2)) + 5;
+            float textCenterX = Math.max(0, ScreenUtils.width() / 2F - (TextUtils.getVisualWidth(fontSize, text.shape()) * scale / 2));
+            float textCenterY = Math.max(0, ScreenUtils.height() / 2F - (TextUtils.getVisualHeight(fontSize, text.shape()) * scale / 2)) + 5 * widthScale;
             if (!element.subtitle().isEmpty()) {
-                textCenterY += 32;
+                textCenterY += 32 * widthScale;
             }
 
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textCenterX, textCenterY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            TextUtils.textRun(76, text, 0, 0);
+            TextUtils.textRun(fontSize, text, 0, 0);
             GLOBAL_RENDER_STACK.popMatrix();
         }
 
@@ -157,17 +164,18 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
         }
 
         {
+            float fontSize = 42 * ScreenUtils.widthScale();
             final TextRun text = TextRun.fromString(FontUtils.font(FontStyle.SEMI_BOLD, element.type()), this.element.subtitle(), Color.fromRGBA(46, 69, 96, alpha));
-            float width = TextUtils.getVisualWidth(42, text.shape());
-            float height = TextUtils.getVisualHeight(42, text.shape());
-            float textCenterX = Math.max(0, 1920 / 2F - (width * scale / 2));
-            float textCenterY = Math.max(0, 1080 / 2F - (height * scale / 2)) - 60;
+            float width = TextUtils.getVisualWidth(fontSize, text.shape());
+            float height = TextUtils.getVisualHeight(fontSize, text.shape());
+            float textCenterX = Math.max(0, ScreenUtils.width() / 2F - (width * scale / 2));
+            float textCenterY = Math.max(0, ScreenUtils.height() / 2F - (height * scale / 2)) - 60 * widthScale;
 
             GLOBAL_RENDER_STACK.pushMatrix();
             GLOBAL_RENDER_STACK.translate(textCenterX, textCenterY, 0);
             GLOBAL_RENDER_STACK.scale(scale);
-            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, -10, 20, width + 15, 28, Color.fromRGBA(250, 238, 129, Math.round(255 * globalFade.getValue())));
-            TextUtils.textRun(42, text, 0, 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, -10 * widthScale, 20 * widthScale, width + 15 * widthScale, 28 * widthScale, Color.fromRGBA(250, 238, 129, Math.round(255 * globalFade.getValue())));
+            TextUtils.textRun(fontSize, text, 0, 22 * widthScale, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
             GLOBAL_RENDER_STACK.popMatrix();
         }
     }

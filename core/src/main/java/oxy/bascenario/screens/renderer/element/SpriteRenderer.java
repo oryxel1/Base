@@ -17,6 +17,7 @@ import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.api.utils.FileInfo;
 import oxy.bascenario.screens.ScenarioScreen;
 import oxy.bascenario.screens.renderer.element.base.ElementRenderer;
+import oxy.bascenario.utils.ScreenUtils;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.files.FileUtils;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
@@ -192,8 +193,8 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
         this.state.apply(skeleton);
 
-        // Shitty way to scale and stuff? Well it has already been a problem since the legacy engine model of BASE so.....
-        skeleton.setScale(0.00036458332f * width * this.scale.x(), 0.00064814813f * height * this.scale.y());
+        float scale = 0.7f * ScreenUtils.globalScale();
+        skeleton.setScale(scale * this.scale.x(), scale * this.scale.y());
         skeleton.update(Gdx.graphics.getDeltaTime());
         skeleton.updateWorldTransform(Skeleton.Physics.none);
     }

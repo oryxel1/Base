@@ -24,8 +24,8 @@ public class Launcher {
 
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Blue Archive Scenario Engine.");
-        configuration.setWindowedMode(1280, 720);
-        configuration.setWindowSizeLimits(1280, 720, -1, -1);
+        configuration.setWindowedMode(1280 , 960);
+//        configuration.setWindowSizeLimits(1280, 720, -1, -1);
 
         WINDOW = new EngineRenderer(screen, fullScreen);
         new Lwjgl3Application(WINDOW, configuration);

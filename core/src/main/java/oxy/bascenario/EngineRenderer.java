@@ -115,8 +115,8 @@ public final class EngineRenderer extends Game {
         AudioManager.getInstance().tick();
 
         ThinGLUtils.GLOBAL_RENDER_STACK = new Matrix4fStack(8);
-        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
-        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
+//        float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
+//        ThinGLUtils.GLOBAL_RENDER_STACK.scale(x, ThinGL.windowInterface().getFramebufferHeight() / 1080F, x);
 
         ImGuiUtils.COUNTER = 0;
         imGuiGl3.newFrame();
@@ -135,18 +135,6 @@ public final class EngineRenderer extends Game {
         ImGui.render();
 
         imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-//        if (GLFW.glfwGetWindowAttrib(((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle(), GLFW.GLFW_MAXIMIZED) == 1) {
-//            int width = ThinGL.windowInterface().getFramebufferWidth(), height = ThinGL.windowInterface().getFramebufferHeight();
-////            System.out.println(width/(float)height);
-//            if (width/(float)height != 16/9f) {
-//                boolean widthLargerHeight = ThinGL.windowInterface().getFramebufferWidth() > ThinGL.windowInterface().getFramebufferHeight();
-//                int fixedWidth = !widthLargerHeight ? width : (int) (height * 16/9f);
-//                int fixedHeight = !widthLargerHeight ? (int) (width * (9/16f)) : height;
-//
-//                Gdx.graphics.setWindowedMode(fixedWidth, fixedHeight);
-//            }
-//        }
 
         if (ImGui.isKeyReleased(ImGuiKey.F11) || someTempHackyBool) {
             if (this.fullScreen) {
