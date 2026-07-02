@@ -1,15 +1,14 @@
 package oxy.bascenario.editor.containers.track;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
+import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.ScenarioEditorScreen;
@@ -23,8 +22,6 @@ public class TrackContainer extends Container {
     @Getter
     private final TimelineContainer container;
 
-    @Setter @Getter
-    private int index;
     @Getter
     private float height = 60f;
 
@@ -35,7 +32,7 @@ public class TrackContainer extends Container {
 
     @Override
     public void render(Renderer renderer, Size bounds) {
-        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(50, 50, 50));
+        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(40, 40, 40));
         super.render(renderer, bounds);
     }
 
@@ -57,7 +54,10 @@ public class TrackContainer extends Container {
     @Override
     public Size computeIdealSize(Size constraints) {
         Size idealSize = super.computeIdealSize(new Size(constraints.width(), height));
-        // give some extra scroll by default.
         return new Size(Math.max(idealSize.width(), constraints.width()), height);
+    }
+
+    public int index() {
+        return container.trackListContainer().container().children().indexOf(this);
     }
 }

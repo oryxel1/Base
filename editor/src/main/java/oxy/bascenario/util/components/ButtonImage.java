@@ -2,21 +2,20 @@ package oxy.bascenario.util.components;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
-import net.lenni0451.rivet.backend.Texture;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.component.ListenerList;
-import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.theme.ThemeOption;
+import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
 import oxy.bascenario.utils.animation.math.ColorAnimations;
+
+import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 @RequiredArgsConstructor
 @Accessors(fluent = true, chain = true, makeFinal = true)
@@ -24,7 +23,7 @@ public class ButtonImage extends Component {
     private boolean hovered = false;
 
     @Getter
-    private final Texture texture;
+    private final ThinGLTexture texture;
 
     private final ClickListener clickListener;
 
@@ -44,7 +43,7 @@ public class ButtonImage extends Component {
         this.hoverColor.set(Color.WHITE);
 
         this.blendDuration = new ThemeOption<>(this, null);
-        this.blendDuration.set(400);
+        this.blendDuration.set(800);
     }
 
     @Override
