@@ -24,6 +24,10 @@ public class ScreenUtils {
         return width() / 1920f;
     }
 
+    public float heightScale() {
+        return height() / 1080f;
+    }
+
     public void legacyScale(Runnable runnable) {
         float x = ThinGL.windowInterface().getFramebufferWidth() / 1920F;
         ThinGLUtils.GLOBAL_RENDER_STACK.pushMatrix();

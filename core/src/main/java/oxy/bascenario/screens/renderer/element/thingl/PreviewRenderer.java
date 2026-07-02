@@ -1,5 +1,6 @@
 package oxy.bascenario.screens.renderer.element.thingl;
 
+import com.badlogic.gdx.math.MathUtils;
 import oxy.bascenario.Base;
 import oxy.bascenario.api.render.elements.text.font.FontStyle;
 import oxy.bascenario.utils.ScreenUtils;
@@ -112,7 +113,36 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             color = color.withAlpha(Math.round(100 * globalFade.getValue()));
         }
 
-        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/preview/border.png"), 0, 0, 1920, 1080, color);
+        final float widthScale = ScreenUtils.widthScale(), heightScale = ScreenUtils.heightScale(), globalScale = ScreenUtils.globalScale();
+
+        float width = 1848 * widthScale;
+        float x = ScreenUtils.width() / 2f - width / 2f;
+
+        float height = 1006 * heightScale;
+
+        float y = ScreenUtils.height() / 2f - height / 2f;
+
+        ThinGL.renderer2D().outlinedRoundedRectangle(GLOBAL_RENDER_STACK, x, y, x + width, y + height, 4 * globalScale, color, 5 * widthScale);
+
+        float innerHeight = height - (30 * widthScale);
+        float innerWidth = width - (30 * widthScale);
+        float innerX = ScreenUtils.width() / 2f - innerWidth / 2f;
+        float innerY = ScreenUtils.height() / 2f - innerHeight / 2f;
+
+        // todo: flip the corner!
+        ThinGL.renderer2D().outlinedRoundedRectangle(GLOBAL_RENDER_STACK, innerX, innerY, innerX + innerWidth, innerY + innerHeight, 15 * globalScale, color, 2 * widthScale);
+
+        float circleWidth = 4 * globalScale;
+        ThinGL.renderer2D().outlinedCircle(GLOBAL_RENDER_STACK, innerX + circleWidth * 2f, innerY + circleWidth * 2f, circleWidth, color, circleWidth);
+
+        float crossHeight = 16 * globalScale, crossY = innerY + innerHeight - crossHeight;
+        float crossWidth = 3 * globalScale, crossX = innerX + (crossWidth * 2f);
+
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, crossX, crossY, crossX + crossWidth, crossY + crossHeight, color);
+
+        crossX -= crossHeight / 2f - crossWidth / 2f;
+        crossY += crossHeight / 2f - crossWidth / 2f;
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, crossX, crossY, crossX + crossHeight, crossY + crossWidth, color);
     }
 
     private void renderTitleBox() {
@@ -120,17 +150,16 @@ public class PreviewRenderer extends ThinGLElementRenderer<Preview> {
             return;
         }
 
-        ScreenUtils.legacyScale(() -> {
-            float sizeY = 1080 - (400 * (1 - titleBoxPopup.getValue()));
-            Color color = Color.fromRGBA(255, 255, 255, Math.round(255 * titleBoxFade.getValue()));
-            if (isDoingExitingFade()) {
-                color = color.withAlpha(Math.round(255 * globalFade.getValue()));
-            }
+        float widthScale = ScreenUtils.widthScale();
+        float height = 260 * widthScale * MathUtils.lerp(0.62f, 1f, titleBoxPopup.getValue()), width = 1848 * widthScale;
+        Color color = Color.fromRGBA(255, 255, 255, Math.round(255 * titleBoxFade.getValue()));
+        if (isDoingExitingFade()) {
+            color = color.withAlpha(Math.round(255 * globalFade.getValue()));
+        }
 
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK,
-                    Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"),
-                    0, Math.max(0, 1080 / 2F - (sizeY / 2)), 1920, sizeY, color);
-        });
+        ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK,
+                Base.instance().assetsManager().texture("assets/base/uis/preview/title.png"),
+                ScreenUtils.width() / 2f - width / 2f, ScreenUtils.height() / 2F - height / 2, width, height, color);
     }
 
     private void renderTitle() {
