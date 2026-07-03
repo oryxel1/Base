@@ -35,4 +35,8 @@ tasks {
             )
         }
     }
+
+    artifacts {
+        archives(shadowJar)
+    }
 }
