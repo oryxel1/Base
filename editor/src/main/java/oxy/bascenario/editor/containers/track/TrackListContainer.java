@@ -126,9 +126,7 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
-        boolean onComponent = super.onComponentMouseDown(event, bounds);
-
-        if (!onComponent && event.button() == MouseButton.LEFT) {
+        if (!super.onComponentMouseDown(event, bounds) && event.button() == MouseButton.LEFT) {
             this.selectionManager.x(event.x());
             this.selectionManager.y(event.y());
 
@@ -139,7 +137,7 @@ public class TrackListContainer extends ScrollContainer {
 
             this.rivet().focusedComponent(this);
         }
-        return onComponent;
+        return true;
     }
 
     @Override

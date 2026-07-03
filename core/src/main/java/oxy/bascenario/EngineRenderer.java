@@ -23,10 +23,8 @@ import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
 import net.lenni0451.rivet.layout.fullsize.FullSizeLayout;
 import net.lenni0451.rivet.math.Size;
 import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
 import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.resource.font.instance.FontInstanceSet;
-import net.raphimc.thingl.resource.font.instance.impl.FreeTypeFontInstance;
 import net.raphimc.thingl.text.util.GlyphPredicate;
 import org.joml.Matrix4fStack;
 import org.lwjgl.glfw.GLFW;
@@ -37,7 +35,6 @@ import oxy.bascenario.utils.font.FontUtils;
 import oxy.bascenario.utils.thingl.ThinGLExtended;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -133,6 +130,8 @@ public final class EngineRenderer extends Game {
     private boolean someTempHackyBool;
 
     private boolean fullScreen;
+
+    private final ThinGLRenderer renderer = new ThinGLRenderer();
     @Override
     public void render() {
         ScreenUtils.clear(0, 0, 0, 1, true);
@@ -147,7 +146,7 @@ public final class EngineRenderer extends Game {
         }
 
         ThinGL.programs().getMsaa().bindInput();
-        ThinGLRenderer.renderList(ThinGLUtils.GLOBAL_RENDER_STACK, this.rivet.render());
+        renderer.renderList(ThinGLUtils.GLOBAL_RENDER_STACK, this.rivet.render());
         ThinGL.programs().getMsaa().unbindInput();
         ThinGL.programs().getMsaa().renderFullscreen();
         ThinGL.programs().getMsaa().clearInput();
