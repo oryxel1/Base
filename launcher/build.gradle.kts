@@ -9,20 +9,6 @@ dependencies {
     implementation(project(":serializer"))
     implementation(project(":core"))
 
-    implementation(libs.gdx.base)
-    implementation(libs.gdx.spine)
-
-    implementation(libs.imgui.binding)
-    implementation(libs.imgui.lwjgl3)
-
-    implementation(libs.lwjgl.glfw)
-    implementation(libs.lwjgl.nfd)
-
-    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
-    implementation(libs.raphimc.audiomixer)
-
-    implementation(libs.commons.animations)
-
     implementation(libs.zt.zip)
 }
 

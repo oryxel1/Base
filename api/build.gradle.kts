@@ -1,7 +1,8 @@
 plugins {
     id("java")
+    id("java-library")
 }
 
 dependencies {
-    implementation(libs.commons.core)
+    api(libs.commons.core)
 }

@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("java-library")
 }
 
 var lwjgl = "3.3.6"
@@ -7,53 +8,53 @@ var lwjglStd = "3.4.0"
 var libGdx = "1.13.1"
 
 dependencies {
-    implementation(project(":api"))
-    implementation(project(":serializer"))
+    api(project(":api"))
+    api(project(":serializer"))
 
-    implementation(variantOf(libs.raphimc.thingl) { classifier("java17") })
-    implementation(libs.commons.animations)
-    implementation(libs.unnamed.mocha)
+    api(variantOf(libs.raphimc.thingl) { classifier("java17") })
+    api(libs.commons.animations)
+    api(libs.unnamed.mocha)
 
-    implementation(libs.imgui.lwjgl3)
-    implementation(libs.imgui.binding)
-    implementation(libs.imgui.natives.windows)
-    implementation(libs.imgui.natives.linux)
-    implementation(libs.imgui.natives.macos)
+    api(libs.imgui.lwjgl3)
+    api(libs.imgui.binding)
+    api(libs.imgui.natives.windows)
+    api(libs.imgui.natives.linux)
+    api(libs.imgui.natives.macos)
 
-    implementation(libs.lwjgl.base)
-    implementation(libs.lwjgl.opengl)
-    implementation(libs.lwjgl.stb)
-    implementation(libs.lwjgl.glfw)
-    implementation(libs.lwjgl.sdl)
-    implementation(libs.lwjgl.freetype)
-    implementation(libs.lwjgl.harfbuzz)
-    implementation(libs.lwjgl.meshoptimizer)
-    implementation(libs.lwjgl.par)
-    implementation(libs.lwjgl.nfd)
+    api(libs.lwjgl.base)
+    api(libs.lwjgl.opengl)
+    api(libs.lwjgl.stb)
+    api(libs.lwjgl.glfw)
+    api(libs.lwjgl.sdl)
+    api(libs.lwjgl.freetype)
+    api(libs.lwjgl.harfbuzz)
+    api(libs.lwjgl.meshoptimizer)
+    api(libs.lwjgl.par)
+    api(libs.lwjgl.nfd)
 
-    implementation(libs.gdx.base)
-    implementation(libs.gdx.backend)
-    implementation(libs.gdx.box2d)
-    implementation(libs.gdx.spine)
+    api(libs.gdx.base)
+    api(libs.gdx.backend)
+    api(libs.gdx.box2d)
+    api(libs.gdx.spine)
 
-    implementation(libs.raphimc.audiomixer)
+    api(libs.raphimc.audiomixer)
 
-    implementation(libs.jcraft.jorbis)
-    implementation(libs.javazoom.jlayer)
+    api(libs.jcraft.jorbis)
+    api(libs.javazoom.jlayer)
 
     listOf("natives-windows", "natives-windows-arm64", "natives-linux", "natives-linux-arm64").forEach {
-        implementation("org.lwjgl:lwjgl:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-glfw:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-sdl:$lwjglStd:$it") {
+        api("org.lwjgl:lwjgl:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-glfw:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-sdl:$lwjglStd:$it") {
             isTransitive = false
         }
-        implementation("org.lwjgl:lwjgl-opengl:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-stb:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-freetype:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-meshoptimizer:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-par:$lwjgl:$it")
-        implementation("org.lwjgl:lwjgl-nfd:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-opengl:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-stb:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-freetype:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-meshoptimizer:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-par:$lwjgl:$it")
+        api("org.lwjgl:lwjgl-nfd:$lwjgl:$it")
     }
 
-    implementation("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
+    api("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
 }
