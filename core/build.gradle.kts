@@ -15,7 +15,7 @@ dependencies {
     api(project(":api"))
     api(project(":serializer"))
 
-    api(variantOf(libs.raphimc.thingl))
+    api(libs.raphimc.thingl)
     api(libs.commons.animations)
     api(libs.unnamed.mocha)
 
