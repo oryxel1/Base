@@ -122,6 +122,7 @@ public final class EngineRenderer extends Game {
         TimeUtils.fakeTimeMillis = null;
         super.setScreen(screen);
 
+        this.rivet.root().clearChildren();
         if (screen instanceof ExtendableScreen extendableScreen) {
             extendableScreen.init(this.rivet);
         }
