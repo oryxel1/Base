@@ -34,6 +34,13 @@ public class TrackContainer extends Container {
     public TrackContainer(TimelineContainer container) {
         super(AbsoluteLayout.INSTANCE);
         this.container = container;
+
+        this.addChild(new Component() {
+            @Override
+            public Size computeIdealSize(Size constraints) {
+                return new Size(1.0e-16f, 1.0e-16f);
+            }
+        }, c -> c.layoutOptions(new AbsoluteLayoutOptions(3000, 0, 5f, 5f)));
     }
 
     @Override
@@ -82,22 +89,11 @@ public class TrackContainer extends Container {
         return super.onComponentDrop(event, bounds);
     }
 
-//    @Override
-//    protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
-//        boolean clickedOn = super.onComponentMouseDown(event, size);
-//        if (clickedOn) {
-//            this.container.trackListContainer().selectionManager().prevX(event.x());
-//            this.container.trackListContainer().selectionManager().prevX(event.y());
-//        }
-//        return clickedOn;
-//    }
-
     @Override
     protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
         this.container.trackListContainer().selectionManager().prevX(Float.MAX_VALUE);
         this.container.trackListContainer().selectionManager().prevX(Float.MAX_VALUE);
 
-        System.out.println("Up!");
         return super.onComponentMouseUp(event, size);
     }
 
