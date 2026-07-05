@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.dragdrop.DropEvent;
@@ -15,6 +16,7 @@ import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 import oxy.bascenario.editor.containers.object.ObjectOrEvent;
+import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
 import oxy.bascenario.util.TimeCompiler;
 
 @Accessors(fluent = true)
@@ -46,7 +48,32 @@ public class TrackContainer extends Container {
         }
 
         final ObjectOrEvent object = new ObjectOrEvent(time, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true);
-        this.addChild(new ObjectComponent(this.container.trackListContainer(), this, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
+
+        boolean accepted = true;
+        for (Component baseComponent : children()) {
+            if (!(baseComponent instanceof ObjectComponent component)) {
+                continue;
+            }
+
+            long otherMin = component.object().start;
+
+            long maxTime = component.object().start + component.object().duration;
+            long otherMaxTime = component.object().start + component.object().duration;
+
+            if (maxTime >= otherMin && time <= otherMaxTime) {
+                accepted = false;
+                break;
+            }
+        }
+
+        if (accepted) {
+            this.addChild(new ObjectComponent(this.container.trackListContainer(), this, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
+        } else {
+            final TrackContainer newTrack = new TrackContainer(container);
+            container.trackListContainer().container().addChild(newTrack);
+            container.screen().trackTabContainer().addChild(new TrackTabContainer(newTrack));
+            newTrack.addChild(new ObjectComponent(this.container.trackListContainer(), newTrack, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
+        }
 
         return super.onComponentDrop(event, bounds);
     }

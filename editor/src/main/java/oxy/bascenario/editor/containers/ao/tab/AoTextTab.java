@@ -62,6 +62,6 @@ public class AoTextTab extends ScrollContainer {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return new Size(constraints.width(), constraints.height() - 40);
+        return new Size(constraints.width(), Math.max(0, constraints.height() - 40));
     }
 }
