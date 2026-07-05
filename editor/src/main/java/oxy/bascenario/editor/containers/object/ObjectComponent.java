@@ -48,8 +48,6 @@ public class ObjectComponent extends Component {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
-        this.parent.selectionManager().prevX(event.x());
-        this.parent.selectionManager().prevY(event.y());
         if (this.parent.selectionManager().isSelected(this)) {
             return true;
         }
@@ -59,46 +57,6 @@ public class ObjectComponent extends Component {
         }
 
         this.parent.selectionManager().objects().add(this);
-        return true;
-    }
-
-    @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
-        if (!event.buttons().contains(MouseButton.LEFT)) {
-            return true;
-        }
-
-        float delta = (event.x() - this.parent.selectionManager().prevX());
-        this.parent.selectionManager().prevX(event.x());
-        this.parent.selectionManager().prevY(event.y());
-        System.out.println(event.x());
-
-//        if (Math.abs(delta) < 3) {
-//            return true;
-//        }
-
-        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.timelineContainer().screen().scale();
-        for (Component baseComponent : this.parentTrack.children()) {
-            if (!(baseComponent instanceof ObjectComponent component) || !this.parent.selectionManager().isSelected(component)) {
-                continue;
-            }
-
-            Rectangle rectangle = this.parentTrack.childBounds(component);
-            float newX = rectangle.x() + delta;
-
-            component.object.start = (long) ((newX / this.parentTrack.relativeBounds().width()) * maxTime);
-            component.object.start = Math.max(0, component.object.start);
-            newX = TimelineContainer.timestampToPosition(
-                    component.object.start,
-                0,
-                    this.parentTrack.relativeBounds().width(),
-                    this.parent.timelineContainer().screen().scale(),
-                    this.parent.timelineContainer().screen().scroll()
-            );
-
-            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
-        }
-
         return true;
     }
 

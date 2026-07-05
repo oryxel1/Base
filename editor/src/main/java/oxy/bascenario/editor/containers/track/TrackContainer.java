@@ -8,8 +8,12 @@ import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.dragdrop.DropEvent;
+import net.lenni0451.rivet.input.mouse.MouseButton;
+import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.ScenarioEditorScreen;
@@ -76,6 +80,67 @@ public class TrackContainer extends Container {
         }
 
         return super.onComponentDrop(event, bounds);
+    }
+
+//    @Override
+//    protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
+//        boolean clickedOn = super.onComponentMouseDown(event, size);
+//        if (clickedOn) {
+//            this.container.trackListContainer().selectionManager().prevX(event.x());
+//            this.container.trackListContainer().selectionManager().prevX(event.y());
+//        }
+//        return clickedOn;
+//    }
+
+    @Override
+    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+        this.container.trackListContainer().selectionManager().prevX(Float.MAX_VALUE);
+        this.container.trackListContainer().selectionManager().prevX(Float.MAX_VALUE);
+
+        System.out.println("Up!");
+        return super.onComponentMouseUp(event, size);
+    }
+
+    @Override
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+        if (!event.buttons().contains(MouseButton.LEFT)) {
+            return true;
+        }
+
+        if (this.container.trackListContainer().selectionManager().prevX() == Float.MAX_VALUE || this.container.trackListContainer().selectionManager().prevY() == Float.MAX_VALUE) {
+            this.container.trackListContainer().selectionManager().prevX(event.x());
+            this.container.trackListContainer().selectionManager().prevY(event.y());
+            return true;
+        }
+
+        float delta = (event.x() - this.container.trackListContainer().selectionManager().prevX());
+        this.container.trackListContainer().selectionManager().prevX(event.x());
+        this.container.trackListContainer().selectionManager().prevY(event.y());
+
+        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
+        for (Component baseComponent : children()) {
+            if (!(baseComponent instanceof ObjectComponent component) || !this.container.trackListContainer().selectionManager().isSelected(component)) {
+                continue;
+            }
+
+            Rectangle rectangle = this.childBounds(component);
+            float newX = rectangle.x() + delta;
+
+            component.object().start = (long) ((newX / size.width()) * maxTime);
+            component.object().start = Math.max(0, component.object().start);
+            newX = TimelineContainer.timestampToPosition(
+                    component.object().start,
+                    0,
+                    size.width(),
+                    container.screen().scale(),
+                    container.screen().scroll()
+            );
+
+
+            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
+        }
+
+        return super.onComponentMouseMove(event, size);
     }
 
     @Override

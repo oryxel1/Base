@@ -5,10 +5,16 @@ import net.lenni0451.rivet.backend.thingl.RivetThinGLApplication;
 import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
+import net.lenni0451.rivet.component.impl.FormattedLabel;
+import net.lenni0451.rivet.component.impl.Label;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
+import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
+import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
+import net.lenni0451.rivet.text.model.TextFormat;
 import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
 import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.resource.font.instance.FontInstanceSet;
@@ -30,23 +36,28 @@ public class DefaultRivetTest extends RivetThinGLApplication {
     protected void init(final Rivet rivet) {
         Container container = new Container(AnchorLayout.INSTANCE);
 
-        final Container innerContainer = new Container(AnchorLayout.INSTANCE) {
+        final Container innerContainer = new Container(AbsoluteLayout.INSTANCE) {
             @Override
             public void render(Renderer renderer, Size size) {
-                renderer.fillRect(0, 0, size.width(), size.height(), Color.WHITE);
+                renderer.fillRect(0, 0, size.width(), size.height(), Color.BLUE);
+
+                float stuff = (System.currentTimeMillis() % 5000) / 5000f;
+
+                this.children().getFirst().layoutOptions(new AbsoluteLayoutOptions(stuff * size.width(), 0));
                 super.render(renderer, size);
             }
         };
         container.addChild(innerContainer, c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.1F).withAnchorMinY(0.1F).withAnchorMaxX(0.8f).withAnchorMaxY(0.6f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.1F).withAnchorMinY(0.1F).withAnchorMaxX(0.9f).withAnchorMaxY(0.9f));
         });
 
-        Container innerInnerContainer = new Container(new VerticalListLayout(3, false));
-        innerContainer.addChild(new ScrollContainer(innerInnerContainer));
-
-        for (int i = 0; i < 100; i++) {
-            innerInnerContainer.addChild(new Button("BUTTON " + i, () -> {}));
-        }
+        innerContainer.addChild(new Label("Test Label") {
+            @Override
+            protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+                System.out.println(event);
+                return super.onComponentMouseMove(event, size);
+            }
+        });
 
         rivet.root().addChild(container);
     }
