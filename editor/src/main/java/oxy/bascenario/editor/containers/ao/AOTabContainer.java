@@ -25,11 +25,7 @@ public class AOTabContainer extends ScrollContainer {
 
     private void add(AOContainer parent, Container container, AOContainer.Tab targetTab) {
         final Label label = new Label(targetTab.name()).scale(0.5f);
-        final Button button = new Button(label, ignored -> {});
-        button.clickListener().add(ignored -> {
-            parent.tab(targetTab);
-        });
-
+        final Button button = new Button(label, ignored -> parent.tab(targetTab));
         container.addChild(button);
     }
 }

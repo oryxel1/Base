@@ -57,6 +57,6 @@ public class TimelineTimeSection extends Component {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return new Size(constraints.width(), 35);
+        return new Size(constraints.width(), Math.min(35, constraints.height()));
     }
 }

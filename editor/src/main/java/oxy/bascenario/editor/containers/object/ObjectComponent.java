@@ -68,6 +68,15 @@ public class ObjectComponent extends Component {
             return true;
         }
 
+        float delta = (event.x() - this.parent.selectionManager().prevX());
+        this.parent.selectionManager().prevX(event.x());
+        this.parent.selectionManager().prevY(event.y());
+        System.out.println(event.x());
+
+//        if (Math.abs(delta) < 3) {
+//            return true;
+//        }
+
         final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.timelineContainer().screen().scale();
         for (Component baseComponent : this.parentTrack.children()) {
             if (!(baseComponent instanceof ObjectComponent component) || !this.parent.selectionManager().isSelected(component)) {
@@ -75,7 +84,6 @@ public class ObjectComponent extends Component {
             }
 
             Rectangle rectangle = this.parentTrack.childBounds(component);
-            float delta = (event.x() - this.parent.selectionManager().prevX());
             float newX = rectangle.x() + delta;
 
             component.object.start = (long) ((newX / this.parentTrack.relativeBounds().width()) * maxTime);
@@ -90,10 +98,6 @@ public class ObjectComponent extends Component {
 
             component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
         }
-
-
-        this.parent.selectionManager().prevX(event.x());
-        this.parent.selectionManager().prevY(event.y());
 
         return true;
     }
