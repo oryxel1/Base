@@ -5,6 +5,7 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
 import net.lenni0451.rivet.input.mouse.MouseButton;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.layout.border.BorderLayout;
@@ -15,6 +16,8 @@ import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.util.components.ButtonImage;
 
+import java.lang.reflect.Field;
+
 public class TrackTabListContainer extends Container {
     private final ScrollContainer scrollContainer;
 
@@ -24,12 +27,15 @@ public class TrackTabListContainer extends Container {
         // Just to take space.
         this.addChild(new UpperContainer(timelineContainer, container), c -> c.layoutOptions(BorderPosition.TOP));
 
-        this.scrollContainer = new ScrollContainer(container, false, false) {
+        this.scrollContainer = new ScrollContainer(container, false, true) {
             @Override
             public void render(Renderer renderer, Size size) {
+                this.scrollY(timelineContainer.trackListContainer().scrollY(), true);
                 super.render(renderer, size);
             }
         };
+        this.scrollContainer.barWidth().set(0f);
+
         this.addChild(this.scrollContainer, c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
