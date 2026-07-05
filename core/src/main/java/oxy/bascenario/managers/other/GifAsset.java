@@ -3,7 +3,7 @@ package oxy.bascenario.managers.other;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.raphimc.thingl.gl.texture.animated.SequencedTexture;
-import net.raphimc.thingl.resource.image.animated.impl.AwtGifImage;
+import net.raphimc.thingl.image.animated.impl.AwtGifImage;
 
 @RequiredArgsConstructor
 public class GifAsset {

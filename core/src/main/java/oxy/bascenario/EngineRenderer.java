@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.lenni0451.commons.collections.Maps;
 import net.lenni0451.rivet.Rivet;
-import net.lenni0451.rivet.backend.render.deferred.DeferredRenderer;
 import net.lenni0451.rivet.backend.thingl.ThinGLBackend;
-import net.lenni0451.rivet.backend.thingl.render.BatchedRenderListExecutor;
 import net.lenni0451.rivet.backend.thingl.render.ThinGLRenderer;
 import net.lenni0451.rivet.backend.thingl.text.ThinGLFont;
 import net.lenni0451.rivet.backend.thingl.util.GLFWMapper;
@@ -149,7 +147,7 @@ public final class EngineRenderer extends Game {
         }
 
         ThinGL.programs().getMsaa().bindInput();
-        BatchedRenderListExecutor.INSTANCE.renderList(this.renderer, this.rivet.render(new DeferredRenderer()).complete());
+        renderer.renderList(ThinGLUtils.GLOBAL_RENDER_STACK, this.rivet.render());
         ThinGL.programs().getMsaa().unbindInput();
         ThinGL.programs().getMsaa().renderFullscreen();
         ThinGL.programs().getMsaa().clearInput();
