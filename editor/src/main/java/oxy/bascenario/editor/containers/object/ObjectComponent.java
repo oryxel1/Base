@@ -7,11 +7,15 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.input.keyboard.ModifierKey;
+import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
+import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
+import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
 import oxy.bascenario.util.NameUtils;
@@ -44,11 +48,53 @@ public class ObjectComponent extends Component {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
+        this.parent.selectionManager().prevX(event.x());
+        this.parent.selectionManager().prevY(event.y());
+        if (this.parent.selectionManager().isSelected(this)) {
+            return true;
+        }
+
         if (!event.modifiers().contains(ModifierKey.CONTROL)) {
             this.parent.selectionManager().objects().clear();
         }
 
         this.parent.selectionManager().objects().add(this);
+        return true;
+    }
+
+    @Override
+    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+        if (!event.buttons().contains(MouseButton.LEFT)) {
+            return true;
+        }
+
+        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.timelineContainer().screen().scale();
+        for (Component baseComponent : this.parentTrack.children()) {
+            if (!(baseComponent instanceof ObjectComponent component) || !this.parent.selectionManager().isSelected(component)) {
+                continue;
+            }
+
+            Rectangle rectangle = this.parentTrack.childBounds(component);
+            float delta = (event.x() - this.parent.selectionManager().prevX());
+            float newX = rectangle.x() + delta;
+
+            component.object.start = (long) ((newX / this.parentTrack.relativeBounds().width()) * maxTime);
+            component.object.start = Math.max(0, component.object.start);
+            newX = TimelineContainer.timestampToPosition(
+                    component.object.start,
+                0,
+                    this.parentTrack.relativeBounds().width(),
+                    this.parent.timelineContainer().screen().scale(),
+                    this.parent.timelineContainer().screen().scroll()
+            );
+
+            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
+        }
+
+
+        this.parent.selectionManager().prevX(event.x());
+        this.parent.selectionManager().prevY(event.y());
+
         return true;
     }
 

@@ -29,7 +29,7 @@ public class AoObjectTab extends ScrollContainer {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return new Size(constraints.width(), constraints.height() - 40);
+        return new Size(constraints.width(), Math.max(0, constraints.height() - 40));
     }
 
     private void add(ScenarioEditorScreen screen, Container container, String name, String path, Object object) {

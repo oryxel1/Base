@@ -20,6 +20,9 @@ public class SelectionManager {
         return objects.contains(component);
     }
 
+    @Getter
+    private float prevX, prevY;
+
     private float x, y;
     private float x1, y1;
 
