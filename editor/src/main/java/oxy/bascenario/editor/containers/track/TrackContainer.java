@@ -52,7 +52,8 @@ public class TrackContainer extends Container {
 
     @Override
     protected boolean onComponentDrop(DropEvent event, Size bounds) {
-        long time = (long) ((ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale()) * (event.x() / bounds.width()));
+        final float TOTAL_TIME = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
+        long time = (long) (TOTAL_TIME * (event.x() / bounds.width()));
 
         long duration = TimeCompiler.compileTime(event.dragData());
         if (duration == Long.MAX_VALUE) {
@@ -120,19 +121,14 @@ public class TrackContainer extends Container {
                 continue;
             }
 
-            Rectangle rectangle = this.childBounds(component);
-            float newX = rectangle.x() + delta;
-
-            component.object().start = (long) ((newX / size.width()) * maxTime);
+            component.object().start += (long) ((delta / size.width()) * maxTime);
             component.object().start = Math.max(0, component.object().start);
-            newX = TimelineContainer.timestampToPosition(
+            float newX = TimelineContainer.timestampToPosition(
                     component.object().start,
                     0,
                     size.width(),
-                    container.screen().scale(),
-                    container.screen().scroll()
+                    container.screen().scale()
             );
-
 
             component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
         }

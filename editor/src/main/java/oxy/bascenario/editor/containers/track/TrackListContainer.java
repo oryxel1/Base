@@ -92,7 +92,7 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     private void add(float width, TrackContainer container, ObjectOrEvent object) {
-        float newX = TimelineContainer.timestampToPosition(object.start, 0, width, timelineContainer.screen().scale(), timelineContainer.screen().scroll());
+        float newX = TimelineContainer.timestampToPosition(object.start, 0, width, timelineContainer.screen().scale());
         container.addChild(new ObjectComponent(this, container, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(newX, 0)));
     }
 
@@ -107,7 +107,7 @@ public class TrackListContainer extends ScrollContainer {
                     continue;
                 }
 
-                float newX = TimelineContainer.timestampToPosition(object.object().start, 0, width, timelineContainer.screen().scale(), timelineContainer.screen().scroll());
+                float newX = TimelineContainer.timestampToPosition(object.object().start, 0, width, timelineContainer.screen().scale());
                 child.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
             }
         }

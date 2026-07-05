@@ -28,6 +28,7 @@ public class TimelineTimeSection extends Component {
 
             final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.screen().scale();
             float time = (x / bounds.width()) * maxTime;
+            time += (ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.screen().scroll());
 
             float seconds = Math.abs(time) / 1000f;
             seconds = Math.round(seconds * 100.0f) / 100.0f;

@@ -44,7 +44,7 @@ public class TimelineContainer extends Container {
     }
 
     private void drawTimelineCursor(Renderer renderer, Size bounds) {
-        final float cursorX = timestampToPosition(screen.timestamp(), 0, bounds.width(), screen.scale(), screen.scroll());
+        final float cursorX = legacyTimestampToPosition(screen.timestamp(), 0, bounds.width(), screen.scale(), screen.scroll());
 
         renderer.fillTriangle(cursorX + 1.25f - 10, 0, cursorX + 1.25f, 10, cursorX + 1.25f + 10, 0, TIMELINE_CURSOR_COLOR);
         renderer.fillRect(cursorX, 0, 2, bounds.height(), TIMELINE_CURSOR_COLOR.withAlphaF(0.8f));
@@ -55,7 +55,11 @@ public class TimelineContainer extends Container {
         return constraints;
     }
 
-    public static float timestampToPosition(long timestamp, float offsetX, float size, float scale, float scroll) {
+    public static float timestampToPosition(long timestamp, float offsetX, float size, float scale) {
+        return offsetX + (timestamp / (DEFAULT_MAX_TIME * scale)) * size;
+    }
+
+    public static float legacyTimestampToPosition(long timestamp, float offsetX, float size, float scale, float scroll) {
         return offsetX + ((timestamp - (DEFAULT_MAX_TIME * scale * scroll)) / (DEFAULT_MAX_TIME * scale)) * size;
     }
 }
