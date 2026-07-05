@@ -35,6 +35,7 @@ public class TrackContainer extends Container {
         super(AbsoluteLayout.INSTANCE);
         this.container = container;
 
+        // So the user can scroll more by default.
         this.addChild(new Component() {
             @Override
             public Size computeIdealSize(Size constraints) {

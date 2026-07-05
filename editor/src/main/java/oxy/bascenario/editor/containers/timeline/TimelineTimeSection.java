@@ -11,6 +11,7 @@ import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
+import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.TimelineContainer;
 
 import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
@@ -21,15 +22,21 @@ public class TimelineTimeSection extends Component {
 
     @Override
     public void render(Renderer renderer, Size bounds) {
-        for (int i = 0; i <= 5; i++) {
-            long time = (long) ((DEFAULT_MAX_TIME * parent.screen().scale() * parent.screen().scroll()) + (DEFAULT_MAX_TIME * parent.screen().scale() * (i / 5f)));
-            float segmentX = TimelineContainer.timestampToPosition(time, 0, bounds.width(), parent.screen().scale(), parent.screen().scroll());
+        float x = -parent.trackListContainer().scrollX();
+        while (!(x >= bounds.width())) {
+            renderer.fillRect(x, 0, 1, 10, Color.WHITE);
 
-            float seconds = time / 1000f;
+            final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.screen().scale();
+            float time = (x / bounds.width()) * maxTime;
+
+            float seconds = Math.abs(time) / 1000f;
+            seconds = Math.round(seconds * 100.0f) / 100.0f;
             ShapedText text = this.rivet().backend().font().shapeText(seconds + "s", Color.WHITE);
+            float currentX = x;
 
-            renderer.fillRect(segmentX, 0, 1, 10, Color.WHITE);
-            renderer.scale(0.4f, () -> renderer.text(text, segmentX / 0.4f, (25 / 35f) * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+            renderer.scale(0.4f, () -> renderer.text(text, currentX / 0.4f, (25 / 35f) * bounds.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+
+            x += bounds.width() / 5f;
         }
     }
 
