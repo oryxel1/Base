@@ -22,9 +22,9 @@ public class AoObjectTab extends ScrollContainer {
         final Container container = new Container(new VerticalListLayout(10, false));
         super(container);
 
-        add(screen, container, "Preview", "assets/base/uis/editor/preview.png", new Preview(FontType.NotoSans, "Title", "Subtitle", null));
-        add(screen, container, "Location Info", "assets/base/uis/editor/location-info.png", new LocationInfo(FontType.NotoSans, "Location A", 1000, 200));
-        add(screen, container, "Emoticon", "assets/base/uis/editor/emoticon.png", new Emoticon(100, EmoticonType.ANGRY, true));
+        add(screen, container, "Preview", "assets/base/uis/editor/objects/preview.png", new Preview(FontType.NotoSans, "Title", "Subtitle", null));
+        add(screen, container, "Location Info", "assets/base/uis/editor/objects/location-info.png", new LocationInfo(FontType.NotoSans, "Location A", 1000, 200));
+        add(screen, container, "Emoticon", "assets/base/uis/editor/objects/emoticon.png", new Emoticon(100, EmoticonType.ANGRY, true));
     }
 
     @Override

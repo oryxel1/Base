@@ -32,7 +32,18 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
 
     public static final long DEFAULT_MAX_TIME = 15000;
+
+    private boolean playing;
     private long timestamp = 1000;
+    public void timestamp(long timestamp) {
+        this.timestamp = timestamp;
+        this.playing = false;
+
+        if (timelineTabContainer != null) {
+            timelineTabContainer.playButton().state(false);
+        }
+    }
+
     private float scale = 1;
 
     public void scale(float scale) {
@@ -43,6 +54,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         timelineContainer.trackListContainer().requestLayoutRecalculation();
     }
 
+    private TimelineTabContainer timelineTabContainer;
     private TimelineContainer timelineContainer;
     private Container trackTabContainer;
 
@@ -56,8 +68,17 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         TimeUtils.fakeTimeMillis = System.currentTimeMillis();
     }
 
+    private long since = 0;
     @Override
     public void renderBehindRivet() {
+        if (since == 0) {
+            since = System.currentTimeMillis();
+        }
+        if (playing) {
+            timestamp += System.currentTimeMillis() - since;
+        }
+        since = System.currentTimeMillis();
+
         ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight(), Color.fromRGB(50, 50, 50));
     }
 
@@ -87,7 +108,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.655f).withAnchorMaxX(0.15625f).withAnchorMaxY(0.99f));
         });
 
-        container.addChild(new TimelineTabContainer(this), c -> {
+        container.addChild(timelineTabContainer = new TimelineTabContainer(this), c -> {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.605f).withAnchorMaxX(0.99f).withAnchorMaxY(0.65f));
         });
 
@@ -99,10 +120,5 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 //        );
 
         rivet.root().addChild(container);
-    }
-
-    @Override
-    public void render(float delta) {
-
     }
 }

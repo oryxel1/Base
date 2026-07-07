@@ -1,5 +1,7 @@
 package oxy.bascenario.editor.containers;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
@@ -10,11 +12,16 @@ import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.util.components.PlayButton;
 
+@Accessors(fluent = true)
 public class TimelineTabContainer extends Container {
     private final ScenarioEditorScreen screen;
 
     private final Label timeLabel;
+
+    @Getter
+    private final PlayButton playButton;
     public TimelineTabContainer(final ScenarioEditorScreen screen) {
         super(AnchorLayout.INSTANCE);
 
@@ -34,6 +41,10 @@ public class TimelineTabContainer extends Container {
         timeLabel.scale(.5f);
 
         this.addChild(timeLabel);
+
+        playButton = new PlayButton(screen.playing(), screen::playing);
+        playButton.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.5f).withPivotY(0.5f));
+        this.addChild(playButton);
 
         this.screen = screen;
     }
