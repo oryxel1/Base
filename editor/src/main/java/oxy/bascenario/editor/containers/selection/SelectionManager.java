@@ -21,7 +21,7 @@ public class SelectionManager {
     }
 
     @Getter
-    private float prevX, prevY;
+    private float prevX = Float.MAX_VALUE, prevY = Float.MAX_VALUE;
 
     private float x, y;
     private float x1, y1;
