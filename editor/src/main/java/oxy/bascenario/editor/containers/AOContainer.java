@@ -5,8 +5,8 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.border.BorderLayout;
+import net.lenni0451.rivet.layout.border.BorderPosition;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.ao.AOTabContainer;
@@ -29,16 +29,16 @@ public class AOContainer extends Container {
         };
 
         if (currentTab != null) {
-            this.addChild(currentTab, c -> c.layoutOptions(new AbsoluteLayoutOptions(10, 45)));
+            this.addChild(currentTab, c -> c.layoutOptions(BorderPosition.BOTTOM));
         }
     }
 
     public AOContainer(ScenarioEditorScreen screen) {
-        super(AbsoluteLayout.INSTANCE);
+        super(BorderLayout.INSTANCE);
         this.screen = screen;
 
-        this.addChild(new AOTabContainer(this), c -> c.layoutOptions(new AbsoluteLayoutOptions(0, 0)));
-        this.addChild(new AoMediaTab());
+        this.addChild(new AOTabContainer(this), c -> c.layoutOptions(BorderPosition.TOP));
+        this.addChild(new AoMediaTab(), c -> c.layoutOptions(BorderPosition.BOTTOM));
     }
 
     @Override

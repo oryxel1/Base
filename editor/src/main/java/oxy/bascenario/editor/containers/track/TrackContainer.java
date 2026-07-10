@@ -55,6 +55,8 @@ public class TrackContainer extends Container {
 
     @Override
     protected boolean onComponentDrop(DropEvent event, Size bounds) {
+        container.screen().playing(false);
+
         final float TOTAL_TIME = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
         long time = (long) (TOTAL_TIME * (event.x() / cachedWidth));
 

@@ -37,10 +37,13 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     private long timestamp = 1000;
     public void timestamp(long timestamp) {
         this.timestamp = timestamp;
-        this.playing = false;
+        playing(false);
+    }
 
+    public void playing(boolean playing) {
+        this.playing = playing;
         if (timelineTabContainer != null) {
-            timelineTabContainer.playButton().state(false);
+            timelineTabContainer.playButton().state(playing);
         }
     }
 
