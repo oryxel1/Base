@@ -67,31 +67,41 @@ public class TrackContainer extends Container {
 
         final ObjectOrEvent object = new ObjectOrEvent(time, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true);
 
-        boolean accepted = true;
-        for (Component baseComponent : children()) {
-            if (!(baseComponent instanceof ObjectComponent component)) {
-                continue;
+        TrackContainer track = this;
+        while (true) {
+            boolean accepted = true;
+            for (Component baseComponent : track.children()) {
+                if (!(baseComponent instanceof ObjectComponent component)) {
+                    continue;
+                }
+
+                long otherMin = component.object().start;
+
+                long maxTime = component.object().start + component.object().duration;
+                long otherMaxTime = component.object().start + component.object().duration;
+
+                if (maxTime >= otherMin && time <= otherMaxTime) {
+                    accepted = false;
+                    break;
+                }
             }
 
-            long otherMin = component.object().start;
-
-            long maxTime = component.object().start + component.object().duration;
-            long otherMaxTime = component.object().start + component.object().duration;
-
-            if (maxTime >= otherMin && time <= otherMaxTime) {
-                accepted = false;
+            if (!accepted) {
+                int size = container.trackListContainer().container().children().size();
+                if (track.index() >= size - 1) {
+                    track = new TrackContainer(container);
+                    container.trackListContainer().container().addChild(track);
+                    container.screen().trackTabContainer().addChild(new TrackTabContainer(track));
+                    break;
+                } else {
+                    track = (TrackContainer) container.trackListContainer().container().children().get(track.index() + 1);
+                }
+            } else {
                 break;
             }
         }
 
-        if (accepted) {
-            this.addChild(new ObjectComponent(this.container.trackListContainer(), this, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
-        } else {
-            final TrackContainer newTrack = new TrackContainer(container);
-            container.trackListContainer().container().addChild(newTrack);
-            container.screen().trackTabContainer().addChild(new TrackTabContainer(newTrack));
-            newTrack.addChild(new ObjectComponent(this.container.trackListContainer(), newTrack, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
-        }
+        track.addChild(new ObjectComponent(this.container.trackListContainer(), track, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
 
         return super.onComponentDrop(event, bounds);
     }
