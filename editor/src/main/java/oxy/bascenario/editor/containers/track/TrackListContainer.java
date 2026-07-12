@@ -39,9 +39,6 @@ public class TrackListContainer extends ScrollContainer {
     public TrackListContainer(TimelineContainer timelineContainer) {
         super(container = new Container(new VerticalListLayout(3, false)), true, true);
         this.timelineContainer = timelineContainer;
-
-        final TrackContainer component = new TrackContainer(timelineContainer);
-        container.addChild(component);
     }
 
     private float prevWidth;
