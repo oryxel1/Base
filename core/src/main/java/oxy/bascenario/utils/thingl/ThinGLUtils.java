@@ -137,20 +137,6 @@ public final class ThinGLUtils {
         });
     }
 
-    public static void render(final Runnable runnable) {
-        ThinGL.globalUniforms().getViewMatrix().pushMatrix().identity();
-        ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, 1920, 1080, 0F, -1000F, 1000F);
-        DefaultGLStates.push();
-        ThinGL.glStateStack().disable(GL11C.GL_DEPTH_TEST);
-
-        runnable.run();
-
-        ThinGL.glStateStack().enable(GL11C.GL_DEPTH_TEST);
-        DefaultGLStates.pop();
-        ThinGL.globalUniforms().getProjectionMatrix().popMatrix();
-        ThinGL.globalUniforms().getViewMatrix().popMatrix();
-    }
-
     public static void start() {
         final int width = ThinGL.windowInterface().getFramebufferWidth();
         final int height = ThinGL.windowInterface().getFramebufferHeight();
@@ -158,11 +144,9 @@ public final class ThinGLUtils {
         ThinGL.globalUniforms().getViewMatrix().pushMatrix().identity();
         ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, width, height, 0F, -1000F, 1000F);
         DefaultGLStates.push();
-        ThinGL.glStateStack().disable(GL11C.GL_DEPTH_TEST);
     }
 
     public static void end() {
-        ThinGL.glStateStack().enable(GL11C.GL_DEPTH_TEST);
         DefaultGLStates.pop();
         ThinGL.globalUniforms().getProjectionMatrix().popMatrix();
         ThinGL.globalUniforms().getViewMatrix().popMatrix();
@@ -219,23 +203,5 @@ public final class ThinGLUtils {
         ThinGLExtended.get().getPrograms().getNightVision().unbindInput();
         ThinGLExtended.get().getPrograms().getNightVision().renderFullscreen();
         ThinGLExtended.get().getPrograms().getNightVision().clearInput();
-    }
-
-    public static void blurRectangle(float x, float y, float width, float height, int strength) {
-        ThinGL.programs().getGaussianBlur().bindInput();
-        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, x, y, x + width, y + height, Color.WHITE);
-        ThinGL.programs().getGaussianBlur().unbindInput();
-        ThinGL.programs().getGaussianBlur().configureParameters(strength);
-        ThinGL.programs().getGaussianBlur().render(x, y, x + width, y + height);
-        ThinGL.programs().getGaussianBlur().clearInput();
-    }
-
-    public static void blur(Runnable runnable, int strength) {
-        ThinGL.programs().getGaussianBlur().bindInput();
-        runnable.run();
-        ThinGL.programs().getGaussianBlur().unbindInput();
-        ThinGL.programs().getGaussianBlur().configureParameters(strength);
-        ThinGL.programs().getGaussianBlur().renderFullscreen();
-        ThinGL.programs().getGaussianBlur().clearInput();
     }
 }
