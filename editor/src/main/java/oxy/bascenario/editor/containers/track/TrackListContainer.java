@@ -49,8 +49,8 @@ public class TrackListContainer extends ScrollContainer {
             recalculateObjectPosition();
             this.requestLayoutRecalculation();
         }
-
         prevWidth = bounds.width();
+
         super.render(renderer, bounds);
 
         this.selectionManager.render(renderer, timelineContainer.childBounds(this));

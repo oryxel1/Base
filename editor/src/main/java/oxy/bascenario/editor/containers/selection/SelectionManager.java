@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.Component;
+import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.math.Rectangle;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 
@@ -46,13 +48,8 @@ public class SelectionManager {
         float minX = Math.min(x, x1), minY = Math.min(y, y1);
         float maxX = Math.max(x, x1), maxY = Math.max(y, y1);
 
-        minX += this.range.x();
-        maxX += this.range.x();
-
-        minY += this.range.y();
-        maxY += this.range.y();
-
-        if (maxX >= rectangle.x() && minX <= rectangle.maxX() && maxY >= rectangle.y() && minY <= rectangle.maxY()) {
+        if (maxX >= rectangle.x() && minX <= rectangle.maxX() && maxY >= rectangle.y() && minY <= rectangle.maxY() +
+                ((Container)component.parent()).parent().childBounds((Component) component.parent()).y()) {
             objects.add(component);
         }
     }
