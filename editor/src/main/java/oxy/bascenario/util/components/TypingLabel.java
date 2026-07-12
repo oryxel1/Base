@@ -66,15 +66,15 @@ public class TypingLabel extends Component {
     }
 
     @Override
-    public void onThemeChanged() {
+    protected void onComponentThemeChanged() {
         this.reshape = true;
     }
 
     @Override
     public void render(final Renderer renderer, final Size bounds) {
         this.shapeText();
-        float x = this.horizontalOrigin.offset(bounds.width() / this.scale);
-        float y = this.verticalOrigin.offset(bounds.height() / this.scale);
+        float x = this.horizontalOrigin.position(bounds.width() / this.scale);
+        float y = this.verticalOrigin.position(bounds.height() / this.scale);
 
         float progress = (System.currentTimeMillis() % 3000) / 3000f;
         net.lenni0451.rivet.backend.text.ShapedText text1 = this.rivet().backend().font().shapeText(this.text.substring(0, MathUtils.ceilInt(progress * this.text.length())), this.rivet().theme().get(Theme.TEXT_COLOR));

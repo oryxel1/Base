@@ -46,7 +46,7 @@ public class TrackListContainer extends ScrollContainer {
     @Override
     public void render(Renderer renderer, Size bounds) {
         if (prevWidth != bounds.width()) {
-            resize(bounds.width());
+            recalculateObjectPosition();
             this.requestLayoutRecalculation();
         }
 
@@ -80,7 +80,7 @@ public class TrackListContainer extends ScrollContainer {
             if (duration == Long.MAX_VALUE) {
                 duration = 1000L;
             }
-            add(bounds.width(), component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
+            add(component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
         }
 
         return super.onComponentDrop(event, bounds);
@@ -91,12 +91,12 @@ public class TrackListContainer extends ScrollContainer {
         return constraints;
     }
 
-    private void add(float width, TrackContainer container, ObjectOrEvent object) {
-        float newX = TimelineContainer.timestampToPosition(object.start, 0, width, timelineContainer.screen().scale());
+    private void add(TrackContainer container, ObjectOrEvent object) {
+        float newX = TimelineContainer.timestampToPosition(object.start, 0, timelineContainer.screen().oneMilSecondWidth(), timelineContainer.screen().scale());
         container.addChild(new ObjectComponent(this, container, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(newX, 0)));
     }
 
-    public void resize(float width) {
+    public void recalculateObjectPosition() {
         for (Component component : container.children()) {
             if (!(component instanceof TrackContainer track)) {
                 continue;
@@ -107,7 +107,7 @@ public class TrackListContainer extends ScrollContainer {
                     continue;
                 }
 
-                float newX = TimelineContainer.timestampToPosition(object.object().start, 0, width, timelineContainer.screen().scale());
+                float newX = TimelineContainer.timestampToPosition(object.object().start, 0, timelineContainer.screen().oneMilSecondWidth(), timelineContainer.screen().scale());
                 child.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
             }
         }

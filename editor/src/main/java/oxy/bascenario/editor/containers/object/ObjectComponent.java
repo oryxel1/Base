@@ -56,7 +56,7 @@ public class ObjectComponent extends Component {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * parent.timelineContainer().screen().scale();
-        return new Size((object.duration / maxTime) * parentTrack.cachedWidth(), constraints.height());
+        float widthToAMil = parent.timelineContainer().screen().oneSecondWidth() / 1000f;
+        return new Size(widthToAMil * object.duration, constraints.height());
     }
 }

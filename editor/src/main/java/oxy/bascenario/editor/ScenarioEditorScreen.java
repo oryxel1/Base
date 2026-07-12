@@ -31,7 +31,14 @@ import java.util.function.Predicate;
 public class ScenarioEditorScreen extends ExtendableScreen {
     private final Scenario.Builder scenario;
 
-    public static final long DEFAULT_MAX_TIME = 15000;
+    private static final float ONE_SECOND_WIDTH = 128;
+    public float oneSecondWidth() {
+        return ONE_SECOND_WIDTH * scale;
+    }
+    public float oneMilSecondWidth() {
+        return (ONE_SECOND_WIDTH / 1000f) * scale;
+    }
+//    public static final long DEFAULT_MAX_TIME = 15000;
 
     private boolean playing;
     private long timestamp = 1000;
@@ -51,20 +58,13 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
     public void scale(float scale) {
         this.scale = scale;
-
-        float width = ThinGL.windowInterface().getFramebufferWidth();
-        timelineContainer.trackListContainer().resize(0.99f * width - 0.15625f * width);
+        timelineContainer.trackListContainer().recalculateObjectPosition();
         timelineContainer.trackListContainer().requestLayoutRecalculation();
     }
 
     private TimelineTabContainer timelineTabContainer;
     private TimelineContainer timelineContainer;
     private Container trackTabContainer;
-
-    public float scroll() {
-        float width = ThinGL.windowInterface().getFramebufferWidth();
-        return timelineContainer().scroll(0.99f * width - 0.15625f * width);
-    }
 
     public ScenarioEditorScreen(Scenario scenario) {
         this.scenario = scenario.toBuilder();

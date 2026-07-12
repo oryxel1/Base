@@ -29,7 +29,7 @@ public class AOContainer extends Container {
         };
 
         if (currentTab != null) {
-            this.addChild(currentTab, c -> c.layoutOptions(BorderPosition.BOTTOM));
+            this.addChild(currentTab, c -> c.layoutOptions(BorderPosition.CENTER));
         }
     }
 
@@ -37,8 +37,15 @@ public class AOContainer extends Container {
         super(BorderLayout.INSTANCE);
         this.screen = screen;
 
+        this.addChild(new Component() {
+            @Override
+            public Size computeIdealSize(Size size) {
+                return new Size(10, 10);
+            }
+        }, c -> c.layoutOptions(BorderPosition.LEFT));
+
         this.addChild(new AOTabContainer(this), c -> c.layoutOptions(BorderPosition.TOP));
-        this.addChild(new AoMediaTab(), c -> c.layoutOptions(BorderPosition.BOTTOM));
+        this.addChild(new AoMediaTab(), c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
     @Override

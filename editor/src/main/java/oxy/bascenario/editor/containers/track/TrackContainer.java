@@ -31,9 +31,6 @@ public class TrackContainer extends Container {
     @Getter
     private float height = 60f;
 
-    @Getter
-    private float cachedWidth;
-
     public TrackContainer(TimelineContainer container) {
         super(AbsoluteLayout.INSTANCE);
         this.container = container;
@@ -48,17 +45,16 @@ public class TrackContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
-        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(40, 40, 40));
-        super.render(renderer, bounds);
+    public void render(Renderer renderer, Size size) {
+        renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(40, 40, 40));
+        super.render(renderer, size);
     }
 
     @Override
     protected boolean onComponentDrop(DropEvent event, Size bounds) {
         container.screen().playing(false);
 
-        final float TOTAL_TIME = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
-        long time = (long) (TOTAL_TIME * (event.x() / cachedWidth));
+        long time = (long) (event.x() / container.screen().oneMilSecondWidth());
 
         long duration = TimeCompiler.compileTime(event.dragData());
         if (duration == Long.MAX_VALUE) {
@@ -130,22 +126,22 @@ public class TrackContainer extends Container {
         this.container.trackListContainer().selectionManager().prevX(event.x());
         this.container.trackListContainer().selectionManager().prevY(event.y());
 
-        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
+//        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
         for (Component baseComponent : children()) {
             if (!(baseComponent instanceof ObjectComponent component) || !this.container.trackListContainer().selectionManager().isSelected(component)) {
                 continue;
             }
 
-            component.object().start += (long) ((delta / cachedWidth) * maxTime);
-            component.object().start = Math.max(0, component.object().start);
-            float newX = TimelineContainer.timestampToPosition(
-                    component.object().start,
-                    0,
-                    cachedWidth,
-                    container.screen().scale()
-            );
+//            component.object().start += (long) ((delta / cachedWidth) * maxTime);
+//            component.object().start = Math.max(0, component.object().start);
+//            float newX = TimelineContainer.timestampToPosition(
+//                    component.object().start,
+//                    0,
+//                    cachedWidth,
+//                    container.screen().scale()
+//            );
 
-            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
+//            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
         }
 
         return super.onComponentMouseMove(event, size);
@@ -153,9 +149,8 @@ public class TrackContainer extends Container {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        cachedWidth = constraints.width();
         Size idealSize = super.computeIdealSize(new Size(constraints.width(), height));
-        return new Size(Math.max(idealSize.width(), constraints.width()), height);
+        return new Size(idealSize.width(), height);
     }
 
     public int index() {

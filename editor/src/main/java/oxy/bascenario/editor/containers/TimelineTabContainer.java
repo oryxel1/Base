@@ -25,7 +25,7 @@ public class TimelineTabContainer extends Container {
     public TimelineTabContainer(final ScenarioEditorScreen screen) {
         super(AnchorLayout.INSTANCE);
 
-        final Slider slider = new Slider(0.01, 5, 0.01, 1);
+        final Slider slider = new Slider(0.5, 5, 0.01, 1);
         slider.barHeight().set(5f);
         slider.thumbWidth().set(20f);
         slider.thumbHeight().set(20f);

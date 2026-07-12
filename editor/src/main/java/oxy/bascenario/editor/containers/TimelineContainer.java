@@ -7,13 +7,10 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.timeline.TimelineTimeSection;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
-
-import static oxy.bascenario.editor.ScenarioEditorScreen.DEFAULT_MAX_TIME;
 
 @Accessors(fluent = true)
 public class TimelineContainer extends Container {
@@ -31,10 +28,6 @@ public class TimelineContainer extends Container {
         this.addChild(trackListContainer = new TrackListContainer(this), c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
-    public float scroll(float width) {
-        return trackListContainer.scrollX() / width;
-    }
-
     @Override
     public void render(Renderer renderer, Size bounds) {
         renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(35, 35, 35).darker());
@@ -44,7 +37,7 @@ public class TimelineContainer extends Container {
     }
 
     private void drawTimelineCursor(Renderer renderer, Size bounds) {
-        final float cursorX = legacyTimestampToPosition(screen.timestamp(), 0, bounds.width(), screen.scale(), screen.scroll());
+        final float cursorX = screen.timestamp() * (screen.oneSecondWidth() / 1000f) - trackListContainer.scrollX();
 
         renderer.fillTriangle(cursorX + 1.25f - 10, 0, cursorX + 1.25f, 10, cursorX + 1.25f + 10, 0, TIMELINE_CURSOR_COLOR);
         renderer.fillRect(cursorX, 0, 2, bounds.height(), TIMELINE_CURSOR_COLOR.withAlphaF(0.8f));
@@ -56,10 +49,6 @@ public class TimelineContainer extends Container {
     }
 
     public static float timestampToPosition(long timestamp, float offsetX, float size, float scale) {
-        return offsetX + (timestamp / (DEFAULT_MAX_TIME * scale)) * size;
-    }
-
-    public static float legacyTimestampToPosition(long timestamp, float offsetX, float size, float scale, float scroll) {
-        return offsetX + ((timestamp - (DEFAULT_MAX_TIME * scale * scroll)) / (DEFAULT_MAX_TIME * scale)) * size;
+        return offsetX + (timestamp * size * scale);
     }
 }

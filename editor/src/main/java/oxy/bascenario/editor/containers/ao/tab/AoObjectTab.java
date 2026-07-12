@@ -14,6 +14,7 @@ import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.editor.ScenarioEditorScreen;
+import oxy.bascenario.editor.containers.object.FakeObjectComponent;
 import oxy.bascenario.util.TimeCompiler;
 import oxy.bascenario.util.components.TextWithName;
 
@@ -39,20 +40,11 @@ public class AoObjectTab extends ScrollContainer {
         if (duration == Long.MAX_VALUE) {
             duration = 1000L;
         }
-        float screenWidth = ThinGL.windowInterface().getFramebufferWidth();
-        final float width = (0.99f * screenWidth - 0.15625f * screenWidth) * (duration / (ScenarioEditorScreen.DEFAULT_MAX_TIME * screen.scale()));
 
+        long fDuration = duration;
         component.mouseDownListener().add((ignored, bounds) -> {
-            Button ghost = new Button(new Label(""), _ -> {});
-            ghost.interactive(false);
-            ghost.inactiveColor().set(Color.fromRGB(35, 35, 35).withAlphaF(0.5f));
-
-            rivet().dragAndDropManager().startDrag(object,
-                    ghost,
-                    new Size(width, 30),
-                    0,
-                    -30 / 2f
-            );
+            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, fDuration, 0, 0);
+            rivet().dragAndDropManager().startDrag(object, ghost, 0, -60 / 2f);
             return true;
         });
 
