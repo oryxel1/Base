@@ -25,14 +25,10 @@ public class SelectionManager {
     private float x, y;
     private float x1, y1;
 
-    private Rectangle range = Rectangle.EMPTY;
-
-    public void render(Renderer renderer, Rectangle range) {
+    public void render(Renderer renderer) {
         if (x == 0 && y == 0) {
             return;
         }
-        this.range = range;
-
         float minX = Math.min(x, x1), minY = Math.min(y, y1);
         float maxX = Math.max(x, x1), maxY = Math.max(y, y1);
 

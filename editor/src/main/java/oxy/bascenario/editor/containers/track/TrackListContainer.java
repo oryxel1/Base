@@ -53,7 +53,7 @@ public class TrackListContainer extends ScrollContainer {
 
         super.render(renderer, bounds);
 
-        this.selectionManager.render(renderer, timelineContainer.childBounds(this));
+        this.selectionManager.render(renderer);
     }
 
     @Override
