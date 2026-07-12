@@ -1,4 +1,4 @@
-package oxy.bascenario.util.components;
+package oxy.bascenario.utils.components;
 
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.Texture;
@@ -6,7 +6,6 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.Base;

@@ -6,22 +6,19 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 import oxy.bascenario.editor.containers.object.ObjectOrEvent;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
-import oxy.bascenario.util.TimeCompiler;
+import oxy.bascenario.utils.TimeCompiler;
 
 @Accessors(fluent = true)
 public class TrackContainer extends Container {
@@ -126,22 +123,21 @@ public class TrackContainer extends Container {
         this.container.trackListContainer().selectionManager().prevX(event.x());
         this.container.trackListContainer().selectionManager().prevY(event.y());
 
-//        final float maxTime = ScenarioEditorScreen.DEFAULT_MAX_TIME * container.screen().scale();
         for (Component baseComponent : children()) {
             if (!(baseComponent instanceof ObjectComponent component) || !this.container.trackListContainer().selectionManager().isSelected(component)) {
                 continue;
             }
 
-//            component.object().start += (long) ((delta / cachedWidth) * maxTime);
-//            component.object().start = Math.max(0, component.object().start);
-//            float newX = TimelineContainer.timestampToPosition(
-//                    component.object().start,
-//                    0,
-//                    cachedWidth,
-//                    container.screen().scale()
-//            );
+            component.object().start += (long) (delta / container().screen().oneMilSecondWidth());
+            component.object().start = Math.max(0, component.object().start);
+            float newX = TimelineContainer.timestampToPosition(
+                    component.object().start,
+                    0,
+                    container().screen().oneMilSecondWidth(),
+                    container.screen().scale()
+            );
 
-//            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
+            component.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
         }
 
         return super.onComponentMouseMove(event, size);

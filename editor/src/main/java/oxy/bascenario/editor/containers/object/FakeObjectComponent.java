@@ -8,10 +8,8 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
-import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.TimelineContainer;
-import oxy.bascenario.editor.containers.track.TrackContainer;
-import oxy.bascenario.util.NameUtils;
+import oxy.bascenario.utils.NameUtils;
 
 @AllArgsConstructor
 @Accessors(fluent = true)

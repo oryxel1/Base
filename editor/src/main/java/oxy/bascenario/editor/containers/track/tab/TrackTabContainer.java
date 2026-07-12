@@ -3,18 +3,14 @@ package oxy.bascenario.editor.containers.track.tab;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.component.impl.Image;
 import net.lenni0451.rivet.input.mouse.MouseButton;
-import net.lenni0451.rivet.layout.Layout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.layout.anchor.AnchorLayout;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.Base;
 import oxy.bascenario.editor.containers.track.TrackContainer;
-import oxy.bascenario.util.components.ButtonImage;
+import oxy.bascenario.utils.components.ButtonImage;
 
 public class TrackTabContainer extends Container {
     private final TrackContainer container;

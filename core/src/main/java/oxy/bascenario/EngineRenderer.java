@@ -107,6 +107,7 @@ public final class EngineRenderer extends Game {
         this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
         setupRivetCallbacks();
+        RivetUtil.setupTheme(rivet);
 
         this.setScreen(this.initialScreen);
 

@@ -1,13 +1,9 @@
 package oxy.bascenario.editor.containers.ao.tab;
 
-import net.lenni0451.commons.color.Color;
-import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
-import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
-import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
@@ -15,8 +11,8 @@ import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.object.FakeObjectComponent;
-import oxy.bascenario.util.TimeCompiler;
-import oxy.bascenario.util.components.TextWithName;
+import oxy.bascenario.utils.TimeCompiler;
+import oxy.bascenario.utils.components.TextWithName;
 
 public class AoObjectTab extends ScrollContainer {
     public AoObjectTab(ScenarioEditorScreen screen) {

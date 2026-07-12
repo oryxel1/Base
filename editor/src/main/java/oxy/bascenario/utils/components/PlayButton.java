@@ -1,9 +1,11 @@
-package oxy.bascenario.util.components;
+package oxy.bascenario.utils.components;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
+import net.lenni0451.rivet.backend.Texture;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
 import net.lenni0451.rivet.component.Component;
@@ -11,45 +13,40 @@ import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.theme.ThemeOption;
-import net.raphimc.thingl.ThinGL;
-import net.raphimc.thingl.gl.resource.image.texture.impl.Texture2D;
+import oxy.bascenario.Base;
 import oxy.bascenario.utils.animation.math.ColorAnimations;
 
-import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 @Accessors(fluent = true, chain = true, makeFinal = true)
-public class ButtonImage extends Component {
-    private boolean hovered = false;
-
-    @Getter
-    private final ThinGLTexture texture;
-
-    private final ClickListener clickListener;
-
-    @Getter
-    private final ThemeOption<Color> hoverColor;
+public class PlayButton extends Component {
+    @Setter
+    private boolean state;
+    private Consumer<Boolean> onStateChanged;
 
     @Getter
     private final ThemeOption<Integer> blendDuration;
 
     private final ColorAnimations color = new ColorAnimations(Color.WHITE);
 
-    public ButtonImage(final Texture2D texture, final ClickListener clickListener) {
-        this.texture = new ThinGLTexture(texture);
-        this.clickListener = clickListener;
-
-        this.hoverColor = new ThemeOption<>(this, null);
-        this.hoverColor.set(Color.WHITE);
+    private Texture texture1, texture2;
+    public PlayButton(boolean state, Consumer<Boolean> onStateChanged) {
+        this.state = state;
+        this.onStateChanged = onStateChanged;
 
         this.blendDuration = new ThemeOption<>(this, null);
         this.blendDuration.set(800);
+
+        this.texture1 = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/pause_18.png"));
+        this.texture2 = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/play_18.png"));
     }
 
     @Override
     protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
-            clickListener.onClick(event);
+            this.state = !this.state;
+            onStateChanged.accept(this.state);
             return true;
         }
 
@@ -58,33 +55,21 @@ public class ButtonImage extends Component {
 
     @Override
     public void render(final Renderer renderer, final Size size) {
-        renderer.image(this.texture, 0, 0, size.width(), size.height(), color.color());
+        renderer.image(state ? this.texture1 : this.texture2, 0, 0, size.width(), size.height(), color.color());
     }
 
     @Override
     public Size computeIdealSize(final Size constraints) {
-        return new Size(this.texture.width(), this.texture.height());
-    }
-
-    @Override
-    protected void onComponentRemoved() {
-        this.hovered = false;
-    }
-
-    @Override
-    protected void onComponentDisabled() {
-        this.hovered = false;
+        return new Size(18, 18);
     }
 
     @Override
     protected void onComponentMouseEnter() {
-        this.hovered = true;
-        color.set(this.hoverColor.value(), this.blendDuration.value());
+        color.set(Color.fromRGB(202, 74, 92), this.blendDuration.value());
     }
 
     @Override
     protected void onComponentMouseLeave() {
-        this.hovered = false;
         color.set(Color.WHITE, this.blendDuration.value());
     }
 

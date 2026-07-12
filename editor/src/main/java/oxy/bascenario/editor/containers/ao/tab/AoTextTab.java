@@ -11,7 +11,7 @@ import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.object.FakeObjectComponent;
-import oxy.bascenario.util.components.TypingLabel;
+import oxy.bascenario.utils.components.TypingLabel;
 
 import java.util.List;
 

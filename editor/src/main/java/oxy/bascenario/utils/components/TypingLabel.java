@@ -1,4 +1,4 @@
-package oxy.bascenario.util.components;
+package oxy.bascenario.utils.components;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,6 @@ import net.lenni0451.commons.math.MathUtils;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import net.lenni0451.rivet.theme.Theme;

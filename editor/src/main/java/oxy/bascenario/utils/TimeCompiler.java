@@ -1,4 +1,4 @@
-package oxy.bascenario.util;
+package oxy.bascenario.utils;
 
 import oxy.bascenario.api.event.ScreenTransitionEvent;
 import oxy.bascenario.api.event.background.ClearBackgroundEvent;

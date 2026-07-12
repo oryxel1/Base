@@ -9,10 +9,9 @@ import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.slider.Slider;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
-import oxy.bascenario.util.components.PlayButton;
+import oxy.bascenario.utils.components.PlayButton;
 
 @Accessors(fluent = true)
 public class TimelineTabContainer extends Container {

@@ -9,10 +9,9 @@ import net.lenni0451.rivet.input.keyboard.ModifierKey;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
-import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
-import oxy.bascenario.util.NameUtils;
+import oxy.bascenario.utils.NameUtils;
 
 @Accessors(fluent = true)
 public class ObjectComponent extends Component {
