@@ -14,7 +14,7 @@ import oxy.bascenario.editor.containers.track.TrackListContainer;
 
 @Accessors(fluent = true)
 public class TimelineContainer extends Container {
-    private static final Color TIMELINE_CURSOR_COLOR = Color.fromRGB(202, 74, 92);
+    private static final Color TIMELINE_CURSOR_COLOR = Color.fromRGB(145, 218, 255);
     @Getter
     private final TrackListContainer trackListContainer;
 

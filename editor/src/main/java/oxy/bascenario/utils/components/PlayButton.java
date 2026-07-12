@@ -65,7 +65,7 @@ public class PlayButton extends Component {
 
     @Override
     protected void onComponentMouseEnter() {
-        color.set(Color.fromRGB(202, 74, 92), this.blendDuration.value());
+        color.set(Color.fromRGB(145, 218, 255), this.blendDuration.value());
     }
 
     @Override

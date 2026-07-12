@@ -15,7 +15,7 @@ import oxy.bascenario.utils.NameUtils;
 
 @Accessors(fluent = true)
 public class ObjectComponent extends Component {
-    private static final Color OBJECT_COLOR = Color.fromRGB(202, 74, 92).darker();
+    private static final Color OBJECT_COLOR = Color.fromRGB(145, 218, 255).darker();
 
     private final TrackListContainer parent;
     @Getter
@@ -31,8 +31,8 @@ public class ObjectComponent extends Component {
 
     @Override
     public void render(Renderer renderer, Size bounds) {
-        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(30, 30, 30));
-        renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, 2, parent.selectionManager().isSelected(this) ? Color.WHITE : OBJECT_COLOR);
+        renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(30, 30, 30));
+        renderer.outlineRect(0, 0, bounds.width(), bounds.height(), 2, parent.selectionManager().isSelected(this) ? Color.WHITE : OBJECT_COLOR);
 
         renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 

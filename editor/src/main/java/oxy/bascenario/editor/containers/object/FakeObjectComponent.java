@@ -24,8 +24,8 @@ public class FakeObjectComponent extends Component {
     @Override
     public void render(Renderer renderer, Size bounds) {
         renderer.translate(offsetX, offsetY, () -> {
-            renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, Color.fromRGB(30, 30, 30));
-            renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, 2, Color.fromRGB(202, 74, 92).darker());
+            renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(30, 30, 30));
+            renderer.outlineRect(0, 0, bounds.width(), bounds.height(), 2, Color.fromRGB(145, 218, 255).darker());
 
             renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
         });

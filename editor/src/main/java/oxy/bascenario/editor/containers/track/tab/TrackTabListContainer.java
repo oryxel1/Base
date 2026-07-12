@@ -55,7 +55,7 @@ public class TrackTabListContainer extends Container {
                 timelineContainer.trackListContainer().container().addChild(component);
                 container.addChild(new TrackTabContainer(component));
             });
-            add.hoverColor().set(Color.fromRGB(202, 74, 92));
+            add.hoverColor().set(Color.fromRGB(145, 218, 255));
 
             this.addChild(add, c -> c.layoutOptions(new AbsoluteLayoutOptions(5, 5)));
         }

@@ -82,7 +82,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         }
         since = System.currentTimeMillis();
 
-        ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight(), Color.fromRGB(50, 50, 50));
+        ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight(), Color.fromRGB(22, 22, 22));
     }
 
     @Override
@@ -90,29 +90,30 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         Container container = new Container(AnchorLayout.INSTANCE);
 
         container.addChild(new AOContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.06f).withAnchorMaxX(0.2f).withAnchorMaxY(0.6f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.005f).withAnchorMinY(0.02f).withAnchorMaxX(0.20f).withAnchorMaxY(0.6f));
+        });
+
+        // preview
+        container.addChild(new SolidColor(), c -> {
+            c.color(Color.BLACK);
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.205f).withAnchorMinY(0.02f).withAnchorMaxX(0.8f).withAnchorMaxY(0.55f));
         });
 
         container.addChild(new SolidColor(), c -> {
-            c.color(Color.fromRGB(35, 35, 35));
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.205f).withAnchorMinY(0.06f).withAnchorMaxX(0.8f).withAnchorMaxY(0.6f));
-        });
-
-        container.addChild(new SolidColor(), c -> {
-            c.color(Color.fromRGB(35, 35, 35));
+//            c.color(Color.fromRGB(35, 35, 35));
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.805f).withAnchorMinY(0.06f).withAnchorMaxX(0.99f).withAnchorMaxY(0.6f));
         });
 
         container.addChild(timelineContainer = new TimelineContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.15625f).withAnchorMinY(0.655f).withAnchorMaxX(0.99f).withAnchorMaxY(0.99f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.15525f).withAnchorMinY(0.61f).withAnchorMaxX(1).withAnchorMaxY(1));
         });
 
         container.addChild(new TrackTabListContainer(trackTabContainer = new Container(new VerticalListLayout(3, false)), timelineContainer), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.655f).withAnchorMaxX(0.15625f).withAnchorMaxY(0.99f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0).withAnchorMinY(0.61f).withAnchorMaxX(0.15525f).withAnchorMaxY(1));
         });
 
         container.addChild(timelineTabContainer = new TimelineTabContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.01f).withAnchorMinY(0.605f).withAnchorMaxX(0.99f).withAnchorMaxY(0.65f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.205f).withAnchorMinY(0.55f).withAnchorMaxX(0.8f).withAnchorMaxY(0.6f));
         });
 
 //        RivetUtil.dropDownList(container, "Timeline", AnchorLayoutOptions.EMPTY.withAnchorMinX(0.015f).withAnchorMinY(0.01f),

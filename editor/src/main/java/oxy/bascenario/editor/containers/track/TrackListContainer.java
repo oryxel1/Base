@@ -53,7 +53,7 @@ public class TrackListContainer extends ScrollContainer {
         prevWidth = bounds.width();
 
         if (container.children().isEmpty()) {
-            renderer.fillRoundedRect(0, 0, 300, 60f, 5, Color.fromRGB(50, 50, 50));
+            renderer.fillRect(0, 0, 300, 60f, Color.fromRGB(50, 50, 50));
             renderer.scale(0.4f, () -> {
                 ShapedText text = this.rivet().backend().font().shapeText("Drop anything here to get started.", Color.WHITE);
                 renderer.text(text, 50,(60f / 2f - (this.rivet().backend().font().height() * 0.4f) / 2f) / 0.4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
