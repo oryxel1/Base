@@ -15,6 +15,8 @@ import oxy.bascenario.utils.NameUtils;
 @Accessors(fluent = true)
 public class FakeObjectComponent extends Component {
     private final TimelineContainer timelineContainer;
+
+    @Getter
     private final Object object;
     private final long duration;
 

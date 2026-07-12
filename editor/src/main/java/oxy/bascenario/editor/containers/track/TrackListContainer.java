@@ -39,6 +39,9 @@ public class TrackListContainer extends ScrollContainer {
     public TrackListContainer(TimelineContainer timelineContainer) {
         super(container = new Container(new VerticalListLayout(3, false)), true, true);
         this.timelineContainer = timelineContainer;
+
+        final TrackContainer component = new TrackContainer(timelineContainer);
+        container.addChild(component);
     }
 
     private float prevWidth;
@@ -51,15 +54,6 @@ public class TrackListContainer extends ScrollContainer {
         }
 
         prevWidth = bounds.width();
-
-        if (container.children().isEmpty()) {
-            renderer.fillRect(0, 0, 300, 60f, Color.fromRGB(50, 50, 50));
-            renderer.scale(0.4f, () -> {
-                ShapedText text = this.rivet().backend().font().shapeText("Drop anything here to get started.", Color.WHITE);
-                renderer.text(text, 50,(60f / 2f - (this.rivet().backend().font().height() * 0.4f) / 2f) / 0.4f, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
-            });
-        }
-
         super.render(renderer, bounds);
 
         this.selectionManager.render(renderer, timelineContainer.childBounds(this));
@@ -70,18 +64,18 @@ public class TrackListContainer extends ScrollContainer {
         if (!container.children().isEmpty()) {
             return super.onComponentDrop(event, bounds);
         }
-        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < 60f) {
-            final TrackContainer component = new TrackContainer(timelineContainer);
-            container.addChild(component);
-
-            timelineContainer.screen().trackTabContainer().addChild(new TrackTabContainer(component));
-
-            long duration = TimeCompiler.compileTime(event.dragData());
-            if (duration == Long.MAX_VALUE) {
-                duration = 1000L;
-            }
-            add(component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
-        }
+//        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < 60f) {
+//            final TrackContainer component = new TrackContainer(timelineContainer);
+//            container.addChild(component);
+//
+//            timelineContainer.screen().trackTabContainer().addChild(new TrackTabContainer(component));
+//
+//            long duration = TimeCompiler.compileTime(event.dragData());
+//            if (duration == Long.MAX_VALUE) {
+//                duration = 1000L;
+//            }
+//            add(component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
+//        }
 
         return super.onComponentDrop(event, bounds);
     }

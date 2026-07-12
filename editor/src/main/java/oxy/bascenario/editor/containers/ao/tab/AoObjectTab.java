@@ -40,7 +40,7 @@ public class AoObjectTab extends ScrollContainer {
         long fDuration = duration;
         component.mouseDownListener().add((ignored, bounds) -> {
             FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, fDuration, 0, 0);
-            rivet().dragAndDropManager().startDrag(object, ghost, 0, -60 / 2f);
+            rivet().dragAndDropManager().startDrag(ghost, ghost, 0, -60 / 2f);
             return true;
         });
 

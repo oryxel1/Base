@@ -26,7 +26,7 @@ public class AoTextTab extends ScrollContainer {
             FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L, 0, 0);
 
             rivet().dragAndDropManager().startDrag(
-                    object,
+                    ghost,
                     ghost,
                     0,
                     -30 / 2f
@@ -42,7 +42,7 @@ public class AoTextTab extends ScrollContainer {
             FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L, 0, 0);
 
             rivet().dragAndDropManager().startDrag(
-                    object,
+                    ghost,
                     ghost,
                     0,
                     -60 / 2f

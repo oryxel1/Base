@@ -15,6 +15,7 @@ import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.containers.TimelineContainer;
+import oxy.bascenario.editor.containers.object.FakeObjectComponent;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 import oxy.bascenario.editor.containers.object.ObjectOrEvent;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
@@ -51,52 +52,56 @@ public class TrackContainer extends Container {
     protected boolean onComponentDrop(DropEvent event, Size bounds) {
         container.screen().playing(false);
 
-        long time = (long) (event.x() / container.screen().oneMilSecondWidth());
-
-        long duration = TimeCompiler.compileTime(event.dragData());
-        if (duration == Long.MAX_VALUE) {
-            duration = 1000L;
-        }
-
-        final ObjectOrEvent object = new ObjectOrEvent(time, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true);
-
-        TrackContainer track = this;
-        while (true) {
-            boolean accepted = true;
-            for (Component baseComponent : track.children()) {
-                if (!(baseComponent instanceof ObjectComponent component)) {
-                    continue;
-                }
-
-                long otherMin = component.object().start;
-
-                long maxTime = component.object().start + component.object().duration;
-                long otherMaxTime = component.object().start + component.object().duration;
-
-                if (maxTime >= otherMin && time <= otherMaxTime) {
-                    accepted = false;
-                    break;
-                }
+        event.dragData().forEach(data -> {
+            if (!(data instanceof FakeObjectComponent dataComponent)) {
+                return;
+            }
+            long time = (long) ((event.x() + dataComponent.offsetX()) / container.screen().oneMilSecondWidth());
+            long duration = TimeCompiler.compileTime(dataComponent.object());
+            if (duration == Long.MAX_VALUE) {
+                duration = 1000L;
             }
 
-            if (!accepted) {
-                int size = container.trackListContainer().container().children().size();
-                if (track.index() >= size - 1) {
-                    track = new TrackContainer(container);
-                    container.trackListContainer().container().addChild(track);
-                    container.screen().trackTabContainer().addChild(new TrackTabContainer(track));
-                    break;
+            final ObjectOrEvent object = new ObjectOrEvent(time, duration, dataComponent.object(), RenderLayer.ABOVE_DIALOGUE, true);
+
+            TrackContainer track = this;
+            while (true) {
+                boolean accepted = true;
+                for (Component baseComponent : track.children()) {
+                    if (!(baseComponent instanceof ObjectComponent component)) {
+                        continue;
+                    }
+
+                    long otherMin = component.object().start;
+
+                    long maxTime = component.object().start + component.object().duration;
+                    long otherMaxTime = component.object().start + component.object().duration;
+
+                    if (maxTime >= otherMin && time <= otherMaxTime) {
+                        accepted = false;
+                        break;
+                    }
+                }
+
+                if (!accepted) {
+                    int size = container.trackListContainer().container().children().size();
+                    if (track.index() >= size - 1) {
+                        track = new TrackContainer(container);
+                        container.trackListContainer().container().addChild(track);
+                        container.screen().trackTabContainer().addChild(new TrackTabContainer(track));
+                        break;
+                    } else {
+                        track = (TrackContainer) container.trackListContainer().container().children().get(track.index() + 1);
+                    }
                 } else {
-                    track = (TrackContainer) container.trackListContainer().container().children().get(track.index() + 1);
+                    break;
                 }
-            } else {
-                break;
             }
-        }
 
-        track.addChild(new ObjectComponent(this.container.trackListContainer(), track, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x(), 0)));
+            track.addChild(new ObjectComponent(this.container.trackListContainer(), track, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(event.x() + dataComponent.offsetX(), 0)));
+        });
 
-        return super.onComponentDrop(event, bounds);
+        return !event.dragData().isEmpty();
     }
 
     @Override
