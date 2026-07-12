@@ -10,7 +10,7 @@ import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
 import oxy.bascenario.editor.ScenarioEditorScreen;
-import oxy.bascenario.editor.containers.object.FakeObjectComponent;
+import oxy.bascenario.utils.drag.FakeObjectComponent;
 import oxy.bascenario.utils.components.TypingLabel;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class AoTextTab extends ScrollContainer {
         final Button defaultText = new Button(new Label("Default Text").scale(0.7f), ignored -> {});
         defaultText.mouseDownListener().add((ignored, size) -> {
             final Object object = new Text(List.of(TextSegment.builder().text("Default Text").build()), 42);
-            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L, 0, 0);
+            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L);
 
             rivet().dragAndDropManager().startDrag(
                     ghost,
@@ -39,7 +39,7 @@ public class AoTextTab extends ScrollContainer {
         final Button typingText = new Button(new TypingLabel("Typing Text").scale(0.7f), ignored -> {});
         typingText.mouseDownListener().add((ignored, bounds) -> {
             final Object object = new AnimatedText(1, List.of(TextSegment.builder().text("Typing Text").build()), 42);
-            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L, 0, 0);
+            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, 1000L);
 
             rivet().dragAndDropManager().startDrag(
                     ghost,

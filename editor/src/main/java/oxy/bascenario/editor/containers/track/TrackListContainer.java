@@ -57,34 +57,8 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentDrop(DropEvent event, Size bounds) {
-        if (!container.children().isEmpty()) {
-            return super.onComponentDrop(event, bounds);
-        }
-//        if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < 60f) {
-//            final TrackContainer component = new TrackContainer(timelineContainer);
-//            container.addChild(component);
-//
-//            timelineContainer.screen().trackTabContainer().addChild(new TrackTabContainer(component));
-//
-//            long duration = TimeCompiler.compileTime(event.dragData());
-//            if (duration == Long.MAX_VALUE) {
-//                duration = 1000L;
-//            }
-//            add(component, new ObjectOrEvent(0, duration, event.dragData(), RenderLayer.ABOVE_DIALOGUE, true));
-//        }
-
-        return super.onComponentDrop(event, bounds);
-    }
-
-    @Override
     public Size computeIdealSize(Size constraints) {
         return constraints;
-    }
-
-    private void add(TrackContainer container, ObjectOrEvent object) {
-        float newX = TimelineContainer.timestampToPosition(object.start, 0, timelineContainer.screen().oneMilSecondWidth(), timelineContainer.screen().scale());
-        container.addChild(new ObjectComponent(this, container, object), c -> c.layoutOptions(new AbsoluteLayoutOptions(newX, 0)));
     }
 
     public void recalculateObjectPosition() {
@@ -144,7 +118,7 @@ public class TrackListContainer extends ScrollContainer {
     @Override
     protected boolean onComponentKeyUp(KeyEvent event) {
         if (event.key() == Key.DELETE) {
-            selectionManager.objects().forEach(component -> component.parentTrack().removeChild(component));
+            selectionManager.objects().forEach(component -> ((Container)component.parent()).removeChild(component));
             selectionManager().objects().clear();
         }
 

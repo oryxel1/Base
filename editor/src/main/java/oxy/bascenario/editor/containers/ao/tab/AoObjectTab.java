@@ -10,7 +10,7 @@ import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
 import oxy.bascenario.api.render.elements.text.font.FontType;
 import oxy.bascenario.editor.ScenarioEditorScreen;
-import oxy.bascenario.editor.containers.object.FakeObjectComponent;
+import oxy.bascenario.utils.drag.FakeObjectComponent;
 import oxy.bascenario.utils.TimeCompiler;
 import oxy.bascenario.utils.components.TextWithName;
 
@@ -39,7 +39,7 @@ public class AoObjectTab extends ScrollContainer {
 
         long fDuration = duration;
         component.mouseDownListener().add((ignored, bounds) -> {
-            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, fDuration, 0, 0);
+            FakeObjectComponent ghost = new FakeObjectComponent(screen.timelineContainer(), object, fDuration);
             rivet().dragAndDropManager().startDrag(ghost, ghost, 0, -60 / 2f);
             return true;
         });

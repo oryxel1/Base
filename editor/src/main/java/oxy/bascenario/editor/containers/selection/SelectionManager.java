@@ -20,9 +20,6 @@ public class SelectionManager {
         return objects.contains(component);
     }
 
-    @Getter
-    private float prevX = Float.MAX_VALUE, prevY = Float.MAX_VALUE;
-
     private float x, y;
     private float x1, y1;
 
