@@ -5,16 +5,13 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.object.ObjectComponent;
 import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
-import oxy.bascenario.utils.Launcher;
 import oxy.bascenario.utils.NameUtils;
 
 import java.util.List;
@@ -61,7 +58,7 @@ public class SecondaryDragComponent extends Component {
 
                     long otherMin = component.object().start;
 
-                    long maxTime = component.object().start + component.object().duration;
+                    long maxTime = object.object().start + object.object().duration;
                     long otherMaxTime = component.object().start + component.object().duration;
 
                     if (maxTime >= otherMin && time <= otherMaxTime) {

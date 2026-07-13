@@ -30,8 +30,11 @@ public class AOContainer extends Container {
             case Object -> new AoObjectTab(screen);
             default -> null;
         };
-
         if (currentTab != null) {
+            final DecoratedContainer container = new DecoratedContainer(new SolidColor(), currentTab);
+            container.innerPadding(new Padding(0, 0, 10, 0));
+            currentTab = container;
+
             this.addChild(currentTab, c -> c.layoutOptions(BorderPosition.CENTER));
         }
     }
