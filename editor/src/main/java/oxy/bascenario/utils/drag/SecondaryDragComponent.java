@@ -14,7 +14,7 @@ import oxy.bascenario.editor.containers.track.TrackContainer;
 import oxy.bascenario.editor.containers.track.tab.TrackTabContainer;
 import oxy.bascenario.utils.NameUtils;
 
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class SecondaryDragComponent extends Component {
@@ -86,18 +86,28 @@ public class SecondaryDragComponent extends Component {
 
             object.layoutOptions(new AbsoluteLayoutOptions(dataX, 0));
             object.object().start = time;
-            if (track == object.parent()) {
-                return;
-            }
-            ((Container)object.parent()).removeChild(object);
             track.addChild(object);
         }
     }
 
     public void handle(final TrackContainer container, float x) {
-        int offset = 0;
+        if (list.isEmpty()) {
+            return;
+        }
+
+        list.sort(Comparator.comparingInt(data -> ((TrackContainer)data.object.parent()).index()));
+
+        int firstIndex = ((TrackContainer)list.getFirst().object.parent()).index();
+
+        final Map<Data, Integer> tempMap = new HashMap<>();
+        for (Data data : list) { // Remove first.
+            tempMap.put(data, ((TrackContainer)data.object.parent()).index());
+            ((Container)data.object.parent()).removeChild(data.object);
+        }
+
         for (Data data : list) {
             TrackContainer trackContainer = container;
+            int offset = tempMap.get(data) - firstIndex;
             if (offset > 0) {
                 int newIndex = trackContainer.index() + offset;
 
@@ -112,8 +122,6 @@ public class SecondaryDragComponent extends Component {
             }
 
             data.handle(trackContainer, x);
-
-            offset++;
         }
     }
 }

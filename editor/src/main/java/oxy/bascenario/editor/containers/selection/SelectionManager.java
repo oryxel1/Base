@@ -36,7 +36,7 @@ public class SelectionManager {
         renderer.outlineRect(minX, minY, maxX - minX, maxY - minY, 2, Color.WHITE);
     }
 
-    public void addIfIntersects(ObjectComponent component, Rectangle rectangle) {
+    public void addOrRemove(ObjectComponent component, Rectangle rectangle) {
         if (x == 0 && y == 0) {
             return;
         }
@@ -47,6 +47,8 @@ public class SelectionManager {
         if (maxX >= rectangle.x() && minX <= rectangle.maxX() && maxY >= rectangle.y() && minY <= rectangle.maxY() +
                 ((Container)component.parent()).parent().childBounds((Component) component.parent()).y()) {
             objects.add(component);
+        } else {
+            objects.remove(component);
         }
     }
 }

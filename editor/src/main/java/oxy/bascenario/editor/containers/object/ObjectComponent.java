@@ -51,7 +51,7 @@ public class ObjectComponent extends Component {
 
         renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
-        this.parent.selectionManager().addIfIntersects(this, parent().childBounds(this));
+        this.parent.selectionManager().addOrRemove(this, parent().childBounds(this));
     }
 
     @Override
