@@ -64,6 +64,6 @@ public class AOContainer extends Container {
     }
 
     public enum Tab {
-        Media, Object, Transition, Actions
+        Media, Spines, Object, Transition, Actions
     }
 }

@@ -1,5 +1,6 @@
 package oxy.bascenario.editor.containers.ao.tab;
 
+import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
@@ -10,6 +11,8 @@ import oxy.bascenario.api.render.elements.LocationInfo;
 import oxy.bascenario.api.render.elements.Preview;
 import oxy.bascenario.api.render.elements.emoticon.Emoticon;
 import oxy.bascenario.api.render.elements.emoticon.EmoticonType;
+import oxy.bascenario.api.render.elements.shape.Circle;
+import oxy.bascenario.api.render.elements.shape.Rectangle;
 import oxy.bascenario.api.render.elements.text.AnimatedText;
 import oxy.bascenario.api.render.elements.text.Text;
 import oxy.bascenario.api.render.elements.text.TextSegment;
@@ -33,6 +36,9 @@ public class AoObjectTab extends ScrollContainer {
         add(screen, container, "Emoticon", "assets/base/uis/editor/objects/emoticon.png", new Emoticon(100, EmoticonType.ANGRY, true));
         add(screen, container, "Text", new Label("Default Text").scale(0.6f), new Text(List.of(TextSegment.builder().text("Text").build()), 42));
         add(screen, container, "Typing Text", new TypingLabel("Typing Text").scale(0.6f), new AnimatedText(1, List.of(TextSegment.builder().text("Typing Text").build()), 42));
+
+        add(screen, container, "Circle", "assets/base/uis/editor/objects/circle.png", new Circle(5, Color.WHITE, false));
+        add(screen, container, "Rectangle", "assets/base/uis/editor/objects/rectangle.png", new Rectangle(500, 500, Color.WHITE, false));
     }
 
     @Override
