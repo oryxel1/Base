@@ -72,7 +72,7 @@ public class SecondaryDragComponent extends Component {
                     if (track.index() >= size - 1) {
                         track = new TrackContainer(container.container());
                         container.container().trackListContainer().container().addChild(track);
-                        container.container().screen().trackTabContainer().addChild(new TrackTabContainer(track));
+                        container.container().trackTabListContainer().addChild(new TrackTabContainer(track));
                         break;
                     } else {
                         track = (TrackContainer) container.container().trackListContainer().container().children().get(track.index() + 1);
@@ -115,7 +115,7 @@ public class SecondaryDragComponent extends Component {
                 if (newIndex >= size) {
                     trackContainer = new TrackContainer(container.container());
                     container.container().trackListContainer().container().addChild(trackContainer);
-                    container.container().screen().trackTabContainer().addChild(new TrackTabContainer(trackContainer));
+                    container.container().trackTabListContainer().addChild(new TrackTabContainer(trackContainer));
                 } else {
                     trackContainer = (TrackContainer) container.container().trackListContainer().container().children().get(newIndex);
                 }

@@ -9,6 +9,7 @@ import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
 import net.lenni0451.rivet.component.impl.FormattedLabel;
 import net.lenni0451.rivet.component.impl.Label;
+import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
@@ -42,63 +43,26 @@ public class DefaultRivetTest extends RivetThinGLApplication {
     @Override
     protected void init(final Rivet rivet) {
         Container everything = new Container(BorderLayout.INSTANCE);
-        everything.addChild(new Timeline().layoutOptions(BorderPosition.TOP));
-        {
-            Container elements = new Container(AbsoluteLayout.INSTANCE);
-            int extra = 0;
-            for (int i = 0; i < 20; i++) {
-                elements.addChild(new TimelineElement(1).layoutOptions(new AbsoluteLayoutOptions(i * ONE_SECOND + extra, 0)));
-                extra += ONE_SECOND;
-            }
-            everything.addChild(elements.layoutOptions(BorderPosition.CENTER));
-        }
-        rivet.root().addChild(new ScrollContainer(everything, true, true) {
-            @Override
-            public void render(Renderer renderer, Size size) {
-                System.out.println(size);
-                super.render(renderer, size);
-            }
-
+        everything.addChild(new SolidColor(Color.RED) {
             @Override
             public Size computeIdealSize(Size constraints) {
-                System.out.println(constraints);
-                return super.computeIdealSize(constraints);
+                return new Size(100, 20);
             }
-        });
-    }
+        }.layoutOptions(BorderPosition.LEFT));
+        everything.addChild(new Timeline().layoutOptions(BorderPosition.TOP));
 
+        rivet.root().addChild(new ScrollContainer(everything, true, true));
+    }
 
     private static class Timeline extends Component {
         @Override
         public void render(final Renderer renderer, final Size size) {
             renderer.fillRect(0, 0, size.width(), size.height(), Color.LIGHT_GRAY);
-            for (int i = 0; i < size.width() / ONE_SECOND; i++) {
-                renderer.fillRect(i * ONE_SECOND, 0, 1, size.height(), Color.BLACK);
-                renderer.text(this.rivet().backend().font().shapeText(String.valueOf(i), Color.RED), i * ONE_SECOND, size.height() / 2F, TextOrigin.Horizontal.VISUAL_CENTER, TextOrigin.Vertical.VISUAL_CENTER);
-            }
         }
 
         @Override
         public Size computeIdealSize(final Size constraints) {
             return new Size(0, 50);
-        }
-    }
-
-    private static class TimelineElement extends Component {
-        private final int length;
-
-        private TimelineElement(int length) {
-            this.length = length;
-        }
-
-        @Override
-        public void render(final Renderer renderer, final Size size) {
-            renderer.fillRect(0, 0, size.width(), size.height(), Color.BLUE);
-        }
-
-        @Override
-        public Size computeIdealSize(final Size constraints) {
-            return new Size(ONE_SECOND * this.length, 50);
         }
     }
 

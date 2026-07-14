@@ -5,25 +5,21 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
-import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.impl.SolidColor;
-import net.lenni0451.rivet.input.keyboard.KeyEvent;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
 import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
-import net.lenni0451.rivet.math.Rectangle;
 import net.raphimc.thingl.ThinGL;
 import oxy.bascenario.api.Scenario;
 import oxy.bascenario.editor.containers.AOContainer;
 import oxy.bascenario.editor.containers.TimelineContainer;
 import oxy.bascenario.editor.containers.TimelineTabContainer;
+import oxy.bascenario.editor.containers.inspector.InspectorContainer;
 import oxy.bascenario.editor.containers.track.tab.TrackTabListContainer;
 import oxy.bascenario.utils.ExtendableScreen;
 import oxy.bascenario.utils.TimeUtils;
 import oxy.bascenario.utils.thingl.ThinGLUtils;
-
-import java.util.function.Predicate;
 
 @Accessors(fluent = true)
 @Getter
@@ -64,7 +60,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
     private TimelineTabContainer timelineTabContainer;
     private TimelineContainer timelineContainer;
-    private Container trackTabContainer;
+//    private Container trackTabContainer;
 
     public ScenarioEditorScreen(Scenario scenario) {
         this.scenario = scenario.toBuilder();
@@ -90,7 +86,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         Container container = new Container(AnchorLayout.INSTANCE);
 
         container.addChild(new AOContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.005f).withAnchorMinY(0.02f).withAnchorMaxX(0.20f).withAnchorMaxY(0.6f));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.005f).withAnchorMinY(0.02f).withAnchorMaxX(0.2f).withAnchorMaxY(0.6f));
         });
 
         // preview
@@ -99,18 +95,17 @@ public class ScenarioEditorScreen extends ExtendableScreen {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.205f).withAnchorMinY(0.02f).withAnchorMaxX(0.8f).withAnchorMaxY(0.55f));
         });
 
-        container.addChild(new SolidColor(), c -> {
-//            c.color(Color.fromRGB(35, 35, 35));
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.805f).withAnchorMinY(0.06f).withAnchorMaxX(0.99f).withAnchorMaxY(0.6f));
+        container.addChild(new InspectorContainer(), c -> {
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.805f).withAnchorMinY(0.02f).withAnchorMaxX(0.99f).withAnchorMaxY(0.6f));
         });
 
         container.addChild(timelineContainer = new TimelineContainer(this), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.15525f).withAnchorMinY(0.61f).withAnchorMaxX(1).withAnchorMaxY(1));
+            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0).withAnchorMinY(0.61f).withAnchorMaxX(1).withAnchorMaxY(1));
         });
 
-        container.addChild(new TrackTabListContainer(trackTabContainer = new Container(new VerticalListLayout(3, false)), timelineContainer), c -> {
-            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0).withAnchorMinY(0.61f).withAnchorMaxX(0.15525f).withAnchorMaxY(1));
-        });
+//        container.addChild(new TrackTabListContainer(new Container(new VerticalListLayout(3, false)), timelineContainer), c -> {
+//            c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0).withAnchorMinY(0.61f).withAnchorMaxX(0.15525f).withAnchorMaxY(1));
+//        });
 
         container.addChild(timelineTabContainer = new TimelineTabContainer(this), c -> {
             c.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.205f).withAnchorMinY(0.55f).withAnchorMaxX(0.8f).withAnchorMaxY(0.6f));

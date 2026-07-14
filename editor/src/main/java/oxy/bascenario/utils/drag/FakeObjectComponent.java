@@ -74,7 +74,7 @@ public class FakeObjectComponent extends Component {
                 if (track.index() >= size - 1) {
                     track = new TrackContainer(trackContainer.container());
                     trackContainer.container().trackListContainer().container().addChild(track);
-                    trackContainer.container().screen().trackTabContainer().addChild(new TrackTabContainer(track));
+                    trackContainer.container().trackTabListContainer().addChild(new TrackTabContainer(track));
                     break;
                 } else {
                     track = (TrackContainer) trackContainer.container().trackListContainer().container().children().get(track.index() + 1);

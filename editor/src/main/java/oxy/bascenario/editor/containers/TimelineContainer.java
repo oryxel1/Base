@@ -4,13 +4,18 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
+import net.lenni0451.rivet.layout.dock.DockLayout;
+import net.lenni0451.rivet.layout.dock.DockPosition;
+import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.ScenarioEditorScreen;
 import oxy.bascenario.editor.containers.timeline.TimelineTimeSection;
 import oxy.bascenario.editor.containers.track.TrackListContainer;
+import oxy.bascenario.editor.containers.track.tab.TrackTabListContainer;
 
 @Accessors(fluent = true)
 public class TimelineContainer extends Container {
@@ -20,12 +25,17 @@ public class TimelineContainer extends Container {
 
     @Getter
     private final ScenarioEditorScreen screen;
-    public TimelineContainer(ScenarioEditorScreen screen) {
-        super(BorderLayout.INSTANCE);
-        this.screen = screen;
 
-        this.addChild(new TimelineTimeSection(this), c -> c.layoutOptions(BorderPosition.TOP));
-        this.addChild(trackListContainer = new TrackListContainer(this), c -> c.layoutOptions(BorderPosition.CENTER));
+    @Getter
+    private final Container trackTabListContainer;
+    private final Component timelineTimeSection;
+    public TimelineContainer(ScenarioEditorScreen screen) {
+        super(new DockLayout(0));
+        this.screen = screen;
+        this.addChild(new TrackTabListContainer(trackTabListContainer = new Container(new VerticalListLayout(3, false)),
+                this), c -> c.layoutOptions(DockPosition.LEFT));
+        this.addChild(timelineTimeSection = new TimelineTimeSection(this), c -> c.layoutOptions(DockPosition.TOP));
+        this.addChild(trackListContainer = new TrackListContainer(this), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override
@@ -37,7 +47,8 @@ public class TimelineContainer extends Container {
     }
 
     private void drawTimelineCursor(Renderer renderer, Size bounds) {
-        final float cursorX = screen.timestamp() * (screen.oneSecondWidth() / 1000f) - trackListContainer.scrollX();
+        float offsetX = this.childBounds(timelineTimeSection).x();
+        final float cursorX = offsetX + screen.timestamp() * (screen.oneSecondWidth() / 1000f) - trackListContainer.scrollX();
 
         renderer.fillTriangle(cursorX + 1.25f - 10, 0, cursorX + 1.25f, 10, cursorX + 1.25f + 10, 0, TIMELINE_CURSOR_COLOR);
         renderer.fillRect(cursorX, 0, 2, bounds.height(), TIMELINE_CURSOR_COLOR.withAlphaF(0.8f));

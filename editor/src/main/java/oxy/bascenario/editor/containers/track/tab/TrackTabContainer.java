@@ -24,7 +24,7 @@ public class TrackTabContainer extends Container {
                 return;
             }
 
-            this.container.container().screen().trackTabContainer().removeChild(this);
+            this.container.container().trackTabListContainer().removeChild(this);
             this.container.container().trackListContainer().container().removeChild(container);
         });
         trash.hoverColor().set(Color.fromRGB(145, 218, 255));

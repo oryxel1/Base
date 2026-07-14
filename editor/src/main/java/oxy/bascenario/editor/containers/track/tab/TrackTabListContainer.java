@@ -21,7 +21,6 @@ public class TrackTabListContainer extends Container {
     public TrackTabListContainer(Container container, TimelineContainer timelineContainer) {
         super(BorderLayout.INSTANCE);
 
-        // Just to take space.
         this.addChild(new UpperContainer(timelineContainer, container), c -> c.layoutOptions(BorderPosition.TOP));
 
         this.scrollContainer = new ScrollContainer(container, false, true) {
@@ -34,6 +33,11 @@ public class TrackTabListContainer extends Container {
         this.scrollContainer.barWidth().set(0f);
 
         this.addChild(this.scrollContainer, c -> c.layoutOptions(BorderPosition.CENTER));
+    }
+
+    @Override
+    public Size computeIdealSize(Size constraints) {
+        return constraints.withWidth(constraints.width() * 0.15525f);
     }
 
     @Override
