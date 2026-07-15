@@ -7,6 +7,6 @@ public class ScenarioEditorTest {
         final Scenario.Builder scenario = new Scenario.Builder();
         scenario.name("Scenario Editor Test");
 
-        Launcher.launch(new ScenarioEditorScreen(scenario.build()), false);
+        Launcher.launch(new ScenarioEditorScreen(scenario), false);
     }
 }

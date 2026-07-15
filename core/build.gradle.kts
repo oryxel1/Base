@@ -40,6 +40,8 @@ dependencies {
     api(libs.jcraft.jorbis)
     api(libs.javazoom.jlayer)
 
+    api(libs.weisj.jsvg)
+
     listOf("natives-windows", "natives-windows-arm64", "natives-linux", "natives-linux-arm64").forEach {
         api("org.lwjgl:lwjgl:$lwjgl:$it")
         api("org.lwjgl:lwjgl-glfw:$lwjgl:$it")
