@@ -13,8 +13,10 @@ public class EditorValues {
     @Setter
     private static EditorValues instance;
 
+    private TimelineType type = TimelineType.Sequencer;
+
     private boolean playing;
-    private long timestamp = 0;
+    private long timestamp = 1000L;
     private float scale = 1;
     private float scroll;
 
@@ -36,5 +38,9 @@ public class EditorValues {
             timestamp += System.currentTimeMillis() - since;
         }
         since = System.currentTimeMillis();
+    }
+
+    public enum TimelineType {
+        Dope_Sheet, Sequencer
     }
 }

@@ -41,7 +41,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
         mainContainer.addChild(new DecoratedContainer(new SolidColor(), new GlobalContainer()), c -> {
             c.layoutOptions(DockPosition.CENTER);
-            c.innerPadding(new Padding(2, 8, 2, 24));
+            c.innerPadding(new Padding(2, 8, 2, 10));
         });
     }
 }

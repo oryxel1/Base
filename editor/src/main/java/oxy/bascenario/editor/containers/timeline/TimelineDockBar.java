@@ -7,13 +7,13 @@ import oxy.bascenario.utils.components.TimelineDockExpandButton;
 
 public class TimelineDockBar extends Container {
     public TimelineDockBar() {
-        super(new HorizontalListLayout(12, true));
+        super(new HorizontalListLayout(12, false));
 
         addChild(new TimelineDockExpandButton());
     }
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        return constraints.withHeight(25);
+        return constraints.withHeight(24);
     }
 }

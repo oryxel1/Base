@@ -41,7 +41,7 @@ public class GlobalContainer extends Container {
         super.onComponentMouseMove(event, size);
 
         Rectangle timelineBounds = this.childBounds(timeline);
-        boolean nearTimeline = Math.abs(event.y() - timelineBounds.y()) < 15;
+        boolean nearTimeline = Math.abs(event.y() - timelineBounds.y()) < 8;
         if (nearTimeline && !this.nearTimeline) {
             GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
         } else if (!nearTimeline && this.nearTimeline && !nearTimelineAndMouseDown) {
