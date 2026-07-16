@@ -25,7 +25,7 @@ public class SequencerTimeSection extends Component {
             ShapedText text = this.rivet().backend().font().shapeText(format(time), Color.GRAY);
             float currentX = x;
 
-            renderer.scale(0.38f, () -> renderer.text(text, currentX / 0.38f, (5 / 35f) * size.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+            renderer.scale(0.3f, () -> renderer.text(text, currentX / 0.3f, (5 / 35f) * size.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 
             x += EditorValues.instance().oneSecondWidth();
         }

@@ -1,6 +1,5 @@
 package oxy.bascenario.editor;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,6 +16,11 @@ public class EditorValues {
 
     private boolean playing;
     private long timestamp = 1000L;
+    public void timestamp(long timestamp) {
+        this.timestamp = timestamp;
+        this.playing = false;
+    }
+
     private float scale = 1;
     private float scroll;
 
