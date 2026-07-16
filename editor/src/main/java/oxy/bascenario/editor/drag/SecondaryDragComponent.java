@@ -5,7 +5,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.editor.EditorValues;
@@ -81,7 +81,7 @@ public class SecondaryDragComponent extends Component {
 //
 //            object.dragging(false);
 //
-//            object.layoutOptions(new AbsoluteLayoutOptions(dataX, 0));
+//            object.layoutOptions(new AbsoluteOptions(dataX, 0));
 //            object.object().start = time;
 //            track.addChild(object);
 //        }

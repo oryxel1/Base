@@ -5,7 +5,7 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.Base;
@@ -27,7 +27,7 @@ public class TrackTabContainer extends Container {
             sequencerContainer.removeTrack(container, this);
         });
         trash.hoverColor().set(Color.fromRGB(145, 218, 255));
-        this.addChild(trash, image -> image.layoutOptions(new AbsoluteLayoutOptions(5, 35)));
+        this.addChild(trash, image -> image.layoutOptions(new AbsoluteOptions(5, 35)));
     }
 
     @Override

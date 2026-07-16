@@ -6,7 +6,7 @@ import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layout.grid.GridAnchor;
 import net.lenni0451.rivet.layout.grid.GridFill;
-import net.lenni0451.rivet.layout.grid.GridLayoutOptions;
+import net.lenni0451.rivet.layout.grid.GridOptions;
 import net.lenni0451.rivet.layout.list.HorizontalListLayout;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Padding;
@@ -33,7 +33,7 @@ public class TimelineDockBar extends Container {
             button.inactiveColor().set(Color.TRANSPARENT);
 
             box.arrowSize().set(0f);
-            box.layoutOptions(new GridLayoutOptions(0, 6).withAnchor(GridAnchor.LEFT).withWeightX(1).withFill(GridFill.HORIZONTAL).withColumnSpan(2));
+            box.layoutOptions(new GridOptions(0, 6).withAnchor(GridAnchor.LEFT).withWeightX(1).withFill(GridFill.HORIZONTAL).withColumnSpan(2));
             addChild(box);
 
             float textHeight = 11f;

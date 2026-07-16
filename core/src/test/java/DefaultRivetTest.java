@@ -1,26 +1,14 @@
-import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.thingl.RivetThinGLApplication;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
-import net.lenni0451.rivet.component.impl.FormattedLabel;
-import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
-import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
-import net.lenni0451.rivet.layout.anchor.AnchorLayout;
-import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
-import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
-import net.lenni0451.rivet.text.model.TextFormat;
-import net.lenni0451.rivet.text.model.TextOrigin;
 import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
 import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.resource.font.instance.FontInstanceSet;
@@ -42,7 +30,7 @@ public class DefaultRivetTest extends RivetThinGLApplication {
 
     @Override
     protected void init(final Rivet rivet) {
-        Container everything = new Container(BorderLayout.INSTANCE);
+        Container everything = new Container(BorderLayout.DEFAULT);
         everything.addChild(new SolidColor(Color.RED) {
             @Override
             public Size computeIdealSize(Size constraints) {

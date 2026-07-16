@@ -1,11 +1,11 @@
 [versions]
 lombok = "1.18.46"
 gson = "2.13.1"
-lwjgl = "3.4.0"
-lwjgl-sdl = "3.4.0"
+lwjgl = "3.4.1"
+lwjgl-sdl = "3.4.1"
 libgdx = "1.13.1"
 spine = "4.2.5"
-thingl = "0.2.0-SNAPSHOT"
+thingl = "0.2.0-20260630.205754-5"
 commons = "1.9.2"
 mocha = "3.0.1"
 configurate = "4.2.0"
@@ -13,7 +13,7 @@ audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
 zt-zip = "1.17"
-rivet = "eff65bbbb5"
+rivet = "b40512f366"
 jsvg = "2.1.0"
 
 [libraries]

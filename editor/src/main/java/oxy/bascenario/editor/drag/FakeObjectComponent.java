@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.bascenario.api.render.RenderLayer;
@@ -81,6 +81,6 @@ public class FakeObjectComponent extends Component {
 //            }
 //        }
 //
-//        track.addChild(new ObjectComponent(trackContainer.container().trackListContainer(), object), c -> c.layoutOptions(new AbsoluteLayoutOptions(x, 0)));
+//        track.addChild(new ObjectComponent(trackContainer.container().trackListContainer(), object), c -> c.layoutOptions(new AbsoluteOptions(x, 0)));
     }
 }

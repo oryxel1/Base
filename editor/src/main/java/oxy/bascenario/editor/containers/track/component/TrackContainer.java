@@ -6,7 +6,7 @@ import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.dragdrop.DropEvent;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.EditorValues;
 import oxy.bascenario.editor.drag.FakeObjectComponent;
@@ -26,7 +26,7 @@ public class TrackContainer extends Container {
             public Size computeIdealSize(Size constraints) {
                 return new Size(1.0e-16f, 1.0e-16f);
             }
-        }, c -> c.layoutOptions(new AbsoluteLayoutOptions(3000, 0, 5f, 5f)));
+        }, c -> c.layoutOptions(new AbsoluteOptions(3000, 0, 5f, 5f)));
     }
 
     @Override

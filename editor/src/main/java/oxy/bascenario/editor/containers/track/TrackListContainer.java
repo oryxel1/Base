@@ -14,7 +14,7 @@ import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
-import net.lenni0451.rivet.layout.absolute.AbsoluteLayoutOptions;
+import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
@@ -80,7 +80,7 @@ public class TrackListContainer extends ScrollContainer {
                 }
 
                 float newX = timestampToPosition(object.object().start, 0, EditorValues.instance().oneMilSecondWidth(), EditorValues.instance().scale());
-                child.layoutOptions(new AbsoluteLayoutOptions(newX, 0));
+                child.layoutOptions(new AbsoluteOptions(newX, 0));
             }
         }
     }

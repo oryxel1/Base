@@ -88,11 +88,9 @@ public class GlobalContainer extends Container {
                 }
             }
 
-            if (near && !component.near) {
+            if (near && event.isHeld(MouseButton.LEFT)) {
                 int mouse = component.type == ResizeComponent.ResizeType.Vertical ? GLFW.GLFW_VRESIZE_CURSOR : GLFW.GLFW_HRESIZE_CURSOR;
                 GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(mouse));
-            } else if (!near && component.near && !component.nearAndMouseDown) {
-                GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR));
             }
 
             component.near = near;
@@ -100,21 +98,14 @@ public class GlobalContainer extends Container {
                 component.nearAndMouseDown = event.isHeld(MouseButton.LEFT) && near;
             }
 
-            if (component.nearAndMouseDown && component.prevMouse != Float.MAX_VALUE) {
+            if (component.nearAndMouseDown) {
                 if (component.type == ResizeComponent.ResizeType.Vertical) {
-                    float newHeight = bounds.height() - (event.y() - component.prevMouse);
-                    entry.getKey().relativeScale = newHeight / size.height();
+                    entry.getKey().relativeScale = ((size.height() - event.y()) - 7) / size.height();
                     entry.getKey().requestLayoutRecalculation();
                 } else {
-                    float newWidth = bounds.width() - (event.x() - component.prevMouse) * (component.position == DockPosition.LEFT ? -1 : 1);
-                    entry.getKey().relativeScale = newWidth / size.width();
+                    entry.getKey().relativeScale = (event.x() - 7) / size.width();
                     entry.getKey().requestLayoutRecalculation();
                 }
-            }
-
-            component.prevMouse = component.type == ResizeComponent.ResizeType.Vertical ? event.y() : event.x();
-            if (!component.near || !component.nearAndMouseDown) {
-                component.prevMouse = Float.MAX_VALUE;
             }
         }
 
@@ -124,18 +115,13 @@ public class GlobalContainer extends Container {
     @Override
     protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
         this.resizableComponents.values().forEach(c -> c.nearAndMouseDown = false);
+        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR));
         return super.onComponentMouseUp(event, size);
     }
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
-        this.resizableComponents.values().forEach(c -> {
-            c.nearAndMouseDown = event.button() == MouseButton.LEFT && c.near;
-            if (!c.nearAndMouseDown) {
-                c.prevMouse = Float.MAX_VALUE;
-            }
-        });
-
+        this.resizableComponents.values().forEach(c -> c.nearAndMouseDown = event.button() == MouseButton.LEFT && c.near);
         super.onComponentMouseDown(event, size);
         return true;
     }
@@ -154,7 +140,6 @@ public class GlobalContainer extends Container {
         private final ResizeType type;
         private final DockPosition position;
         private boolean near, nearAndMouseDown;
-        private float prevMouse = Float.MAX_VALUE;
 
         public enum ResizeType {
             Horizontal, Vertical

@@ -4,7 +4,7 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.anchor.AnchorLayout;
-import net.lenni0451.rivet.layout.anchor.AnchorLayoutOptions;
+import net.lenni0451.rivet.layout.anchor.AnchorOptions;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.EditorValues;
 
@@ -15,7 +15,7 @@ public class TimelineTimeControl extends Container {
         super(AnchorLayout.INSTANCE);
 
         timeLabel = new Label("");
-        timeLabel.layoutOptions(AnchorLayoutOptions.EMPTY.withAnchorMinX(0.95f).withAnchorMinY(0.5f).pivot(0.5f, 0.5f));
+        timeLabel.layoutOptions(AnchorOptions.EMPTY.withAnchorMinX(0.95f).withAnchorMinY(0.5f).pivot(0.5f, 0.5f));
         timeLabel.scale(.45f);
 
         this.addChild(timeLabel);
