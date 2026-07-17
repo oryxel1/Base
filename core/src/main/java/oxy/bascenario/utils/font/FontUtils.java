@@ -39,7 +39,7 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
-        // Editor UI
+        // UI (Rivet)
         loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf", 40);
 
         // Global

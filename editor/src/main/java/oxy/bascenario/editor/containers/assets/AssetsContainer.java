@@ -14,7 +14,7 @@ public class AssetsContainer extends GlobalContainer.ResizeableContainer {
     public AssetsContainer() {
         super(new DockLayout(0));
 
-//        addChild(new ObjectContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+        addChild(new ObjectContainer(), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override

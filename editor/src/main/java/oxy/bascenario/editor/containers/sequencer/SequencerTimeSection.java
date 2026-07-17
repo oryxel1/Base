@@ -2,6 +2,7 @@ package oxy.bascenario.editor.containers.sequencer;
 
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
+import net.lenni0451.commons.math.MathUtils;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
 import net.lenni0451.rivet.component.Component;
@@ -20,9 +21,10 @@ public class SequencerTimeSection extends Component {
 
         float x = -EditorValues.instance().scroll();
         while (!(x >= size.width())) {
-            long time = (long) ((x + EditorValues.instance().scroll()) / EditorValues.instance().oneMilSecondWidth());
+            float timeX = x + EditorValues.instance().scroll();
+            float time = timeX / EditorValues.instance().oneMilSecondWidth();
 
-            ShapedText text = this.rivet().backend().font().shapeText(format(time), Color.GRAY);
+            ShapedText text = this.rivet().backend().font().shapeText(format(MathUtils.ceilLong(time)), Color.GRAY);
             float currentX = x;
 
             renderer.scale(0.3f, () -> renderer.text(text, currentX / 0.3f, (5 / 35f) * size.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
