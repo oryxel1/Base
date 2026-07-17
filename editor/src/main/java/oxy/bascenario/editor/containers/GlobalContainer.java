@@ -79,13 +79,15 @@ public class GlobalContainer extends Container {
 
             boolean near;
             if (component.type == ResizeComponent.ResizeType.Vertical) {
-                near = Math.abs(event.y() - bounds.y()) < 4;
+                near = Math.abs(event.y() - bounds.y()) < 4 && bounds.contains(event.x(), bounds.y());
             } else {
                 if (component.position == DockPosition.LEFT) {
                     near = Math.abs(event.x() - bounds.maxX()) < 4;
                 } else {
                     near = Math.abs(event.x() - bounds.x()) < 4;
                 }
+
+                near = near && bounds.contains(bounds.x(), event.y());
             }
 
             if (near && event.isHeld(MouseButton.LEFT)) {
