@@ -25,7 +25,7 @@ import java.util.List;
 
 @Accessors(fluent = true)
 public class ObjectComponent extends Component {
-    private static final Color OBJECT_COLOR = Color.fromRGB(145, 218, 255).darker();
+    public static final Color OBJECT_COLOR = Color.fromRGB(98, 130, 163).darker();
 
     private final TrackListContainer parent;
     @Getter
@@ -48,8 +48,8 @@ public class ObjectComponent extends Component {
             return;
         }
 
-        renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.fromRGB(30, 30, 30));
-        renderer.outlineRect(0, 0, bounds.width(), bounds.height(), 2, parent.selectionManager().isSelected(this) ? Color.WHITE : OBJECT_COLOR);
+        renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, OBJECT_COLOR);
+        renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, parent.selectionManager().isSelected(this) ? 2 : 1, Color.WHITE);
 
         renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
 

@@ -72,6 +72,9 @@ public class GlobalContainer extends Container {
     @Override
     protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
         super.onComponentMouseMove(event, size);
+        if (rivet().dragAndDropManager().isDragging()) {
+            return true;
+        }
 
         for (Map.Entry<ResizeableContainer, ResizeComponent> entry : resizableComponents.entrySet()) {
             final ResizeComponent component = entry.getValue();
@@ -124,8 +127,7 @@ public class GlobalContainer extends Container {
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
         this.resizableComponents.values().forEach(c -> c.nearAndMouseDown = event.button() == MouseButton.LEFT && c.near);
-        super.onComponentMouseDown(event, size);
-        return true;
+        return super.onComponentMouseDown(event, size);
     }
 
     @Override
