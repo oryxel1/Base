@@ -4,6 +4,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.container.PaddedContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layout.dock.DockLayout;
 import net.lenni0451.rivet.layout.dock.DockPosition;
@@ -38,10 +39,7 @@ public class ScenarioEditorScreen extends ExtendableScreen {
 
         // Dock bar (File, Edit, ...)
         mainContainer.addChild(new DockBarContainer(), c -> c.layoutOptions(DockPosition.TOP));
-
-        mainContainer.addChild(new DecoratedContainer(new SolidColor(), new GlobalContainer()), c -> {
-            c.layoutOptions(DockPosition.CENTER);
-            c.innerPadding(new Padding(2, 8, 2, 10));
-        });
+        mainContainer.addChild(new PaddedContainer(new Padding(2, 8, 2, 10), new GlobalContainer()), c -> c.layoutOptions(DockPosition.CENTER));
+        System.out.println("Lol!");
     }
 }

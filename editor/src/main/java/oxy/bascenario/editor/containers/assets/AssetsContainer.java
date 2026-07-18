@@ -4,6 +4,7 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.container.PaddedContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layout.dock.DockLayout;
 import net.lenni0451.rivet.layout.dock.DockPosition;
@@ -17,10 +18,7 @@ public class AssetsContainer extends GlobalContainer.ResizeableContainer {
     public AssetsContainer() {
         super(new DockLayout(0));
 
-        addChild(new DecoratedContainer(new SolidColor(), new ObjectContainer()), c -> {
-                c.layoutOptions(DockPosition.CENTER);
-                c.innerPadding(new Padding(10, 10, 0, 0));
-        });
+        addChild(new PaddedContainer(new Padding(10, 10, 0, 0), new ObjectContainer()), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override

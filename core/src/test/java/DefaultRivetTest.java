@@ -1,7 +1,7 @@
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.backend.thingl.RivetThinGLApplication;
+import net.lenni0451.rivet.backend.thingl.GLFWApplication;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.SequencedMap;
 
-public class DefaultRivetTest extends RivetThinGLApplication {
+public class DefaultRivetTest extends GLFWApplication {
 
     public static void main(String[] args) {
         new DefaultRivetTest().run();

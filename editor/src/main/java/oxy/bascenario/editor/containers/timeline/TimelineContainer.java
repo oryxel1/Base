@@ -4,6 +4,7 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.container.PaddedContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layout.dock.DockLayout;
 import net.lenni0451.rivet.layout.dock.DockPosition;
@@ -17,10 +18,7 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
     public TimelineContainer() {
         super(new DockLayout(0));
 
-        this.addChild(new DecoratedContainer(new SolidColor(), new TimelineDockBar()), c -> {
-            c.layoutOptions(DockPosition.TOP);
-            c.innerPadding(new Padding(8, 3, 0, 0));
-        });
+        this.addChild(new PaddedContainer(new Padding(8, 3, 0, 0), new TimelineDockBar()), c -> c.layoutOptions(DockPosition.TOP));
         this.addChild(new TimelineTimeControl(), c -> c.layoutOptions(DockPosition.BOTTOM));
         this.addChild(new VideoSequencerContainer(), c -> c.layoutOptions(DockPosition.CENTER));
 

@@ -12,6 +12,7 @@ import net.lenni0451.commons.collections.Maps;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.deferred.DeferredRenderer;
 import net.lenni0451.rivet.backend.render.deferred.RenderListExecutor;
+import net.lenni0451.rivet.backend.thingl.GLFWBackend;
 import net.lenni0451.rivet.backend.thingl.ThinGLBackend;
 import net.lenni0451.rivet.backend.thingl.render.ThinGLRenderer;
 import net.lenni0451.rivet.backend.thingl.text.ThinGLFont;
@@ -103,7 +104,7 @@ public final class EngineRenderer extends Game {
         FontUtils.loadFonts();
 
         final FontInstance rivetFont = FontUtils.font("SFUIRegular");
-        this.backend = new ThinGLBackend(windowHandle, new ThinGLFont(new FontInstanceSet(Maps.linkedHashMap(rivetFont, GlyphPredicate.all()))));
+        this.backend = new GLFWBackend(windowHandle, new ThinGLFont(new FontInstanceSet(Maps.linkedHashMap(rivetFont, GlyphPredicate.all()))));
         this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
         setupRivetCallbacks();
@@ -226,17 +227,5 @@ public final class EngineRenderer extends Game {
         int[] framebufferSizeY = new int[1];
         GLFW.glfwGetFramebufferSize(windowHandle, framebufferSizeX, framebufferSizeY);
         return new float[]{(float) framebufferSizeX[0] / windowSizeX[0], (float) framebufferSizeY[0] / windowSizeY[0]};
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        if (width <= 1920 && height <= 1080) {
-            this.rivet.scale(1);
-        } else {
-            float scale = (width + height) / (1920 + 1080f);
-            this.rivet.scale(scale);
-        }
-
-        super.resize(width, height);
     }
 }
