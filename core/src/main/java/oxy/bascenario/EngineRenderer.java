@@ -115,6 +115,11 @@ public final class EngineRenderer extends Game {
         if (this.initialFullScreen) {
             someTempHackyBool = true;
         }
+
+        ThinGL.windowInterface().addFramebufferResizeCallback((width, height) -> this.rivet.size(new Size(width, height)));
+        float[] xscale = new float[1];
+        GLFW.glfwGetWindowContentScale(windowHandle, xscale, new float[1]);
+        this.rivet.scale().automaticScale(xscale[0]);
     }
 
     @Override
@@ -214,6 +219,9 @@ public final class EngineRenderer extends Game {
                 this.heldMouseButtons.clear();
                 this.rivet.unfocus();
             }
+        });
+        GLFW.glfwSetWindowContentScaleCallback(windowHandle, (_, xscale, _) -> {
+            this.rivet.scale().automaticScale(xscale);
         });
     }
 
