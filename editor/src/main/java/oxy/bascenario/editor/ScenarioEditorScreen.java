@@ -40,6 +40,5 @@ public class ScenarioEditorScreen extends ExtendableScreen {
         // Dock bar (File, Edit, ...)
         mainContainer.addChild(new DockBarContainer(), c -> c.layoutOptions(DockPosition.TOP));
         mainContainer.addChild(new PaddedContainer(new Padding(2, 8, 2, 10), new GlobalContainer()), c -> c.layoutOptions(DockPosition.CENTER));
-        System.out.println("Lol!");
     }
 }

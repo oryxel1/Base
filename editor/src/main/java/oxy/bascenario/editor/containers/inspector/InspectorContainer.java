@@ -5,7 +5,6 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.*;
 import net.lenni0451.rivet.component.impl.Label;
-import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
@@ -38,16 +37,6 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
         }
 
         container.addChild(testContainer); // Test
-
-        InspectingDropDownContainer testContainer2 = new InspectingDropDownContainer("Another Test");
-
-        for (int i = 0; i < 10; i++) {
-            testContainer2.container().addChild(new Button("test button", e -> {}), b -> {
-                ((Label)b.child()).scale(0.4f);
-            });
-        }
-
-        container.addChild(testContainer2); // Test
     }
 
     @Override
