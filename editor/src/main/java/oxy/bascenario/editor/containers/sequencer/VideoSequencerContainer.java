@@ -9,6 +9,7 @@ import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
 import net.lenni0451.rivet.component.container.ScrollContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
+import net.lenni0451.rivet.input.mouse.MouseScrollEvent;
 import net.lenni0451.rivet.layout.dock.DockLayout;
 import net.lenni0451.rivet.layout.dock.DockPosition;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
@@ -26,7 +27,7 @@ public class VideoSequencerContainer extends Container {
 
     final TrackTabListContainer trackTabListContainer;
     @Getter
-    final ScrollContainer trackListContainer;
+    final TrackListContainer trackListContainer;
 
     public VideoSequencerContainer() {
         super(new DockLayout());
@@ -53,6 +54,21 @@ public class VideoSequencerContainer extends Container {
 
         super.render(renderer, size);
         drawCursor(renderer, size);
+    }
+
+    @Override
+    protected boolean onComponentMouseScroll(MouseScrollEvent event, Size size) {
+        if (event.scrollY() > 0) {
+            EditorValues.instance().scale(EditorValues.instance().scale() + 0.1f);
+            trackListContainer.requestLayoutRecalculation();
+            trackListContainer.recalculateObjectPosition();
+        } else if (event.scrollY() < 0) {
+            EditorValues.instance().scale(EditorValues.instance().scale() - 0.1f);
+            trackListContainer.requestLayoutRecalculation();
+            trackListContainer.recalculateObjectPosition();
+        }
+
+        return super.onComponentMouseScroll(event, size);
     }
 
     @Override

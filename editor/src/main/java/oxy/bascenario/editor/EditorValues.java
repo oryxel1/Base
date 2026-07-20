@@ -3,6 +3,7 @@ package oxy.bascenario.editor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import net.lenni0451.commons.math.MathUtils;
 import oxy.bascenario.editor.object.ObjectOrEvent;
 
 @Accessors(fluent = true)
@@ -24,12 +25,19 @@ public class EditorValues {
     }
 
     private float scale = 1;
+    public void scale(float scale) {
+        this.scale = MathUtils.clamp(scale, 0.5f, 2f);
+    }
+
     private float scroll;
 
     private static final float ONE_SECOND_WIDTH = 128;
 
     public float oneSecondWidth() {
         return ONE_SECOND_WIDTH * scale;
+    }
+    public float tenMilSecondWidth() {
+        return oneMilSecondWidth() * 10;
     }
     public float oneMilSecondWidth() {
         return (ONE_SECOND_WIDTH / 1000f) * scale;

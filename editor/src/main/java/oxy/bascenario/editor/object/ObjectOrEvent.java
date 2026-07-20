@@ -2,6 +2,7 @@ package oxy.bascenario.editor.object;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.object.values.ObjectTransform;
 
@@ -26,4 +27,6 @@ public class ObjectOrEvent {
     @Getter
     private final EnumMap<ObjectTransform, Object> transformations = new EnumMap<>(ObjectTransform.class);
 
+    public Color color = Color.WHITE;
+    public Color overlapColor = Color.TRANSPARENT;
 }

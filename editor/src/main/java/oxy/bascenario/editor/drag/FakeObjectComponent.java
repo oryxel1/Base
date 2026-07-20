@@ -39,12 +39,12 @@ public class FakeObjectComponent extends Component {
 
     @Override
     public Size computeIdealSize(Size constraints) {
-        float widthToAMil = EditorValues.instance().oneSecondWidth() / 1000f;
-        return new Size(widthToAMil * duration, 60);
+        return new Size(EditorValues.instance().oneMilSecondWidth() * duration, 60);
     }
 
     public void handle(TrackContainer trackContainer, float x) {
         long time = (long) (x / EditorValues.instance().oneMilSecondWidth());
+
         long duration = TimeCompiler.compileTime(object());
         if (duration == Long.MAX_VALUE) {
             duration = 1000L;

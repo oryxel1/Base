@@ -10,14 +10,20 @@ import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
+import oxy.bascenario.api.event.api.Event;
 import oxy.bascenario.editor.EditorValues;
 import oxy.bascenario.editor.containers.GlobalContainer;
+import oxy.bascenario.editor.containers.inspector.defaults.ColorContainer;
 import oxy.bascenario.editor.containers.inspector.defaults.TransformContainer;
+import oxy.bascenario.editor.object.ObjectOrEvent;
+import oxy.bascenario.utils.NameUtils;
 
 public class InspectorContainer extends GlobalContainer.ResizeableContainer {
     private final Container container;
 
     private TransformContainer transformContainer;
+    private ColorContainer colorContainer;
+
     public InspectorContainer() {
         super(BorderLayout.DEFAULT);
 
@@ -47,14 +53,34 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
                 container.removeChild(transformContainer);
                 transformContainer = null;
             }
+            if (colorContainer != null) {
+                container.removeChild(colorContainer);
+                colorContainer = null;
+            }
         } else {
-            if (transformContainer == null || transformContainer.object() != EditorValues.instance().selectedObject()) {
+            ObjectOrEvent objectOrEvent = EditorValues.instance().selectedObject();
+            renderer.text(rivet().backend().font().shapeText("Edit > " + NameUtils.name(objectOrEvent.object), Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.VISUAL_TOP);
+
+            if (objectOrEvent.object instanceof Event) {
+                return;
+            }
+
+            if (transformContainer == null || transformContainer.object() != objectOrEvent) {
                 if (transformContainer != null) {
                     container.removeChild(transformContainer);
                 }
 
-                transformContainer = new TransformContainer(EditorValues.instance().selectedObject());
+                transformContainer = new TransformContainer(objectOrEvent);
                 container.addChild(transformContainer);
+            }
+
+            if (colorContainer == null || colorContainer.object() != objectOrEvent) {
+                if (colorContainer != null) {
+                    container.removeChild(colorContainer);
+                }
+
+                colorContainer = new ColorContainer(objectOrEvent);
+                container.addChild(colorContainer);
             }
         }
     }

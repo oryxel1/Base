@@ -125,7 +125,12 @@ public class TrackListContainer extends ScrollContainer {
     @Override
     protected boolean onComponentKeyUp(KeyEvent event) {
         if (event.key() == Key.DELETE) {
-            selectionManager.objects().forEach(component -> ((Container)component.parent()).removeChild(component));
+            selectionManager.objects().forEach(component -> {
+                ((Container)component.parent()).removeChild(component);
+                if (EditorValues.instance().selectedObject() == component.object()) {
+                    EditorValues.instance().selectedObject(null);
+                }
+            });
             selectionManager().objects().clear();
         }
 

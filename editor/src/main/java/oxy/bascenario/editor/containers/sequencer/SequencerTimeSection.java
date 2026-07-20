@@ -38,6 +38,7 @@ public class SequencerTimeSection extends Component {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
             float x = EditorValues.instance().scroll() + event.x() - 2.5f;
             long newTimestamp = (long) (x / (EditorValues.instance().oneMilSecondWidth()));
+            newTimestamp = Math.round(newTimestamp / 10f) * 10L;
 
             EditorValues.instance().timestamp(Math.max(0, newTimestamp));
         }
@@ -50,6 +51,7 @@ public class SequencerTimeSection extends Component {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
             float x = EditorValues.instance().scroll() + event.x() - 2.5f;
             long newTimestamp = (long) (x / (EditorValues.instance().oneMilSecondWidth()));
+            newTimestamp = Math.round(newTimestamp / 10f) * 10L;
 
             EditorValues.instance().timestamp(Math.max(0, newTimestamp));
         }
