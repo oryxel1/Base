@@ -41,6 +41,7 @@ public class AdvancedColorPicker extends Component {
         this.height.set(20f);
 
         this.picker = new ColorPicker(color);
+
         this.hexField = new TextField(ColorUtils.toHex(color)) {
             @Override
             protected void onComponentFocusLost() {

@@ -3,13 +3,13 @@ package oxy.bascenario.editor.containers.inspector.defaults;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.component.impl.ColorPicker;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.containers.inspector.DropdownContainer;
 import oxy.bascenario.editor.object.ObjectOrEvent;
 import oxy.bascenario.utils.components.AdvancedColorPicker;
+import oxy.bascenario.utils.components.TestColorWheel;
 
 @Accessors(fluent = true)
 public class ColorContainer extends DropdownContainer {
@@ -27,6 +27,8 @@ public class ColorContainer extends DropdownContainer {
         container.addChild(colorPicker = new AdvancedColorPicker(object.color));
         container.addChild(new Label("Overlay Color"));
         container.addChild(overlayColorPicker = new AdvancedColorPicker(object.overlapColor));
+
+        container.addChild(new TestColorWheel());
     }
 
     @Override
