@@ -4,18 +4,20 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.*;
-import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.math.Size;
+import net.lenni0451.rivet.text.model.TextOrigin;
+import oxy.bascenario.editor.EditorValues;
 import oxy.bascenario.editor.containers.GlobalContainer;
-import oxy.bascenario.utils.components.NumberPicker;
+import oxy.bascenario.editor.containers.inspector.defaults.TransformContainer;
 
 public class InspectorContainer extends GlobalContainer.ResizeableContainer {
     private final Container container;
 
+    private TransformContainer transformContainer;
     public InspectorContainer() {
         super(BorderLayout.DEFAULT);
 
@@ -29,24 +31,7 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
         }, c -> c.layoutOptions(BorderPosition.TOP));
         addChild(new PaddedContainer(new Padding(8, 5, 0 , 0), new ScrollContainer(container)), c -> c.layoutOptions(BorderPosition.CENTER));
 
-        container.addChild(new Label("Test")); // Test
-
-        InspectingDropDownContainer testContainer = new InspectingDropDownContainer("Test");
-
-        final NumberPicker input = new NumberPicker(0, 100, 50) {
-            @Override
-            public Size computeIdealSize(Size constraints) {
-                return super.computeIdealSize(constraints).withWidth(constraints.width() - 8f);
-            }
-        };
-
-        testContainer.container().addChild(input);
-
-        for (int i = 0; i < 10; i++) {
-            testContainer.container().addChild(new Label("test text"));
-        }
-
-        container.addChild(testContainer); // Test
+//        container.addChild(new TransformContainer());
     }
 
     @Override
@@ -55,7 +40,23 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
         super.render(renderer, size);
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(53, 53, 53));
 
+        if (EditorValues.instance().selectedObject() == null) {
+            renderer.text(rivet().backend().font().shapeText("Nothing here yet!", Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.VISUAL_TOP);
 
+            if (transformContainer != null) {
+                container.removeChild(transformContainer);
+                transformContainer = null;
+            }
+        } else {
+            if (transformContainer == null || transformContainer.object() != EditorValues.instance().selectedObject()) {
+                if (transformContainer != null) {
+                    container.removeChild(transformContainer);
+                }
+
+                transformContainer = new TransformContainer(EditorValues.instance().selectedObject());
+                container.addChild(transformContainer);
+            }
+        }
     }
 
     @Override

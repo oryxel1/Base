@@ -28,6 +28,7 @@ public class RivetUtil {
             protected void addValues(final Rivet rivet, final Values values) {
                 values.put(Theme.SLIDER_THUMB_COLOR, Color.WHITE);
                 values.put(Theme.SCROLL_BAR_WIDTH, 6F);
+                values.put(Theme.SEPARATOR_COLOR, Color.WHITE);
             }
         });
     }

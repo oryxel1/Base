@@ -1,10 +1,13 @@
 package oxy.bascenario.editor.object;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import oxy.bascenario.api.render.RenderLayer;
 import oxy.bascenario.editor.object.values.ObjectTransform;
 
 import java.util.EnumMap;
 
+@Accessors(fluent = true)
 public class ObjectOrEvent {
     public long start, duration;
 
@@ -20,6 +23,7 @@ public class ObjectOrEvent {
         this.requireWait = requireWait;
     }
 
+    @Getter
     private final EnumMap<ObjectTransform, Object> transformations = new EnumMap<>(ObjectTransform.class);
 
 }

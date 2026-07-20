@@ -41,6 +41,10 @@ public class NumberPicker extends DragNumberInput {
         super(min, max, value);
     }
 
+    public NumberPicker(double min, double max, double step, double value) {
+        super(min, max, step, value);
+    }
+
     private boolean skipNextUp;
 
     @SneakyThrows

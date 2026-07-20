@@ -3,6 +3,7 @@ package oxy.bascenario.editor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import oxy.bascenario.editor.object.ObjectOrEvent;
 
 @Accessors(fluent = true)
 @Getter
@@ -12,6 +13,7 @@ public class EditorValues {
     @Setter
     private static EditorValues instance;
 
+    private ObjectOrEvent selectedObject;
     private TimelineType type = TimelineType.Sequencer;
 
     private boolean playing;

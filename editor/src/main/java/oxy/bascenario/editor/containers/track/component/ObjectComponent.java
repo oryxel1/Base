@@ -37,6 +37,8 @@ public class ObjectComponent extends Component {
     public ObjectComponent(TrackListContainer parent, ObjectOrEvent object) {
         this.parent = parent;
         this.object = object;
+
+        EditorValues.instance().selectedObject(object);
     }
 
     @Override
@@ -58,6 +60,8 @@ public class ObjectComponent extends Component {
 
     @Override
     protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
+        EditorValues.instance().selectedObject(object);
+
         if (this.parent.selectionManager().isSelected(this)) {
             return true;
         }

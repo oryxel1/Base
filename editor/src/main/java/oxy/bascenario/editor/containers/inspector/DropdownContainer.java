@@ -6,16 +6,16 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.component.container.*;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
-import net.lenni0451.rivet.layout.list.VerticalListLayout;
+import net.lenni0451.rivet.layout.Layout;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 
 @Accessors(fluent = true)
-public class InspectingDropDownContainer extends DecoratedContainer {
+public class DropdownContainer extends DecoratedContainer {
     @Getter
-    private final Container container;
-    public InspectingDropDownContainer(String name) {
+    protected final Container container;
+    public DropdownContainer(String name, Layout layout) {
         final Color textColor = Color.fromRGB(184, 184, 184);
 
         final SolidColor color = new SolidColor(Color.fromRGB(61, 61, 61));
@@ -27,7 +27,7 @@ public class InspectingDropDownContainer extends DecoratedContainer {
         header.textColor().set(textColor);
         header.horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
 
-        final ScrollContainer scrollContainer = new ScrollContainer(container = new Container(new VerticalListLayout(5, false)));
+        final ScrollContainer scrollContainer = new ScrollContainer(container = new Container(layout));
         final PaddedContainer padded = new PaddedContainer(new Padding(8, 5, 0, 0), scrollContainer);
 
         final CollapsibleContainer collapsibleContainer = new CollapsibleContainer(header, padded);
