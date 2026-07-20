@@ -4,7 +4,6 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.*;
-import net.lenni0451.rivet.component.impl.DragNumberInput;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
@@ -12,6 +11,7 @@ import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.math.Size;
 import oxy.bascenario.editor.containers.GlobalContainer;
+import oxy.bascenario.utils.components.NumberPicker;
 
 public class InspectorContainer extends GlobalContainer.ResizeableContainer {
     private final Container container;
@@ -33,12 +33,14 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
 
         InspectingDropDownContainer testContainer = new InspectingDropDownContainer("Test");
 
-        final DragNumberInput input = new DragNumberInput(0, 100, 50) {
+        final NumberPicker input = new NumberPicker(0, 100, 50) {
             @Override
             public Size computeIdealSize(Size constraints) {
                 return super.computeIdealSize(constraints).withWidth(constraints.width() - 8f);
             }
         };
+
+        testContainer.container().addChild(input);
 
         for (int i = 0; i < 10; i++) {
             testContainer.container().addChild(new Label("test text"));
