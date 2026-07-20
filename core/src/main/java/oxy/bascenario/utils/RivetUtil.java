@@ -27,6 +27,7 @@ public class RivetUtil {
             @Override
             protected void addValues(final Rivet rivet, final Values values) {
                 values.put(Theme.SLIDER_THUMB_COLOR, Color.WHITE);
+                values.put(Theme.SCROLL_BAR_WIDTH, 6F);
             }
         });
     }
@@ -39,7 +40,7 @@ public class RivetUtil {
         decoratedContainer.minSize(width, 0f);
 
         Button button = box.button();
-        ((Label)button.child()).scale(0.3f);
+        ((Label)button.child()).scale(0.75f);
         button.inactiveOutlineColor().set(Color.TRANSPARENT);
         button.activeOutlineColor().set(Color.TRANSPARENT);
         button.inactiveColor().set(Color.TRANSPARENT);
@@ -53,7 +54,7 @@ public class RivetUtil {
 
         for (Pair<String, Runnable> option : options) {
             container.addChild(new Button(option.left(), c -> option.right().run()), b -> {
-                ((Label)b.child()).scale(0.31f);
+                ((Label)b.child()).scale(0.775f);
                 ((Label)b.child()).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
                 b.inactiveOutlineColor().set(Color.TRANSPARENT);
                 b.activeOutlineColor().set(Color.TRANSPARENT);

@@ -23,7 +23,7 @@ public class InspectingDropDownContainer extends DecoratedContainer {
         color.outlineWidth(1f);
         color.cornerRadius(5f);
 
-        final Label header = new Label(name).scale(0.35f);
+        final Label header = new Label(name).scale(0.875f);
         header.textColor().set(textColor);
         header.horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
 
@@ -35,7 +35,7 @@ public class InspectingDropDownContainer extends DecoratedContainer {
 
         collapsibleContainer.arrowSize().set(20f);
         collapsibleContainer.arrowColor().set(textColor);
-        collapsibleContainer.arrowWidth().set(1f);
+        collapsibleContainer.arrowLineWidth().set(1f);
     }
 
     @Override

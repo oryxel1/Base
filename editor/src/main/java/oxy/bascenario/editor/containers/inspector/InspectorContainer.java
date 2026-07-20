@@ -4,6 +4,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.*;
+import net.lenni0451.rivet.component.impl.DragNumberInput;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.border.BorderLayout;
 import net.lenni0451.rivet.layout.border.BorderPosition;
@@ -32,8 +33,15 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
 
         InspectingDropDownContainer testContainer = new InspectingDropDownContainer("Test");
 
+        final DragNumberInput input = new DragNumberInput(0, 100, 50) {
+            @Override
+            public Size computeIdealSize(Size constraints) {
+                return super.computeIdealSize(constraints).withWidth(constraints.width() - 8f);
+            }
+        };
+
         for (int i = 0; i < 10; i++) {
-            testContainer.container().addChild(new Label("test text").scale(0.4f));
+            testContainer.container().addChild(new Label("test text"));
         }
 
         container.addChild(testContainer); // Test

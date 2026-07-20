@@ -33,7 +33,7 @@ public class TrackTabContainer extends Container {
     @Override
     public void render(Renderer renderer, Size bounds) {
 //        renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.RED);
-        renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText("Track " + container.index(), Color.fromRGB(148, 148, 148)), 15, 25, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+        renderer.text(this.rivet().backend().font().shapeText("Track " + container.index(), Color.fromRGB(148, 148, 148)), 5, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
 
         super.render(renderer, bounds);
     }

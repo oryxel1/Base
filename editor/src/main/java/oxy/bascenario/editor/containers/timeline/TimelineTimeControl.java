@@ -16,7 +16,7 @@ public class TimelineTimeControl extends Container {
 
         timeLabel = new Label("");
         timeLabel.layoutOptions(AnchorOptions.EMPTY.withAnchorMinX(0.95f).withAnchorMinY(0.5f).pivot(0.5f, 0.5f));
-        timeLabel.scale(.45f);
+        timeLabel.scale(1.125f);
 
         this.addChild(timeLabel);
     }

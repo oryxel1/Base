@@ -29,7 +29,7 @@ public class TimelineDockBar extends Container {
 
         {
             final List<Pair<String, Runnable>> options = new ArrayList<>();
-            addChild(RivetUtil.dropdown("Add", 250f, options));
+//            addChild(RivetUtil.dropdown("Add", 250f, options));
         }
     }
 

@@ -40,7 +40,7 @@ public class FontUtils {
 
     public static void loadFonts() {
         // UI (Rivet)
-        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf", 40);
+        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf", 16);
 
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
@@ -83,7 +83,12 @@ public class FontUtils {
     private static void loadFont(String name, String font, int size) {
         try {
             final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
-            NAME_TO_FONTS.put(name, new FreeTypeFontInstance(new FreeTypeFontFace(fontData), size));
+            FontInstance instance = new FreeTypeFontInstance(new FreeTypeFontFace(fontData), 60);
+            if (size != 60) {
+                instance = instance.getScaledInstance(size);
+            }
+
+            NAME_TO_FONTS.put(name, instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

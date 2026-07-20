@@ -13,7 +13,7 @@ audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
 zt-zip = "1.17"
-rivet = "d717d33288"
+rivet = "e8bb41ea12"
 jsvg = "2.1.0"
 
 [libraries]

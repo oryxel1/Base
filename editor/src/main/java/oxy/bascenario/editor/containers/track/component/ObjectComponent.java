@@ -51,7 +51,7 @@ public class ObjectComponent extends Component {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, OBJECT_COLOR);
         renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, parent.selectionManager().isSelected(this) ? 2 : 1, Color.WHITE);
 
-        renderer.scale(0.4f, () -> renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 20, 20, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
+        renderer.text(this.rivet().backend().font().shapeText(NameUtils.name(object.object), Color.WHITE), 12, 12, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
 
         this.parent.selectionManager().addOrRemove(this, parent().childBounds(this));
     }

@@ -34,8 +34,8 @@ public class ObjectContainer extends ScrollContainer {
         add(container, "Location Info", "assets/base/uis/editor/objects/location-info.png", new LocationInfo(FontType.NotoSans, "Location A", 1000, 200));
         add(container, "Emoticon", "assets/base/uis/editor/objects/emoticon.png", new Emoticon(100, EmoticonType.ANGRY, true));
 
-        add(container, "Text", new Label("Text").scale(0.4f), new Text(List.of(TextSegment.builder().text("Text").build()), 42));
-        add(container, "Typing Text", new TypingLabel("Typing Text").scale(0.4f), new AnimatedText(1, List.of(TextSegment.builder().text("Typing Text").build()), 42));
+        add(container, "Text", new Label("Text"), new Text(List.of(TextSegment.builder().text("Text").build()), 42));
+        add(container, "Typing Text", new TypingLabel("Typing Text"), new AnimatedText(1, List.of(TextSegment.builder().text("Typing Text").build()), 42));
 
         add(container, "Circle", "assets/base/uis/editor/objects/circle.png", new Circle(5, Color.WHITE, false));
         add(container, "Rectangle", "assets/base/uis/editor/objects/rectangle.png", new Rectangle(500, 500, Color.WHITE, false));
