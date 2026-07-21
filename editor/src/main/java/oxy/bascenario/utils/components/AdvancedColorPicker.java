@@ -5,6 +5,7 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.component.impl.TextField;
 import net.lenni0451.rivet.input.keyboard.Key;
@@ -15,6 +16,7 @@ import net.lenni0451.rivet.layer.Layer;
 import net.lenni0451.rivet.layer.LayerBucket;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
+import net.lenni0451.rivet.layout.grid.GridAnchor;
 import net.lenni0451.rivet.layout.grid.GridLayout;
 import net.lenni0451.rivet.layout.grid.GridOptions;
 import net.lenni0451.rivet.math.Padding;
@@ -69,6 +71,8 @@ public class AdvancedColorPicker extends Component {
                 text(ColorUtils.toHex(picker.color()));
             }
         };
+        this.hexField.cornerRadius().set(5f);
+        this.hexField.outlineColor().set(Color.fromRGB(61, 61, 61));
 
         this.picker.colorChangeListener().add(c -> {
             this.hexField.text(ColorUtils.toHex(c));
@@ -248,7 +252,10 @@ public class AdvancedColorPicker extends Component {
                 }
 
                 container.addChild(picker, c -> c.layoutOptions(new GridOptions(0, 0)));
-                container.addChild(hexField, c -> c.layoutOptions(new GridOptions(0, 1).withPadding(new Padding(0, 15, 0, 0))));
+                container.addChild(new Label("Hex").scale(0.9f), c -> c.layoutOptions(new GridOptions(0, 1)
+                        .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
+                container.addChild(hexField, c -> c.layoutOptions(new GridOptions(1, 1)
+                        .withPadding(new Padding(0, 15, 0, 0)).withColumnSpan(2)));
 
                 container.addChild(redField, c -> c.layoutOptions(new GridOptions(0, 2)
                         .withPadding(new Padding(0, 15, 0, 0))));

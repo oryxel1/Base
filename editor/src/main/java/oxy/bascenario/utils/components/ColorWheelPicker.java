@@ -61,7 +61,7 @@ public class ColorWheelPicker extends Component {
 
         renderer.fillCircle(centreX, centreY, radius, Color.BLACK.withAlphaF(1 - brightness)); // Hack.
 
-        renderer.outlineCircle(centreX, centreY, radius, outlineWidth, Color.WHITE);
+        renderer.outlineCircle(centreX, centreY, radius, outlineWidth, Color.fromRGB(43, 43, 43));
 
         float[] hsb = color.toHSB();
         float centreAngle = hsb[0] * 360f, centreOffset = hsb[1] * radius;
