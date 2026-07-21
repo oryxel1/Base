@@ -38,8 +38,12 @@ public class ColorWheelPicker extends Component {
     private final ListenerList<Consumer<Color>> colorChangeListener = new ListenerList<>();
 
     @Setter
-    @Getter
     private Color color;
+    public Color color() {
+        float[] hsb = color.toHSB();
+        return Color.fromHSB(hsb[0], hsb[1], brightness);
+    }
+
     public ColorWheelPicker(Color color) {
         this.color = color;
     }
@@ -111,10 +115,7 @@ public class ColorWheelPicker extends Component {
         if (x > wheelSize) {
             if (x >= wheelSize + gap && x <= wheelSize + gap + sliderWidth) {
                 brightness = 1 - Math.clamp(y / wheelSize, 0, 1);
-
-//                float[] hsb = color.toHSB();
-//                color = Color.fromHSB(hsb[0], hsb[1], brightness);
-//                this.colorChangeListener.callVoid((c) -> c.accept(this.color));
+                this.colorChangeListener.callVoid((c) -> c.accept(color()));
             }
 
             return;
@@ -131,9 +132,9 @@ public class ColorWheelPicker extends Component {
             double centreAngle = (Math.toDegrees(Math.atan2(yOffset, xOffset)) + 360.0) % 360.0;
             float hue = (float) centreAngle / 360f;
             float saturation = (float) (centreOffset / radius);
-            color = Color.fromHSB(hue, saturation, brightness);
+            color = Color.fromHSB(hue, saturation, 1);
 
-            this.colorChangeListener.callVoid((c) -> c.accept(this.color));
+            this.colorChangeListener.callVoid((c) -> c.accept(color()));
         }
     }
 
