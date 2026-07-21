@@ -5,7 +5,6 @@ import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
-import net.lenni0451.rivet.component.impl.ColorPicker;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.component.impl.TextField;
 import net.lenni0451.rivet.input.keyboard.Key;
@@ -29,7 +28,7 @@ public class AdvancedColorPicker extends Component {
     private Layer layer;
 
     private DecoratedContainer container;
-    private final ColorPicker picker;
+    private final ColorWheelPicker picker;
     private final TextField hexField;
 
     private final ThemeOption<Float> height = new ThemeOption<>(this, null);
@@ -40,7 +39,7 @@ public class AdvancedColorPicker extends Component {
     public AdvancedColorPicker(Color color) {
         this.height.set(20f);
 
-        this.picker = new ColorPicker(color);
+        this.picker = new ColorWheelPicker(color);
 
         this.hexField = new TextField(ColorUtils.toHex(color)) {
             @Override
