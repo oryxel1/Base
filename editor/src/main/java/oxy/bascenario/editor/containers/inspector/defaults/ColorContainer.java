@@ -26,15 +26,13 @@ public class ColorContainer extends DropdownContainer {
         container.addChild(colorPicker = new AdvancedColorPicker(object.color));
         container.addChild(new Label("Overlay Color"));
         container.addChild(overlayColorPicker = new AdvancedColorPicker(object.overlapColor));
-
-//        container.addChild(new ColorWheelPicker(Color.RED));
     }
 
     @Override
     public void render(Renderer renderer, Size size) {
         super.render(renderer, size);
 
-//        object.color = colorPicker.color();
-//        object.overlapColor = overlayColorPicker.color();
+        object.color = colorPicker.color();
+        object.overlapColor = overlayColorPicker.color();
     }
 }

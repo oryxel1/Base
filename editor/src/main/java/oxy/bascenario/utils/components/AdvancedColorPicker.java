@@ -142,16 +142,8 @@ public class AdvancedColorPicker extends Component {
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
                 container.addChild(hexField, c -> c.layoutOptions(new GridOptions(1, 1)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
-//
                 container.addChild(colorValuesComponent, c -> c.layoutOptions(new GridOptions(0, 2)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT).withColumnSpan(2)));
-
-
-//                container.addChild(redField, c -> c.layoutOptions(new GridOptions(0, 2)
-//                        .withPadding(new Padding(0, 15, 0, 0))));
-//                container.addChild(greenField, c -> c.layoutOptions(new GridOptions(0, 3)));
-//                container.addChild(blueField, c -> c.layoutOptions(new GridOptions(0, 4)));
-//                container.addChild(alphaField, c -> c.layoutOptions(new GridOptions(0, 5)));
             }
 
             layerContainer.addChild(this.container);
@@ -168,7 +160,7 @@ public class AdvancedColorPicker extends Component {
         return size.withHeight(height.value()).withWidth(size.width() - 8f); // Don't comment on this.
     }
 
-    private Color color() {
+    public Color color() {
         return picker.color();
     }
 }

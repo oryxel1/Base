@@ -22,52 +22,49 @@ public class TransformContainer extends DropdownContainer {
     @Getter
     private final ObjectOrEvent object;
 
-    private final PositionPicker xPosition, yPosition;
-    private final PositionPicker xScale, yScale;
-    private final PositionPicker xRotation, yRotation, zRotation;
-    private final PositionPicker xPivot, yPivot;
+    private final FixedSizePicker xPosition, yPosition;
+    private final FixedSizePicker xScale, yScale;
+    private final FixedSizePicker xRotation, yRotation, zRotation;
+    private final FixedSizePicker xPivot, yPivot;
 
     public TransformContainer(ObjectOrEvent object) {
         super("Transforms", new GridLayout(10, 5));
 
         this.object = object;
 
-        container.addChild(new Label("Position X").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 0).withAnchor(GridAnchor.LEFT)));
-        container.addChild(new Label("Position Y").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 1).withAnchor(GridAnchor.LEFT)));
+        container.addChild(label("Position X"), c -> c.layoutOptions(leftGrid(0, 0)));
+        container.addChild(label("Position Y"), c -> c.layoutOptions(leftGrid(0, 1)));
 
         Vec2 position = (Vec2) object.transformations().getOrDefault(ObjectTransform.POSITION, new Vec2(0, 0));
 
-        container.addChild(xPosition = new PositionPicker(-10000.0, 10000.0, 5, position.x()), c -> c.layoutOptions(new GridOptions(1, 0)));
-        container.addChild(yPosition = new PositionPicker(-10000.0, 10000.0, 5, position.y()), c -> c.layoutOptions(new GridOptions(1, 1)));
+        container.addChild(xPosition = new FixedSizePicker(-10000.0, 10000.0, 5, position.x()), c -> c.layoutOptions(grid(1, 0)));
+        container.addChild(yPosition = new FixedSizePicker(-10000.0, 10000.0, 5, position.y()), c -> c.layoutOptions(grid(1, 1)));
 
-        container.addChild(new Label("Scale X").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT),
-                c -> c.layoutOptions(new GridOptions(0, 3).withAnchor(GridAnchor.LEFT).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(new Label("Scale Y").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 4).withAnchor(GridAnchor.LEFT)));
+        container.addChild(label("Scale X"), c -> c.layoutOptions(leftGrid(0, 3).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(label("Scale Y"), c -> c.layoutOptions(leftGrid(0, 4)));
 
         Vec2 scale = (Vec2) object.transformations().getOrDefault(ObjectTransform.SCALE, new Vec2(1, 1));
 
-        container.addChild(xScale = new PositionPicker(0, 1000, 1, scale.x()), c -> c.layoutOptions(new GridOptions(1, 3).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(yScale = new PositionPicker(0, 1000, 1, scale.y()), c -> c.layoutOptions(new GridOptions(1, 4)));
+        container.addChild(xScale = new FixedSizePicker(0, 1000, 1, scale.x()), c -> c.layoutOptions(grid(1, 3).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(yScale = new FixedSizePicker(0, 1000, 1, scale.y()), c -> c.layoutOptions(grid(1, 4)));
 
-        container.addChild(new Label("Rotation X").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT),
-                c -> c.layoutOptions(new GridOptions(0, 5).withAnchor(GridAnchor.LEFT).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(new Label("Rotation Y").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 6).withAnchor(GridAnchor.LEFT)));
-        container.addChild(new Label("Rotation Z").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 7).withAnchor(GridAnchor.LEFT)));
+        container.addChild(label("Rotation X"), c -> c.layoutOptions(leftGrid(0, 5).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(label("Rotation Y"), c -> c.layoutOptions(leftGrid(0, 6)));
+        container.addChild(label("Rotation Z"), c -> c.layoutOptions(leftGrid(0, 7)));
 
         Vec3 rotation = (Vec3) object.transformations().getOrDefault(ObjectTransform.ROTATE, new Vec3(0, 0, 0));
 
-        container.addChild(xRotation = new PositionPicker(-360, 360, 1, rotation.x()), c -> c.layoutOptions(new GridOptions(1, 5).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(yRotation = new PositionPicker(-360, 360, 1, rotation.y()), c -> c.layoutOptions(new GridOptions(1, 6)));
-        container.addChild(zRotation = new PositionPicker(-360, 360, 1, rotation.z()), c -> c.layoutOptions(new GridOptions(1, 7)));
+        container.addChild(xRotation = new FixedSizePicker(-360, 360, 1, rotation.x()), c -> c.layoutOptions(grid(1, 5).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(yRotation = new FixedSizePicker(-360, 360, 1, rotation.y()), c -> c.layoutOptions(grid(1, 6)));
+        container.addChild(zRotation = new FixedSizePicker(-360, 360, 1, rotation.z()), c -> c.layoutOptions(grid(1, 7)));
 
-        container.addChild(new Label("Pivot X").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT),
-                c -> c.layoutOptions(new GridOptions(0, 8).withAnchor(GridAnchor.LEFT).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(new Label("Pivot Y").scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT), c -> c.layoutOptions(new GridOptions(0, 9).withAnchor(GridAnchor.LEFT)));
+        container.addChild(label("Pivot X"), c -> c.layoutOptions(leftGrid(0, 8).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(label("Pivot Y"), c -> c.layoutOptions(leftGrid(0, 9)));
 
         Vec2 pivot = (Vec2) object.transformations().getOrDefault(ObjectTransform.PIVOT, new Vec2(0, 0));
 
-        container.addChild(xPivot = new PositionPicker(-10000.0, 10000.0, 5, pivot.x()), c -> c.layoutOptions(new GridOptions(1, 8).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(yPivot = new PositionPicker(-10000.0, 10000.0, 5, pivot.y()), c -> c.layoutOptions(new GridOptions(1, 9)));
+        container.addChild(xPivot = new FixedSizePicker(-10000.0, 10000.0, 5, pivot.x()), c -> c.layoutOptions(grid(1, 8).withPadding(new Padding(0, 5, 0, 0))));
+        container.addChild(yPivot = new FixedSizePicker(-10000.0, 10000.0, 5, pivot.y()), c -> c.layoutOptions(grid(1, 9)));
     }
 
     @Override
@@ -95,14 +92,32 @@ public class TransformContainer extends DropdownContainer {
         }
     }
 
-    private static class PositionPicker extends NumberPicker {
-        public PositionPicker(double min, double max, double step, double value) {
+    private static class FixedSizePicker extends NumberPicker {
+        public FixedSizePicker(double min, double max, double step, double value) {
             super(min, max, step, value);
+        }
+
+        @Override
+        protected void onComponentAdded() {
+            super.onComponentAdded();
+            font(rivet().backend().font().derive(14));
         }
 
         @Override
         public Size computeIdealSize(Size constraints) {
             return super.computeIdealSize(constraints).withWidth(constraints.width() - 60f);
         }
+    }
+
+    private GridOptions leftGrid(int column, int row) {
+        return new GridOptions(column, row).withAnchor(GridAnchor.LEFT);
+    }
+
+    private GridOptions grid(int column, int row) {
+        return new GridOptions(column, row);
+    }
+
+    private Label label(String string) {
+        return new Label(string).scale(0.8f).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
     }
 }

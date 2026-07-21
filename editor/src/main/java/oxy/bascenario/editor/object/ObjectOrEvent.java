@@ -4,9 +4,12 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import oxy.bascenario.api.render.RenderLayer;
+import oxy.bascenario.editor.object.values.KeyframeValue;
 import oxy.bascenario.editor.object.values.ObjectTransform;
 
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 @Accessors(fluent = true)
 public class ObjectOrEvent {
@@ -29,4 +32,7 @@ public class ObjectOrEvent {
 
     public Color color = Color.WHITE;
     public Color overlapColor = Color.TRANSPARENT;
+
+    @Getter
+    private final Map<Long, KeyframeValue> keyframes = new HashMap<>();
 }
