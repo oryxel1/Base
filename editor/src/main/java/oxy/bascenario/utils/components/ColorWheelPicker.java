@@ -41,7 +41,7 @@ public class ColorWheelPicker extends Component {
     private Color color;
     public Color color() {
         float[] hsb = color.toHSB();
-        return Color.fromHSB(hsb[0], hsb[1], brightness);
+        return Color.fromHSB(hsb[0], hsb[1], brightness).withAlpha(color.getAlpha());
     }
 
     public ColorWheelPicker(Color color) {
@@ -132,7 +132,7 @@ public class ColorWheelPicker extends Component {
             double centreAngle = (Math.toDegrees(Math.atan2(yOffset, xOffset)) + 360.0) % 360.0;
             float hue = (float) centreAngle / 360f;
             float saturation = (float) (centreOffset / radius);
-            color = Color.fromHSB(hue, saturation, 1);
+            color = Color.fromHSB(hue, saturation, 1).withAlpha(color.getAlpha());
 
             this.colorChangeListener.callVoid((c) -> c.accept(color()));
         }

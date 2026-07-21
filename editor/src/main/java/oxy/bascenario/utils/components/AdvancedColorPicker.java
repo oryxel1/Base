@@ -32,16 +32,16 @@ public class AdvancedColorPicker extends Component {
     private DecoratedContainer container;
     private final ColorWheelPicker picker;
     private final TextField hexField;
+    private final ColorValuesComponent colorValuesComponent;
 
     private final ThemeOption<Float> height = new ThemeOption<>(this, null);
-
-    private TextField redField, greenField, blueField, alphaField;
 
     // Please don't comment on this part, it's easier to do this.
     public AdvancedColorPicker(Color color) {
         this.height.set(20f);
 
         this.picker = new ColorWheelPicker(color);
+        this.colorValuesComponent = new ColorValuesComponent(color);
 
         this.hexField = new TextField(ColorUtils.toHex(color)) {
             @Override
@@ -76,116 +76,9 @@ public class AdvancedColorPicker extends Component {
 
         this.picker.colorChangeListener().add(c -> {
             this.hexField.text(ColorUtils.toHex(c));
-            this.redField.text(String.valueOf(c.getRed()));
-            this.greenField.text(String.valueOf(c.getGreen()));
-            this.blueField.text(String.valueOf(c.getBlue()));
-            this.alphaField.text(String.valueOf(c.getAlpha()));
+            this.colorValuesComponent.color(c);
         });
-
-        this.redField = new TextField(String.valueOf(color.getRed())) {
-            @Override
-            protected void onComponentFocusLost() {
-                super.onComponentFocusLost();
-
-                correct();
-            }
-
-            @Override
-            protected boolean onComponentKeyUp(KeyEvent event) {
-                if (event.key() == Key.ENTER) {
-                    correct();
-                }
-
-                return super.onComponentKeyUp(event);
-            }
-
-            private void correct() {
-                try {
-                    picker.color(picker.color().withRed(Math.clamp(Integer.parseInt(text()), 0, 255)));
-                    text(ColorUtils.toHex(picker.color()));
-                } catch (Exception ignored) {}
-
-                text(String.valueOf(picker.color().getRed()));
-            }
-        };
-        this.greenField = new TextField(String.valueOf(color.getGreen()))  {
-            @Override
-            protected void onComponentFocusLost() {
-                super.onComponentFocusLost();
-
-                correct();
-            }
-
-            @Override
-            protected boolean onComponentKeyUp(KeyEvent event) {
-                if (event.key() == Key.ENTER) {
-                    correct();
-                }
-
-                return super.onComponentKeyUp(event);
-            }
-
-            private void correct() {
-                try {
-                    picker.color(picker.color().withGreen(Math.clamp(Integer.parseInt(text()), 0, 255)));
-                    text(ColorUtils.toHex(picker.color()));
-                } catch (Exception ignored) {}
-
-                text(String.valueOf(picker.color().getGreen()));
-            }
-        };
-        this.blueField = new TextField(String.valueOf(color.getBlue())) {
-            @Override
-            protected void onComponentFocusLost() {
-                super.onComponentFocusLost();
-
-                correct();
-            }
-
-            @Override
-            protected boolean onComponentKeyUp(KeyEvent event) {
-                if (event.key() == Key.ENTER) {
-                    correct();
-                }
-
-                return super.onComponentKeyUp(event);
-            }
-
-            private void correct() {
-                try {
-                    picker.color(picker.color().withBlue(Math.clamp(Integer.parseInt(text()), 0, 255)));
-                    text(ColorUtils.toHex(picker.color()));
-                } catch (Exception ignored) {}
-
-                text(String.valueOf(picker.color().getBlue()));
-            }
-        };;
-        this.alphaField = new TextField(String.valueOf(color.getAlpha())) {
-            @Override
-            protected void onComponentFocusLost() {
-                super.onComponentFocusLost();
-
-                correct();
-            }
-
-            @Override
-            protected boolean onComponentKeyUp(KeyEvent event) {
-                if (event.key() == Key.ENTER) {
-                    correct();
-                }
-
-                return super.onComponentKeyUp(event);
-            }
-
-            private void correct() {
-                try {
-                    picker.color(picker.color().withAlpha(Math.clamp(Integer.parseInt(text()), 0, 255)));
-                    text(ColorUtils.toHex(picker.color()));
-                } catch (Exception ignored) {}
-
-                text(String.valueOf(picker.color().getAlpha()));
-            }
-        };
+        this.colorValuesComponent.colorChangeListener().add(this.picker::color);
     }
 
     @Override
@@ -238,30 +131,27 @@ public class AdvancedColorPicker extends Component {
                 if (hexField.parent() != null) {
                     hexField.setRivet(null, null);
                 }
-                if (greenField.parent() != null) {
-                    greenField.setRivet(null, null);
-                }
-                if (blueField.parent() != null) {
-                    blueField.setRivet(null, null);
-                }
-                if (redField.parent() != null) {
-                    redField.setRivet(null, null);
-                }
-                if (alphaField.parent() != null) {
-                    alphaField.setRivet(null, null);
-                }
 
-                container.addChild(picker, c -> c.layoutOptions(new GridOptions(0, 0)));
-                container.addChild(new Label("Hex").scale(0.9f), c -> c.layoutOptions(new GridOptions(0, 1)
+                final Label hex = new Label("Hex").scale(0.8f);
+                hex.textColor().set(Color.GRAY);
+
+                hexField.font(rivet().backend().font().derive(14));
+
+                container.addChild(picker, c -> c.layoutOptions(new GridOptions(0, 0).withColumnSpan(2)));
+                container.addChild(hex, c -> c.layoutOptions(new GridOptions(0, 1)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
                 container.addChild(hexField, c -> c.layoutOptions(new GridOptions(1, 1)
-                        .withPadding(new Padding(0, 15, 0, 0)).withColumnSpan(2)));
+                        .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
+//
+                container.addChild(colorValuesComponent, c -> c.layoutOptions(new GridOptions(0, 2)
+                        .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT).withColumnSpan(2)));
 
-                container.addChild(redField, c -> c.layoutOptions(new GridOptions(0, 2)
-                        .withPadding(new Padding(0, 15, 0, 0))));
-                container.addChild(greenField, c -> c.layoutOptions(new GridOptions(0, 3)));
-                container.addChild(blueField, c -> c.layoutOptions(new GridOptions(0, 4)));
-                container.addChild(alphaField, c -> c.layoutOptions(new GridOptions(0, 5)));
+
+//                container.addChild(redField, c -> c.layoutOptions(new GridOptions(0, 2)
+//                        .withPadding(new Padding(0, 15, 0, 0))));
+//                container.addChild(greenField, c -> c.layoutOptions(new GridOptions(0, 3)));
+//                container.addChild(blueField, c -> c.layoutOptions(new GridOptions(0, 4)));
+//                container.addChild(alphaField, c -> c.layoutOptions(new GridOptions(0, 5)));
             }
 
             layerContainer.addChild(this.container);
