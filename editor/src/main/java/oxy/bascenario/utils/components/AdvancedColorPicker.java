@@ -212,7 +212,7 @@ public class AdvancedColorPicker extends Component {
 
     @Override
     protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
-        if (event.button() == MouseButton.LEFT) {
+        if (event.button() == MouseButton.LEFT && layer == null) {
             final Container layerContainer = new Container(AbsoluteLayout.INSTANCE);
 
             Rectangle bounds = this.absoluteBounds();
