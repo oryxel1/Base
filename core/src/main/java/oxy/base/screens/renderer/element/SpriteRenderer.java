@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.esotericsoftware.spine.*;
-import imgui.ImGui;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.implementation.window.WindowInterface;
 import oxy.base.Base;
@@ -88,14 +87,14 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             return;
         }
 
-        this.queueAnimations.forEach(animation -> {
-            try {
-                state.setAnimation(animation.index, animation.animation, animation.loop);
+        try {
+            this.queueAnimations.forEach(animation -> {
                 stateData.setDefaultMix(animation.duration);
-            } catch (Exception ignored) {
-            }
-        });
-        this.queueAnimations.clear();
+                state.setAnimation(animation.index, animation.animation, animation.loop);
+            });
+            this.queueAnimations.clear();
+        } catch (Exception ignored) {
+        }
 
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
 
@@ -132,7 +131,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             }
 
             if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
-                ThinGLUtils.overlayColor(() -> {
+                ThinGLUtils.colorTweak(() -> {
                     this.batch.begin();
                     this.renderer.draw(this.batch, this.skeleton);
                     this.batch.end();
@@ -173,20 +172,20 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
 
     private void updateSkeleton(Skeleton skeleton) {
         final WindowInterface window = ThinGL.windowInterface();
-        float width = ScenarioScreen.RENDER_WITHIN_IMGUI ? ImGui.getWindowSizeX() : window.getFramebufferWidth(), height = ScenarioScreen.RENDER_WITHIN_IMGUI ? (ImGui.getWindowSizeY() - 46) : window.getFramebufferHeight();
+        float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
 
         float x = this.position.x() + this.offset.x() + this.animationOffset.x(), y = this.position.y() + this.offset.y() + this.animationOffset.y();
         
         float posX = (x / 1920) * width, posY = (y / 1080) * -height;
-        if (ScenarioScreen.RENDER_WITHIN_IMGUI) {
-            posX += ImGui.getWindowPosX();
-
-            float ratio = (0.00064814813f * height) / (0.00064814813f * window.getFramebufferHeight());
-            posY /= ratio;
-
-            posY += window.getFramebufferHeight() - height;
-            posY -= ImGui.getWindowPosY() + 46;
-        }
+//        if (ScenarioScreen.RENDER_WITHIN_IMGUI) {
+//            posX += ImGui.getWindowPosX();
+//
+//            float ratio = (0.00064814813f * height) / (0.00064814813f * window.getFramebufferHeight());
+//            posY /= ratio;
+//
+//            posY += window.getFramebufferHeight() - height;
+//            posY -= ImGui.getWindowPosY() + 46;
+//        }
 
         skeleton.setPosition(posX, posY);
 

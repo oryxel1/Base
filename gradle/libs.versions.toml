@@ -1,20 +1,20 @@
 [versions]
-lombok = "1.18.38"
+lombok = "1.18.46"
 gson = "2.13.1"
-lwjgl = "3.4.0"
-lwjgl-sdl = "3.4.0"
+lwjgl = "3.4.1"
+lwjgl-sdl = "3.4.1"
 libgdx = "1.13.1"
 spine = "4.2.5"
-thingl = "0.1.1-SNAPSHOT"
-commons = "1.9.2"
+thingl = "0.2.0-20260630.205754-5"
+commons = "1.9.3-SNAPSHOT"
 mocha = "3.0.1"
 configurate = "4.2.0"
-imgui = "1.92.0"
 audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
-#netty = "4.2.9.Final"
 zt-zip = "1.17"
+rivet = "89628cb91e"
+jsvg = "2.1.0"
 
 [libraries]
 zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }
@@ -22,12 +22,6 @@ zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }
 projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 configurate-yaml = {  module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
-
-imgui-binding = { module = "io.github.spair:imgui-java-binding", version.ref = "imgui" }
-imgui-lwjgl3 = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
-imgui-natives-windows = { module = "io.github.spair:imgui-java-natives-windows", version.ref = "imgui" }
-imgui-natives-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref = "imgui" }
-imgui-natives-macos = { module = "io.github.spair:imgui-java-natives-macos", version.ref = "imgui" }
 
 lwjgl-base = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
@@ -49,6 +43,9 @@ gdx-spine = { module = "com.esotericsoftware.spine:spine-libgdx", version.ref = 
 raphimc-thingl = { module = "net.raphimc:thingl", version.ref = "thingl" }
 raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiomixer" }
 
+rivet-core = { module = "com.github.Lenni0451.rivet:core", version.ref = "rivet"}
+rivet-thingl-backend = { module = "com.github.Lenni0451.rivet:backend-thingl-glfw", version.ref = "rivet" }
+
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }
 
@@ -56,6 +53,8 @@ unnamed-mocha = { module = "team.unnamed:mocha", version.ref = "mocha" }
 
 jcraft-jorbis = { module = "org.jcraft:jorbis", version.ref = "jorbis" }
 javazoom-jlayer = { module = "javazoom:jlayer", version.ref = "jlayer" }
+
+weisj-jsvg = { module = "com.github.weisj:jsvg", version.ref = "jsvg" }
 
 #netty-buffer = { module = "io.netty:netty-buffer", version.ref = "netty" }
 #jthink-jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }

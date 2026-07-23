@@ -7,19 +7,17 @@ var lwjgl = "3.3.6"
 var lwjglStd = "3.4.0"
 var libGdx = "1.13.1"
 
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
     api(project(":api"))
     api(project(":serializer"))
 
-    api(variantOf(libs.raphimc.thingl) { classifier("java17") })
+    api(libs.raphimc.thingl)
     api(libs.commons.animations)
     api(libs.unnamed.mocha)
-
-    api(libs.imgui.lwjgl3)
-    api(libs.imgui.binding)
-    api(libs.imgui.natives.windows)
-    api(libs.imgui.natives.linux)
-    api(libs.imgui.natives.macos)
 
     api(libs.lwjgl.base)
     api(libs.lwjgl.opengl)
@@ -42,6 +40,8 @@ dependencies {
     api(libs.jcraft.jorbis)
     api(libs.javazoom.jlayer)
 
+    api(libs.weisj.jsvg)
+
     listOf("natives-windows", "natives-windows-arm64", "natives-linux", "natives-linux-arm64").forEach {
         api("org.lwjgl:lwjgl:$lwjgl:$it")
         api("org.lwjgl:lwjgl-glfw:$lwjgl:$it")
@@ -57,4 +57,12 @@ dependencies {
     }
 
     api("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
+    
+    api(libs.rivet.core) {
+        exclude("net.lenni0451.commons")
+    }
+    api(libs.rivet.thingl.backend) {
+        exclude("org.lwjgl")
+        exclude("net.lenni0451.commons")
+    }
 }

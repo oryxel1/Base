@@ -3,7 +3,7 @@ package oxy.base.screens.renderer.element.thingl.text;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.ThinGL;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
-import net.raphimc.thingl.resource.font.Font;
+import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import net.raphimc.thingl.text.TextSegment;
@@ -27,7 +27,7 @@ public class TextRenderer extends ThinGLElementRenderer<Text> {
 
         size = element.size();
         for (oxy.base.api.render.elements.text.TextSegment segment : element.segments()) {
-            Font font = FontUtils.toFont(scenario, segment);
+            FontInstance font = FontUtils.toFont(scenario, segment);
             line.add(new TextRun(font, new TextSegment(segment.text(), segment.color(), segment.toFlags(), segment.outline().isPresent() ? segment.outline().get() : Color.TRANSPARENT)));
         }
     }
