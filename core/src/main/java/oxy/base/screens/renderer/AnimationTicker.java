@@ -1,0 +1,179 @@
+package oxy.base.screens.renderer;
+
+import oxy.base.api.animation.Animation;
+import oxy.base.api.animation.AnimationTimeline;
+import oxy.base.api.animation.AnimationValue;
+import oxy.base.api.utils.math.Vec2;
+import oxy.base.api.utils.math.Vec3;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.screens.renderer.element.base.ElementRenderer;
+import oxy.base.utils.animation.MochaUtils;
+import oxy.base.utils.TimeUtils;
+import oxy.base.utils.animation.AnimationUtils;
+import oxy.base.utils.animation.math.Vec2Animations;
+import oxy.base.utils.animation.math.Vec3Animations;
+import team.unnamed.mocha.runtime.Scope;
+import team.unnamed.mocha.runtime.value.MutableObjectBinding;
+import team.unnamed.mocha.runtime.value.Value;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
+public final class AnimationTicker {
+    private final ElementRenderer<?> renderer;
+    private final Scope baseScope;
+
+    private long start = -1;
+    private final long maxDuration;
+    private final Map<Float, AnimationTimeline> timelines;
+
+    private final Animation animation;
+
+    private final ScenarioScreen screen;
+    private final boolean loop;
+    public AnimationTicker(ScenarioScreen screen, ElementRenderer<?> renderer, Animation animation, boolean loop) {
+        this.renderer = renderer;
+        this.loop = loop;
+        this.baseScope = MochaUtils.BASE_SCOPE.copy();
+
+        final MutableObjectBinding variableBinding = new MutableObjectBinding();
+        this.baseScope.set("variable", variableBinding);
+        this.baseScope.set("v", variableBinding);
+
+        if (animation.getInitExpression() != null) {
+            try {
+                MochaUtils.eval(this.baseScope, animation.getInitExpression());
+            } catch (IOException ignored) {
+            }
+        }
+        this.baseScope.readOnly();
+
+        this.timelines = new TreeMap<>(animation.getTimelines());
+        this.maxDuration = animation.getMaxDuration() <= 0 ? -1 : (long) (animation.getMaxDuration() * 1000L);
+
+        this.animation = animation;
+        this.screen = screen;
+    }
+
+    private Scope scope;
+    public void tick() {
+        if (this.loop && this.timelines.isEmpty() && TimeUtils.currentTimeMillis() - this.start >= this.maxDuration) {
+            this.start = TimeUtils.currentTimeMillis();
+            this.timelines.putAll(animation.getTimelines());
+        }
+
+        this.scope = this.baseScope.copy();
+
+        final MutableObjectBinding query = new MutableObjectBinding();
+
+        query.setFunction("present", (v) -> screen.getElements().get((int) v) == null ? 0 : 1);
+        query.setFunction("offset", (i) -> i == 0 ? this.renderer.getAnimationOffset().x() : this.renderer.getAnimationOffset().y());
+        query.setFunction("scale", (i) -> i == 0 ? this.renderer.getScale().x() : this.renderer.getScale().y());
+        query.setFunction("rotation", (i) -> i == 0 ? this.renderer.getRotation().x() : i == 1 ? this.renderer.getRotation().y() : this.renderer.getRotation().z());
+
+        if (this.start == -1) {
+            this.start = TimeUtils.currentTimeMillis();
+            query.set("startTime", Value.of(this.start));
+        }
+
+        final long animTime = TimeUtils.currentTimeMillis() - this.start;
+        query.set("anim_time", Value.of(animTime));
+        query.set("alive_time", Value.of((TimeUtils.currentTimeMillis() - this.renderer.getStart()) / 1000d));
+        query.set("currentTimeMillis", Value.of(TimeUtils.currentTimeMillis()));
+
+        query.block();
+        this.scope.set("query", query);
+        this.scope.set("q", query);
+        this.scope.readOnly();
+
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getOffset(), Type.OFFSET, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getScale(), Type.SCALE, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getRotation(), Type.ROTATION, true);
+        update(animation.getGlobalTimeline().getType(), animation.getGlobalTimeline().getPivot(), Type.PIVOT, true);
+
+        final Iterator<Map.Entry<Float, AnimationTimeline>> iterator = this.timelines.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Map.Entry<Float, AnimationTimeline> entry = iterator.next();
+            final long timestamp = (long) (entry.getKey() * 1000L);
+            if (animTime < timestamp) {
+                break;
+            }
+
+            iterator.remove();
+
+            final AnimationTimeline timeline = entry.getValue();
+            try {
+                if (timeline.getCondition() != null && !MochaUtils.eval(this.baseScope, timeline.getCondition()).getAsBoolean()) {
+                    return;
+                }
+            } catch (Exception ignored) {}
+
+            update(timeline.getType(), timeline.getOffset(), Type.OFFSET, false);
+            update(timeline.getType(), timeline.getScale(), Type.SCALE, false);
+            update(timeline.getType(), timeline.getRotation(), Type.ROTATION, false);
+            update(timeline.getType(), timeline.getPivot(), Type.PIVOT, false);
+        }
+    }
+
+    public boolean safeToRemove() {
+        boolean safe = this.timelines.isEmpty() && TimeUtils.currentTimeMillis() - this.start >= this.maxDuration;
+        if (safe) {
+            resetWhenFinished();
+        }
+        return safe && !loop;
+    }
+
+    private void resetWhenFinished() {
+        if (!this.animation.isResetWhenFinish()) {
+            return;
+        }
+
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getOffset(), Type.OFFSET, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getScale(), Type.SCALE, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getRotation(), Type.ROTATION, false);
+        update(this.animation.getDefaultTimeline().getType(), this.animation.getDefaultTimeline().getPivot(), Type.PIVOT, false);
+    }
+
+    private void update(AnimationTimeline.Type timelineType, AnimationValue value, Type type, boolean global) {
+        if (value == null || value.duration() == null || value.value() == null || value.value().length == 0 || value.easing() == null) {
+            return;
+        }
+
+        if (timelineType == null) {
+            timelineType = AnimationTimeline.Type.SET;
+        }
+
+        try {
+            long duration = (long) ((float)MochaUtils.eval(this.scope.copy(), value.duration()).getAsNumber() * 1000L);
+
+            if (type == Type.ROTATION) {
+                Vec3 vec3 = AnimationUtils.evalVec3(this.scope.copy(), value, true);
+                if (vec3 != null) {
+                    final Vec3Animations vec3Animations = renderer.getRotation();
+                    if (timelineType == AnimationTimeline.Type.SET) {
+                        vec3Animations.set(AnimationUtils.toFunction(value.easing()), vec3, duration);
+                    } else {
+                        vec3Animations.add(AnimationUtils.toFunction(value.easing()), vec3, duration);
+                    }
+                }
+            } else {
+                Vec2 vec2 = AnimationUtils.evalVec2(this.scope.copy(), value, true);
+                if (vec2 != null) {
+                    final Vec2Animations vec2Animations = ((type == Type.SCALE) ? renderer.getScale() : type == Type.PIVOT ? renderer.getPivot() : renderer.getAnimationOffset());
+                    if (timelineType == AnimationTimeline.Type.SET) {
+                        vec2Animations.set(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    } else {
+                        vec2Animations.add(AnimationUtils.toFunction(value.easing()), vec2, duration, !global);
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    private enum Type {
+        ROTATION, SCALE, OFFSET, PIVOT
+    }
+}

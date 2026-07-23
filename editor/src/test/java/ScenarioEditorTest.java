@@ -1,6 +1,6 @@
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.editor.ScenarioEditorScreen;
-import oxy.bascenario.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.editor.ScenarioEditorScreen;
+import oxy.base.utils.Launcher;
 
 public class ScenarioEditorTest {
     public static void main(String[] args) {

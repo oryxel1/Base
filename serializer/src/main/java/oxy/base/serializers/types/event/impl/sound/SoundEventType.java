@@ -1,0 +1,28 @@
+package oxy.base.serializers.types.event.impl.sound;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.event.sound.SoundEvent;
+import oxy.base.serializers.base.TypeWithName;
+
+public class SoundEventType implements TypeWithName<SoundEvent> {
+    @Override
+    public String type() {
+        return "sound-event";
+    }
+
+    @Override
+    public JsonElement write(SoundEvent soundEvent) {
+        final JsonObject object = new JsonObject();
+        object.addProperty("id", soundEvent.id());
+        object.addProperty("event", soundEvent.event().name());
+        return object;
+    }
+
+    @Override
+    public SoundEvent read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        return new SoundEvent(object.get("id").getAsInt(), SoundEvent.Event.valueOf(object.get("event").getAsString()));
+    }
+}

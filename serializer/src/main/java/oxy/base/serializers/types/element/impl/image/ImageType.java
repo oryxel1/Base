@@ -1,0 +1,36 @@
+package oxy.base.serializers.types.element.impl.image;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.render.elements.image.Image;
+import oxy.base.serializers.Types;
+import oxy.base.serializers.base.TypeWithName;
+
+public class ImageType implements TypeWithName<Image> {
+    @Override
+    public String type() {
+        return "image";
+    }
+
+    @Override
+    public JsonElement write(Image image) {
+        final JsonObject object = new JsonObject();
+        object.add("file", Types.NULLABLE_FILE_INFO_TYPE.write(image.file())); // not actually optional butttt it could be null.
+        object.add("color", Types.COLOR_TYPE.write(image.color()));
+
+        final JsonArray array = new JsonArray();
+        array.add(image.width());
+        array.add(image.height());
+        object.add("size", array);
+        return object;
+    }
+
+    @Override
+    public Image read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        final JsonArray size = object.getAsJsonArray("size");
+        return new Image(Types.NULLABLE_FILE_INFO_TYPE.read(object.get("file")), Types.COLOR_TYPE.read(object.get("color")), size.get(0).getAsInt(), size.get(1).getAsInt());
+    }
+}

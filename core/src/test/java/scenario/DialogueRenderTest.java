@@ -1,22 +1,21 @@
 package scenario;
 
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.event.ShowButtonsEvent;
-import oxy.bascenario.api.event.dialogue.enums.OffsetType;
-import oxy.bascenario.api.event.dialogue.enums.TextOffset;
-import oxy.bascenario.api.render.elements.text.font.FontType;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.event.dialogue.AddDialogueEvent;
-import oxy.bascenario.api.event.dialogue.StartDialogueEvent;
-import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.Dialogue;
-import oxy.bascenario.api.render.elements.shape.Rectangle;
-import oxy.bascenario.api.render.elements.text.font.FontStyle;
-import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.screens.ScenarioScreen;
+import oxy.base.api.event.ShowButtonsEvent;
+import oxy.base.api.event.dialogue.enums.TextOffset;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.api.event.dialogue.AddDialogueEvent;
+import oxy.base.api.event.dialogue.StartDialogueEvent;
+import oxy.base.api.event.element.AddElementEvent;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.api.render.elements.Dialogue;
+import oxy.base.api.render.elements.shape.Rectangle;
+import oxy.base.api.render.elements.text.font.FontStyle;
+import oxy.base.api.render.elements.text.TextSegment;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
 
 import java.util.ArrayList;
 import java.util.List;

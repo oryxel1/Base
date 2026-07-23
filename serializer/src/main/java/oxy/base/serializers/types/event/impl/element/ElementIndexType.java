@@ -1,0 +1,31 @@
+package oxy.base.serializers.types.event.impl.element;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.event.element.ElementIndexEvent;
+import oxy.base.serializers.Types;
+import oxy.base.serializers.base.TypeWithName;
+
+public class ElementIndexType implements TypeWithName<ElementIndexEvent> {
+    @Override
+    public String type() {
+        return "element-index";
+    }
+
+    @Override
+    public JsonElement write(ElementIndexEvent elementIndexEvent) {
+        final JsonObject object = new JsonObject();
+        object.addProperty("id", elementIndexEvent.mainIndex());
+        object.add("subId", Types.NULLABLE_INT.write(elementIndexEvent.subIndex()));
+        object.addProperty("newIndex", elementIndexEvent.newIndex());
+        object.addProperty("swap", elementIndexEvent.swap());
+        return object;
+    }
+
+    @Override
+    public ElementIndexEvent read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        return new ElementIndexEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), object.get("newIndex").getAsInt(), object.get("swap").getAsBoolean());
+    }
+}

@@ -1,0 +1,21 @@
+package oxy.base.screens.renderer.element;
+
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import oxy.base.api.event.color.ColorOverlayEvent;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.screens.renderer.element.base.ElementRenderer;
+import oxy.base.utils.thingl.ThinGLUtils;
+
+public class ColorOverlayRenderer extends ElementRenderer<ColorOverlayEvent> {
+    public ColorOverlayRenderer(RenderLayer layer) {
+        super(null, layer);
+        this.overlayColor.set(Color.WHITE.withAlpha(0), 0);
+    }
+
+    @Override
+    protected void render(ScenarioScreen screen) {
+        ThinGL.renderer2D().filledRectangle(ThinGLUtils.GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, overlayColor.color());
+    }
+}

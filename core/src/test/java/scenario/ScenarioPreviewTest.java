@@ -1,13 +1,13 @@
 package scenario;
 
-import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.Preview;
-import oxy.bascenario.api.render.elements.text.font.FontType;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.api.Scenario;
+import oxy.base.api.event.element.AddElementEvent;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.api.render.elements.Preview;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.utils.Launcher;
+import oxy.base.api.Scenario;
 
 public class ScenarioPreviewTest {
     public static void main(String[] args) {

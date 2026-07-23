@@ -1,0 +1,33 @@
+package oxy.base.serializers.types.element.impl.text.font;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.render.elements.text.font.Font;
+import oxy.base.serializers.Types;
+import oxy.base.serializers.base.Type;
+import oxy.base.serializers.types.element.ElementTypes;
+
+public class FontType implements Type<Font> {
+    @Override
+    public JsonElement write(Font font) {
+        if (font.file() != null) {
+            return Types.FILE_INFO_TYPE.write(font.file());
+        }
+
+        final JsonObject object = new JsonObject();
+        object.add("style", ElementTypes.FONT_STYLE_TYPE.write(font.style()));
+        object.add("type", ElementTypes.FONT_TYPE_TYPE.write(font.type()));
+        return object;
+    }
+
+    @Override
+    public Font read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        if (!object.has("style")) {
+            return new Font(Types.FILE_INFO_TYPE.read(object), null, null);
+        }
+
+        return new Font(null, ElementTypes.FONT_STYLE_TYPE.read(object.get("style")), ElementTypes.FONT_TYPE_TYPE.read(object.get("type")));
+    }
+}

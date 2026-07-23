@@ -1,0 +1,125 @@
+package oxy.base.screens.renderer.dialogue;
+
+import lombok.Getter;
+import lombok.Setter;
+import net.lenni0451.commons.animation.easing.EasingFunction;
+import net.lenni0451.commons.animation.easing.EasingMode;
+import net.lenni0451.commons.color.Color;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.gl.renderer.impl.RendererText;
+import net.raphimc.thingl.text.TextRun;
+import net.raphimc.thingl.text.TextSegment;
+import oxy.base.Base;
+import oxy.base.api.event.dialogue.enums.TextOffset;
+import oxy.base.api.render.elements.Dialogue;
+import oxy.base.api.render.elements.text.font.FontStyle;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.utils.animation.AnimationUtils;
+import oxy.base.utils.animation.DynamicAnimation;
+import oxy.base.utils.font.FontUtils;
+import oxy.base.utils.font.TextUtils;
+
+import static oxy.base.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
+
+public abstract class BaseDialogueRenderer {
+    protected static final float NON_GRADIENT_PART = 240, GRADIENT_PART = 120;
+    protected static final float SEPARATOR_Y = 843.6F, SEPARATOR_WIDTH = 1555.2F - 6f, SEPARATOR_X = 182.4f + 3f;
+
+    protected static final Color OUTLINE_COLOR = Color.fromRGB(41, 65, 90);
+
+    protected String name, association;
+    private boolean background;
+    @Setter @Getter
+    protected int currentIndex;
+
+    protected boolean playing, finished;
+    public boolean isBusy() {
+        return this.playing && !this.finished;
+    }
+
+    public boolean hasClickedDialogue(double mouseX, double mouseY) {
+        return mouseX >= 0 && mouseX <= 1920 && mouseY >= 720 && mouseY <= 1080;
+    }
+
+    public void finishAll() {
+    }
+
+    protected FontType font;
+    protected TextOffset offset = TextOffset.LEFT;
+    public final boolean start(TextOffset offset, FontType type, int index, String name, String association, boolean background, Dialogue... dialogues) {
+        if (index != currentIndex) {
+            return false;
+        }
+
+        this.offset = offset;
+
+        this.font = type;
+        this.name = name;
+        this.association = association;
+
+        this.stop();
+        this.playing = true;
+        this.background = background;
+        add(index, true, dialogues);
+        return true;
+    }
+
+    public abstract boolean add(int dIndex, boolean newLine, Dialogue... dialogues);
+    public abstract void renderDialogues();
+
+    public void stop() {
+        this.finished = false;
+        this.playing = false;
+
+        this.triangleAnimation = AnimationUtils.dummy(1000);
+    }
+
+    public void render() {
+        if (!this.playing) {
+            return;
+        }
+
+        if (this.background) {
+            renderBackground();
+        }
+        renderDetails();
+        renderDialogues();
+    }
+
+    public void renderDetails() {
+        final TextRun name = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.name, Color.WHITE, 0, OUTLINE_COLOR));
+        TextUtils.textRun(58, name, SEPARATOR_X + 5, SEPARATOR_Y - 22, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+        final float nameTextWidth = TextUtils.getVisualWidth(58, name.shape());
+
+        final TextRun association = new TextRun(FontUtils.font(FontStyle.BOLD, this.font), new TextSegment(this.association, Color.fromRGB(132, 212, 249), 0, OUTLINE_COLOR));
+        TextUtils.textRun(40, association, SEPARATOR_X + nameTextWidth + 25, SEPARATOR_Y - 23, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.LOGICAL_LEFT);
+    }
+
+    private DynamicAnimation triangleAnimation = AnimationUtils.dummy(1000);
+    public void renderBackground() {
+        final Color color = Color.fromRGBA(13, 31, 45, 220);
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 1080 - NON_GRADIENT_PART, 1920, 1080, color);
+
+        for (int i = 1; i < GRADIENT_PART; i++) {
+            int alpha = Math.max(0, Math.min(255, Math.round(220 + ((i / GRADIENT_PART) * (-220)))));
+            ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 1080 - NON_GRADIENT_PART - i, 1920, 1080 - NON_GRADIENT_PART - i + 1, color.withAlpha(alpha));
+        }
+
+        // Render the separator.
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(110, 113, 115));
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 1, Color.fromRGB(100, 103, 106));
+        ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, SEPARATOR_X, SEPARATOR_Y + 2, SEPARATOR_X + SEPARATOR_WIDTH, SEPARATOR_Y + 3, Color.fromRGB(100, 103, 106));
+
+        if (this.finished) {
+            if (!this.triangleAnimation.isRunning() && this.triangleAnimation.getTarget() != 980) {
+                this.triangleAnimation = AnimationUtils.build(800, this.triangleAnimation.getValue(), 980, EasingFunction.QUART, EasingMode.EASE_OUT);
+            }
+            if (!this.triangleAnimation.isRunning() && this.triangleAnimation.getTarget() != 1000) {
+                this.triangleAnimation = AnimationUtils.build(600, this.triangleAnimation.getValue(), 1000, EasingFunction.QUART, EasingMode.EASE_IN);
+            }
+
+            ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK,
+                    Base.instance().assetsManager().texture("assets/base/uis/other/idkwhatthisis.png"), 1757, triangleAnimation.getValue());
+        }
+    }
+}

@@ -1,0 +1,132 @@
+package oxy.base.managers;
+
+import oxy.base.Base;
+import oxy.base.api.animation.Animation;
+import oxy.base.api.animation.AnimationTimeline;
+import oxy.base.api.animation.AnimationValue;
+import oxy.base.api.effects.Easing;
+import oxy.base.api.managers.AnimationManagerApi;
+import oxy.base.utils.math.Pair;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class AnimationManager extends HashMap<String, Animation> implements AnimationManagerApi {
+    private static final File SAVE_DIR = new File(Base.SAVE_DIR, "animations");
+
+    public AnimationManager() {
+        if (!SAVE_DIR.isDirectory()) {
+            SAVE_DIR.mkdirs();
+        }
+
+        initDefaultAnimations();
+    }
+
+    public Pair<Integer, String[]> getAllAnimations(String current) {
+        final List<String> animations = new ArrayList<>();
+
+        boolean has = this.containsKey(current);
+        if (!has) {
+            animations.add(current + " (Not available)");
+        }
+
+        int index = 0;
+        for (String key : this.keySet()) {
+            if (has && key.equals(current)) {
+                index = animations.size();
+            }
+            animations.add(key);
+        }
+
+        return new Pair<>(index, animations.toArray(new String[0]));
+    }
+
+    @Override
+    public Animation find(String name) {
+        return get(name);
+    }
+
+    public void shutdown() {
+    }
+
+    private void initDefaultAnimations() {
+        this.put(
+                "base:default-shake",
+                Animation.builder()
+                        .name("Default Shake")
+                        .offset(new AnimationValue(new String[] {"math.abs(query.offset(0) + 19.2) <= 0.0001 ? 19.2 : -19.2", "query.offset(1)"}, "0.08", Easing.LINEAR))
+                        .defaultOffset(new AnimationValue(new String[]{"0", "query.offset(1)"}, "0.08", Easing.LINEAR))
+                        .maxDuration(0.26f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "base:down-then-up",
+                Animation.builder()
+                        .name("Down Then Up")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "108"}, "0.3", Easing.LINEAR)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
+                        .maxDuration(0.3f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "base:hangry",
+                Animation.builder()
+                        .name("Default Angry")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f * 2, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.3", Easing.LINEAR))
+                        .maxDuration(0.17f * 3)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "base:jump",
+                Animation.builder()
+                        .name("Default Jump")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
+                        .put(0.17f, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "0"}, "0.17", Easing.LINEAR)).build())
+                        .maxDuration(0.17f * 2)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "base:test",
+                Animation.builder()
+                        .name("Dev Test")
+                        .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"-960", "0"}, "1", Easing.LINEAR)).build())
+                        .put(1f, AnimationTimeline.builder().scale(new AnimationValue(new String[] {"1.5", "1.5"}, "0.3", Easing.QUAD)).build())
+                        .put(1.3f, AnimationTimeline.builder().scale(new AnimationValue(new String[] {"1", "1"}, "0.3", Easing.QUAD)).build())
+                        .defaultOffset(new AnimationValue(new String[]{"0", "0"}, "0.1", Easing.LINEAR))
+                        .maxDuration(1.6f)
+                        .resetWhenFinish(true)
+                        .build()
+        );
+
+        this.put(
+                "base:loop-test",
+                Animation.builder()
+                        .name("Dev Loop Test")
+                        .rotation(new AnimationValue(new String[] {"0", "0", "57.29577951308232 * (math.mod(q.currentTimeMillis, 500) / 500 * math.pi * 2)"}, "0", Easing.LINEAR)).build()
+        );
+
+        this.put(
+                "base:dizzy",
+                Animation.builder()
+                        .name("Dizzy")
+                        .put(0, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "-5"}, "0.3", Easing.LINEAR)).build())
+                        .put(0.3f, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "5"}, "0.3", Easing.LINEAR)).build())
+                        .put(0.3f * 3, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "0"}, "0.3", Easing.LINEAR)).build())
+//                        .maxDuration(0.2f * 4)
+                        .build()
+        );
+    }
+}

@@ -1,9 +1,9 @@
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.effects.Sound;
-import oxy.bascenario.api.event.sound.PlaySoundEvent;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.api.effects.Sound;
+import oxy.base.api.event.sound.PlaySoundEvent;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.utils.Launcher;
 
 public class SoundPlayTest {
     public static void main(String[] args) {

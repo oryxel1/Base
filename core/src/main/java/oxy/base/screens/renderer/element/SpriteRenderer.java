@@ -1,0 +1,204 @@
+package oxy.base.screens.renderer.element;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.esotericsoftware.spine.*;
+import net.raphimc.thingl.ThinGL;
+import net.raphimc.thingl.implementation.window.WindowInterface;
+import oxy.base.Base;
+import oxy.base.api.Scenario;
+import oxy.base.api.effects.Effect;
+import oxy.base.api.effects.ScreenEffect;
+import oxy.base.api.managers.other.AssetType;
+import oxy.base.api.render.elements.Sprite;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.screens.renderer.element.base.ElementRenderer;
+import oxy.base.utils.TimeUtils;
+import oxy.base.utils.files.FileUtils;
+import oxy.base.utils.thingl.ThinGLUtils;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static oxy.base.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
+
+// The fact we're combining libgdx-spine way of rendering with ThinGL is a literal dog shit implement xDDDD
+// It's fine however, I don't really care that much...
+public class SpriteRenderer extends ElementRenderer<Sprite> {
+    private static final float DEGREES_TO_RADIANS = 0.017453292519943295f;
+
+    private OrthographicCamera camera;
+    private PolygonSpriteBatch batch;
+    private SkeletonRenderer renderer;
+
+//    private TextureAtlas atlas;
+    private Skeleton skeleton;
+    private AnimationState state;
+    private AnimationStateData stateData;
+
+    final List<QueueAnimation> queueAnimations = new CopyOnWriteArrayList<>();
+    private record QueueAnimation(String animation, int index, float duration, boolean loop) {
+    }
+    public void play(String animation, int index, float duration, boolean loop) {
+        this.queueAnimations.add(new QueueAnimation(animation, index, duration, loop));
+    }
+
+    private final Scenario scenario;
+    public SpriteRenderer(Sprite element, RenderLayer layer, Scenario scenario) {
+        super(element, layer);
+        this.scenario = scenario;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        if (this.camera != null) {
+            this.camera.setToOrtho(false);
+            return;
+        }
+
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false);
+        this.batch = new PolygonSpriteBatch();
+
+        this.renderer = new SkeletonRenderer();
+
+        if (element.atlas() == null || element.skeleton() == null) {
+            return;
+        }
+
+        final FileInfo combined = FileUtils.combine(element.atlas(), element.skeleton());
+        SkeletonData skeletonData = Base.instance().assetsManager().get(scenario.getName(), combined, AssetType.SKELETON);
+
+        this.skeleton = new Skeleton(skeletonData);
+        this.stateData = new AnimationStateData(skeletonData);
+        this.state = new AnimationState(this.stateData);
+
+        // Always use last skin for cute and funni reason.
+        this.skeleton.setSkin(skeletonData.getSkins().get(skeletonData.getSkins().size - 1));
+    }
+
+    private long last = TimeUtils.currentTimeMillis();
+    @Override
+    protected void render(ScenarioScreen screen) {
+        if (this.skeleton == null || this.state == null) {
+            return;
+        }
+
+        try {
+            this.queueAnimations.forEach(animation -> {
+                stateData.setDefaultMix(animation.duration);
+                state.setAnimation(animation.index, animation.animation, animation.loop);
+            });
+            this.queueAnimations.clear();
+        } catch (Exception ignored) {
+        }
+
+        ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
+
+        this.state.update((TimeUtils.currentTimeMillis() - this.last) / 1000f);
+        last = TimeUtils.currentTimeMillis();
+
+        updateSkeleton(this.skeleton);
+
+        this.camera.position.set(Gdx.graphics.getWidth() / 2f, 0, 0);
+
+        this.camera.up.set(0, 1, 0);
+        this.camera.direction.set(0, 0, -1);
+        this.camera.rotate(-this.rotation.z());
+
+        this.camera.update();
+        this.batch.getProjectionMatrix().set(camera.combined);
+
+        if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
+            Runnable runnable = () -> {
+                this.batch.begin();
+                this.renderer.draw(this.batch, this.skeleton);
+                this.batch.end();
+            };
+            if (this.color.alpha() != 0) {
+                ThinGLUtils.colorTweak(() -> {
+                    if (screen.getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+                        ThinGLUtils.nightVisionGlow(runnable);
+                    } else if (screen.getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+                        ThinGLUtils.grayscale(runnable);
+                    } else {
+                        runnable.run();
+                    }
+                }, this.color.color());
+            }
+
+            if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
+                ThinGLUtils.colorTweak(() -> {
+                    this.batch.begin();
+                    this.renderer.draw(this.batch, this.skeleton);
+                    this.batch.end();
+                }, this.overlayColor.color());
+            }
+        }
+
+        if (!this.effects.isEmpty() && this.color.alpha() != 0) {
+            ThinGL.globalUniforms().getProjectionMatrix().pushMatrix().setOrtho(0F, 1920, 1080, 0F, -1000F, 1000F);
+
+            ThinGLUtils.renderEffect(() -> {
+                this.batch.begin();
+                this.renderer.draw(this.batch, this.skeleton);
+                this.batch.end();
+            }, this.effects);
+
+            ThinGL.globalUniforms().getProjectionMatrix().popMatrix();
+        }
+
+        ThinGLUtils.start(); // Now start rendering ThinGL again!
+
+        // Should allow for proper offsetting and stuff, won't work with sprite inside sprite, but really if they do that, they're fucking crazy.
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.translate(this.pivot.x(), this.pivot.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
+        GLOBAL_RENDER_STACK.translate(-this.pivot.x(), -this.pivot.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.offset.x(), -this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.animationOffset.x(), -this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
+        GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
+        this.subElements.values().forEach(e -> e.renderAll(screen));
+        GLOBAL_RENDER_STACK.popMatrix();
+    }
+
+    private void updateSkeleton(Skeleton skeleton) {
+        final WindowInterface window = ThinGL.windowInterface();
+        float width = window.getFramebufferWidth(), height = window.getFramebufferHeight();
+
+        float x = this.position.x() + this.offset.x() + this.animationOffset.x(), y = this.position.y() + this.offset.y() + this.animationOffset.y();
+        
+        float posX = (x / 1920) * width, posY = (y / 1080) * -height;
+//        if (ScenarioScreen.RENDER_WITHIN_IMGUI) {
+//            posX += ImGui.getWindowPosX();
+//
+//            float ratio = (0.00064814813f * height) / (0.00064814813f * window.getFramebufferHeight());
+//            posY /= ratio;
+//
+//            posY += window.getFramebufferHeight() - height;
+//            posY -= ImGui.getWindowPosY() + 46;
+//        }
+
+        skeleton.setPosition(posX, posY);
+
+        this.state.apply(skeleton);
+
+        // Shitty way to scale and stuff? Well it has already been a problem since the legacy engine model of BASE so.....
+        skeleton.setScale(0.00036458332f * width * this.scale.x(), 0.00064814813f * height * this.scale.y());
+        skeleton.update(Gdx.graphics.getDeltaTime());
+        skeleton.updateWorldTransform(Skeleton.Physics.none);
+    }
+
+//    @Override
+//    public void dispose() {
+//        this.atlas.dispose();
+//    }
+}

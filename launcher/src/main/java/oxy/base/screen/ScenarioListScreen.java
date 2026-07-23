@@ -1,0 +1,185 @@
+package oxy.base.screen;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.zeroturnaround.zip.ZipUtil;
+import org.zeroturnaround.zip.commons.FileUtils;
+import oxy.base.Base;
+import oxy.base.api.Scenario;
+import oxy.base.managers.ScenarioManager;
+import oxy.base.screen.title.TitleScreen;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.serializers.Types;
+import oxy.base.utils.ExtendableScreen;
+import oxy.base.utils.Launcher;
+import oxy.base.utils.files.NFDUtils;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
+public class ScenarioListScreen extends ExtendableScreen {
+    private boolean popupNewScenario, popupImportingFailed;
+    private String importingFailed;
+    private String cacheName;
+
+    @Override
+    public void render(float delta) {
+//        ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0.098f, 0.098f, 0.098f, 1f);
+//
+//        ImGui.beginMainMenuBar();
+//        if (ImGui.menuItem("Exit")) {
+//            Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
+//        }
+//        if (ImGui.menuItem("New Scenario")) {
+//            popupNewScenario = true;
+//        }
+//        if (ImGui.menuItem("Import Scenario")) {
+//            String fileS = NFDUtils.pickFile("zip,rar");
+//            if (!fileS.isEmpty()) {
+//                final File file = new File(fileS);
+//                if (!ZipUtil.containsEntry(file, "scenario.base")) {
+//                    importingFailed = "Import scenario failed, is this the correct format?";
+//                    popupImportingFailed = true;
+//                } else {
+//                    Scenario scenario = null;
+//                    final byte[] bytes = ZipUtil.unpackEntry(file, "scenario.base");
+//                    try {
+//                        JsonObject object = JsonParser.parseString(new String(bytes)).getAsJsonObject();
+//                        scenario = Types.SCENARIO_TYPE.read(object);
+//                    } catch (Exception ignored) {
+//                    }
+//                    if (scenario == null) {
+//                        importingFailed = "Import scenario failed, failed to read scenario!";
+//                        popupImportingFailed = true;
+//                    } else {
+//                        File path = new File(ScenarioManager.SAVE_DIR, scenario.getName());
+//                        if (path.exists()) {
+//                            importingFailed = "File/Scenario Folder with this name already exist, please delete/rename it first";
+//                            popupImportingFailed = true;
+//                        } else {
+//                            path.mkdirs();
+//
+//                            ZipUtil.unpack(file, path);
+//                            Base.instance().scenarioManager().put(scenario.getName(), scenario);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        ImGui.endMainMenuBar();
+//
+//        ImGui.setNextWindowPos(0, 23 * ImGui.getStyle().getFontScaleDpi());
+//        ImGui.setNextWindowSize(ImGui.getIO().getDisplaySize());
+//        ImGui.begin("Main", ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoResize);
+//
+//        if (ImGui.button("Open Saved Location##" + ImGuiUtils.COUNTER++)) {
+//            try {
+//                Desktop.getDesktop().open(ScenarioManager.SAVE_DIR);
+//            } catch (IOException ignored) {
+//            }
+//        }
+//
+//        if (ImGui.beginTable("1ways", 1, ImGuiTableFlags.BordersV | ImGuiTableFlags.BordersOuterH |ImGuiTableFlags.RowBg | ImGuiTableFlags.NoBordersInBody)) {
+//            ImGui.tableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
+//            ImGui.tableHeadersRow();
+//
+//            final Iterator<Scenario> iterator = Base.instance().scenarioManager().getScenarios().values().iterator();
+//            while (iterator.hasNext()) {
+//                Scenario scenario = iterator.next();
+//
+//                ImGui.tableNextRow();
+//                ImGui.tableNextColumn();
+//                ImGui.text(scenario.getName());
+//                ImGui.sameLine();
+//                if (ImGui.smallButton("Edit##" + ImGuiUtils.COUNTER++)) {
+//                    Launcher.WINDOW.setScreen(new ScenarioEditorScreen(this, scenario, scenario.toBuilder()));
+//                }
+//                ImGui.sameLine();
+//                if (ImGui.smallButton("Play##" + ImGuiUtils.COUNTER++)) {
+//                    Launcher.WINDOW.setScreen(new ScenarioScreen(scenario) {
+//                        @Override
+//                        public void render(float delta) {
+//                            if (ImGui.isKeyReleased(ImGuiKey.Escape)) {
+//                                Launcher.WINDOW.setScreen(TitleScreen.INSTANCE);
+//                            }
+//                            super.render(delta);
+//                        }
+//                    });
+//                }
+//                ImGui.sameLine();
+//
+//                // TODO: do me!
+////                if (ImGui.smallButton("Rename##" + ImGuiUtils.COUNTER++)) {
+////                }
+//
+//                if (ImGui.smallButton("Export##" + ImGuiUtils.COUNTER++)) {
+//                    String folderS = NFDUtils.pickFolder();
+//                    if (!folderS.isEmpty()) {
+//                        final File folder = new File(folderS);
+//                        final File path = new File(folder, scenario.getName() + ".zip");
+//                        ZipUtil.pack(new File(ScenarioManager.SAVE_DIR, scenario.getName()), path);
+//                        try {
+//                            Desktop.getDesktop().open(folder);
+//                        } catch (IOException ignored) {
+//                        }
+//                    }
+//                }
+//
+//                ImGui.sameLine();
+//                if (ImGui.smallButton("Delete##" + ImGuiUtils.COUNTER++)) {
+//                    final File path = new File(ScenarioManager.SAVE_DIR, scenario.getName());
+//                    try {
+//                        FileUtils.deleteDirectory(path);
+//                        iterator.remove();
+//                    } catch (IOException ignored) {
+//                    }
+//                }
+//            }
+//
+//            ImGui.endTable();
+//        }
+//
+//        ImGui.end();
+//
+//        if (popupNewScenario) {
+//            popupNewScenario = false;
+//            cacheName = "";
+//            ImGui.openPopup("New Scenario");
+//        }
+//
+//        if (popupImportingFailed) {
+//            popupImportingFailed = false;
+//            ImGui.openPopup("Import Failed");
+//        }
+//
+//        if (ImGui.beginPopupModal("Import Failed", ImGuiWindowFlags.AlwaysAutoResize)) {
+//            ImGui.text(importingFailed);
+//            if (ImGui.button("Ok")) {
+//                ImGui.closeCurrentPopup();
+//                importingFailed = "";
+//            }
+//            ImGui.endPopup();
+//        }
+//
+//        if (ImGui.beginPopupModal("New Scenario")) {
+//            cacheName = ImGuiUtils.inputText("Name", cacheName);
+//            final File path = new File(ScenarioManager.SAVE_DIR, cacheName);
+//
+//            if (path.isDirectory() || cacheName.isEmpty()) {
+//                ImGui.text(cacheName.isEmpty() ? "Name can't be empty!" : "A directory with this name already exist!");
+//            }
+//            if (ImGui.button("Create##" + ImGuiUtils.COUNTER++) && !path.isDirectory() && !cacheName.isEmpty()) {
+//                Base.instance().scenarioManager().put(cacheName, Scenario.builder().name(cacheName).build());
+//                ImGui.closeCurrentPopup();
+//            }
+//            ImGui.sameLine();
+//            if (ImGui.button("Ok nevermind..")) {
+//                ImGui.closeCurrentPopup();
+//            }
+//
+//            ImGui.endPopup();
+//        }
+    }
+}

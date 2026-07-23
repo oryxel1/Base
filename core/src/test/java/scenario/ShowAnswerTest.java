@@ -1,17 +1,15 @@
 package scenario;
 
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.event.ShowButtonsEvent;
-import oxy.bascenario.api.event.background.SetBackgroundEvent;
-import oxy.bascenario.api.event.dialogue.ShowOptionsEvent;
-import oxy.bascenario.api.event.dialogue.ShowQuestionSelectionEvent;
-import oxy.bascenario.api.render.elements.text.font.FontType;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.api.event.ShowButtonsEvent;
+import oxy.base.api.event.background.SetBackgroundEvent;
+import oxy.base.api.event.dialogue.ShowQuestionSelectionEvent;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.utils.Launcher;
 
 import java.util.List;
-import java.util.Map;
 
 public class ShowAnswerTest {
     public static void main(String[] args) {

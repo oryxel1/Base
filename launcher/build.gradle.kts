@@ -21,7 +21,7 @@ tasks {
         archiveFileName = "Base.jar"
         manifest {
             attributes(
-                "Main-Class" to "oxy.bascenario.Main"
+                "Main-Class" to "oxy.base.Main"
             )
         }
     }

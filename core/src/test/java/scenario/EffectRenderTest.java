@@ -1,23 +1,23 @@
 package scenario;
 
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.api.render.elements.image.Image;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.effects.Easing;
-import oxy.bascenario.api.effects.Effect;
-import oxy.bascenario.api.event.element.AddElementEvent;
-import oxy.bascenario.api.event.element.ElementEffectEvent;
-import oxy.bascenario.api.event.element.values.PositionElementEvent;
-import oxy.bascenario.api.render.RenderLayer;
-import oxy.bascenario.api.render.elements.Sprite;
-import oxy.bascenario.api.render.elements.shape.Rectangle;
-import oxy.bascenario.api.render.elements.text.Text;
-import oxy.bascenario.api.render.elements.text.TextSegment;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.api.utils.math.Axis;
-import oxy.bascenario.api.utils.math.Vec2;
-import oxy.bascenario.screens.ScenarioScreen;
+import oxy.base.api.render.elements.image.Image;
+import oxy.base.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.api.effects.Easing;
+import oxy.base.api.effects.Effect;
+import oxy.base.api.event.element.AddElementEvent;
+import oxy.base.api.event.element.ElementEffectEvent;
+import oxy.base.api.event.element.values.PositionElementEvent;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.api.render.elements.Sprite;
+import oxy.base.api.render.elements.shape.Rectangle;
+import oxy.base.api.render.elements.text.Text;
+import oxy.base.api.render.elements.text.TextSegment;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.api.utils.math.Axis;
+import oxy.base.api.utils.math.Vec2;
+import oxy.base.screens.ScenarioScreen;
 
 import java.util.List;
 
