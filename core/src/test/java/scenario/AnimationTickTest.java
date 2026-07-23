@@ -25,14 +25,14 @@ public class AnimationTickTest {
         scenario.add(0, new AddElementEvent(1, sprite, RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(1, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 
         scenario.add(0, new AddElementEvent(2, new Rectangle(200, 200, Color.RED, false), RenderLayer.BEHIND_DIALOGUE), new PositionElementEvent(2, 0, new Vec2(500, 500), Easing.LINEAR, PositionElementEvent.Type.POSITION));
-        scenario.add(0, new PlayAnimationEvent(2, "bascenarioengine:loop-test", true));
+        scenario.add(0, new PlayAnimationEvent(2, "base:loop-test", true));
 
         scenario.add(0, new SpriteAnimationEvent(1, 0, "Idle_01", 0, true), new SpriteAnimationEvent(1, 0, "06", 0));
-        scenario.add(200, new PlayAnimationEvent(1, "bascenarioengine:default-shake", false));
-        scenario.add(1000, new PlayAnimationEvent(1, "bascenarioengine:test", false));
-        scenario.add(2000, new PlayAnimationEvent(1, "bascenarioengine:down-then-up", false));
-        scenario.add(500, new PlayAnimationEvent(1, "bascenarioengine:hangry", false));
-        scenario.add(1000, new PlayAnimationEvent(1, "bascenarioengine:loop-test", true));
+        scenario.add(200, new PlayAnimationEvent(1, "base:default-shake", false));
+        scenario.add(1000, new PlayAnimationEvent(1, "base:test", false));
+        scenario.add(2000, new PlayAnimationEvent(1, "base:down-then-up", false));
+        scenario.add(500, new PlayAnimationEvent(1, "base:hangry", false));
+        scenario.add(1000, new PlayAnimationEvent(1, "base:loop-test", true));
 
         Launcher.launch(new ScenarioScreen(scenario.build()), false);
     }

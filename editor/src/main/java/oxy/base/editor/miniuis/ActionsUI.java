@@ -244,7 +244,7 @@ public class ActionsUI {
     private void animationTab() {
         add("Play Animation",
                 "Play an defined animation, default or custom with an element on the selected track.",
-                new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
+                new PlayAnimationEvent(0, "base:default-shake", false));
 
         add("Play Sprite Animation",
                 "Play an animation that is defined in the spine (.skel) file you imported to a sprite character on the selected track.",
@@ -252,7 +252,7 @@ public class ActionsUI {
 
         add("Stop Animation",
                 "Stop any defined animation, (note) not sprite animation.",
-                new StopAnimationEvent(0, "bascenarioengine:default-shake"));
+                new StopAnimationEvent(0, "base:default-shake"));
     }
 
     private void add(String label, String tooltip, Event event) {

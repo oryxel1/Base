@@ -57,9 +57,9 @@ public class CompilerResultCompareTest {
         final Scenario.Builder builder = Scenario.builder();
         builder.name("Test");
 
-        builder.add(0, new PlayAnimationEvent(0, "bascenarioengine:default-shake", false));
+        builder.add(0, new PlayAnimationEvent(0, "base:default-shake", false));
         builder.add(0, new SpriteAnimationEvent(0, 0.2f, "Idle_01", 1));
-        builder.add(0, new StopAnimationEvent(0, "bascenarioengine:default-shake"));
+        builder.add(0, new StopAnimationEvent(0, "base:default-shake"));
         builder.add(100, new StartDialogueEvent(FontType.NotoSans, 0, "", "", true, DUMMY_DIALOGUE));
         builder.add(200, new AddDialogueEvent(0, DUMMY_DIALOGUE));
 

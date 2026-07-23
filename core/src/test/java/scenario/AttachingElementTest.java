@@ -28,7 +28,7 @@ public class AttachingElementTest {
 
         scenario.add(0,
                 new PositionElementEvent(0, 0, new Vec2(960, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION),
-                new PlayAnimationEvent(0, "bascenarioengine:default-shake", false)
+                new PlayAnimationEvent(0, "base:default-shake", false)
         );
         scenario.add(2000, new PositionElementEvent(0, 1000, new Vec2(5000, 540), Easing.LINEAR, PositionElementEvent.Type.POSITION));
 

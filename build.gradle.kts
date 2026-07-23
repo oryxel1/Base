@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "oxy.bascenario"
+group = "oxy.base"
 version = "1.0"
 
 allprojects {
@@ -14,7 +14,7 @@ allprojects {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 
-    group = "oxy.bascenario"
+    group = "oxy.base"
     version = "1.0"
 }
 

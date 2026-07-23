@@ -53,7 +53,7 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
 
     private void initDefaultAnimations() {
         this.put(
-                "bascenarioengine:default-shake",
+                "base:default-shake",
                 Animation.builder()
                         .name("Default Shake")
                         .offset(new AnimationValue(new String[] {"math.abs(query.offset(0) + 19.2) <= 0.0001 ? 19.2 : -19.2", "query.offset(1)"}, "0.08", Easing.LINEAR))
@@ -64,7 +64,7 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
         );
 
         this.put(
-                "bascenarioengine:down-then-up",
+                "base:down-then-up",
                 Animation.builder()
                         .name("Down Then Up")
                         .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "108"}, "0.3", Easing.LINEAR)).build())
@@ -75,7 +75,7 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
         );
 
         this.put(
-                "bascenarioengine:hangry",
+                "base:hangry",
                 Animation.builder()
                         .name("Default Angry")
                         .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
@@ -88,7 +88,7 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
         );
 
         this.put(
-                "bascenarioengine:jump",
+                "base:jump",
                 Animation.builder()
                         .name("Default Jump")
                         .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"0", "-50"}, "0.17", Easing.LINEAR)).build())
@@ -99,7 +99,7 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
         );
 
         this.put(
-                "bascenarioengine:test",
+                "base:test",
                 Animation.builder()
                         .name("Dev Test")
                         .put(0, AnimationTimeline.builder().offset(new AnimationValue(new String[] {"-960", "0"}, "1", Easing.LINEAR)).build())
@@ -112,14 +112,14 @@ public class AnimationManager extends HashMap<String, Animation> implements Anim
         );
 
         this.put(
-                "bascenarioengine:loop-test",
+                "base:loop-test",
                 Animation.builder()
                         .name("Dev Loop Test")
                         .rotation(new AnimationValue(new String[] {"0", "0", "57.29577951308232 * (math.mod(q.currentTimeMillis, 500) / 500 * math.pi * 2)"}, "0", Easing.LINEAR)).build()
         );
 
         this.put(
-                "bascenarioengine:dizzy",
+                "base:dizzy",
                 Animation.builder()
                         .name("Dizzy")
                         .put(0, AnimationTimeline.builder().rotation(new AnimationValue(new String[] {"0", "0", "-5"}, "0.3", Easing.LINEAR)).build())
