@@ -39,6 +39,12 @@ public class ColorWheelPicker extends Component {
 
     @Setter
     private Color color;
+    public void color(Color color) {
+        float[] hsb = color.toHSB();
+        this.color = Color.fromHSB(hsb[0], hsb[1], 1).withAlpha(color.getAlpha());
+        this.brightness = hsb[2];
+    }
+
     public Color color() {
         float[] hsb = color.toHSB();
         return Color.fromHSB(hsb[0], hsb[1], brightness).withAlpha(color.getAlpha());

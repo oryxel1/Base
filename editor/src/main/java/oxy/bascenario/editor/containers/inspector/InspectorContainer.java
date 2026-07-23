@@ -36,8 +36,6 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
             }
         }, c -> c.layoutOptions(BorderPosition.TOP));
         addChild(new PaddedContainer(new Padding(8, 5, 0 , 0), new ScrollContainer(container)), c -> c.layoutOptions(BorderPosition.CENTER));
-
-//        container.addChild(new TransformContainer());
     }
 
     @Override

@@ -58,8 +58,11 @@ dependencies {
 
     api("com.badlogicgames.gdx:gdx-platform:$libGdx:natives-desktop")
     
-    api(libs.rivet.core)
+    api(libs.rivet.core) {
+        exclude("net.lenni0451.commons")
+    }
     api(libs.rivet.thingl.backend) {
         exclude("org.lwjgl")
+        exclude("net.lenni0451.commons")
     }
 }

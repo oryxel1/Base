@@ -32,6 +32,8 @@ public class TransformContainer extends DropdownContainer {
 
         this.object = object;
 
+        // Position
+
         container.addChild(label("Position X"), c -> c.layoutOptions(leftGrid(0, 0)));
         container.addChild(label("Position Y"), c -> c.layoutOptions(leftGrid(0, 1)));
 
@@ -40,6 +42,8 @@ public class TransformContainer extends DropdownContainer {
         container.addChild(xPosition = new FixedSizePicker(-10000.0, 10000.0, 5, position.x()), c -> c.layoutOptions(grid(1, 0)));
         container.addChild(yPosition = new FixedSizePicker(-10000.0, 10000.0, 5, position.y()), c -> c.layoutOptions(grid(1, 1)));
 
+        // Scale
+
         container.addChild(label("Scale X"), c -> c.layoutOptions(leftGrid(0, 3).withPadding(new Padding(0, 5, 0, 0))));
         container.addChild(label("Scale Y"), c -> c.layoutOptions(leftGrid(0, 4)));
 
@@ -47,6 +51,8 @@ public class TransformContainer extends DropdownContainer {
 
         container.addChild(xScale = new FixedSizePicker(0, 1000, 1, scale.x()), c -> c.layoutOptions(grid(1, 3).withPadding(new Padding(0, 5, 0, 0))));
         container.addChild(yScale = new FixedSizePicker(0, 1000, 1, scale.y()), c -> c.layoutOptions(grid(1, 4)));
+
+        // Rotation
 
         container.addChild(label("Rotation X"), c -> c.layoutOptions(leftGrid(0, 5).withPadding(new Padding(0, 5, 0, 0))));
         container.addChild(label("Rotation Y"), c -> c.layoutOptions(leftGrid(0, 6)));
@@ -57,6 +63,8 @@ public class TransformContainer extends DropdownContainer {
         container.addChild(xRotation = new FixedSizePicker(-360, 360, 1, rotation.x()), c -> c.layoutOptions(grid(1, 5).withPadding(new Padding(0, 5, 0, 0))));
         container.addChild(yRotation = new FixedSizePicker(-360, 360, 1, rotation.y()), c -> c.layoutOptions(grid(1, 6)));
         container.addChild(zRotation = new FixedSizePicker(-360, 360, 1, rotation.z()), c -> c.layoutOptions(grid(1, 7)));
+
+        // Pivot
 
         container.addChild(label("Pivot X"), c -> c.layoutOptions(leftGrid(0, 8).withPadding(new Padding(0, 5, 0, 0))));
         container.addChild(label("Pivot Y"), c -> c.layoutOptions(leftGrid(0, 9)));
@@ -95,17 +103,14 @@ public class TransformContainer extends DropdownContainer {
     private static class FixedSizePicker extends NumberPicker {
         public FixedSizePicker(double min, double max, double step, double value) {
             super(min, max, step, value);
+
+            minSize(100, 0);
         }
 
         @Override
         protected void onComponentAdded() {
             super.onComponentAdded();
             font(rivet().backend().font().derive(14));
-        }
-
-        @Override
-        public Size computeIdealSize(Size constraints) {
-            return super.computeIdealSize(constraints).withWidth(constraints.width() - 60f);
         }
     }
 
