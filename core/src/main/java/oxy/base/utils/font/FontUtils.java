@@ -1,0 +1,118 @@
+package oxy.base.utils.font;
+
+import java.util.*;
+
+import imgui.*;
+import lombok.SneakyThrows;
+import net.raphimc.thingl.resource.font.Font;
+import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
+import oxy.base.Base;
+import oxy.base.api.Scenario;
+import oxy.base.api.render.elements.text.font.FontStyle;
+import oxy.base.api.render.elements.text.TextSegment;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.api.utils.FileInfo;
+
+public class FontUtils {
+    public static Font DEFAULT, SEMI_BOLD;
+    private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
+
+    public static ImFont IM_FONT_SEMI_BOLD, IM_FONT_REGULAR, CHILLGOTHIC_17;
+
+    public static Font font(FontStyle style, FontType type) {
+        return NAME_TO_FONTS.get(type.toName(style));
+    }
+
+    public static Font font(String name) {
+        return NAME_TO_FONTS.get(name);
+    }
+
+    public static Font toFont(Scenario scenario, TextSegment segment) {
+        Font font;
+        if (segment.font().file() != null) {
+            font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().hashCode(scenario.getName())));
+            if (font == null) {
+                font = FontUtils.loadSpecificFont(scenario, segment.font().file());
+                NAME_TO_FONTS.put(String.valueOf(segment.font().file().hashCode(scenario.getName())), font);
+            }
+        } else {
+            font = NAME_TO_FONTS.get(segment.font().type().toName(segment.font().style()));
+        }
+        return font;
+    }
+
+    public static void loadFonts() {
+        // Global
+        loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
+        loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");
+        loadFont("NotoSansBold", "/assets/base/fonts/global/NotoSans-Bold.ttf");
+
+        // Korea
+        loadFont("GyeonggiRegular", "/assets/base/fonts/korea/Gyeonggi_Medium.ttf");
+        loadFont("GyeonggiSemiBold", "/assets/base/fonts/korea/Gyeonggi_Medium.ttf");
+        loadFont("GyeonggiBold", "/assets/base/fonts/korea/Gyeonggi_Bold.ttf");
+
+        // Japan
+        loadFont("ShinMaruGoRegular", "/assets/base/fonts/japan/U-OTF-ShinMGoUpr-Medium.otf");
+        loadFont("ShinMaruGoSemiBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
+        loadFont("ShinMaruGoBold", "/assets/base/fonts/japan/A-OTF Shin Maru Go Pro DB.otf");
+
+        // Simplified Chinese
+        loadFont("ChillRoundRegular", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf");
+        loadFont("ChillRoundSemiBold", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Medium.otf");
+        loadFont("ChillRoundBold", "/assets/base/fonts/chinese/simplified/ChillRoundGothic_Bold.otf");
+
+        // Traditional Chinese
+        loadFont("NotoSansTCRegular", "/assets/base/fonts/chinese/traditional/NotoSansTC-Regular.ttf");
+        loadFont("NotoSansTCSemiBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-SemiBold.ttf");
+        loadFont("NotoSansTCBold", "/assets/base/fonts/chinese/traditional/NotoSansTC-Bold.ttf");
+
+        DEFAULT = NAME_TO_FONTS.get("ChillRoundRegular");
+        SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
+
+        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 18, false));
+        IM_FONT_REGULAR = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 50, false);
+        IM_FONT_SEMI_BOLD = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 50, false);
+        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 50, true);
+
+        ImGui.getIO().setConfigDpiScaleFonts(true);
+        ImGui.getIO().setConfigDpiScaleViewports(true);
+    }
+
+    public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
+        final byte[] fontData = (byte[]) Base.instance().assetsManager().assets(scenario.getName(), font).asset();
+        return new FreeTypeFont(fontData, 65);
+    }
+
+    private static void loadFont(String name, String font) {
+        try {
+            final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
+            NAME_TO_FONTS.put(name, new FreeTypeFont(fontData, 65));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SneakyThrows
+    private static ImFont loadImFont(String font, int size, boolean full) {
+        final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
+
+        final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
+        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
+        if (full) {
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesCyrillic());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseFull());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseSimplifiedCommon());
+            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
+
+            // Thanks ImGui :D, memory goin to be nice! and well imgui-java still on 1.90.0 so no dynamic render.
+            for (char c = '\u4e00'; c <= '\u9fff'; c++) {
+                rangesBuilder.addChar(c);
+            }
+        }
+
+        final ImGuiIO data = ImGui.getIO();
+        return data.getFonts().addFontFromMemoryTTF(fontData, size, new ImFontConfig(), rangesBuilder.buildRanges());
+    }
+}

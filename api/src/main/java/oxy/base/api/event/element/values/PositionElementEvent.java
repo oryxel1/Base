@@ -1,0 +1,17 @@
+package oxy.base.api.event.element.values;
+
+import lombok.Builder;
+import oxy.base.api.effects.Easing;
+import oxy.base.api.event.api.Event;
+import oxy.base.api.utils.math.Vec2;
+
+@Builder(toBuilder = true, builderClassName = "Builder")
+public record PositionElementEvent(int id, Integer subId, int duration, Vec2 vec, Easing easing, Type type) implements Event {
+    public PositionElementEvent(int id, int duration, Vec2 vec, Easing easing, Type type) {
+        this(id, null, duration, vec, easing, type);
+    }
+
+    public enum Type {
+        POSITION, OFFSET, SCALE, PIVOT
+    }
+}

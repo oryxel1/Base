@@ -1,17 +1,17 @@
 import net.raphimc.thingl.ThinGL;
-import oxy.bascenario.Base;
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.event.dialogue.ShowQuestionSelectionEvent;
-import oxy.bascenario.api.render.elements.text.font.FontType;
-import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.screens.renderer.dialogue.QuestionSelectionRenderer;
-import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.thingl.ThinGLUtils;
+import oxy.base.Base;
+import oxy.base.api.Scenario;
+import oxy.base.api.event.dialogue.ShowQuestionSelectionEvent;
+import oxy.base.api.render.elements.text.font.FontType;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.screens.renderer.dialogue.QuestionSelectionRenderer;
+import oxy.base.utils.ExtendableScreen;
+import oxy.base.utils.Launcher;
+import oxy.base.utils.thingl.ThinGLUtils;
 
 import java.util.List;
 
-import static oxy.bascenario.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
+import static oxy.base.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
 
 public class DummyTest {
     private static final QuestionSelectionRenderer renderer = new QuestionSelectionRenderer();

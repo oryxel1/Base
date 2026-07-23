@@ -1,10 +1,10 @@
-import oxy.bascenario.api.Scenario;
-import oxy.bascenario.api.effects.Weather;
-import oxy.bascenario.api.event.SetWeatherEvent;
-import oxy.bascenario.api.event.background.SetBackgroundEvent;
-import oxy.bascenario.api.utils.FileInfo;
-import oxy.bascenario.screens.ScenarioScreen;
-import oxy.bascenario.utils.Launcher;
+import oxy.base.api.Scenario;
+import oxy.base.api.effects.Weather;
+import oxy.base.api.event.SetWeatherEvent;
+import oxy.base.api.event.background.SetBackgroundEvent;
+import oxy.base.api.utils.FileInfo;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.utils.Launcher;
 
 public class WeatherTest {
     public static void main(String[] args) {

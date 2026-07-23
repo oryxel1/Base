@@ -1,0 +1,338 @@
+package oxy.base.editor.timeline;
+
+import imgui.*;
+import imgui.flag.ImGuiKey;
+import lombok.Getter;
+import lombok.Setter;
+import oxy.base.api.Scenario;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.api.utils.math.Vec2;
+import oxy.base.editor.screen.BaseScenarioEditorScreen;
+import oxy.base.editor.utils.TrackParser;
+import oxy.base.utils.font.FontUtils;
+import oxy.base.utils.ImGuiUtils;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
+// Shit code but whatever.
+public class Timeline {
+    @Getter
+    private final BaseScenarioEditorScreen screen;
+
+    public static final long DEFAULT_MAX_TIME = 15000; // 15 seconds
+
+    @Getter
+    private final List<ObjectOrEvent> objects;
+    public void put(int track, long start, long duration, Object object, RenderLayer layer, boolean wait, Vec2 vec2) {
+        final ObjectOrEvent objectOrEvent = new ObjectOrEvent(this, track, start, duration, object, layer, wait, vec2);
+        this.objects.add(objectOrEvent);
+        this.objects.sort(Comparator.comparingInt(o -> o.track));
+        this.objects.sort(Comparator.comparingLong(o -> o.start));
+
+        queueUndo(() -> this.objects.remove(objectOrEvent));
+        this.setSelectedObject(objectOrEvent);
+    }
+
+    // Undo and Redo
+    private final Deque<Runnable> undo = new ConcurrentLinkedDeque<>();
+    public void queueUndo(Runnable run) {
+        this.queueUpdate = true;
+        undo.add(run);
+        if (undo.size() > 30) {
+            undo.poll();
+        }
+    }
+    public boolean canUndo() {
+        return !undo.isEmpty();
+    }
+    public void undo() {
+        if (undo.isEmpty()) {
+            return;
+        }
+
+        undo.pollLast().run();
+        this.queueUpdate = true;
+//        this.redo =
+    }
+//    private Runnable redo;
+
+    @Getter @Setter
+    private ObjectOrEvent selectedObject;
+
+    @Setter @Getter
+    private ObjectDragDrop draggingObject;
+    public boolean isDragging() {
+        return draggingObject != null;
+    }
+    public boolean isDragging(ObjectOrEvent object) {
+        return this.draggingObject != null && object == this.draggingObject.object;
+    }
+
+    private boolean queueUpdate;
+
+    public Timeline(BaseScenarioEditorScreen screen, Scenario.Builder scenario) {
+        this.screen = screen;
+
+        if (scenario == null) {
+            this.objects = new ArrayList<>();
+        } else {
+            this.objects = TrackParser.parse(this, scenario.build());
+        }
+    }
+
+    @Setter @Getter
+    private boolean playing, tickTime = true;
+
+    @Getter
+    private float scroll = 0, scale = 1;
+    @Getter
+    private int verticalScroll = 0;
+    @Setter @Getter
+    private long timestamp;
+    private long since;
+
+    public void render() {
+//        GLFW.glfwSetCursor(((GLFWWindowInterface) ThinGL.windowInterface()).getWindowHandle(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_ARROW_CURSOR));
+        if (since == 0) {
+            since = System.currentTimeMillis();
+        }
+        if (playing && tickTime) {
+            timestamp += System.currentTimeMillis() - since;
+        }
+        since = System.currentTimeMillis();
+
+        scroll = Math.max(0, scroll);
+
+        ImGui.begin("Timeline");
+        if (ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused() && draggingObject == null) {
+            onMouseDown(ImGui.getIO().getMousePos());
+        }
+        if (playing || ImGui.getIO().getMouseDown(0) && ImGui.isWindowFocused()) {
+            if (timestamp != 0 && timestamp >= (scroll + 1) * DEFAULT_MAX_TIME * scale) {
+                long distance = (long) (timestamp - ((scroll + 1) * DEFAULT_MAX_TIME * scale));
+                float ratio = (float) distance / DEFAULT_MAX_TIME;
+                scroll += ratio + 0.2f;
+            } else if (timestamp != 0 && timestamp <= DEFAULT_MAX_TIME * scroll * scale) {
+                long distance = (long) (DEFAULT_MAX_TIME * scroll * scale - timestamp);
+                float ratio = (float) distance / DEFAULT_MAX_TIME;
+                scroll -= ratio + 0.2f;
+            }
+        }
+
+
+        final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
+        final ImVec2 mouse = ImGui.getMousePos();
+        if (mouse.x >= pos.x && mouse.x <= pos.x + size.x && mouse.y >= pos.y && mouse.y <= pos.y + size.y && ImGui.isWindowFocused()) {
+            final float scroll = ImGui.getIO().getMouseWheel();
+            if (mouse.x < pos.x + size.x / 4) {
+                this.verticalScroll = Math.max(0, this.verticalScroll - (int)scroll);
+            } else if (ImGui.getIO().getKeyCtrl()) {
+                if (scroll > 0) {
+                    this.scale += 0.05f * this.scale;
+                } else if (scroll < 0) {
+                    this.scale = Math.max(0.001f, this.scale - 0.05f * this.scale);
+                }
+            } else {
+                this.scroll = Math.max(0, this.scroll + scroll);
+            }
+        }
+
+        if (this.queueUpdate) {
+            this.objects.sort(Comparator.comparingInt(o -> o.track));
+            this.objects.sort(Comparator.comparingLong(o -> o.start));
+            this.screen.update();
+            this.queueUpdate = false;
+        }
+
+        ImGui.getWindowDrawList().addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + (size.x / 4), pos.y + size.y), ImColor.rgb(25, 25, 25));
+        drawElapsedTimeSegments(size.x / 4, pos, size);
+        drawTimelineSegments(size.x / 4, pos, size);
+        drawElapsedTime(size.x / 4, pos, size);
+        drawTimelineCursor(size.x / 4, pos, size);
+
+        if (ImGui.isWindowFocused() && this.selectedObject != null && ImGui.isKeyPressed(ImGuiKey.Delete)) {
+            final ObjectOrEvent old = this.selectedObject;
+            queueUndo(() -> this.objects.add(old));
+            this.objects.remove(this.selectedObject);
+            this.selectedObject = null;
+        }
+
+        if (ImGui.isWindowFocused() && ImGui.isKeyPressed(ImGuiKey.Space)) {
+            this.screen.setPlaying(!this.isPlaying());
+        }
+
+        if (!this.isDragging()) {
+            ImGui.end();
+            return;
+        }
+
+        // Render dragging separately on top of everything...
+        if (this.draggingObject != null) {
+            this.draggingObject.object.renderer.render();
+        }
+
+        if (this.draggingObject == null || !this.draggingObject.isWaiting()) {
+            ImGui.end();
+            return;
+        } else if (!this.draggingObject.loop) {
+            ImGui.end();
+            this.draggingObject.loop = true;
+            return;
+        }
+
+        if (!this.draggingObject.isRejected()) {
+            this.draggingObject.accept(); // Accept the result of dragging if not rejected...
+            this.draggingObject = null;
+        } else {
+            final float ratio = (this.draggingObject.object.renderer.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+            long time = (long) (Timeline.DEFAULT_MAX_TIME * scale * scroll + ratio * Timeline.DEFAULT_MAX_TIME * scale);
+
+            if (this.draggingObject.second || this.draggingObject.nearestTime - time > 350L) {
+                this.draggingObject = null; // Done!
+            } else {
+                this.draggingObject.reset();
+                this.draggingObject.second = true;
+            }
+        }
+        ImGui.end();
+    }
+
+    private void drawTimelineSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        float yScale = 80 * ImGui.getStyle().getFontScaleDpi();
+        float y = pos.y + yScale;
+
+//        GLFW.glfwSetCursor(windowHandle, GLFW.glfwCreateStandardCursor(GLFW.GLFW_VRESIZE_CURSOR));
+
+        float segmentY = 50 * ImGui.getStyle().getFontScaleDpi();
+        for (int i = verticalScroll; i <= ((size.y - yScale) / segmentY) + verticalScroll; i++) {
+            drawList.addRectFilled(new ImVec2(pos.x, y), new ImVec2(pos.x + timelineManagerWidth, y + segmentY), ImColor.rgb(33, 33, 33));
+
+            ImGui.pushFont(FontUtils.IM_FONT_REGULAR, 35);
+            drawList.addText(new ImVec2(pos.x + 10, y), ImColor.rgb(255, 255, 255), "Track " + i);
+            ImGui.popFont();
+
+            drawList.addRect(new ImVec2(pos.x, y), new ImVec2(pos.x + size.x, y + 0.5f), ImColor.rgb(50, 50, 50));
+
+            y += segmentY;
+        }
+
+        this.objects.forEach(object -> {
+            if (!this.isDragging(object)) {
+                object.renderer.render();
+            }
+        });
+    }
+
+    private void drawElapsedTimeSegments(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        drawList.addRectFilled(new ImVec2(pos.x + timelineManagerWidth, pos.y), new ImVec2(pos.x + size.x, pos.y + size.y), ImColor.rgb(20, 19, 24));
+        for (int i = 0; i <= 5; i++) {
+            ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD, 20);
+            long time = (long) ((DEFAULT_MAX_TIME * scale * scroll) + (DEFAULT_MAX_TIME * scale * (i / 5f)));
+            float segmentX = timestampToPosition(time, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
+
+            drawList.addRect(new ImVec2(segmentX, pos.y), new ImVec2(segmentX + 0.5f, pos.y + size.y), ImColor.rgb(50, 50, 50));
+            drawList.addText(segmentX + 5, pos.y + 30 * ImGui.getStyle().getFontScaleDpi(), ImColor.rgb(255, 255, 255), format(time));
+
+            ImGui.popFont();
+        }
+    }
+
+    private void drawElapsedTime(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        float yScale = 80 * ImGui.getStyle().getFontScaleDpi();
+
+        drawList.addRectFilled(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + timelineManagerWidth,
+                pos.y + yScale), ImColor.rgb(50, 50, 50));
+
+        drawList.addRect(new ImVec2(pos.x, pos.y), new ImVec2(pos.x + size.x, pos.y + yScale), ImColor.rgb(50, 50, 50));
+
+        ImGui.pushFont(FontUtils.IM_FONT_SEMI_BOLD, 30);
+        drawList.addText(pos.x + 20, pos.y + 21 * ImGui.getStyle().getFontScaleDpi(), ImColor.rgb(255, 255, 255), format(timestamp));
+        ImGui.popFont();
+
+        long millis = timestamp % 1000;
+        long second = (timestamp / 1000) % 60;
+        long minute = (timestamp / (1000 * 60)) % 60;
+        long hour = (timestamp / (1000 * 60 * 60)) % 24;
+        ImGui.pushItemWidth(timelineManagerWidth - 15);
+        ImGui.setCursorPos(5, 55 * ImGui.getStyle().getFontScaleDpi());
+        int[] time = new int[] {Math.toIntExact(hour), Math.toIntExact(minute), Math.toIntExact(second), Math.toIntExact(millis)};
+        ImGuiUtils.inputInt4("", time);
+        ImGui.popItemWidth();
+
+        long lastTimestamp = timestamp;
+        timestamp = Math.min(time[0], 99) * (long)3.6e+6 + Math.min(69, time[1]) * 60000L + Math.min(59, time[2]) * 1000L + Math.min(999, time[3]);
+        if (timestamp != lastTimestamp) {
+            screen.update();
+        }
+    }
+
+    private void drawTimelineCursor(float timelineManagerWidth, ImVec2 pos, ImVec2 size) {
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        final float cursorX = timestampToPosition(timestamp, timelineManagerWidth + pos.x, size.x - timelineManagerWidth);
+        if (cursorX < timelineManagerWidth + pos.x) {
+            return;
+        }
+
+        drawList.addRect(new ImVec2(cursorX, pos.y), new ImVec2(cursorX + ImGui.getStyle().getFontScaleDpi(), pos.y + size.y), ImColor.rgb(255, 255, 255));
+    }
+
+    private void onMouseDown(ImVec2 vec2) {
+        final ImVec2 size = ImGui.getWindowSize(), pos = ImGui.getWindowPos();
+
+        if (vec2.x < pos.x || vec2.x > pos.x + size.x || vec2.y < pos.y + 20 || vec2.y > pos.y + size.y) {
+            return;
+        }
+
+        if (vec2.x > pos.x + size.x - 20) {
+            scroll += 0.01f * ((pos.x + size.x - vec2.x) / 20) * scale;
+        }
+
+        if (vec2.x < pos.x + size.x / 4) {
+            if (vec2.y > pos.y + 80 * ImGui.getStyle().getFontScaleDpi()) {
+                final float distance = pos.x + size.x / 4 - vec2.x;
+                final float ratio = distance / (size.x - size.x / 4);
+                final long backtrackTime = (long) (ratio * (DEFAULT_MAX_TIME * scale * 0.1));
+                timestamp = Math.max(0, timestamp - backtrackTime);
+                screen.update();
+                this.selectedObject = null;
+            }
+            return;
+        }
+
+        if (vec2.y > pos.y + 80 * ImGui.getStyle().getFontScaleDpi()) {
+            return;
+        }
+
+        final float ratio = (vec2.x - pos.x - size.x / 4) / (size.x - size.x / 4);
+        long last = timestamp;
+        timestamp = (long) (DEFAULT_MAX_TIME * scale * scroll + ratio * DEFAULT_MAX_TIME * scale);
+        this.selectedObject = null;
+        if (last != timestamp) {
+            screen.update();
+        }
+    }
+
+    private float timestampToPosition(long timestamp, float offsetX, float size) {
+        return offsetX + ((timestamp - (Timeline.DEFAULT_MAX_TIME * scale * scroll)) / (Timeline.DEFAULT_MAX_TIME * scale)) * size;
+    }
+
+    // Don't comment on this.
+    private static String format(long ms) {
+        long millis = ms % 1000;
+        long second = (ms / 1000) % 60;
+        long minute = (ms / (1000 * 60)) % 60;
+        long hour = (ms / (1000 * 60 * 60)) % 24;
+        return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute) + ":" + (second < 10 ? "0" + second : second) + ":" + (millis < 10 ? "0" + millis : millis);
+    }
+}

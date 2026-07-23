@@ -1,0 +1,26 @@
+package oxy.base.serializers.types.primitive;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+
+import oxy.base.serializers.base.Type;
+
+public record NullableType<T>(Type<T> type) implements Type<T> {
+    @Override
+    public JsonElement write(T t) {
+        if (t == null) {
+            return JsonNull.INSTANCE;
+        }
+
+        return type.write(t);
+    }
+
+    @Override
+    public T read(JsonElement element) {
+        if (element == null || element.isJsonNull()) {
+            return null;
+        }
+
+        return type.read(element);
+    }
+}

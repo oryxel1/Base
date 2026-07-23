@@ -1,0 +1,30 @@
+package oxy.base.serializers.types.event.impl.element;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.event.element.AttachElementEvent;
+import oxy.base.serializers.Types;
+import oxy.base.serializers.base.TypeWithName;
+
+public class AttachElementType implements TypeWithName<AttachElementEvent> {
+    @Override
+    public String type() {
+        return "attach-element";
+    }
+
+    @Override
+    public JsonElement write(AttachElementEvent attachElementEvent) {
+        final JsonObject object = new JsonObject();
+        object.addProperty("id", attachElementEvent.id());
+        object.add("subId", Types.NULLABLE_INT.write(attachElementEvent.subId()));
+        object.add("object", Types.ELEMENT_TYPE.write(attachElementEvent.element()));
+        return object;
+    }
+
+    @Override
+    public AttachElementEvent read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        return new AttachElementEvent(object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), Types.ELEMENT_TYPE.read(object.get("object")));
+    }
+}

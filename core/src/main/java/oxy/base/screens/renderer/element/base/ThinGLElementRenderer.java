@@ -1,0 +1,65 @@
+package oxy.base.screens.renderer.element.base;
+
+import net.raphimc.thingl.ThinGL;
+import oxy.base.api.effects.Effect;
+import oxy.base.api.effects.ScreenEffect;
+import oxy.base.api.render.RenderLayer;
+import oxy.base.screens.ScenarioScreen;
+import oxy.base.utils.thingl.ThinGLUtils;
+
+import static oxy.base.utils.thingl.ThinGLUtils.GLOBAL_RENDER_STACK;
+
+public abstract class ThinGLElementRenderer<T> extends ElementRenderer<T> {
+    private static final float DEGREES_TO_RADIANS = 0.017453292519943295f;
+
+    public ThinGLElementRenderer(T element, RenderLayer layer) {
+        super(element, layer);
+    }
+
+    @Override
+    protected final void render(ScenarioScreen screen) {
+        ThinGL.programs().getMsaa().bindInput();
+
+        GLOBAL_RENDER_STACK.pushMatrix();
+
+        GLOBAL_RENDER_STACK.translate(this.pivot.x(), this.pivot.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.rotateXYZ(this.rotation.x() * DEGREES_TO_RADIANS, this.rotation.y() * DEGREES_TO_RADIANS, this.rotation.z() * DEGREES_TO_RADIANS);
+        GLOBAL_RENDER_STACK.translate(-this.offset.x(), -this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.animationOffset.x(), -this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(-this.pivot.x(), -this.pivot.y(), 0);
+
+        GLOBAL_RENDER_STACK.translate(this.offset.x(), this.offset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.animationOffset.x(), this.animationOffset.y(), 0);
+        GLOBAL_RENDER_STACK.translate(this.position.x(), this.position.y(), 0);
+        GLOBAL_RENDER_STACK.scale(this.scale.x(), this.scale.y(), 1);
+
+        // TODO: The offsetting wouldn't works with Sprite Rendering, but welp, if they put sprite inside an element, they're fucking crazy.
+        this.subElements.values().forEach(e -> e.renderAll(screen));
+
+        if (!this.effects.containsKey(Effect.OUTLINE) || this.effects.size() > 1) {
+            if (screen.getEffects().contains(ScreenEffect.NIGHT_VISION)) {
+                ThinGLUtils.nightVisionGlow(() -> renderThinGL(screen));
+            } else if (screen.getEffects().contains(ScreenEffect.BLACK_AND_WHITE)) {
+                ThinGLUtils.grayscale(() -> renderThinGL(screen));
+            } else {
+                renderThinGL(screen);
+            }
+        }
+
+        if (this.color.alpha() != 0) {
+            ThinGLUtils.renderEffect(this::renderThinGL, this.effects);
+        }
+        GLOBAL_RENDER_STACK.popMatrix();
+
+        ThinGL.programs().getMsaa().unbindInput();
+        ThinGL.programs().getMsaa().renderFullscreen();
+        ThinGL.programs().getMsaa().clearInput();
+    }
+
+    protected abstract void renderThinGL();
+    protected void renderThinGL(ScenarioScreen screen) {
+        renderThinGL();
+    }
+}

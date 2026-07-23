@@ -1,0 +1,197 @@
+package oxy.base.managers;
+
+import lombok.*;
+import net.raphimc.audiomixer.SourceDataLineAudioMixer;
+import net.raphimc.audiomixer.pcmsource.impl.StereoStaticPcmSource;
+import net.raphimc.audiomixer.sound.impl.pcm.StereoSound;
+import net.raphimc.audiomixer.soundmodifier.impl.VolumeModifier;
+import net.raphimc.audiomixer.util.MathUtil;
+import oxy.base.Base;
+import oxy.base.api.effects.Easing;
+import oxy.base.api.managers.other.Asset;
+import oxy.base.managers.other.AudioAsset;
+import oxy.base.utils.animation.DynamicAnimation;
+import net.lenni0451.commons.animation.easing.EasingFunction;
+import oxy.base.api.effects.Sound;
+import oxy.base.utils.animation.AnimationUtils;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class AudioManager {
+    public static boolean FREEZE = false;
+    private final SourceDataLineAudioMixer mixer;
+
+    @Getter
+    private static final AudioManager instance = new AudioManager();
+    private AudioManager() {
+        if (instance != null) {
+            throw new RuntimeException("This class can only create one instance!");
+        }
+
+        final AudioFormat format = new AudioFormat(48000, 16, 2, true, false);
+        try {
+            this.mixer = new SourceDataLineAudioMixer(AudioSystem.getSourceDataLine(format));
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private final Map<Integer, CachedSound> cachedSounds = new HashMap<>();
+
+    public void play(Sound sound, long fadeIn) {
+        play(null, sound, 0, fadeIn);
+    }
+
+    public void play(String scenario, Sound sound, long fadeIn) {
+        play(scenario, sound, 0, fadeIn);
+    }
+
+    @SneakyThrows
+    public void play(String scenario, Sound sound, float start, long fadeIn) {
+        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
+        if (FREEZE) {
+            return;
+        }
+        boolean fade = fadeIn > 0;
+
+        final StereoStaticPcmSource source = new StereoStaticPcmSource(asset.asset().samples());
+        StereoSound stereoSound = new StereoSound(source);
+        VolumeModifier modifier = new VolumeModifier(fade ? 0 : sound.maxVolume());
+        stereoSound.getSoundModifiers().append(modifier);
+
+        final CachedSound cache = new CachedSound(stereoSound, modifier, asset.asset().format());
+        if (fade) {
+            cache.fadeIn = AnimationUtils.build(fadeIn, 0, sound.maxVolume(), EasingFunction.LINEAR);
+        }
+        source.setPosition(MathUtil.millisToFrameCount(asset.asset().format(), start * 1000f));
+        cache.loop = sound.loop();
+
+//        System.out.println(MathUtil.frameCountToMillis(cache.format, source.getSampleCount()) / 1000f);
+
+        CachedSound old = this.cachedSounds.get(sound.id());
+        if (old != null) {
+            old.stop();
+        }
+        cache.resume();
+
+        this.cachedSounds.put(sound.id(), cache);
+    }
+
+    public void fade(int id, long duration, float volume, Easing easing) {
+        if (duration <= 0) {
+            return;
+        }
+
+        final CachedSound cache = this.cachedSounds.get(id);
+        if (cache != null) {
+            cache.fade = AnimationUtils.build(duration, 0, Math.abs(volume), AnimationUtils.toFunction(easing));
+        }
+    }
+
+    public void pause(int id) {
+        final CachedSound cache = this.cachedSounds.get(id);
+        if (cache != null) {
+            cache.stop();
+        }
+    }
+
+    public void resume(int id) {
+        final CachedSound cache = this.cachedSounds.get(id);
+        if (cache != null) {
+            cache.resume();
+        }
+    }
+
+    public void stop(int id, int fadeDuration) {
+        final CachedSound cache = this.cachedSounds.get(id);
+        if (cache == null) {
+            return;
+        }
+        boolean fade = fadeDuration > 0;
+        if (fade) {
+            cache.fadeOut = AnimationUtils.build(fadeDuration, cache.getVolume(), 0, EasingFunction.LINEAR);
+        } else {
+            cache.stop();
+            this.cachedSounds.remove(id);
+        }
+    }
+
+    public void tick() {
+        final Iterator<Map.Entry<Integer, CachedSound>> iterator = this.cachedSounds.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final CachedSound cache = iterator.next().getValue();
+            if (cache == null) {
+                continue;
+            }
+
+            final StereoStaticPcmSource pcmSource = ((StereoStaticPcmSource)cache.stereoSound.getPcmSource());
+
+            if (cache.stereoSound.isFinished()) {
+                if (cache.loop) {
+                    pcmSource.setPosition(0);
+                    cache.resume();
+                } else if (cache.fadeOut == null) {
+                    cache.stop();
+                    iterator.remove();
+                    continue;
+                }
+            }
+
+            if (cache.fadeOut != null) {
+                if (cache.fadeOut.isRunning()) {
+                    cache.setVolume(cache.fadeOut.getValue());
+                } else {
+                    cache.stop();
+                    iterator.remove();
+                }
+            } else if (cache.fadeIn != null) {
+                if (cache.fadeIn.isRunning()) {
+                    cache.setVolume(cache.fadeIn.getValue());
+                } else {
+                    cache.setVolume(cache.fadeIn.getTarget());
+                    cache.fadeIn = null;
+                }
+            } else if (cache.fade != null) {
+                if (cache.fade.isRunning()) {
+                    cache.setVolume(cache.fade.getValue());
+                } else {
+                    cache.setVolume(cache.fade.getTarget());
+                    cache.fade = null;
+                }
+            }
+        }
+    }
+
+    @RequiredArgsConstructor
+    private static class CachedSound {
+        private final StereoSound stereoSound;
+        private final VolumeModifier modifier;
+        private final AudioFormat format;
+//        private final Sound sound;
+        private DynamicAnimation fadeOut, fadeIn;
+        private DynamicAnimation fade;
+        private boolean loop;
+
+        private float getVolume() {
+            return modifier.getVolume();
+        }
+
+        private void setVolume(float value) {
+            modifier.setVolume(value);
+        }
+
+        private void resume() {
+            AudioManager.getInstance().mixer.stopSound(stereoSound); // we have to ensure there isn't a duplicate.
+            AudioManager.getInstance().mixer.playSound(stereoSound);
+        }
+
+        private void stop() {
+            AudioManager.getInstance().mixer.stopSound(stereoSound);
+        }
+    }
+}

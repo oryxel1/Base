@@ -1,9 +1,9 @@
 import net.lenni0451.commons.color.Color;
-import oxy.bascenario.Base;
-import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.Launcher;
-import oxy.bascenario.utils.thingl.ThinGLExtended;
-import oxy.bascenario.utils.thingl.ThinGLUtils;
+import oxy.base.Base;
+import oxy.base.utils.ExtendableScreen;
+import oxy.base.utils.Launcher;
+import oxy.base.utils.thingl.ThinGLExtended;
+import oxy.base.utils.thingl.ThinGLUtils;
 
 public class TintShaderTest {
     public static void main(String[] args) {

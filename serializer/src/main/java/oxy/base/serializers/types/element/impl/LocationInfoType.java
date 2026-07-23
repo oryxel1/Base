@@ -1,0 +1,31 @@
+package oxy.base.serializers.types.element.impl;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.render.elements.LocationInfo;
+import oxy.base.serializers.base.TypeWithName;
+import oxy.base.serializers.types.element.ElementTypes;
+
+public class LocationInfoType implements TypeWithName<LocationInfo> {
+    @Override
+    public JsonElement write(LocationInfo locationInfo) {
+        final JsonObject object = new JsonObject();
+        object.add("font", ElementTypes.FONT_TYPE_TYPE.write(locationInfo.font()));
+        object.addProperty("location", locationInfo.location());
+        object.addProperty("duration", locationInfo.duration());
+        object.addProperty("fade", locationInfo.fade());
+        return object;
+    }
+
+    @Override
+    public LocationInfo read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        return new LocationInfo(ElementTypes.FONT_TYPE_TYPE.read(object.get("font")), object.get("location").getAsString(), object.get("duration").getAsInt(), object.get("fade").getAsInt());
+    }
+
+    @Override
+    public String type() {
+        return "location-info";
+    }
+}

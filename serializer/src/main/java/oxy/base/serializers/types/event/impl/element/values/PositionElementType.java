@@ -1,0 +1,36 @@
+package oxy.base.serializers.types.event.impl.element.values;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import oxy.base.api.event.element.values.PositionElementEvent;
+import oxy.base.serializers.Types;
+import oxy.base.serializers.base.TypeWithName;
+
+public class PositionElementType implements TypeWithName<PositionElementEvent> {
+    @Override
+    public String type() {
+        return "position-element";
+    }
+
+    @Override
+    public JsonElement write(PositionElementEvent event) {
+        final JsonObject object = new JsonObject();
+        object.addProperty("id", event.id());
+        object.add("subId", Types.NULLABLE_INT.write(event.subId()));
+        object.addProperty("duration", event.duration());
+        object.add("vec2", Types.VECTOR_2F_TYPE.write(event.vec()));
+        object.add("easing", Types.EASING_TYPE.write(event.easing()));
+        object.addProperty("type", event.type().name());
+        return object;
+    }
+
+    @Override
+    public PositionElementEvent read(JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        return new PositionElementEvent(
+                object.get("id").getAsInt(), Types.NULLABLE_INT.read(object.get("subId")), object.get("duration").getAsInt(),
+                Types.VECTOR_2F_TYPE.read(object.get("vec2")), Types.EASING_TYPE.read(object.get("easing")), PositionElementEvent.Type.valueOf(object.get("type").getAsString())
+        );
+    }
+}

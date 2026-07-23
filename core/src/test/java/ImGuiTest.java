@@ -1,6 +1,6 @@
 import imgui.ImGui;
-import oxy.bascenario.utils.ExtendableScreen;
-import oxy.bascenario.utils.Launcher;
+import oxy.base.utils.ExtendableScreen;
+import oxy.base.utils.Launcher;
 
 public class ImGuiTest {
     public static void main(String[] args) {
