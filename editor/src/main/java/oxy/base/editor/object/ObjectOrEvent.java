@@ -28,11 +28,38 @@ public class ObjectOrEvent {
     }
 
     @Getter
-    private final EnumMap<ObjectTransform, Object> transformations = new EnumMap<>(ObjectTransform.class);
+    private final EnumMap<ObjectTransform, Float> transformations = new EnumMap<>(ObjectTransform.class);
 
     public Color color = Color.WHITE;
     public Color overlapColor = Color.TRANSPARENT;
 
     @Getter
     private final Map<Long, KeyframeValue> keyframes = new HashMap<>();
+    public void add(long l, float value, ObjectTransform transform) {
+        KeyframeValue kv = keyframes.computeIfAbsent(l, _ -> new KeyframeValue());
+        kv.transformations().put(transform, value);
+    }
+    public void remove(long l, ObjectTransform transform) {
+        KeyframeValue kv = keyframes.get(l);
+        if (kv == null) {
+            return;
+        }
+
+        kv.transformations().remove(transform);
+        if (kv.transformations().isEmpty() && kv.color == null && kv.overlapColor == null) {
+            keyframes.remove(l);
+        }
+    }
+    public float get(long l, ObjectTransform transform) {
+        KeyframeValue kv = keyframes.get(l);
+        if (kv == null) {
+            return transformations.getOrDefault(transform, transform.defaultValue());
+        }
+
+        return kv.transformations().getOrDefault(transform, transform.defaultValue());
+    }
+    public boolean has(long l, ObjectTransform transform) {
+        KeyframeValue kv = keyframes.get(l);
+        return kv != null && kv.transformations().containsKey(transform);
+    }
 }
