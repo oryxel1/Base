@@ -1,5 +1,6 @@
 package oxy.base.editor.containers.inspector.component;
 
+import lombok.NonNull;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.layout.list.HorizontalListLayout;
@@ -19,7 +20,7 @@ public class NumberPickerWithKeyframe extends Container {
     private final NumberPicker picker;
     private float timestamp;
 
-    public NumberPickerWithKeyframe(ObjectOrEvent object, ObjectTransform transform, double min, double max, double step) {
+    public NumberPickerWithKeyframe(ObjectOrEvent object, @NonNull ObjectTransform transform, double min, double max, double step) {
         super(new HorizontalListLayout(11, true));
         this.object = object;
         this.transform = transform;
@@ -27,9 +28,13 @@ public class NumberPickerWithKeyframe extends Container {
         timestamp = EditorValues.instance().timestamp();
 
         final KeyframeValue keyframe = object.keyframes().get(EditorValues.instance().timestamp());
-        final EnumMap<ObjectTransform, Float> transforms = keyframe == null ? object.transformations() : keyframe.transformations();
+        final EnumMap<ObjectTransform, KeyframeValue.Keyframe> transforms = keyframe == null ? object.transformations() : keyframe.transformations();
 
-        float defaultValue = transform == ObjectTransform.SCALE_X || transform == ObjectTransform.SCALE_Y ? transforms.getOrDefault(transform, 1f) : transforms.getOrDefault(transform, 0f);
+        float defaultValue = transform == ObjectTransform.SCALE_X || transform == ObjectTransform.SCALE_Y ? 1 : 0;
+        KeyframeValue.Keyframe defaultKeyframe = transforms.get(transform);
+        if (defaultKeyframe != null) {
+            defaultValue = defaultKeyframe.value();
+        }
 
         addChild(picker = new NumberPicker(min, max, step, defaultValue), c -> c.minSize(125, 0));
         addChild(new KeyframeComponent(() -> object.has(EditorValues.instance().timestamp(), transform), () -> {
@@ -37,17 +42,17 @@ public class NumberPickerWithKeyframe extends Container {
                 object.remove(EditorValues.instance().timestamp(), transform);
                 picker.value(object.get(EditorValues.instance().timestamp(), transform));
             } else {
-                object.add(EditorValues.instance().timestamp(), (float) picker.value(), transform);
+                object.add(EditorValues.instance().timestamp(), (float) picker.value(), transform, true);
             }
         }));
 
         picker.valueChangeListener().add(d -> {
             final KeyframeValue kv = object.keyframes().get(EditorValues.instance().timestamp());
-            final EnumMap<ObjectTransform, Float> fTransforms = kv == null ? object.transformations() : kv.transformations();
+            final EnumMap<ObjectTransform, KeyframeValue.Keyframe> fTransforms = kv == null ? object.transformations() : kv.transformations();
 
-            Float value = fTransforms.get(transform);
+            KeyframeValue.Keyframe value = fTransforms.get(transform);
             if (value != null || d != transform.defaultValue()) {
-                fTransforms.put(transform, d.floatValue());
+                object.add(EditorValues.instance().timestamp(), d.floatValue(), transform, false);
             }
         });
     }

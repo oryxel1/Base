@@ -2,7 +2,6 @@ package oxy.base.editor.containers.inspector.defaults;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.grid.GridAnchor;
 import net.lenni0451.rivet.layout.grid.GridLayout;
