@@ -78,7 +78,10 @@ public class AdvancedColorPicker extends Component {
             this.hexField.text(ColorUtils.toHex(c));
             this.colorValuesComponent.color(c);
         });
-        this.colorValuesComponent.colorChangeListener().add(this.picker::color);
+        this.colorValuesComponent.colorChangeListener().add(c -> {
+            this.picker.color(c);
+            this.hexField.text(ColorUtils.toHex(c));
+        });
     }
 
     @Override

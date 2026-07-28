@@ -70,7 +70,7 @@ public class NumberPicker extends DragNumberInput {
 
     @Override
     protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
-        if (!this.skipNextUp) {
+        if (!this.skipNextUp && layer == null) {
             field.text(String.valueOf(value()));
             final Container container = new Container(AbsoluteLayout.INSTANCE);
             if (field.parent() != null) {

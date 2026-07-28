@@ -38,6 +38,10 @@ public class TrackListContainer extends ScrollContainer {
 
     @Override
     public void render(Renderer renderer, Size size) {
+        if (selectionManager.objects().isEmpty()) {
+            EditorValues.instance().selectedObject(null);
+        }
+
         if (prevWidth != size.width()) {
             recalculateObjectPosition();
             this.requestLayoutRecalculation();
