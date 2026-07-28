@@ -20,7 +20,6 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
     private EditorValues.TimelineType type;
 
     private final VideoSequencerContainer sequencerContainer;
-    private final DopeSheetContainer dopeSheetContainer;
     public TimelineContainer() {
         super(new DockLayout(0));
 
@@ -28,8 +27,6 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
         this.addChild(new TimelineTimeControl(), c -> c.layoutOptions(DockPosition.BOTTOM));
 
         this.addChild(sequencerContainer = new VideoSequencerContainer(), c -> c.layoutOptions(DockPosition.CENTER));
-        dopeSheetContainer = new DopeSheetContainer();
-
         relativeScale = 0.34f;
         type = EditorValues.TimelineType.Sequencer;
     }
@@ -43,7 +40,7 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
             if (type == EditorValues.TimelineType.Sequencer) {
                 this.addChild(sequencerContainer, c -> c.layoutOptions(DockPosition.CENTER));
             } else {
-                this.addChild(dopeSheetContainer, c -> c.layoutOptions(DockPosition.CENTER));
+                this.addChild(new DopeSheetContainer(), c -> c.layoutOptions(DockPosition.CENTER));
             }
         }
 

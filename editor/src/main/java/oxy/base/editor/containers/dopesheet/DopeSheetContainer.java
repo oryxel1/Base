@@ -13,7 +13,8 @@ public class DopeSheetContainer extends Container {
     public DopeSheetContainer() {
         super(new DockLayout());
 
-        this.addChild(new DopeSheetTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
+        addChild(new DopeSheetTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
+        addChild(new DopeSheetTrackList(), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override

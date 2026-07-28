@@ -28,7 +28,7 @@ public class DopeSheetTimeSection extends Component {
             float timeX = x;
             float time = objectOrEvent.start + (timeX / EditorValues.instance().oneMilSecondWidth());
 
-            ShapedText text = this.rivet().backend().font().shapeText(String.valueOf(time), Color.GRAY);
+            ShapedText text = this.rivet().backend().font().shapeText(String.valueOf(MathUtils.ceilLong(time)), Color.GRAY);
             float currentX = x;
 
             renderer.scale(0.775f, () -> renderer.text(text, currentX / 0.775f, (5 / 35f) * size.height(), TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP));
