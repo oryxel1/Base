@@ -49,7 +49,7 @@ public class DopeSheetTrack extends Container {
             float newX = timestampToPosition(time, EditorValues.instance().oneMilSecondWidth(), EditorValues.instance().scale());
 
             final DopeKeyframeComponent component = new DopeKeyframeComponent(keyframe);
-            component.layoutOptions(new AbsoluteOptions(newX, 20 / 2f - 12 / 2f));
+            component.layoutOptions(new AbsoluteOptions(newX - 5, 20 / 2f - 5));
 
             addChild(component);
         }

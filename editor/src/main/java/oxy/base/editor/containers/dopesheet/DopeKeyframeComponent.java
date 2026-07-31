@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
+import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
 import net.lenni0451.rivet.component.impl.SolidColor;
@@ -33,7 +34,8 @@ public class DopeKeyframeComponent extends Component {
 
     @Override
     public void render(Renderer renderer, Size size) {
-        renderer.fillCircle(5, 5, 5, Color.YELLOW);
+        renderer.fillCircle(5, 5, 5, Color.fromRGB(255, 190, 51));
+        renderer.outlineCircle(5, 5, 5, 1, Color.BLACK);
     }
 
     protected void updateComponentPosition(Rectangle bounds) {
@@ -88,6 +90,10 @@ public class DopeKeyframeComponent extends Component {
             otherList.add(new Pair<>(easing.getName(), () -> keyframe.easing(easing)));
         }
         childContainer.addChild(new KeyframeOptions("Interpolation Mode", otherList));
+
+        childContainer.addChild(new Button("Delete Keyframe", e -> {
+
+        }));
 
         this.layer = new Layer(container, LayerBucket.OVERLAY);
         this.rivet().addLayer(this.layer);
