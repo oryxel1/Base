@@ -37,7 +37,7 @@ public class TransformContainer extends DropdownContainer {
         container.addChild(label("Scale Y"), c -> c.layoutOptions(leftGrid(0, 4)));
 
         container.addChild(new NumberPickerWithKeyframe(object, ObjectTransform.SCALE_X, 0, 1000, 1), c -> c.layoutOptions(grid(1, 3).withPadding(new Padding(0, 5, 0, 0))));
-        container.addChild(new NumberPickerWithKeyframe(object, ObjectTransform.SCALE_X, 0, 1000, 1), c -> c.layoutOptions(grid(1, 4)));
+        container.addChild(new NumberPickerWithKeyframe(object, ObjectTransform.SCALE_Y, 0, 1000, 1), c -> c.layoutOptions(grid(1, 4)));
 
         // Rotation
 

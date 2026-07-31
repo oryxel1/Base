@@ -12,6 +12,7 @@ import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.layer.Layer;
 import net.lenni0451.rivet.layer.LayerBucket;
+import net.lenni0451.rivet.layout.Layout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteLayout;
 import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.layout.flow.VerticalFlowLayout;
@@ -50,6 +51,10 @@ public class KeyframeOptions extends Component {
     protected void onComponentMouseEnter() {
         over = true;
 
+        if (!rivet().layers().contains(layer)) {
+            layer = null;
+        }
+
         if (layer != null) {
             removeLayer();
             return;
@@ -58,17 +63,27 @@ public class KeyframeOptions extends Component {
         final Container container = new Container(AbsoluteLayout.INSTANCE);
 
         Rectangle bounds = this.absoluteBounds();
-        Container childContainer = new Container(new VerticalFlowLayout(2, 2));
+
+        final Layout layout;
+        if (options.size() > 3) {
+            layout = new VerticalFlowLayout(2, 2);
+        } else {
+            layout = new VerticalListLayout(2, true);
+        }
+
+        Container childContainer = new Container(layout);
         final DecoratedContainer decoratedContainer = new DecoratedContainer(new SolidColor(Color.fromRGB(24, 24, 24)).cornerRadius(5).outlineColor(Color.fromRGB(36, 36, 36)).outlineWidth(1f), childContainer);
         decoratedContainer.minSize(185f, 0f);
 
-        decoratedContainer.layoutOptions(new AbsoluteOptions(bounds.x() + 190, bounds.y(), null, 100f));
+        decoratedContainer.layoutOptions(new AbsoluteOptions(bounds.x() + 190, bounds.y(), null, layout instanceof VerticalListLayout ? null : 100f));
         container.addChild(decoratedContainer);
 
         for (Pair<String, Runnable> option : options) {
             childContainer.addChild(new Button(option.left(), c -> {
-                this.rivet().removeLayer(this.layer);
-                layer = null;
+                removeLayer();
+                if (rivet().layers().size() > 1) {
+                    rivet().removeLayer(rivet().layers().getLast());
+                }
 
                 option.right().run();
             }), b -> {
@@ -80,6 +95,9 @@ public class KeyframeOptions extends Component {
             });
         }
 
+        if (this.rivet().layers().size() >= 3) {
+            this.rivet().removeLayer(this.rivet().layers().getLast());
+        }
         this.layer = new Layer(container, LayerBucket.OVERLAY);
         this.rivet().addLayer(this.layer);
     }

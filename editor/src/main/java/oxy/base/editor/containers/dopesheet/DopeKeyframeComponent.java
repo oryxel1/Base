@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
-import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
@@ -18,6 +16,7 @@ import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
+import oxy.base.api.effects.EaseType;
 import oxy.base.api.effects.Easing;
 import oxy.base.editor.containers.dopesheet.other.KeyframeOptions;
 import oxy.base.editor.object.values.KeyframeValue;
@@ -62,6 +61,10 @@ public class DopeKeyframeComponent extends Component {
             return true;
         }
 
+        while (rivet().layers().size() > 1) {
+            rivet().removeLayer(rivet().layers().getLast());
+        }
+
         final Container container = new Container(AbsoluteLayout.INSTANCE);
 
         Rectangle bounds = this.absoluteBounds();
@@ -74,14 +77,15 @@ public class DopeKeyframeComponent extends Component {
         container.addChild(decoratedContainer);
 
         childContainer.addChild(new KeyframeOptions("Easing Mode", List.of(
-                new Pair<>("Ease In", () -> {}),
-                new Pair<>("Ease Out", () -> {}),
-                new Pair<>("Ease In and Out", () -> {})
+                new Pair<>("Ease In", () -> keyframe.easeType(EaseType.EASE_IN)),
+                new Pair<>("Ease Out", () -> keyframe.easeType(EaseType.EASE_OUT)),
+                new Pair<>("Ease In and Out", () -> keyframe.easeType(EaseType.EASE_IN_OUT))
         )));
 
         final List<Pair<String, Runnable>> otherList = new ArrayList<>();
+        otherList.add(new Pair<>("Instant", () -> keyframe.easing(null)));
         for (Easing easing : Easing.values()) {
-            otherList.add(new Pair<>(easing.getName(), () -> {}));
+            otherList.add(new Pair<>(easing.getName(), () -> keyframe.easing(easing)));
         }
         childContainer.addChild(new KeyframeOptions("Interpolation Mode", otherList));
 

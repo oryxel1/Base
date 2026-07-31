@@ -2,6 +2,7 @@ package oxy.base.editor.object.values;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import oxy.base.api.effects.EaseType;
@@ -17,6 +18,7 @@ public class KeyframeValue {
     public Color color = null;
     public Color overlapColor = null;
 
+    @ToString
     @Accessors(fluent = true)
     @Getter
     @Setter
