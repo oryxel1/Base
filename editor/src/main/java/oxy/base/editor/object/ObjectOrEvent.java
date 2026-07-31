@@ -74,12 +74,18 @@ public class ObjectOrEvent {
             KeyframeValue.Keyframe keyframe = transformations.get(transform);
             // If keyframes are not empty, back track to find the nearest value.
             if (!keyframes.isEmpty()) {
+                long youngestFrameTime = Long.MAX_VALUE;
+
                 long closeAhead = Long.MIN_VALUE;
                 KeyframeValue closeAheadEntry = null;
 
                 long closeValue = Long.MAX_VALUE;
                 KeyframeValue closeEntry = null;
                 for (Map.Entry<Long, KeyframeValue> entry : keyframes.entrySet()) {
+                    if (entry.getKey() < youngestFrameTime) {
+                        youngestFrameTime = entry.getKey();
+                    }
+
                     if (entry.getKey() > l) {
                         if (closeAhead == Long.MIN_VALUE || Math.abs(closeAhead - l) > Math.abs(entry.getKey() - l)) {
                             if (entry.getValue().transformations().containsKey(transform)) {
@@ -118,6 +124,24 @@ public class ObjectOrEvent {
                     }
 
                     return closeEntry.transformations().get(transform).value();
+                }
+
+                if (closeAheadEntry != null && closeAhead == youngestFrameTime) {
+                    float defaultV = keyframe == null ? transform.defaultValue() : keyframe.value();
+
+                    final KeyframeValue.Keyframe ahead = closeAheadEntry.transformations().get(transform);
+
+                    float ratio = (float) (l - start) / (closeAhead - start);
+                    if (ahead.easing() == null) {
+                        return ratio >= 0.999f ? ahead.value() : defaultV;
+                    }
+
+                    EasingFunction func = AnimationUtils.toFunction(ahead.easing());
+                    EasingMode mode = EasingMode.values()[ahead.easeType().ordinal()];
+
+                    ratio = mode.call(func, ratio);
+
+                    return defaultV + (ahead.value() - defaultV) * ratio;
                 }
             }
 

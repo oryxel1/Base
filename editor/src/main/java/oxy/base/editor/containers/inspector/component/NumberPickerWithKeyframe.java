@@ -3,6 +3,8 @@ package oxy.base.editor.containers.inspector.component;
 import lombok.NonNull;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
+import net.lenni0451.rivet.component.impl.DragNumberInput;
+import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.layout.list.HorizontalListLayout;
 import net.lenni0451.rivet.math.Size;
 import oxy.base.editor.EditorValues;
@@ -12,6 +14,8 @@ import oxy.base.editor.object.values.ObjectTransform;
 import oxy.base.utils.components.KeyframeComponent;
 import oxy.base.utils.components.NumberPicker;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.EnumMap;
 
 public class NumberPickerWithKeyframe extends Container {
@@ -65,7 +69,22 @@ public class NumberPickerWithKeyframe extends Container {
         if (timestamp != currentTimestamp) {
             float value = object.get(currentTimestamp, transform);
             timestamp = currentTimestamp;
-            picker.value(value);
+
+            // lmao
+            try {
+                Field field = DragNumberInput.class.getDeclaredField("value");
+                field.setAccessible(true);
+                field.set(picker, (double) value);
+
+                Method method = DragNumberInput.class.getDeclaredMethod("formatValue", double.class);
+                method.setAccessible(true);
+
+                Field valueLabelField = DragNumberInput.class.getDeclaredField("valueLabel");
+                valueLabelField.setAccessible(true);
+
+                ((Label)valueLabelField.get(picker)).text((String) method.invoke(picker, (double) value));
+            } catch (Exception _) {
+            }
         }
     }
 
