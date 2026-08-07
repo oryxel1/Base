@@ -12,7 +12,7 @@ import oxy.base.editor.object.ObjectOrEvent;
 import oxy.base.editor.object.values.KeyframeValue;
 import oxy.base.editor.object.values.ObjectTransform;
 import oxy.base.utils.components.KeyframeComponent;
-import oxy.base.utils.components.NumberPicker;
+import oxy.rivet.extras.components.NumberPicker;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -91,6 +91,6 @@ public class NumberPickerWithKeyframe extends Container {
     @Override
     protected void onComponentAdded() {
         super.onComponentAdded();
-        picker.font(rivet().backend().font().derive(14));
+        ((Label)picker.child()).scale(14 / 16f);
     }
 }

@@ -24,7 +24,7 @@ import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.theme.ThemeOption;
 import oxy.base.utils.ColorUtils;
-
+import oxy.rivet.extras.components.ColorWheelPicker;
 
 public class AdvancedColorPicker extends Component {
     private Layer layer;

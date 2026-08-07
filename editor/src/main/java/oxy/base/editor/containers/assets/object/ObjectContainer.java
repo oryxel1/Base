@@ -21,7 +21,7 @@ import oxy.base.editor.drag.FakeObjectComponent;
 import oxy.base.utils.TimeCompiler;
 import oxy.base.utils.components.TextWithName;
 import oxy.base.utils.components.TextWithNameNoImage;
-import oxy.base.utils.components.TypingLabel;
+import oxy.rivet.extras.components.TypingLabel;
 
 import java.util.List;
 
@@ -50,10 +50,11 @@ public class ObjectContainer extends ScrollContainer {
         }
 
         long fDuration = duration;
-        component.mouseDownListener().add((ignored, bounds) -> {
+        component.mouseDownListener().addPre((ctx, event, size) -> {
             FakeObjectComponent ghost = new FakeObjectComponent(object, fDuration);
             rivet().dragAndDropManager().startDrag(ghost, ghost, 0, -60 / 2f);
-            return true;
+
+            ctx.cancel(true);
         });
 
         container.addChild(component);
@@ -68,10 +69,11 @@ public class ObjectContainer extends ScrollContainer {
         }
 
         long fDuration = duration;
-        component.mouseDownListener().add((ignored, bounds) -> {
+        component.mouseDownListener().addPre((ctx, event, size) -> {
             FakeObjectComponent ghost = new FakeObjectComponent(object, fDuration);
             rivet().dragAndDropManager().startDrag(ghost, ghost, 0, -60 / 2f);
-            return true;
+
+            ctx.cancel(true);
         });
 
         container.addChild(component);

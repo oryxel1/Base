@@ -15,7 +15,7 @@ import oxy.base.utils.animation.math.ColorAnimations;
 
 import java.util.List;
 
-public class TextWithNameNoImage extends Component {
+public class TextWithNameNoImage extends Component implements Parent {
     private final String name;
     private final Component component;
     private final ColorAnimations backgroundColor = new ColorAnimations(Color.fromRGBA(63, 63, 63, 0));
@@ -26,35 +26,12 @@ public class TextWithNameNoImage extends Component {
     }
 
     @Override
+    protected void onComponentAdded() {
+        component.setRivet(rivet(), this);
+    }
+
+    @Override
     public void render(Renderer renderer, Size bounds) {
-        if (component.rivet() == null) {
-            component.setRivet(rivet(), new Parent() {
-                @Override
-                public void requestLayoutRecalculation() {
-                }
-
-                @Override
-                public Size contentSize() {
-                    return Size.EMPTY;
-                }
-
-                @Override
-                public List<Component> children() {
-                    return List.of();
-                }
-
-                @Override
-                public Rectangle absoluteBounds() {
-                    return new Rectangle(Size.EMPTY);
-                }
-
-                @Override
-                public Rectangle childBounds(Component component) {
-                    return new Rectangle(Size.EMPTY);
-                }
-            });
-        }
-
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, backgroundColor.color());
         component.render(renderer, bounds);
 
@@ -77,5 +54,24 @@ public class TextWithNameNoImage extends Component {
     @Override
     public Size computeIdealSize(Size constraints) {
         return new Size(102,128);
+    }
+
+    @Override
+    public void requestLayoutRecalculation() {
+    }
+
+    @Override
+    public Size contentSize() {
+        return Size.EMPTY;
+    }
+
+    @Override
+    public List<Component> children() {
+        return List.of(component);
+    }
+
+    @Override
+    public Rectangle childBounds(Component component) {
+        return Rectangle.EMPTY;
     }
 }

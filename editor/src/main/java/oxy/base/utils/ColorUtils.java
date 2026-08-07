@@ -16,6 +16,5 @@ public class ColorUtils {
 
         int i = Integer.decode(hex);
         return Color.fromRGBA((i >> 24) & 0xFF, (i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
-
     }
 }

@@ -10,7 +10,7 @@ import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import oxy.base.Base;
 import oxy.base.editor.containers.sequencer.VideoSequencerContainer;
-import oxy.base.utils.components.ButtonImage;
+import oxy.rivet.extras.components.ButtonImage;
 
 public class TrackTabContainer extends Container {
     private final TrackContainer container;

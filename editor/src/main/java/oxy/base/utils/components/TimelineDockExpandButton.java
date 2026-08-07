@@ -90,9 +90,8 @@ public class TimelineDockExpandButton extends Component {
         }), b -> {
             ((Label)b.child()).scale(0.75f);
             ((Label)b.child()).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
-            b.inactiveOutlineColor().set(Color.TRANSPARENT);
-            b.activeOutlineColor().set(Color.TRANSPARENT);
-            b.inactiveColor().set(Color.TRANSPARENT);
+            b.outlineColor().set(Color.TRANSPARENT);
+            b.hoverOutlineColor().set(Color.TRANSPARENT);
         });
 
         childContainer.addChild(new Button("Dope Sheet", c -> {
@@ -103,9 +102,8 @@ public class TimelineDockExpandButton extends Component {
         }), b -> {
             ((Label)b.child()).scale(0.75f);
             ((Label)b.child()).horizontalOrigin(TextOrigin.Horizontal.VISUAL_LEFT);
-            b.inactiveOutlineColor().set(Color.TRANSPARENT);
-            b.activeOutlineColor().set(Color.TRANSPARENT);
-            b.inactiveColor().set(Color.TRANSPARENT);
+            b.outlineColor().set(Color.TRANSPARENT);
+            b.hoverOutlineColor().set(Color.TRANSPARENT);
         });
 
         this.layer = new Layer(container, LayerBucket.OVERLAY);

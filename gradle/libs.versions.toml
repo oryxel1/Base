@@ -13,8 +13,10 @@ audiomixer = "2.3.0-SNAPSHOT"
 jorbis = "0.0.17"
 jlayer = "1.0.1"
 zt-zip = "1.17"
-rivet = "89628cb91e"
 jsvg = "2.1.0"
+
+rivet = "b3c79952aa"
+rivet-extras = "9115b9c9c4"
 
 [libraries]
 zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }
@@ -45,6 +47,7 @@ raphimc-audiomixer = { module = "net.raphimc:audio-mixer", version.ref = "audiom
 
 rivet-core = { module = "com.github.Lenni0451.rivet:core", version.ref = "rivet"}
 rivet-thingl-backend = { module = "com.github.Lenni0451.rivet:backend-thingl-glfw", version.ref = "rivet" }
+rivet-extras = { module = "com.github.oryxel1:rivet-extras", version.ref = "rivet-extras" }
 
 commons-animations = { module = "net.lenni0451.commons:animation", version.ref = "commons" }
 commons-core = { module = "net.lenni0451.commons:core", version.ref = "commons" }

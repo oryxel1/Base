@@ -65,4 +65,6 @@ dependencies {
         exclude("org.lwjgl")
         exclude("net.lenni0451.commons")
     }
+
+    api(libs.rivet.extras)
 }

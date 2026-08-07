@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.Component;
-import net.lenni0451.rivet.component.ListenerList;
+import net.lenni0451.rivet.event.ListenerList;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseMoveEvent;
 import net.lenni0451.rivet.math.Size;
@@ -81,7 +81,7 @@ public class ColorValuesComponent extends Component {
             color = color.withAlphaF(factor);
         }
 
-        this.colorChangeListener.callVoid((c) -> c.accept(color));
+        this.colorChangeListener.call((c) -> c.accept(color));
     }
 
     @Override

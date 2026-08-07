@@ -15,7 +15,7 @@ import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
 import oxy.base.Base;
 import oxy.base.editor.containers.sequencer.VideoSequencerContainer;
-import oxy.base.utils.components.ButtonImage;
+import oxy.rivet.extras.components.ButtonImage;
 
 @Accessors(fluent = true)
 public class TrackTabListContainer extends Container {
