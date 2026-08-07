@@ -38,6 +38,8 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
 
             this.removeChild(children().getLast());
             if (type == EditorValues.TimelineType.Sequencer) {
+                EditorValues.instance().dopeSheetTrackMap().clear();
+
                 this.addChild(sequencerContainer, c -> c.layoutOptions(DockPosition.CENTER));
             } else {
                 this.addChild(new DopeSheetContainer(), c -> c.layoutOptions(DockPosition.CENTER));

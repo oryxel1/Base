@@ -4,6 +4,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.ScrollContainer;
+import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
 import net.lenni0451.rivet.layout.list.VerticalListLayout;
 import net.lenni0451.rivet.math.Size;
 import oxy.base.editor.EditorValues;
@@ -15,8 +16,11 @@ public class DopeSheetTrackList extends ScrollContainer {
     public DopeSheetTrackList() {
         super(container = new Container(new VerticalListLayout()), true, true);
 
+        EditorValues.instance().dopeSheetTrackMap().clear();
         for (ObjectTransform transform : ObjectTransform.values()) {
-            container.addChild(new DopeSheetTrack(transform));
+            final DopeSheetTrack track = new DopeSheetTrack(transform);
+            container.addChild(track);
+            EditorValues.instance().dopeSheetTrackMap().put(transform, track);
         }
     }
 

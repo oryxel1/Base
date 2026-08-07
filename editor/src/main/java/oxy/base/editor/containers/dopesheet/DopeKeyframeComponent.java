@@ -7,6 +7,7 @@ import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
 import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.impl.Label;
 import net.lenni0451.rivet.component.impl.SolidColor;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
@@ -19,6 +20,7 @@ import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
 import oxy.base.api.effects.EaseType;
 import oxy.base.api.effects.Easing;
+import oxy.base.editor.EditorValues;
 import oxy.base.editor.containers.dopesheet.other.KeyframeOptions;
 import oxy.base.editor.object.values.KeyframeValue;
 import oxy.base.utils.math.Pair;
@@ -30,6 +32,8 @@ import java.util.List;
 public class DopeKeyframeComponent extends Component {
     private Layer layer;
 
+    private final Runnable selfRemove;
+    private final long timestamp;
     private final KeyframeValue.Keyframe keyframe;
 
     @Override
@@ -90,9 +94,15 @@ public class DopeKeyframeComponent extends Component {
             otherList.add(new Pair<>(easing.getName(), () -> keyframe.easing(easing)));
         }
         childContainer.addChild(new KeyframeOptions("Interpolation Mode", otherList));
-
+        childContainer.addChild(new Button("Snap Cursor To Keyframe", e -> {
+            rivet().removeLayer(layer);
+            layer = null;
+            EditorValues.instance().timestamp(timestamp);
+        }), button -> ((Label)button.child()).scale(0.8f));
         childContainer.addChild(new Button("Delete Keyframe", e -> {
-
+            rivet().removeLayer(layer);
+            layer = null;
+            selfRemove.run();
         }));
 
         this.layer = new Layer(container, LayerBucket.OVERLAY);

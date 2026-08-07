@@ -9,6 +9,7 @@ import net.lenni0451.commons.math.MathUtils;
 import oxy.base.api.effects.EaseType;
 import oxy.base.api.render.RenderLayer;
 import oxy.base.editor.EditorValues;
+import oxy.base.editor.containers.dopesheet.DopeSheetTrack;
 import oxy.base.editor.object.values.KeyframeValue;
 import oxy.base.editor.object.values.ObjectTransform;
 import oxy.base.utils.animation.AnimationUtils;
@@ -55,6 +56,11 @@ public class ObjectOrEvent {
         KeyframeValue.Keyframe v = kv.transformations().putIfAbsent(transform, new KeyframeValue.Keyframe(value));
         if (v != null) {
             v.value(value);
+        }
+
+        DopeSheetTrack track = EditorValues.instance().dopeSheetTrackMap().get(transform);
+        if (track != null) {
+            track.computeChildren();
         }
     }
     public void remove(long l, ObjectTransform transform) {
@@ -112,7 +118,7 @@ public class ObjectOrEvent {
 
                         float ratio = (l - closeValue) / (float) (closeAhead - closeValue);
                         if (ahead.easing() == null) {
-                            return 1 - ratio <= 0.999f ? ahead.value() : behind.value();
+                            return ratio >= 0.999f ? ahead.value() : behind.value();
                         }
 
                         EasingFunction func = AnimationUtils.toFunction(ahead.easing());

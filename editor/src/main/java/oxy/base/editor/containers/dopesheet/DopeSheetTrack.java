@@ -22,11 +22,6 @@ public class DopeSheetTrack extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
-        super.render(renderer, size);
-    }
-
-    @Override
     public Size computeIdealSize(Size constraints) {
         Size idealSize = super.computeIdealSize(new Size(constraints.width(), 20));
         return new Size(idealSize.width(), 20);
@@ -36,6 +31,10 @@ public class DopeSheetTrack extends Container {
         clearChildren();
 
         final ObjectOrEvent object = EditorValues.instance().selectedObject();
+        if (object == null) {
+            return;
+        }
+
         for (Map.Entry<Long, KeyframeValue> entry : object.keyframes().entrySet()) {
             final KeyframeValue value = entry.getValue();
 
@@ -48,7 +47,14 @@ public class DopeSheetTrack extends Container {
 
             float newX = timestampToPosition(time, EditorValues.instance().oneMilSecondWidth(), EditorValues.instance().scale());
 
-            final DopeKeyframeComponent component = new DopeKeyframeComponent(keyframe);
+            final DopeKeyframeComponent component = new DopeKeyframeComponent(() -> {
+                value.transformations().remove(transform);
+
+                DopeSheetTrack track = EditorValues.instance().dopeSheetTrackMap().get(transform);
+                if (track != null) {
+                    track.computeChildren();
+                }
+            }, entry.getKey(), keyframe);
             component.layoutOptions(new AbsoluteOptions(newX - 5, 20 / 2f - 5));
 
             addChild(component);

@@ -4,8 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.lenni0451.commons.math.MathUtils;
+import oxy.base.editor.containers.dopesheet.DopeSheetTrack;
 import oxy.base.editor.object.ObjectOrEvent;
+import oxy.base.editor.object.values.ObjectTransform;
 
+import java.util.HashMap;
+import java.util.Map;
+
+// Bull shit stuff that got put in 1 class so it can be easily access.
 @Accessors(fluent = true)
 @Getter
 @Setter
@@ -16,6 +22,8 @@ public class EditorValues {
 
     private ObjectOrEvent selectedObject;
     private TimelineType type = TimelineType.Sequencer;
+
+    private final Map<ObjectTransform, DopeSheetTrack> dopeSheetTrackMap = new HashMap<>();
 
     private boolean playing;
     private long timestamp = 1000L;
@@ -35,9 +43,6 @@ public class EditorValues {
 
     public float oneSecondWidth() {
         return ONE_SECOND_WIDTH * scale;
-    }
-    public float tenMilSecondWidth() {
-        return oneMilSecondWidth() * 10;
     }
     public float oneMilSecondWidth() {
         return (ONE_SECOND_WIDTH / 1000f) * scale;
