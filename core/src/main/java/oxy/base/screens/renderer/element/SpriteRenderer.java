@@ -87,14 +87,14 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             return;
         }
 
-        try {
-            this.queueAnimations.forEach(animation -> {
-                stateData.setDefaultMix(animation.duration);
+        for (QueueAnimation animation : this.queueAnimations) {
+            stateData.setDefaultMix(animation.duration);
+            try {
                 state.setAnimation(animation.index, animation.animation, animation.loop);
-            });
-            this.queueAnimations.clear();
-        } catch (Exception ignored) {
+            } catch (Exception ignored) {
+            }
         }
+        this.queueAnimations.clear();
 
         ThinGLUtils.end(); // Hacky, but we need to stop thingl rendering then start again later to avoid conflicts...
 
@@ -131,7 +131,7 @@ public class SpriteRenderer extends ElementRenderer<Sprite> {
             }
 
             if (this.overlayColor.alpha() != 0 && this.color.alpha() != 0) {
-                ThinGLUtils.colorTweak(() -> {
+                ThinGLUtils.overlayColor(() -> {
                     this.batch.begin();
                     this.renderer.draw(this.batch, this.skeleton);
                     this.batch.end();
