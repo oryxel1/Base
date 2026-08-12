@@ -9,6 +9,7 @@ import net.raphimc.audiomixer.util.MathUtil;
 import oxy.base.Base;
 import oxy.base.api.effects.Easing;
 import oxy.base.api.managers.other.Asset;
+import oxy.base.api.managers.other.AssetType;
 import oxy.base.managers.other.AudioAsset;
 import oxy.base.utils.animation.DynamicAnimation;
 import net.lenni0451.commons.animation.easing.EasingFunction;
@@ -53,7 +54,7 @@ public class AudioManager {
 
     @SneakyThrows
     public void play(String scenario, Sound sound, float start, long fadeIn) {
-        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file());
+        final Asset<AudioAsset> asset = Base.instance().assetsManager().assets(scenario, sound.file(), AssetType.AUDIO);
         if (FREEZE) {
             return;
         }
