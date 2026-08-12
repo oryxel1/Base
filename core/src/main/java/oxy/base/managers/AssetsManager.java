@@ -174,7 +174,24 @@ public class AssetsManager implements AssetsManagerApi {
             } else if (path.endsWith(".wav")) {
                 audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(stream));
             } else {
-                return false;
+                AudioInputStream inputStream = null;
+                try {
+                    inputStream = Mp3InputStream.createAudioInputStream(stream);
+                } catch (Exception exception) {
+                    try {
+                        inputStream = OggVorbisInputStream.createAudioInputStream(stream);
+                    } catch (Exception exception1) {
+                        try {
+                            inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(stream));
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+
+                if (inputStream == null) {
+                    return false;
+                }
+                audioInputStream = inputStream;
             }
 
             this.currentlyLoadingAssets.add(info.hashCode(scenario));
