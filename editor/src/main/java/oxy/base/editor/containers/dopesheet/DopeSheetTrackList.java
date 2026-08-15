@@ -19,13 +19,13 @@ public class DopeSheetTrackList extends ScrollContainer {
         EditorValues.instance().dopeSheetTrackMap().clear();
         for (ObjectTransform transform : ObjectTransform.values()) {
             final DopeSheetTrack track = new DopeSheetTrack(transform);
-            container.addChild(track);
+            container.add(track);
             EditorValues.instance().dopeSheetTrackMap().put(transform, track);
         }
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         float y = -scrollY();
         int i = 0;
         while (!(y >= size.height())) {
@@ -38,7 +38,7 @@ public class DopeSheetTrackList extends ScrollContainer {
         }
         drawTimestampLine(renderer, size);
 
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
     }
 
     private void drawTimestampLine(Renderer renderer, Size size) {

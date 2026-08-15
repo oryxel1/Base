@@ -15,7 +15,7 @@ import oxy.base.editor.object.ObjectOrEvent;
 
 public class DopeSheetTimeSection extends Component {
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         final ObjectOrEvent objectOrEvent = EditorValues.instance().selectedObject();
         if (objectOrEvent == null) {
             return;
@@ -38,7 +38,7 @@ public class DopeSheetTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size bounds) {
         if (event.isHeld(MouseButton.LEFT)) {
             time(event.x(), event.y(), bounds);
         }
@@ -46,7 +46,7 @@ public class DopeSheetTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size bounds) {
         time(event.x(), event.y(), bounds);
         return true;
     }

@@ -29,30 +29,30 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
 
         container = new Container(new VerticalListLayout(2, false));
 
-        addChild(new Component() {
+        add(new Component() {
             @Override
             public Size computeIdealSize(Size size) {
                 return size.withHeight(35f); // To take space.
             }
         }, c -> c.layoutOptions(BorderPosition.TOP));
-        addChild(new PaddedContainer(new Padding(8, 5, 0 , 0), new ScrollContainer(container)), c -> c.layoutOptions(BorderPosition.CENTER));
+        add(new PaddedContainer(new Padding(8, 5, 0 , 0), new ScrollContainer(container)), c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(40, 40, 40));
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(53, 53, 53));
 
         if (EditorValues.instance().selectedObject() == null) {
             renderer.text(rivet().backend().font().shapeText("Nothing here yet!", Color.WHITE), 10, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.VISUAL_TOP);
 
             if (transformContainer != null) {
-                container.removeChild(transformContainer);
+                container.remove(transformContainer);
                 transformContainer = null;
             }
             if (colorContainer != null) {
-                container.removeChild(colorContainer);
+                container.remove(colorContainer);
                 colorContainer = null;
             }
         } else {
@@ -65,20 +65,20 @@ public class InspectorContainer extends GlobalContainer.ResizeableContainer {
 
             if (transformContainer == null || transformContainer.object() != objectOrEvent) {
                 if (transformContainer != null) {
-                    container.removeChild(transformContainer);
+                    container.remove(transformContainer);
                 }
 
                 transformContainer = new TransformContainer(objectOrEvent);
-                container.addChild(transformContainer);
+                container.add(transformContainer);
             }
 
             if (colorContainer == null || colorContainer.object() != objectOrEvent) {
                 if (colorContainer != null) {
-                    container.removeChild(colorContainer);
+                    container.remove(colorContainer);
                 }
 
                 colorContainer = new ColorContainer(objectOrEvent);
-                container.addChild(colorContainer);
+                container.add(colorContainer);
             }
         }
     }

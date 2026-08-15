@@ -42,7 +42,7 @@ public class ObjectComponent extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
+    public void renderInternal(Renderer renderer, Size bounds) {
         if (dragging) {
             if (!rivet().dragAndDropManager().isDragging()) {
                 dragging = false;
@@ -59,7 +59,7 @@ public class ObjectComponent extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size bounds) {
         EditorValues.instance().selectedObject(object);
 
         if (this.parent.selectionManager().isSelected(this)) {
@@ -75,7 +75,7 @@ public class ObjectComponent extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
         if (!event.buttons().contains(MouseButton.LEFT)) {
             return false;
         }

@@ -31,7 +31,7 @@ public class ColorValuesComponent extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(84, 84, 84));
 
         renderer.fillRoundedRect(0, 0, size.width() * color.getRedF(), 20, 5, 0, 0, color.getRedF() > 0.98f ? 5 : 0, MAIN);
@@ -57,7 +57,7 @@ public class ColorValuesComponent extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
         if (event.isHeld(MouseButton.LEFT)) {
             update(size, event.x(), event.y());
         }

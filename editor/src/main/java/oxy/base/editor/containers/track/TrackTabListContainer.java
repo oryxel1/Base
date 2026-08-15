@@ -25,18 +25,18 @@ public class TrackTabListContainer extends Container {
     public TrackTabListContainer(VideoSequencerContainer sequencerContainer) {
         super(BorderLayout.DEFAULT);
 
-        this.addChild(new UpperContainer(sequencerContainer), c -> c.layoutOptions(BorderPosition.TOP));
+        this.add(new UpperContainer(sequencerContainer), c -> c.layoutOptions(BorderPosition.TOP));
 
         final ScrollContainer scrollContainer = new ScrollContainer(container = new Container(new VerticalListLayout()), false, true) {
             @Override
-            public void render(Renderer renderer, Size size) {
+            public void renderInternal(Renderer renderer, Size size) {
                 scrollY(sequencerContainer.trackListContainer().scrollY(), true);
-                super.render(renderer, size);
+                super.renderInternal(renderer, size);
             }
         };
         scrollContainer.barWidth().set(0f);
 
-        this.addChild(scrollContainer, c -> c.layoutOptions(BorderPosition.CENTER));
+        this.add(scrollContainer, c -> c.layoutOptions(BorderPosition.CENTER));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TrackTabListContainer extends Container {
             });
             add.hoverColor().set(Color.fromRGB(145, 218, 255));
 
-            this.addChild(add, c -> c.layoutOptions(new AbsoluteOptions(5, 5)));
+            this.add(add, c -> c.layoutOptions(new AbsoluteOptions(5, 5)));
         }
 
         @Override

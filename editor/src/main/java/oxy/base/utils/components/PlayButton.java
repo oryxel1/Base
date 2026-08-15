@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.Texture;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
+import net.lenni0451.rivet.backend.thingl.texture.ThinGLGPUTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.input.mouse.MouseButton;
 import net.lenni0451.rivet.input.mouse.MouseButtonEvent;
@@ -38,12 +38,12 @@ public class PlayButton extends Component {
         this.blendDuration = new ThemeOption<>(this, null);
         this.blendDuration.set(800);
 
-        this.texture1 = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/pause_18.png"));
-        this.texture2 = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/play_18.png"));
+        this.texture1 = new ThinGLGPUTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/pause_18.png"));
+        this.texture2 = new ThinGLGPUTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/play_18.png"));
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
             this.state = !this.state;
             onStateChanged.accept(this.state);
@@ -54,7 +54,7 @@ public class PlayButton extends Component {
     }
 
     @Override
-    public void render(final Renderer renderer, final Size size) {
+    public void renderInternal(final Renderer renderer, final Size size) {
         renderer.image(state ? this.texture1 : this.texture2, 0, 0, size.width(), size.height(), color.color());
     }
 
@@ -64,12 +64,12 @@ public class PlayButton extends Component {
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         color.set(Color.fromRGB(145, 218, 255), this.blendDuration.value());
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         color.set(Color.WHITE, this.blendDuration.value());
     }
 

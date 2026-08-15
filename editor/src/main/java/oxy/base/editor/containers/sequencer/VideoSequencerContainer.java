@@ -39,25 +39,25 @@ public class VideoSequencerContainer extends Container {
             }
         };
 
-        this.addChild(new DecoratedContainer(new SolidColor(Color.fromRGB(48, 48, 48)), mouseContainer), c -> c.layoutOptions(DockPosition.LEFT));
+        this.add(new DecoratedContainer(new SolidColor(Color.fromRGB(48, 48, 48)), mouseContainer), c -> c.layoutOptions(DockPosition.LEFT));
 
-        this.addChild(trackTabListContainer = new TrackTabListContainer(this), c -> c.layoutOptions(DockPosition.LEFT));
+        this.add(trackTabListContainer = new TrackTabListContainer(this), c -> c.layoutOptions(DockPosition.LEFT));
 
-        this.addChild(sequenceTimeSection = new SequencerTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
+        this.add(sequenceTimeSection = new SequencerTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
 
-        this.addChild(trackListContainer = new TrackListContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+        this.add(trackListContainer = new TrackListContainer(), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRect(0, 0, size.width(), size.height(), Color.fromRGB(30, 30, 30));
 
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
         drawCursor(renderer, size);
     }
 
     @Override
-    protected boolean onComponentMouseScroll(MouseScrollEvent event, Size size) {
+    protected boolean onMouseScrollInternal(MouseScrollEvent event, Size size) {
         if (event.scrollY() > 0) {
             EditorValues.instance().scale(EditorValues.instance().scale() + 0.1f);
             trackListContainer.requestLayoutRecalculation();
@@ -68,7 +68,7 @@ public class VideoSequencerContainer extends Container {
             trackListContainer.recalculateObjectPosition();
         }
 
-        return super.onComponentMouseScroll(event, size);
+        return super.onMouseScrollInternal(event, size);
     }
 
     @Override
@@ -94,13 +94,13 @@ public class VideoSequencerContainer extends Container {
 
     public TrackContainer createTrack() {
         final TrackContainer container = new TrackContainer();
-        ((Container) trackListContainer.child()).addChild(container);
-        trackTabListContainer.container().addChild(new TrackTabContainer(this, container));
+        ((Container) trackListContainer.child()).add(container);
+        trackTabListContainer.container().add(new TrackTabContainer(this, container));
         return container;
     }
 
     public void removeTrack(TrackContainer container, TrackTabContainer tabContainer) {
-        ((Container) trackListContainer.child()).removeChild(container);
-        trackTabListContainer.container().removeChild(tabContainer);
+        ((Container) trackListContainer.child()).remove(container);
+        trackTabListContainer.container().remove(tabContainer);
     }
 }

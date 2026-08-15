@@ -28,7 +28,7 @@ public class DopeSheetTrack extends Container {
     }
 
     public void computeChildren() {
-        clearChildren();
+        clear();
 
         final ObjectOrEvent object = EditorValues.instance().selectedObject();
         if (object == null) {
@@ -57,7 +57,7 @@ public class DopeSheetTrack extends Container {
             }, entry.getKey(), keyframe);
             component.layoutOptions(new AbsoluteOptions(newX - 5, 20 / 2f - 5));
 
-            addChild(component);
+            add(component);
         }
     }
 

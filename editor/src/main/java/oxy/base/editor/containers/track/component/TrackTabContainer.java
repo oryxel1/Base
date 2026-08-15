@@ -27,15 +27,15 @@ public class TrackTabContainer extends Container {
             sequencerContainer.removeTrack(container, this);
         });
         trash.hoverColor().set(Color.fromRGB(145, 218, 255));
-        this.addChild(trash, image -> image.layoutOptions(new AbsoluteOptions(5, 35)));
+        this.add(trash, image -> image.layoutOptions(new AbsoluteOptions(5, 35)));
     }
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
+    public void renderInternal(Renderer renderer, Size bounds) {
 //        renderer.fillRect(0, 0, bounds.width(), bounds.height(), Color.RED);
         renderer.text(this.rivet().backend().font().shapeText("Track " + container.index(), Color.fromRGB(148, 148, 148)), 5, 10, TextOrigin.Horizontal.VISUAL_LEFT, TextOrigin.Vertical.LOGICAL_TOP);
 
-        super.render(renderer, bounds);
+        super.renderInternal(renderer, bounds);
     }
 
     @Override

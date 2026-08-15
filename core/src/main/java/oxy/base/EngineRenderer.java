@@ -13,6 +13,7 @@ import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.deferred.DeferredRenderer;
 import net.lenni0451.rivet.backend.render.deferred.RenderListExecutor;
 import net.lenni0451.rivet.backend.thingl.GLFWBackend;
+import net.lenni0451.rivet.backend.thingl.ThinGLAssetLoader;
 import net.lenni0451.rivet.backend.thingl.ThinGLBackend;
 import net.lenni0451.rivet.backend.thingl.render.ThinGLRenderer;
 import net.lenni0451.rivet.backend.thingl.text.ThinGLFont;
@@ -39,6 +40,7 @@ import oxy.base.utils.thingl.ThinGLExtended;
 import oxy.base.utils.thingl.ThinGLUtils;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -104,7 +106,7 @@ public final class EngineRenderer extends Game {
         FontUtils.loadFonts();
 
         final FontInstance rivetFont = FontUtils.font("SFUIRegular");
-        this.backend = new GLFWBackend(windowHandle, new ThinGLFont(new FontInstanceSet(Maps.linkedHashMap(rivetFont, GlyphPredicate.all()))));
+        this.backend = new GLFWBackend(windowHandle, new ThinGLFont(new FontInstanceSet(Maps.linkedHashMap(rivetFont, GlyphPredicate.all())), List.of()), new ThinGLAssetLoader());
         this.rivet = new Rivet(this.backend, FullSizeLayout.INSTANCE, new Size(ThinGL.windowInterface().getFramebufferWidth(), ThinGL.windowInterface().getFramebufferHeight()));
 
         setupRivetCallbacks();
@@ -127,7 +129,7 @@ public final class EngineRenderer extends Game {
         TimeUtils.fakeTimeMillis = null;
         super.setScreen(screen);
 
-        this.rivet.root().clearChildren();
+        this.rivet.root().clear();
         if (screen instanceof ExtendableScreen extendableScreen) {
             extendableScreen.init(this.rivet);
         }

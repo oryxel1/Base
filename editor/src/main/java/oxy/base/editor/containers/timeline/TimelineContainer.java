@@ -23,31 +23,31 @@ public class TimelineContainer extends GlobalContainer.ResizeableContainer {
     public TimelineContainer() {
         super(new DockLayout(0));
 
-        this.addChild(new PaddedContainer(new Padding(8, 3, 0, 0), new TimelineDockBar()), c -> c.layoutOptions(DockPosition.TOP));
-        this.addChild(new TimelineTimeControl(), c -> c.layoutOptions(DockPosition.BOTTOM));
+        this.add(new PaddedContainer(new Padding(8, 3, 0, 0), new TimelineDockBar()), c -> c.layoutOptions(DockPosition.TOP));
+        this.add(new TimelineTimeControl(), c -> c.layoutOptions(DockPosition.BOTTOM));
 
-        this.addChild(sequencerContainer = new VideoSequencerContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+        this.add(sequencerContainer = new VideoSequencerContainer(), c -> c.layoutOptions(DockPosition.CENTER));
         relativeScale = 0.34f;
         type = EditorValues.TimelineType.Sequencer;
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         if (type != EditorValues.instance().type()) {
             type = EditorValues.instance().type();
 
-            this.removeChild(children().getLast());
+            this.remove(children().getLast());
             if (type == EditorValues.TimelineType.Sequencer) {
                 EditorValues.instance().dopeSheetTrackMap().clear();
 
-                this.addChild(sequencerContainer, c -> c.layoutOptions(DockPosition.CENTER));
+                this.add(sequencerContainer, c -> c.layoutOptions(DockPosition.CENTER));
             } else {
-                this.addChild(new DopeSheetContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+                this.add(new DopeSheetContainer(), c -> c.layoutOptions(DockPosition.CENTER));
             }
         }
 
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(48, 48, 48));
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(59, 59, 59));
     }
 

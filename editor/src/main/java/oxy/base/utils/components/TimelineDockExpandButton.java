@@ -2,7 +2,7 @@ package oxy.base.utils.components;
 
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.render.Renderer;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
+import net.lenni0451.rivet.backend.thingl.texture.ThinGLGPUTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.ComboBox;
@@ -28,13 +28,13 @@ public class TimelineDockExpandButton extends Component {
     private Layer layer;
 
     private final ColorAnimations backgroundColor = new ColorAnimations(Color.fromRGB(40, 40, 40));
-    private final ThinGLTexture downTexture = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_downarrow_hlt.svg"));
+    private final ThinGLGPUTexture downTexture = new ThinGLGPUTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_downarrow_hlt.svg"));
 
-    private final ThinGLTexture sequenceTexture = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_sequence.svg"));
-    private final ThinGLTexture actionTexture = new ThinGLTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_action.svg"));
+    private final ThinGLGPUTexture sequenceTexture = new ThinGLGPUTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_sequence.svg"));
+    private final ThinGLGPUTexture actionTexture = new ThinGLGPUTexture(Base.instance().assetsManager().texture("assets/base/uis/editor/icons/blender_icon_action.svg"));
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, backgroundColor.color());
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(60, 60, 60));
 
@@ -60,7 +60,7 @@ public class TimelineDockExpandButton extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size size) {
         if (event.button() != MouseButton.LEFT) {
             return false;
         }
@@ -80,9 +80,9 @@ public class TimelineDockExpandButton extends Component {
         decoratedContainer.minSize(size.width(), 0f);
 
         decoratedContainer.layoutOptions(new AbsoluteOptions(bounds.x(), bounds.y() + 20));
-        container.addChild(decoratedContainer);
+        container.add(decoratedContainer);
 
-        childContainer.addChild(new Button("Sequencer", c -> {
+        childContainer.add(new Button("Sequencer", c -> {
             this.rivet().removeLayer(this.layer);
             layer = null;
 
@@ -94,7 +94,7 @@ public class TimelineDockExpandButton extends Component {
             b.hoverOutlineColor().set(Color.TRANSPARENT);
         });
 
-        childContainer.addChild(new Button("Dope Sheet", c -> {
+        childContainer.add(new Button("Dope Sheet", c -> {
             this.rivet().removeLayer(this.layer);
             layer = null;
 
@@ -113,12 +113,12 @@ public class TimelineDockExpandButton extends Component {
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         backgroundColor.set(Color.fromRGB(48, 48, 48), 500);
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         backgroundColor.set(Color.fromRGB(40, 40, 40), 500);
     }
 

@@ -25,7 +25,7 @@ public class SecondaryDragComponent extends Component {
     private final List<Data> list;
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         for (Data data : list) {
             renderer.translate(mouseX + data.offsetX, mouseY + data.offsetY, () -> {
                 float width = EditorValues.instance().oneMilSecondWidth() * data.object.object().duration;
@@ -84,7 +84,7 @@ public class SecondaryDragComponent extends Component {
 
             object.layoutOptions(new AbsoluteOptions(dataX, 0));
             object.object().start = time;
-            track.addChild(object);
+            track.add(object);
         }
     }
 
@@ -100,7 +100,7 @@ public class SecondaryDragComponent extends Component {
         final Map<Data, Integer> tempMap = new HashMap<>();
         for (Data data : list) { // Remove first.
             tempMap.put(data, ((TrackContainer)data.object.parent()).index());
-            ((Container)data.object.parent()).removeChild(data.object);
+            ((Container)data.object.parent()).remove(data.object);
         }
 
         for (Data data : list) {

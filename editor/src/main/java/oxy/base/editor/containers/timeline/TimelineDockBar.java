@@ -25,7 +25,7 @@ public class TimelineDockBar extends Container {
     public TimelineDockBar() {
         super(new HorizontalListLayout(12, false));
 
-        addChild(new TimelineDockExpandButton());
+        add(new TimelineDockExpandButton());
 
         {
             final List<Pair<String, Runnable>> options = new ArrayList<>();

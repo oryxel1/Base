@@ -33,11 +33,11 @@ public class GlobalContainer extends Container {
     public GlobalContainer() {
         super(new DockLayout(3));
 
-        addChild(new TimelineContainer(), c -> c.layoutOptions(DockPosition.BOTTOM));
-        addChild(new AssetsContainer(), c -> c.layoutOptions(DockPosition.LEFT));
-        addChild(new InspectorContainer(), c -> c.layoutOptions(DockPosition.RIGHT));
+        add(new TimelineContainer(), c -> c.layoutOptions(DockPosition.BOTTOM));
+        add(new AssetsContainer(), c -> c.layoutOptions(DockPosition.LEFT));
+        add(new InspectorContainer(), c -> c.layoutOptions(DockPosition.RIGHT));
 
-        addChild(new PreviewContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+        add(new PreviewContainer(), c -> c.layoutOptions(DockPosition.CENTER));
 
         for (Component component : children()) {
             if (!(component instanceof ResizeableContainer)) {
@@ -55,8 +55,8 @@ public class GlobalContainer extends Container {
     final Map<ResizeableContainer, ResizeComponent> resizableComponents = new HashMap<>();
 
     @Override
-    public void render(Renderer renderer, Size size) {
-        super.render(renderer, size);
+    public void renderInternal(Renderer renderer, Size size) {
+        super.renderInternal(renderer, size);
 
         boolean near = false;
         for (Map.Entry<ResizeableContainer, ResizeComponent> entry : resizableComponents.entrySet()) {
@@ -90,8 +90,8 @@ public class GlobalContainer extends Container {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size size) {
-        super.onComponentMouseMove(event, size);
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size size) {
+        super.onMouseMoveInternal(event, size);
         if (rivet().dragAndDropManager().isDragging()) {
             return true;
         }
@@ -138,25 +138,25 @@ public class GlobalContainer extends Container {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         this.resizableComponents.values().forEach(c -> c.nearAndMouseDown = false);
-        return super.onComponentMouseUp(event, size);
+        return super.onMouseUpInternal(event, size);
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size size) {
         this.resizableComponents.values().forEach(c -> c.nearAndMouseDown = event.button() == MouseButton.LEFT && c.near);
-        super.onComponentMouseDown(event, size);
+        super.onMouseDownInternal(event, size);
         return true;
     }
 
     @Override
-    protected boolean onComponentKeyUp(KeyEvent event) {
+    protected boolean onKeyUpInternal(KeyEvent event) {
         if (event.key() == Key.SPACE) {
             EditorValues.instance().playing(!EditorValues.instance().playing());
         }
 
-        return super.onComponentKeyUp(event);
+        return super.onKeyUpInternal(event);
     }
 
     @RequiredArgsConstructor

@@ -16,7 +16,7 @@ import oxy.base.editor.EditorValues;
 @RequiredArgsConstructor
 public class SequencerTimeSection extends Component {
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRect(0, size.height() - 4, size.width(), 4, Color.fromRGB(108, 108, 210));
 
         float x = -EditorValues.instance().scroll();
@@ -34,7 +34,7 @@ public class SequencerTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size bounds) {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height() && event.buttons().contains(MouseButton.LEFT)) {
             float x = EditorValues.instance().scroll() + event.x() - 2.5f;
             long newTimestamp = (long) (x / (EditorValues.instance().oneMilSecondWidth()));
@@ -47,7 +47,7 @@ public class SequencerTimeSection extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size bounds) {
         if (event.x() > 0 && event.x() < bounds.width() && event.y() > 0 && event.y() < bounds.height()) {
             float x = EditorValues.instance().scroll() + event.x() - 2.5f;
             long newTimestamp = (long) (x / (EditorValues.instance().oneMilSecondWidth()));
@@ -56,7 +56,7 @@ public class SequencerTimeSection extends Component {
             EditorValues.instance().timestamp(Math.max(0, newTimestamp));
         }
 
-        return super.onComponentMouseDown(event, bounds);
+        return super.onMouseDownInternal(event, bounds);
     }
 
     @Override

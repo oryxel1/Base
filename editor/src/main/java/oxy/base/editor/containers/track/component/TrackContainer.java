@@ -21,7 +21,7 @@ public class TrackContainer extends Container {
         super(AbsoluteLayout.INSTANCE);
 
         // So the user can scroll more by default.
-        this.addChild(new Component() {
+        this.add(new Component() {
             @Override
             public Size computeIdealSize(Size constraints) {
                 return new Size(1.0e-16f, 1.0e-16f);
@@ -30,7 +30,7 @@ public class TrackContainer extends Container {
     }
 
     @Override
-    protected boolean onComponentDrop(DropEvent event, Size bounds) {
+    protected boolean onDropInternal(DropEvent event, Size bounds) {
         EditorValues.instance().playing(false);
 
         event.dragData().forEach(data -> {

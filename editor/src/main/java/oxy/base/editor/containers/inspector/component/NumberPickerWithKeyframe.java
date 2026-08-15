@@ -40,8 +40,8 @@ public class NumberPickerWithKeyframe extends Container {
             defaultValue = defaultKeyframe.value();
         }
 
-        addChild(picker = new NumberPicker(min, max, step, defaultValue), c -> c.minSize(125, 0));
-        addChild(new KeyframeComponent(() -> object.has(EditorValues.instance().timestamp(), transform), () -> {
+        add(picker = new NumberPicker(min, max, step, defaultValue), c -> c.minSize(125, 0));
+        add(new KeyframeComponent(() -> object.has(EditorValues.instance().timestamp(), transform), () -> {
             if (object.has(EditorValues.instance().timestamp(), transform)) {
                 object.remove(EditorValues.instance().timestamp(), transform);
                 picker.value(object.get(EditorValues.instance().timestamp(), transform));
@@ -62,8 +62,8 @@ public class NumberPickerWithKeyframe extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
-        super.render(renderer, size);
+    public void renderInternal(Renderer renderer, Size size) {
+        super.renderInternal(renderer, size);
 
         long currentTimestamp = EditorValues.instance().timestamp();
         if (timestamp != currentTimestamp) {
@@ -89,8 +89,8 @@ public class NumberPickerWithKeyframe extends Container {
     }
 
     @Override
-    protected void onComponentAdded() {
-        super.onComponentAdded();
+    protected void onAddedInternal() {
+        super.onAddedInternal();
         ((Label)picker.child()).scale(14 / 16f);
     }
 }

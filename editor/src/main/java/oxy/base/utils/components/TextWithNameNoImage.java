@@ -4,7 +4,6 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.Texture;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.Parent;
 import net.lenni0451.rivet.math.Rectangle;
@@ -26,12 +25,12 @@ public class TextWithNameNoImage extends Component implements Parent {
     }
 
     @Override
-    protected void onComponentAdded() {
+    protected void onAddedInternal() {
         component.setRivet(rivet(), this);
     }
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
+    public void renderInternal(Renderer renderer, Size bounds) {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, backgroundColor.color());
         component.render(renderer, bounds);
 
@@ -42,12 +41,12 @@ public class TextWithNameNoImage extends Component implements Parent {
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         backgroundColor.set(Color.fromRGB(63, 63, 63), 200);
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         backgroundColor.set(Color.fromRGBA(63, 63, 63, 0), 200);
     }
 

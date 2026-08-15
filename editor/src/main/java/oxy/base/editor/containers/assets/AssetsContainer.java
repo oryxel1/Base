@@ -16,13 +16,13 @@ public class AssetsContainer extends GlobalContainer.ResizeableContainer {
     public AssetsContainer() {
         super(new DockLayout(0));
 
-        addChild(new PaddedContainer(new Padding(10, 10, 0, 0), new ObjectContainer()), c -> c.layoutOptions(DockPosition.CENTER));
+        add(new PaddedContainer(new Padding(10, 10, 0, 0), new ObjectContainer()), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(40, 40, 40));
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(53, 53, 53));
     }
 

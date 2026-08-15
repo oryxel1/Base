@@ -12,8 +12,8 @@ public class PreviewContainer extends Container {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.BLACK);
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
     }
 }

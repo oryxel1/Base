@@ -4,7 +4,7 @@ import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.backend.Texture;
 import net.lenni0451.rivet.backend.render.Renderer;
 import net.lenni0451.rivet.backend.text.ShapedText;
-import net.lenni0451.rivet.backend.thingl.ThinGLTexture;
+import net.lenni0451.rivet.backend.thingl.texture.ThinGLGPUTexture;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.math.Size;
 import net.lenni0451.rivet.text.model.TextOrigin;
@@ -18,11 +18,11 @@ public class TextWithName extends Component {
 
     public TextWithName(String name, String path) {
         this.name = name;
-        this.texture = new ThinGLTexture(Base.instance().assetsManager().texture(path));
+        this.texture = new ThinGLGPUTexture(Base.instance().assetsManager().texture(path));
     }
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
+    public void renderInternal(Renderer renderer, Size bounds) {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, backgroundColor.color());
         renderer.image(this.texture, 5, 5, 96, 96, Color.WHITE);
 
@@ -33,12 +33,12 @@ public class TextWithName extends Component {
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         backgroundColor.set(Color.fromRGB(63, 63, 63), 200);
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         backgroundColor.set(Color.fromRGBA(63, 63, 63, 0), 200);
     }
 

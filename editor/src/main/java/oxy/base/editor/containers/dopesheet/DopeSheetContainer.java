@@ -13,12 +13,12 @@ public class DopeSheetContainer extends Container {
     public DopeSheetContainer() {
         super(new DockLayout());
 
-        addChild(new DopeSheetTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
-        addChild(new DopeSheetTrackList(), c -> c.layoutOptions(DockPosition.CENTER));
+        add(new DopeSheetTimeSection(), c -> c.layoutOptions(DockPosition.TOP));
+        add(new DopeSheetTrackList(), c -> c.layoutOptions(DockPosition.CENTER));
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         ObjectOrEvent objectOrEvent = EditorValues.instance().selectedObject();
         if (objectOrEvent != null) {
             long timestamp = EditorValues.instance().timestamp();
@@ -31,7 +31,7 @@ public class DopeSheetContainer extends Container {
 
         renderer.fillRect(0, 0, size.width(), size.height(), Color.fromRGB(30, 30, 30));
 
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
 
         if (objectOrEvent != null) {
             drawCursor(renderer, size);

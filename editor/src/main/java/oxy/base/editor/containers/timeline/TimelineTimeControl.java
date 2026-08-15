@@ -18,13 +18,13 @@ public class TimelineTimeControl extends Container {
         timeLabel.layoutOptions(AnchorOptions.EMPTY.withAnchorMinX(0.95f).withAnchorMinY(0.5f).pivot(0.5f, 0.5f));
         timeLabel.scale(1.125f);
 
-        this.addChild(timeLabel);
+        this.add(timeLabel);
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         timeLabel.text(format(EditorValues.instance().timestamp()));
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
     }
 
     @Override

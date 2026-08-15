@@ -57,7 +57,7 @@ public class ObjectContainer extends ScrollContainer {
             ctx.cancel(true);
         });
 
-        container.addChild(component);
+        container.add(component);
     }
 
     private void add(Container container, String name, String path, Object object) {
@@ -76,6 +76,6 @@ public class ObjectContainer extends ScrollContainer {
             ctx.cancel(true);
         });
 
-        container.addChild(component);
+        container.add(component);
     }
 }

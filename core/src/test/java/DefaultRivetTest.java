@@ -1,7 +1,9 @@
 import net.lenni0451.commons.color.Color;
 import net.lenni0451.rivet.Rivet;
 import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.backend.text.Font;
 import net.lenni0451.rivet.backend.thingl.GLFWApplication;
+import net.lenni0451.rivet.backend.thingl.ThinGLAssetLoader;
 import net.lenni0451.rivet.component.Component;
 import net.lenni0451.rivet.component.container.Button;
 import net.lenni0451.rivet.component.container.Container;
@@ -16,6 +18,7 @@ import net.lenni0451.rivet.layout.grid.GridAnchor;
 import net.lenni0451.rivet.layout.grid.GridFill;
 import net.lenni0451.rivet.layout.grid.GridLayout;
 import net.lenni0451.rivet.layout.grid.GridOptions;
+import net.lenni0451.rivet.math.Corners;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.text.model.TextOrigin;
 import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
@@ -55,13 +58,13 @@ public class DefaultRivetTest extends GLFWApplication {
             tabContainer.addTab(this.newTabHeader(tabContainer, "Tab " + this.nextTabId), this.newTabContent());
             this.nextTabId++;
         }
-        rivet.root().addChild(tabContainer);
+        rivet.root().add(tabContainer);
     }
 
     private Component newTabHeader(final TabContainer tabContainer, final String name) {
         Container container = new Container(new GridLayout(10, 10));
-        container.addChild(new Label(name).layoutOptions(new GridOptions(0, 0).withAnchor(GridAnchor.LEFT).withWeightX(1).withFill(GridFill.HORIZONTAL)));
-        container.addChild(new Button(new Label("x").scale(0.75F).horizontalOrigin(TextOrigin.Horizontal.VISUAL_CENTER).verticalOrigin(TextOrigin.Vertical.VISUAL_CENTER), () -> {
+        container.add(new Label(name).layoutOptions(new GridOptions(0, 0).withAnchor(GridAnchor.LEFT).withWeightX(1).withFill(GridFill.HORIZONTAL)));
+        container.add(new Button(new Label("x").scale(0.75F).horizontalOrigin(TextOrigin.Horizontal.VISUAL_CENTER).verticalOrigin(TextOrigin.Vertical.VISUAL_CENTER), () -> {
             for (Tab tab : tabContainer.tabs()) {
                 Label label = (Label) ((Container) tab.header()).children().get(0);
                 if (label.text().equals(name)) {
@@ -73,10 +76,10 @@ public class DefaultRivetTest extends GLFWApplication {
             button.fixedSize(40, 40);
             button.layoutOptions(new GridOptions(1, 0).withAnchor(GridAnchor.RIGHT));
             button.innerPadding().set(Padding.EMPTY);
-            button.cornerRadius().set(Float.MAX_VALUE);
+            button.cornerRadius().set(new Corners(Float.MAX_VALUE));
             button.outlineWidth().set(0F);
-            button.inactiveColor().set(Color.TRANSPARENT);
-            button.activeColor().set(Color.RED.darker().darker().darker());
+            button.backgroundColor().set(Color.TRANSPARENT);
+            button.hoverBackgroundColor().set(Color.RED.darker().darker().darker());
         });
         return container;
     }
@@ -103,7 +106,7 @@ public class DefaultRivetTest extends GLFWApplication {
 
 
     @Override
-    protected FontInstanceSet createFont() throws Exception {
-        return createFont(40, DefaultRivetTest.class.getResourceAsStream("assets/base/fonts/global/NotoSans-Regular.ttf"));
+    protected Font createFont(final ThinGLAssetLoader assetLoader) throws Exception {
+        return assetLoader.loadFont(DefaultRivetTest.class.getResourceAsStream("assets/base/fonts/global/NotoSans-Regular.ttf"), 40);
     }
 }

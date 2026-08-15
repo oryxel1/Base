@@ -30,7 +30,7 @@ public class FakeObjectComponent extends Component {
     private final long duration;
 
     @Override
-    public void render(Renderer renderer, Size bounds) {
+    public void renderInternal(Renderer renderer, Size bounds) {
         renderer.fillRoundedRect(0, 0, bounds.width(), bounds.height(), 5, OBJECT_COLOR);
         renderer.outlineRoundedRect(0, 0, bounds.width(), bounds.height(), 5, 1, Color.WHITE);
 
@@ -84,6 +84,6 @@ public class FakeObjectComponent extends Component {
             }
         }
 
-        track.addChild(new ObjectComponent((TrackListContainer) ((Container)trackContainer.parent()).parent(), object), c -> c.layoutOptions(new AbsoluteOptions(x, 0)));
+        track.add(new ObjectComponent((TrackListContainer) ((Container)trackContainer.parent()).parent(), object), c -> c.layoutOptions(new AbsoluteOptions(x, 0)));
     }
 }

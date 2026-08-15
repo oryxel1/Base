@@ -35,10 +35,10 @@ public class ScenarioEditorScreen extends ExtendableScreen {
     @Override
     public void init(Rivet rivet) {
         Container mainContainer = new Container(new DockLayout());
-        rivet.root().addChild(mainContainer);
+        rivet.root().add(mainContainer);
 
         // Dock bar (File, Edit, ...)
-        mainContainer.addChild(new DockBarContainer(), c -> c.layoutOptions(DockPosition.TOP));
-        mainContainer.addChild(new PaddedContainer(new Padding(2, 8, 2, 10), new GlobalContainer()), c -> c.layoutOptions(DockPosition.CENTER));
+        mainContainer.add(new DockBarContainer(), c -> c.layoutOptions(DockPosition.TOP));
+        mainContainer.add(new PaddedContainer(new Padding(2, 8, 2, 10), new GlobalContainer()), c -> c.layoutOptions(DockPosition.CENTER));
     }
 }

@@ -37,7 +37,7 @@ public class TrackListContainer extends ScrollContainer {
     private float prevWidth;
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         if (selectionManager.objects().isEmpty()) {
             EditorValues.instance().selectedObject(null);
         }
@@ -61,7 +61,7 @@ public class TrackListContainer extends ScrollContainer {
 
         drawTimestampLine(renderer, size);
 
-        super.render(renderer, size);
+        super.renderInternal(renderer, size);
 
         this.selectionManager.render(renderer);
         EditorValues.instance().scroll(scrollX());
@@ -90,19 +90,19 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentMouseMove(MouseMoveEvent event, Size bounds) {
+    protected boolean onMouseMoveInternal(MouseMoveEvent event, Size bounds) {
         if (event.buttons().contains(MouseButton.LEFT)) {
             this.selectionManager.x1(event.x());
             this.selectionManager.y1(event.y());
             this.rivet().focusedComponent(this);
         }
 
-        return super.onComponentMouseMove(event, bounds);
+        return super.onMouseMoveInternal(event, bounds);
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size bounds) {
-        if (!super.onComponentMouseDown(event, bounds) && event.button() == MouseButton.LEFT) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size bounds) {
+        if (!super.onMouseDownInternal(event, bounds) && event.button() == MouseButton.LEFT) {
             this.selectionManager.x(event.x());
             this.selectionManager.y(event.y());
 
@@ -117,20 +117,20 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size bounds) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size bounds) {
         if (event.button() == MouseButton.LEFT) {
             this.selectionManager.x(0);
             this.selectionManager.y(0);
         }
 
-        return super.onComponentMouseUp(event, bounds);
+        return super.onMouseUpInternal(event, bounds);
     }
 
     @Override
-    protected boolean onComponentKeyUp(KeyEvent event) {
+    protected boolean onKeyUpInternal(KeyEvent event) {
         if (event.key() == Key.DELETE) {
             selectionManager.objects().forEach(component -> {
-                ((Container)component.parent()).removeChild(component);
+                ((Container)component.parent()).remove(component);
                 if (EditorValues.instance().selectedObject() == component.object()) {
                     EditorValues.instance().selectedObject(null);
                 }
@@ -146,7 +146,7 @@ public class TrackListContainer extends ScrollContainer {
     }
 
     @Override
-    protected boolean onComponentMouseScroll(MouseScrollEvent event, Size size) {
+    protected boolean onMouseScrollInternal(MouseScrollEvent event, Size size) {
         return true;
     }
 

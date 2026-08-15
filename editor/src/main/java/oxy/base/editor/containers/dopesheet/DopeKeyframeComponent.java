@@ -37,7 +37,7 @@ public class DopeKeyframeComponent extends Component {
     private final KeyframeValue.Keyframe keyframe;
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillCircle(5, 5, 5, Color.fromRGB(255, 190, 51));
         renderer.outlineCircle(5, 5, 5, 1, Color.BLACK);
     }
@@ -52,7 +52,7 @@ public class DopeKeyframeComponent extends Component {
     }
 
     @Override
-    protected void onComponentRemoved() {
+    protected void onRemovedInternal() {
         if (layer == null) {
             return;
         }
@@ -62,7 +62,7 @@ public class DopeKeyframeComponent extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseDown(MouseButtonEvent event, Size size) {
+    protected boolean onMouseDownInternal(MouseButtonEvent event, Size size) {
         if (event.button() != MouseButton.RIGHT) {
             return true;
         }
@@ -80,9 +80,9 @@ public class DopeKeyframeComponent extends Component {
         decoratedContainer.maxSize(185f, Float.MAX_VALUE);
 
         decoratedContainer.layoutOptions(new AbsoluteOptions(bounds.x(), bounds.y() + 20));
-        container.addChild(decoratedContainer);
+        container.add(decoratedContainer);
 
-        childContainer.addChild(new KeyframeOptions("Easing Mode", List.of(
+        childContainer.add(new KeyframeOptions("Easing Mode", List.of(
                 new Pair<>("Ease In", () -> keyframe.easeType(EaseType.EASE_IN)),
                 new Pair<>("Ease Out", () -> keyframe.easeType(EaseType.EASE_OUT)),
                 new Pair<>("Ease In and Out", () -> keyframe.easeType(EaseType.EASE_IN_OUT))
@@ -93,13 +93,13 @@ public class DopeKeyframeComponent extends Component {
         for (Easing easing : Easing.values()) {
             otherList.add(new Pair<>(easing.getName(), () -> keyframe.easing(easing)));
         }
-        childContainer.addChild(new KeyframeOptions("Interpolation Mode", otherList));
-        childContainer.addChild(new Button("Snap Cursor To Keyframe", e -> {
+        childContainer.add(new KeyframeOptions("Interpolation Mode", otherList));
+        childContainer.add(new Button("Snap Cursor To Keyframe", e -> {
             rivet().removeLayer(layer);
             layer = null;
             EditorValues.instance().timestamp(timestamp);
         }), button -> ((Label)button.child()).scale(0.8f));
-        childContainer.addChild(new Button("Delete Keyframe", e -> {
+        childContainer.add(new Button("Delete Keyframe", e -> {
             rivet().removeLayer(layer);
             layer = null;
             selfRemove.run();

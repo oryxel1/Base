@@ -16,14 +16,14 @@ public class KeyframeComponent extends Component {
     private final Runnable runnable;
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         final float centreX = size.width() / 2f, centreY = size.height() / 2f;
         final float radius = Math.min(centreX, centreY);
         renderer.fillCircle(centreX, centreY, radius, test.isKeyframe() ? Color.fromRGB(131, 117, 42) : Color.WHITE);
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
             runnable.run();
         }

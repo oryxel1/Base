@@ -15,8 +15,8 @@ jlayer = "1.0.1"
 zt-zip = "1.17"
 jsvg = "2.1.0"
 
-rivet = "b3c79952aa"
-rivet-extras = "9115b9c9c4"
+rivet = "6529dcec5e"
+rivet-extras = "4d95105d50"
 
 [libraries]
 zt-zip = { module = "org.zeroturnaround:zt-zip", version.ref = "zt-zip" }

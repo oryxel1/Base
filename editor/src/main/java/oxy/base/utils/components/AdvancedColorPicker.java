@@ -19,6 +19,7 @@ import net.lenni0451.rivet.layout.absolute.AbsoluteOptions;
 import net.lenni0451.rivet.layout.grid.GridAnchor;
 import net.lenni0451.rivet.layout.grid.GridLayout;
 import net.lenni0451.rivet.layout.grid.GridOptions;
+import net.lenni0451.rivet.math.Corners;
 import net.lenni0451.rivet.math.Padding;
 import net.lenni0451.rivet.math.Rectangle;
 import net.lenni0451.rivet.math.Size;
@@ -45,19 +46,19 @@ public class AdvancedColorPicker extends Component {
 
         this.hexField = new TextField(ColorUtils.toHex(color)) {
             @Override
-            protected void onComponentFocusLost() {
-                super.onComponentFocusLost();
+            protected void onFocusLostInternal() {
+                super.onFocusLostInternal();
 
                 correct();
             }
 
             @Override
-            protected boolean onComponentKeyUp(KeyEvent event) {
+            protected boolean onKeyUpInternal(KeyEvent event) {
                 if (event.key() == Key.ENTER) {
                     correct();
                 }
 
-                return super.onComponentKeyUp(event);
+                return super.onKeyUpInternal(event);
             }
 
             private void correct() {
@@ -71,7 +72,7 @@ public class AdvancedColorPicker extends Component {
                 text(ColorUtils.toHex(picker.color()));
             }
         };
-        this.hexField.cornerRadius().set(5f);
+        this.hexField.cornerRadius().set(new Corners(5f));
         this.hexField.outlineColor().set(Color.fromRGB(61, 61, 61));
 
         this.picker.colorChangeListener().add(c -> {
@@ -85,7 +86,7 @@ public class AdvancedColorPicker extends Component {
     }
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, picker.color());
         renderer.outlineRoundedRect(0, 0, size.width(), size.height(),  5, 1, Color.GRAY);
 
@@ -103,7 +104,7 @@ public class AdvancedColorPicker extends Component {
     }
 
     @Override
-    protected void updateComponentPosition(Rectangle bounds) {
+    protected void updatePositionInternal(Rectangle bounds) {
         if (this.container != null) {
 
             this.container.layoutOptions(new AbsoluteOptions(bounds.x(), bounds.y() + height.value() + 2));
@@ -111,7 +112,7 @@ public class AdvancedColorPicker extends Component {
     }
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT && layer == null) {
             final Container layerContainer = new Container(AbsoluteLayout.INSTANCE);
 
@@ -140,16 +141,16 @@ public class AdvancedColorPicker extends Component {
 
                 hexField.font(rivet().backend().font().derive(14));
 
-                container.addChild(picker, c -> c.layoutOptions(new GridOptions(0, 0).withColumnSpan(2)));
-                container.addChild(hex, c -> c.layoutOptions(new GridOptions(0, 1)
+                container.add(picker, c -> c.layoutOptions(new GridOptions(0, 0).withColumnSpan(2)));
+                container.add(hex, c -> c.layoutOptions(new GridOptions(0, 1)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
-                container.addChild(hexField, c -> c.layoutOptions(new GridOptions(1, 1)
+                container.add(hexField, c -> c.layoutOptions(new GridOptions(1, 1)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT)));
-                container.addChild(colorValuesComponent, c -> c.layoutOptions(new GridOptions(0, 2)
+                container.add(colorValuesComponent, c -> c.layoutOptions(new GridOptions(0, 2)
                         .withPadding(new Padding(5, 15, 0, 0)).withAnchor(GridAnchor.LEFT).withColumnSpan(2)));
             }
 
-            layerContainer.addChild(this.container);
+            layerContainer.add(this.container);
 
             this.layer = new Layer(layerContainer, LayerBucket.OVERLAY);
             this.rivet().addLayer(this.layer);

@@ -33,7 +33,7 @@ public class KeyframeOptions extends Component {
     private boolean over;
 
     @Override
-    public void render(Renderer renderer, Size size) {
+    public void renderInternal(Renderer renderer, Size size) {
         final ShapedText text = rivet().backend().font().derive(12).shapeText(name, Color.WHITE);
         if (over) {
             renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(63, 63, 63));
@@ -43,12 +43,12 @@ public class KeyframeOptions extends Component {
     }
 
     @Override
-    protected void onComponentRemoved() {
+    protected void onRemovedInternal() {
         removeLayer();
     }
 
     @Override
-    protected void onComponentMouseEnter() {
+    protected void onMouseEnterInternal() {
         over = true;
 
         if (!rivet().layers().contains(layer)) {
@@ -76,10 +76,10 @@ public class KeyframeOptions extends Component {
         decoratedContainer.minSize(185f, 0f);
 
         decoratedContainer.layoutOptions(new AbsoluteOptions(bounds.x() + 190, bounds.y(), null, layout instanceof VerticalListLayout ? null : 100f));
-        container.addChild(decoratedContainer);
+        container.add(decoratedContainer);
 
         for (Pair<String, Runnable> option : options) {
-            childContainer.addChild(new Button(option.left(), c -> {
+            childContainer.add(new Button(option.left(), c -> {
                 removeLayer();
                 if (rivet().layers().size() > 1) {
                     rivet().removeLayer(rivet().layers().getLast());
@@ -102,7 +102,7 @@ public class KeyframeOptions extends Component {
     }
 
     @Override
-    protected void onComponentMouseLeave() {
+    protected void onMouseLeaveInternal() {
         over = false;
 //        removeLayer();
     }

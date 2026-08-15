@@ -23,7 +23,7 @@ public class TabButton extends Component {
     private final ClickListener clickListener;
 
     @Override
-    protected boolean onComponentMouseUp(MouseButtonEvent event, Size size) {
+    protected boolean onMouseUpInternal(MouseButtonEvent event, Size size) {
         if (event.button() == MouseButton.LEFT) {
             clickListener.onClick(this);
             return true;
@@ -33,7 +33,7 @@ public class TabButton extends Component {
     }
 
     @Override
-    public void render(final Renderer renderer, final Size size) {
+    public void renderInternal(final Renderer renderer, final Size size) {
         if (shapedText == null) {
             shapedText = this.rivet().backend().font().derive(20).shapeText(this.text, Color.WHITE);
         }
