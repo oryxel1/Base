@@ -269,7 +269,7 @@ public class ScenarioScreen extends ScreenEffectScreen {
         this.dialogueRenderer.render();
 
         if (this.popup != null) {
-            Texture2D texture2D = ((TextureAsset) Base.instance().assetsManager().get(scenario.getName(), popup)).get(false);
+            Texture2D texture2D = Base.instance().assetsManager().texture(scenario.getName(), popup);
             final int width = (int) (texture2D.getWidth() * 0.65f), height = (int) (texture2D.getHeight() * 0.65f);
 
             Runnable popup = () -> ThinGL.renderer2D().texture(GLOBAL_RENDER_STACK, texture2D, 1920 / 2f - width / 2f, 152, width, height);
