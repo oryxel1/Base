@@ -1,6 +1,10 @@
 plugins {
     id("java")
-    id("com.gradleup.shadow") version("8.3.0")
+    id("com.gradleup.shadow") version("9.4.1")
+}
+
+repositories {
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -8,7 +12,7 @@ dependencies {
     implementation(project(":editor"))
     implementation(project(":serializer"))
     implementation(project(":core"))
-
+    
     implementation(libs.zt.zip)
 }
 

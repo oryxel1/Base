@@ -1,5 +1,5 @@
 import oxy.base.api.Scenario;
-import oxy.base.editor.screen.ScenarioEditorScreen;
+import oxy.base.editor.ScenarioEditorScreen;
 import oxy.base.utils.Launcher;
 
 public class ScenarioEditorTest {
@@ -7,6 +7,6 @@ public class ScenarioEditorTest {
         final Scenario.Builder scenario = new Scenario.Builder();
         scenario.name("Scenario Editor Test");
 
-        Launcher.launch(new ScenarioEditorScreen(null, scenario.build(), scenario), false);
+        Launcher.launch(new ScenarioEditorScreen(scenario), false);
     }
 }
