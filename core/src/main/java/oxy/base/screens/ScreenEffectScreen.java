@@ -39,20 +39,22 @@ public class ScreenEffectScreen extends ExtendableScreen {
     @Override
     public void render(float delta) {
         // Don't comment on this.
-        if (effects.contains(ScreenEffect.GRAY_FILTER)) {
-            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_GT_Circle_Blur_inv.png"), 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.4f));
-        }
-
-        if (effects.contains(ScreenEffect.SHINING) || effects.contains(ScreenEffect.SHINING_NO_BG)) {
-            shiningEffectRenderer.render(effects.contains(ScreenEffect.SHINING));
-        }
-
         if (effects.contains(ScreenEffect.FILM_GRAIN) || effects.contains(ScreenEffect.FILM_GRAIN_NO_TONE)) {
             filmGrainEffectRenderer.render(effects.contains(ScreenEffect.FILM_GRAIN));
         }
 
         if (effects.contains(ScreenEffect.TV_NOISE)) {
             tvNoiseEffectRenderer.render();
+        }
+    }
+
+    protected void renderBehindDialogue() {
+        if (effects.contains(ScreenEffect.GRAY_FILTER)) {
+            ThinGL.renderer2D().coloredTexture(GLOBAL_RENDER_STACK, Base.instance().assetsManager().texture("assets/base/uis/effects/FX_TEX_GT_Circle_Blur_inv.png"), 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.4f));
+        }
+
+        if (effects.contains(ScreenEffect.SHINING) || effects.contains(ScreenEffect.SHINING_NO_BG)) {
+            shiningEffectRenderer.render(effects.contains(ScreenEffect.SHINING));
         }
     }
 }
