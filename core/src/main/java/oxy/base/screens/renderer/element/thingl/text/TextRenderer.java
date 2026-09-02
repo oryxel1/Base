@@ -13,6 +13,7 @@ import oxy.base.api.render.elements.text.Text;
 import oxy.base.screens.renderer.element.base.ThinGLElementRenderer;
 import oxy.base.utils.font.FontUtils;
 import oxy.base.utils.font.TextUtils;
+import oxy.base.utils.thingl.ThinGLUtils;
 
 import java.util.ArrayList;
 
@@ -34,17 +35,15 @@ public class TextRenderer extends ThinGLElementRenderer<Text> {
 
     @Override
     protected void renderThinGL() {
-        TextUtils.textLine(size, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
+        Runnable runnable = () -> TextUtils.textLine(size, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
+        if (this.overlayColor.color().toRGBA() != Color.WHITE.toRGBA()) {
+            ThinGLUtils.colorTweak(runnable, color.color());
+        } else {
+            runnable.run();
+        }
 
         if (this.overlayColor.color().getAlpha() != 0) {
-            ThinGL.programs().getColorTweak().bindInput();
-
-            TextUtils.textLine(size, line, 0, 0, RendererText.VerticalOrigin.BASELINE, RendererText.HorizontalOrigin.VISUAL_LEFT);
-
-            ThinGL.programs().getColorTweak().unbindInput();
-            ThinGL.programs().getColorTweak().configureParameters(this.overlayColor.color());
-            ThinGL.programs().getColorTweak().renderFullscreen();
-            ThinGL.programs().getColorTweak().clearInput();
+            ThinGLUtils.colorTweak(runnable, overlayColor.color());
         }
     }
 }
