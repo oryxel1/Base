@@ -264,6 +264,8 @@ public class ScenarioScreen extends ScreenEffectScreen {
             ThinGL.renderer2D().filledRectangle(GLOBAL_RENDER_STACK, 0, 0, 1920, 1080, Color.BLACK.withAlphaF(0.3f));
         }
 
+        renderBehindDialogue();
+
         final Collection<ElementRenderer<?>> elements = this.elements.reversed().values();
         elements.stream().filter(element -> element.getLayer() == RenderLayer.BEHIND_DIALOGUE).forEach(e -> e.renderAll(this));
 
