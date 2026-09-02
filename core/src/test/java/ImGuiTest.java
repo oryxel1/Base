@@ -1,4 +1,4 @@
-import imgui.ImGui;
+//import imgui.ImGui;
 import oxy.base.utils.ExtendableScreen;
 import oxy.base.utils.Launcher;
 
@@ -7,7 +7,7 @@ public class ImGuiTest {
         Launcher.launch(new ExtendableScreen() {
             @Override
             public void render(float delta) {
-                ImGui.showDemoWindow();
+//                ImGui.showDemoWindow();
             }
         }, false);
     }

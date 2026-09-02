@@ -35,26 +35,30 @@ public class TextUtils {
     }
 
     public static void textRun(float size, final TextRun run, float x, float y) {
-        ThinGL.rendererText().pushGlobalScale(size / 65f);
-        ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, run, x, y);
-        ThinGL.rendererText().popGlobalScale();
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.scale(size / 65f);
+        ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, run, x / (size / 65f), y / (size / 65f));
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 
     public static void textRun(float size, final TextRun run, float x, float y, RendererText.VerticalOrigin verticalOrigin, RendererText.HorizontalOrigin horizontalOrigin) {
-        ThinGL.rendererText().pushGlobalScale(size / 65f);
-        ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, run, x, y, verticalOrigin, horizontalOrigin);
-        ThinGL.rendererText().popGlobalScale();
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.scale(size / 65f);
+        ThinGL.rendererText().textRun(GLOBAL_RENDER_STACK, run, x / (size / 65f), y / (size / 65f), verticalOrigin, horizontalOrigin);
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 
     public static void textLine(float size, final TextLine textLine, final float x, final float y) {
-        ThinGL.rendererText().pushGlobalScale(size / 65f);
-        ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, textLine.shape(), x, y);
-        ThinGL.rendererText().popGlobalScale();
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.scale(size / 65f);
+        ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, textLine.shape(), x / (size / 65f), y / (size / 65f));
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 
     public static void textLine(float size, final TextLine textLine, final float x, final float y, final RendererText.VerticalOrigin verticalOrigin, final RendererText.HorizontalOrigin horizontalOrigin) {
-        ThinGL.rendererText().pushGlobalScale(size / 65f);
-        ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, textLine.shape(), x, y, verticalOrigin, horizontalOrigin);
-        ThinGL.rendererText().popGlobalScale();
+        GLOBAL_RENDER_STACK.pushMatrix();
+        GLOBAL_RENDER_STACK.scale(size / 65f);
+        ThinGL.rendererText().textLine(GLOBAL_RENDER_STACK, textLine.shape(), x / (size / 65f), y / (size / 65f), verticalOrigin, horizontalOrigin);
+        GLOBAL_RENDER_STACK.popMatrix();
     }
 }

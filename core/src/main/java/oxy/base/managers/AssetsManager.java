@@ -91,7 +91,7 @@ public class AssetsManager implements AssetsManagerApi {
 
     public Texture2D texture(String scenario, FileInfo info, boolean filter) {
         try {
-            return ((TextureAsset)assets(scenario, info, AssetType.TEXTURE).asset()).get(filter);
+            return ((TextureAsset)assets(scenario, info, AssetType.TEXTURE).asset()).get(info.path().endsWith(".svg"), filter);
         } catch (Exception ignored) {
             if (INVALID_TEXTURE_KEY == Integer.MIN_VALUE) {
                 FileInfo invalidTexture = new FileInfo("assets/base/invalid.png", false, true);

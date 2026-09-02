@@ -3,7 +3,7 @@ package oxy.base.screens.renderer.dialogue;
 import lombok.RequiredArgsConstructor;
 import net.lenni0451.commons.color.Color;
 import net.raphimc.thingl.gl.renderer.impl.RendererText;
-import net.raphimc.thingl.resource.font.Font;
+import net.raphimc.thingl.resource.font.instance.FontInstance;
 import net.raphimc.thingl.text.TextLine;
 import net.raphimc.thingl.text.TextRun;
 import oxy.base.api.Scenario;
@@ -46,7 +46,7 @@ public class DialogueRenderer extends BaseDialogueRenderer {
             final Text text = dialogue.getDialogue();
 
             for (final TextSegment segment : text.segments()) {
-                Font font = FontUtils.toFont(scenario, segment);
+                FontInstance font = FontUtils.toFont(scenario, segment);
 
                 for (char c : segment.text().toCharArray()) {
                     final String next = texts.get(texts.size() - 1).builder().toString() + c;
@@ -83,13 +83,13 @@ public class DialogueRenderer extends BaseDialogueRenderer {
         return true;
     }
 
-    private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, Font>> segments) {
+    private record TextBuilder(float offset, StringBuilder builder, List<Pair<net.raphimc.thingl.text.TextSegment, FontInstance>> segments) {
     }
 
     @RequiredArgsConstructor
     private static final class DialogueText {
         private final float offset;
-        private final List<Pair<net.raphimc.thingl.text.TextSegment, Font>> allSegments;
+        private final List<Pair<net.raphimc.thingl.text.TextSegment, FontInstance>> allSegments;
         private final float speed;
         private final long time;
         private final long prev;
@@ -137,7 +137,7 @@ public class DialogueRenderer extends BaseDialogueRenderer {
                 if (lines.isEmpty() || text.newLine()) {
                     break;
                 } else {
-                    for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+                    for (Pair<net.raphimc.thingl.text.TextSegment, FontInstance> pair : text.allSegments) {
                         lines.getLast().allSegments.add(new TextRun(pair.right(), pair.left()));
                     }
                 }
@@ -155,7 +155,7 @@ public class DialogueRenderer extends BaseDialogueRenderer {
 
             final List<TextRun> segments = new ArrayList<>();
             int length = -1;
-            for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+            for (Pair<net.raphimc.thingl.text.TextSegment, FontInstance> pair : text.allSegments) {
                 if (length == words) {
                     break;
                 }
@@ -167,7 +167,7 @@ public class DialogueRenderer extends BaseDialogueRenderer {
                 } else {
                     final TextRun last = segments.getLast();
                     // Probably not the best idea to do this... But who cares!
-                    boolean same = pair.right().getFamilyName().equals(last.font().getFamilyName()) && pair.right().getSubFamilyName().equals(last.font().getSubFamilyName());
+                    boolean same = pair.right().getFace().getFamilyName().equals(last.font().getFace().getFamilyName()) && pair.right().getFace().getSubFamilyName().equals(last.font().getFace().getSubFamilyName());
                     if (same) {
                         last.add(pair.left());
                     } else {
@@ -177,7 +177,7 @@ public class DialogueRenderer extends BaseDialogueRenderer {
             }
 
             final List<TextRun> all = new ArrayList<>();
-            for (Pair<net.raphimc.thingl.text.TextSegment, Font> pair : text.allSegments) {
+            for (Pair<net.raphimc.thingl.text.TextSegment, FontInstance> pair : text.allSegments) {
                 all.add(new TextRun(pair.right(), pair.left()));
             }
 

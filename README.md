@@ -34,7 +34,7 @@ If you want to download the jar file to run this, just download in [releases](ht
 or alternatively in [actions](https://github.com/oryxel1/Base/actions) sections.
 
 ## Usage and examples
-Download **Java 21** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
+Download **Java 25** or above, and then run `java -jar Base.jar` (or whatever the jar file is called).
 <br><br> For example of how to use the program, you can look at the [wiki](https://github.com/oryxel1/Base/wiki).
 
 ## Contact

@@ -2,10 +2,9 @@ package oxy.base.utils.font;
 
 import java.util.*;
 
-import imgui.*;
-import lombok.SneakyThrows;
-import net.raphimc.thingl.resource.font.Font;
-import net.raphimc.thingl.resource.font.impl.FreeTypeFont;
+import net.raphimc.thingl.resource.font.face.impl.FreeTypeFontFace;
+import net.raphimc.thingl.resource.font.instance.FontInstance;
+import net.raphimc.thingl.resource.font.instance.impl.FreeTypeFontInstance;
 import oxy.base.Base;
 import oxy.base.api.Scenario;
 import oxy.base.api.render.elements.text.font.FontStyle;
@@ -14,21 +13,19 @@ import oxy.base.api.render.elements.text.font.FontType;
 import oxy.base.api.utils.FileInfo;
 
 public class FontUtils {
-    public static Font DEFAULT, SEMI_BOLD;
-    private static final Map<String, Font> NAME_TO_FONTS = new HashMap<>();
+    public static FontInstance DEFAULT, SEMI_BOLD;
+    private static final Map<String, FontInstance> NAME_TO_FONTS = new HashMap<>();
 
-    public static ImFont IM_FONT_SEMI_BOLD, IM_FONT_REGULAR, CHILLGOTHIC_17;
-
-    public static Font font(FontStyle style, FontType type) {
+    public static FontInstance font(FontStyle style, FontType type) {
         return NAME_TO_FONTS.get(type.toName(style));
     }
 
-    public static Font font(String name) {
+    public static FontInstance font(String name) {
         return NAME_TO_FONTS.get(name);
     }
 
-    public static Font toFont(Scenario scenario, TextSegment segment) {
-        Font font;
+    public static FontInstance toFont(Scenario scenario, TextSegment segment) {
+        FontInstance font;
         if (segment.font().file() != null) {
             font = NAME_TO_FONTS.get(String.valueOf(segment.font().file().hashCode(scenario.getName())));
             if (font == null) {
@@ -42,6 +39,9 @@ public class FontUtils {
     }
 
     public static void loadFonts() {
+        // UI (Rivet)
+        loadFont("SFUIRegular", "/assets/base/fonts/rivet/SFUIText-Regular.ttf", 16);
+
         // Global
         loadFont("NotoSansRegular", "/assets/base/fonts/global/NotoSans-Regular.ttf");
         loadFont("NotoSansSemiBold", "/assets/base/fonts/global/NotoSans-SemiBold.ttf");
@@ -69,50 +69,28 @@ public class FontUtils {
 
         DEFAULT = NAME_TO_FONTS.get("ChillRoundRegular");
         SEMI_BOLD = NAME_TO_FONTS.get("ChillRoundSemiBold");
-
-        ImGui.getIO().setFontDefault(loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 18, false));
-        IM_FONT_REGULAR = loadImFont("/assets/base/fonts/global/NotoSans-Regular.ttf", 50, false);
-        IM_FONT_SEMI_BOLD = loadImFont("/assets/base/fonts/global/NotoSans-SemiBold.ttf", 50, false);
-        CHILLGOTHIC_17 = loadImFont("/assets/base/fonts/chinese/simplified/ChillRoundGothic_Regular.otf", 50, true);
-
-        ImGui.getIO().setConfigDpiScaleFonts(true);
-        ImGui.getIO().setConfigDpiScaleViewports(true);
     }
 
-    public static Font loadSpecificFont(Scenario scenario, FileInfo font) {
+    public static FontInstance loadSpecificFont(Scenario scenario, FileInfo font) {
         final byte[] fontData = (byte[]) Base.instance().assetsManager().assets(scenario.getName(), font).asset();
-        return new FreeTypeFont(fontData, 65);
+        return new FreeTypeFontInstance(new FreeTypeFontFace(fontData), 65);
     }
 
     private static void loadFont(String name, String font) {
+        loadFont(name, font, 65);
+    }
+
+    private static void loadFont(String name, String font, int size) {
         try {
             final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
-            NAME_TO_FONTS.put(name, new FreeTypeFont(fontData, 65));
+            FontInstance instance = new FreeTypeFontInstance(new FreeTypeFontFace(fontData), 60);
+            if (size != 60) {
+                instance = instance.getScaledInstance(size);
+            }
+
+            NAME_TO_FONTS.put(name, instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @SneakyThrows
-    private static ImFont loadImFont(String font, int size, boolean full) {
-        final byte[] fontData = FontUtils.class.getResourceAsStream(font).readAllBytes();
-
-        final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
-        rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesDefault());
-        if (full) {
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesJapanese());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesCyrillic());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseFull());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesChineseSimplifiedCommon());
-            rangesBuilder.addRanges(ImGui.getIO().getFonts().getGlyphRangesKorean());
-
-            // Thanks ImGui :D, memory goin to be nice! and well imgui-java still on 1.90.0 so no dynamic render.
-            for (char c = '\u4e00'; c <= '\u9fff'; c++) {
-                rangesBuilder.addChar(c);
-            }
-        }
-
-        final ImGuiIO data = ImGui.getIO();
-        return data.getFonts().addFontFromMemoryTTF(fontData, size, new ImFontConfig(), rangesBuilder.buildRanges());
     }
 }

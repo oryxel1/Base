@@ -1,0 +1,58 @@
+package oxy.base.editor.containers.timeline;
+
+import lombok.experimental.Accessors;
+import net.lenni0451.commons.color.Color;
+import net.lenni0451.rivet.backend.render.Renderer;
+import net.lenni0451.rivet.component.container.DecoratedContainer;
+import net.lenni0451.rivet.component.container.PaddedContainer;
+import net.lenni0451.rivet.component.impl.SolidColor;
+import net.lenni0451.rivet.layout.dock.DockLayout;
+import net.lenni0451.rivet.layout.dock.DockPosition;
+import net.lenni0451.rivet.math.Padding;
+import net.lenni0451.rivet.math.Size;
+import oxy.base.editor.EditorValues;
+import oxy.base.editor.containers.GlobalContainer;
+import oxy.base.editor.containers.dopesheet.DopeSheetContainer;
+import oxy.base.editor.containers.sequencer.VideoSequencerContainer;
+
+@Accessors(fluent = true)
+public class TimelineContainer extends GlobalContainer.ResizeableContainer {
+    private EditorValues.TimelineType type;
+
+    private final VideoSequencerContainer sequencerContainer;
+    public TimelineContainer() {
+        super(new DockLayout(0));
+
+        this.add(new PaddedContainer(new Padding(8, 3, 0, 0), new TimelineDockBar()), c -> c.layoutOptions(DockPosition.TOP));
+        this.add(new TimelineTimeControl(), c -> c.layoutOptions(DockPosition.BOTTOM));
+
+        this.add(sequencerContainer = new VideoSequencerContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+        relativeScale = 0.34f;
+        type = EditorValues.TimelineType.Sequencer;
+    }
+
+    @Override
+    public void renderInternal(Renderer renderer, Size size) {
+        if (type != EditorValues.instance().type()) {
+            type = EditorValues.instance().type();
+
+            this.remove(children().getLast());
+            if (type == EditorValues.TimelineType.Sequencer) {
+                EditorValues.instance().dopeSheetTrackMap().clear();
+
+                this.add(sequencerContainer, c -> c.layoutOptions(DockPosition.CENTER));
+            } else {
+                this.add(new DopeSheetContainer(), c -> c.layoutOptions(DockPosition.CENTER));
+            }
+        }
+
+        renderer.fillRoundedRect(0, 0, size.width(), size.height(), 5, Color.fromRGB(48, 48, 48));
+        super.renderInternal(renderer, size);
+        renderer.outlineRoundedRect(0, 0, size.width(), size.height(), 5, 1, Color.fromRGB(59, 59, 59));
+    }
+
+    @Override
+    public Size computeIdealSize(Size constraints) {
+        return constraints.withHeight(constraints.height() * relativeScale);
+    }
+}
