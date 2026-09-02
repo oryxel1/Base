@@ -1,5 +1,6 @@
 package oxy.base.screens.renderer.element.thingl.text;
 
+import net.lenni0451.commons.color.Color;
 import oxy.base.api.Scenario;
 import oxy.base.api.event.dialogue.enums.OffsetType;
 import oxy.base.api.event.dialogue.enums.TextOffset;
@@ -10,6 +11,7 @@ import oxy.base.api.render.elements.text.Text;
 import oxy.base.api.render.elements.text.font.FontType;
 import oxy.base.screens.renderer.dialogue.DialogueRenderer;
 import oxy.base.screens.renderer.element.base.ThinGLElementRenderer;
+import oxy.base.utils.thingl.ThinGLUtils;
 
 public class AnimatedTextRenderer extends ThinGLElementRenderer<AnimatedText> {
     private final DialogueRenderer renderer;
@@ -39,6 +41,15 @@ public class AnimatedTextRenderer extends ThinGLElementRenderer<AnimatedText> {
 
     @Override
     protected void renderThinGL() {
-        this.renderer.renderDialogues();
+        Runnable runnable = this.renderer::renderDialogues;
+        if (this.color.color().toRGBA() != Color.WHITE.toRGBA()) {
+            ThinGLUtils.colorTweak(runnable, color.color());
+        } else {
+            runnable.run();
+        }
+
+        if (this.overlayColor.color().getAlpha() != 0) {
+            ThinGLUtils.colorTweak(runnable, overlayColor.color());
+        }
     }
 }
